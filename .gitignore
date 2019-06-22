@@ -15,7 +15,6 @@ README.md
 .eslintignore
 .editorconfig
 .src/App.test.js
-.src/serviceWorker.js
 .src/App.css
 .public
 
