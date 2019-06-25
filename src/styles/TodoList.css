@@ -1,0 +1,97 @@
+table {
+  border-collapse: collapse;
+  margin: 30px auto;
+}
+
+button {
+  border-radius: 10px;
+  width: 300px;
+  height: 100px;
+  outline: none;
+  font-weight: bold;
+  display: block;
+  margin: 0 auto;
+  font-size: 35px;
+  color:#fff;
+  font-weight: normal;
+  background: rgba(35, 235, 218);
+  border: none;
+  margin-top: calc(50vh - 50px);
+  animation: radial-pulse 1s infinite;
+}
+
+td,
+th {
+  border: 1px solid black;
+  padding: 5px 10px;
+  border: none;
+  height: 30px;
+}
+
+td:not(:first-child),
+th {
+  text-align: center;
+}
+
+th {
+  cursor: pointer;
+
+  transition: font-size .1s;
+}
+
+th:hover {
+  font-size: 20px;
+}
+
+th:last-child {
+  color: transparent;
+  border: none;
+  width: 60px;
+}
+
+td:last-child {
+  cursor: pointer;
+  transition: font-size .1s;
+}
+
+td:last-child:hover {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+tbody tr {
+  transition: box-shadow .1s;
+}
+
+tbody tr:hover {
+  box-shadow: 0px 2px 9px 0px rgba(35, 235, 218, .7);
+}
+
+tbody tr:nth-child(odd){
+  background: rgba(28, 230, 220, .2);
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.email {
+  color: transparent;
+  margin: 0 7px;
+  transition: color .2s;
+}
+
+a:hover span {
+  color: #111;
+}
+
+@keyframes radial-pulse {
+  0% {
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.5);
+  }
+
+  100% {
+    box-shadow: 0px 2px 30px 0px rgba(35, 235, 218, .7);
+  }
+}
