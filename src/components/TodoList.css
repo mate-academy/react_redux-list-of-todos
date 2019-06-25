@@ -1,0 +1,17 @@
+.load {
+  margin: 50px 600px;
+  background-color: #e0ffff;
+  color: black;
+  font-weight: bold;
+  border-radius: 5px;
+  weight: 100px;
+}
+
+table {
+  margin: 50px 200px;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
