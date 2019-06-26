@@ -1,0 +1,6 @@
+.header-menu {
+  background-color: lightgray;
+  border: 1px solid gray;
+  display: flex;
+  width: 100%;
+}
