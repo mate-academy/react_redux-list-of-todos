@@ -1,0 +1,31 @@
+.item {
+  border: 1px solid gray;
+  box-shadow: 2px 2px 3px gray;
+  margin: 10px;
+  position: relative;
+}
+
+.title {
+  padding: 0 5px;
+  font-size: 18px;
+}
+
+.progress {
+  margin-left: 50px;
+  font-weight: bold;
+  position: absolute;
+  right: 30px;
+}
+
+.remove {
+  position: absolute;
+  margin-left: 20px;
+  font-size: 20px;
+  text-decoration: none;
+  font-weight: bold;
+  right: 10px;
+}
+
+.remove:hover {
+  color: #ff155d;
+}
