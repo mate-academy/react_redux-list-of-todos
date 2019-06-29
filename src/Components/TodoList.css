@@ -1,0 +1,20 @@
+.userBlock {
+  border: 1px solid gray;
+  box-shadow: 5px 5px 5px gray;
+  margin: 10px;
+  padding: 5px;
+}
+
+.load {
+  margin: auto;
+  background: pink;
+  height: 130px;
+  border-radius: 50%;
+}
+
+.loadTodo {
+  margin: 5px;
+  background: rgba(139, 169, 161, 0.56);
+  height: 30px;
+  border-radius: 5%;
+}
