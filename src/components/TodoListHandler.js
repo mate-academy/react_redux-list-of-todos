@@ -1,7 +1,7 @@
-import TodoList from "./TodoList";
-import {connect} from "react-redux";
-import {loadTodos, loadUsers} from "../redux/actions";
-import {selectTodoMap, selectIsLoading, selectIsLoaded} from "../redux/selectors";
+import TodoList from './TodoList';
+import {connect} from 'react-redux';
+import {loadTodos, loadUsers} from '../redux/actions';
+import {selectTodoMap, selectIsLoading, selectIsLoaded} from '../redux/selectors';
 
 function mapStateToProps(state) {
   return {

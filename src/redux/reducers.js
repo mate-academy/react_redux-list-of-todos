@@ -1,4 +1,5 @@
-import {TODOS_LOAD, USERS_LOAD, TODOS_RECEIVED, USERS_RECEIVED, REMOVE_ITEM} from "./actions";
+import {TODOS_LOAD, USERS_LOAD,
+  TODOS_RECEIVED, USERS_RECEIVED, REMOVE_ITEM} from './actions';
 
 const initialState = {
   todoLoading: false,

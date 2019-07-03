@@ -22,11 +22,16 @@ function TodoList(props) {
       </table>
     );
   }
-  return (<button className='load' disabled={(isLoading) ? 'disabled' : ''}
-    onClick={() => {
+  return (
+    <button
+      className='load'
+      disabled={(isLoading) ? 'disabled' : ''}
+      onClick={() => {
       loadTodos();
       loadUsers();
-    }}>{(isLoading) ? 'Loading' : 'Load'}</button>);
+      }}>{(isLoading) ? 'Loading' : 'Load'}
+    </button>
+  );
 };
 
 export default TodoList;

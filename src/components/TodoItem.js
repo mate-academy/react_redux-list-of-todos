@@ -3,13 +3,14 @@ import User from './User';
 import './TodoItem.css';
 
 function TodoItem(props) {
+  const { id, title, email, completed, author, removeItem } = props;
   return (
-    <tr key = {props.id}>
-      <td className='id'>{props.id}</td>
-      <td className='title'>{props.title}</td>
-      <User name={props.author} email={props.email} />
-      <td><input type="checkbox" defaultChecked={props.completed} />
-      <button className='remove' onClick={() => props.removeItem(props.id)}>remove</button></td>
+    <tr key = {id}>
+      <td className='id'>{id}</td>
+      <td className='title'>{title}</td>
+      <User name={author} email={email} />
+      <td><input type="checkbox" defaultChecked={completed} />
+      <button className='remove' onClick={() => removeItem(id)}>remove</button></td>
     </tr>
   );
 }

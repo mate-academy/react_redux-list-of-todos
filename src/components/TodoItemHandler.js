@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import TodoItem from './TodoItem';
-import {getDeleteAction} from "../redux/actions";
+import {getDeleteAction} from '../redux/actions';
 
 function mapStateToProps(state, ownProps) {
   return {
