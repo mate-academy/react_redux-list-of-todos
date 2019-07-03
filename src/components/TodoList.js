@@ -3,8 +3,9 @@ import TodoItemHandler from './TodoItemHandler';
 import './TodoList.css';
 
 function TodoList(props) {
-  if (props.todos) {
-    const itemsList = props.todos.map(item => <TodoItemHandler item={item} key={item.id} />);
+  const { todoMap, loadTodos, loadUsers, isLoading, isLoaded } = props;
+  if (isLoaded) {
+    const itemsList = todoMap.map(item => <TodoItemHandler item={item} key={item.id} />);
     return (
       <table className='todos'>
         <thead>
@@ -21,8 +22,11 @@ function TodoList(props) {
       </table>
     );
   }
-  return (<button className='load' disabled={(props.requested) ? 'disabled' : ''}
-    onClick={() => props.buttonLoadClicked()}>{(props.requested) ? 'Loading' : 'Load'}</button>);
+  return (<button className='load' disabled={(isLoading) ? 'disabled' : ''}
+    onClick={() => {
+      loadTodos();
+      loadUsers();
+    }}>{(isLoading) ? 'Loading' : 'Load'}</button>);
 };
 
 export default TodoList;

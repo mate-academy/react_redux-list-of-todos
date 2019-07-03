@@ -3,7 +3,7 @@ import './User.css';
 
 function User(props) {
   return(
-      <td className='name'><a href = {'mailto:' + props.email}>{props.name}</a></td>
+      <td className='name'><a href = {`mailto:${props.email}`}>{props.name}</a></td>
   )
 }
 

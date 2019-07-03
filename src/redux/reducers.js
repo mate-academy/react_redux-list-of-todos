@@ -1,50 +1,45 @@
-import {DISPLAY, LOAD, CHECK_DATA, TODOS_RECEIVED, USERS_RECEIVED, mapData, REMOVE_ITEM} from "./actions";
+import {TODOS_LOAD, USERS_LOAD, TODOS_RECEIVED, USERS_RECEIVED, REMOVE_ITEM} from "./actions";
 
 const initialState = {
-  requested: false,
+  todoLoading: false,
+  userLoading: false,
+
   todoList: null,
-  selectedIndex: -1,
+  userList: null
 };
 
 export function getNextState(state = initialState, action) {
   switch (action.type) {
-    case LOAD:
-        return {
-            ...state,
-            requested: true
-        };
+    case TODOS_LOAD:
+      return {
+        ...state,
+        todoLoading: true,
+        todoList: null,
+      };
+    case USERS_LOAD:
+      return {
+        ...state,
+        userLoading: true,
+        userList: null,
+      };
     case TODOS_RECEIVED:
-        return {
-            ...state,
-            todos: action.todos
-        };
+      return {
+        ...state,
+        todoLoading: false,
+        todoList: action.payload
+      };
     case USERS_RECEIVED:
-        return {
-            ...state,
-            users: action.users
-        };
-    case CHECK_DATA:
-        const todoList = mapData(state);
-        if (todoList) {
-          return {
-            ...state,
-            todoList,
-            requested: false
-          }
-        }
-        return state;
-    case DISPLAY:
-        return {
-          ...state,
-          todoList: action.todoList,
-          requested: false
-        };
+      return {
+        ...state,
+        userLoading: false,
+        userList: action.payload
+      };
     case REMOVE_ITEM:
-        return {
-          ...state,
-          todoList: state.todoList.filter(item => item.id !== action.id)
-          };
+      return {
+        ...state,
+        todoList: state.todoList.filter(item => item.id !== action.id)
+      };
     default:
-        return state;
+      return state;
   }
 }

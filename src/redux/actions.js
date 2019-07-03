@@ -1,94 +1,55 @@
-export const LOAD = 'load';
+export const TODOS_LOAD = 'todos_load';
+export const USERS_LOAD = 'users_load';
+
 export const TODOS_RECEIVED = 'todos_received';
 export const USERS_RECEIVED = 'users_received';
-export const DISPLAY = 'display';
-export const SELECT = 'todos_select';
-export const REMOVE_ITEM = 'todos_delete';
-export const CHECK_DATA = 'check_data';
+
+export const REMOVE_ITEM = 'todo_delete';
 
 const serverUrl = 'https://jsonplaceholder.typicode.com/';
 
-function loadData(dispatch) {
-  sendRequest(`${serverUrl}todos`, requestPostsHandler, dispatch);
-  sendRequest(`${serverUrl}users`, requestUsersHandler, dispatch);
-}
-
-function sendRequest(url, handler, dispatch) {
-  const request = new XMLHttpRequest();
-  request.open('GET', url);
-  request.addEventListener('load', handler(request, dispatch));
-  request.send();
-}
-
-const requestPostsHandler = (request, dispatch) => () => {
-  const parseTodos = JSON.parse(request.responseText);
-  dispatch(todosReceived(parseTodos));
-}
-
-const requestUsersHandler = (request, dispatch) => () => {
-  const parseUsers = JSON.parse(request.responseText);
-  dispatch(usersReceived(parseUsers));
-}
-
-export function load() {
-  return (dispatch) => {
-    dispatch({
-      type: LOAD
-    });
-    loadData(dispatch);
-  };
-}
-
-export function todosReceived(todos) {
-  return (dispatch) => {
-      dispatch({
-          type: TODOS_RECEIVED,
-          todos
-      });
-      dispatch(checkData());
+export const setLoadTodos = () => {
+  return {
+    type: TODOS_LOAD
   }
 }
 
-export function usersReceived(users) {
-  return (dispatch) => {
-      dispatch({
-          type: USERS_RECEIVED,
-          users
-      });
-      dispatch(checkData());
+export const setLoadUsers = () => {
+  return {
+    type: USERS_LOAD
   }
 }
 
-export function checkData() {
-    return {
-        type: CHECK_DATA
-    };
-}
+export const loadTodos = () => (dispatch) => {
+  dispatch(setLoadTodos());
+  fetch(`${serverUrl}todos`)
+    .then(response => response.json())
+    .then(todoList => {
+      dispatch(receiveTodos(todoList))
+    })
+};
 
-function isLoading(state) {
-  return !state.todos || !state.users;
-}
+export const loadUsers = () => (dispatch) => {
+  dispatch(setLoadUsers());
+  fetch(`${serverUrl}users`)
+    .then(response => response.json())
+    .then(userList => {
+      dispatch(receiveUsers(userList))
+    })
+};
 
-export function mapData(state) {
-  if (isLoading(state)) return null;
-  const todoListMap = state.todos.map(todo => ({...todo,
-    user: state.users.find(user => user.id === todo.userId),
-  }));
-  return todoListMap;
-}
-
-export function display(todoList) {
+export const receiveTodos = (todoList) => {
   return {
-    type: DISPLAY,
-    todoList
-  };
+    type: TODOS_RECEIVED,
+    payload: todoList
+  }
 }
 
-export function getSelectAction(id) {
+export const receiveUsers = (userList) => {
   return {
-    type: SELECT,
-    id
-  };
+    type: USERS_RECEIVED,
+    payload: userList
+  }
 }
 
 export function getDeleteAction(id) {

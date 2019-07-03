@@ -3,7 +3,7 @@ import User from './User';
 import './TodoItem.css';
 
 function TodoItem(props) {
-  return(
+  return (
     <tr key = {props.id}>
       <td className='id'>{props.id}</td>
       <td className='title'>{props.title}</td>

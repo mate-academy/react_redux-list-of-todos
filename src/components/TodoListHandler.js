@@ -1,18 +1,20 @@
 import TodoList from "./TodoList";
 import {connect} from "react-redux";
-import {load, mapData} from "../redux/actions";
+import {loadTodos, loadUsers} from "../redux/actions";
+import {selectTodoMap, selectIsLoading, selectIsLoaded} from "../redux/selectors";
 
 function mapStateToProps(state) {
   return {
-    todos: state.todoList,
-    requested: state.requested
+    isLoading: selectIsLoading(state),
+    isLoaded: selectIsLoaded(state),
+    todoMap: selectTodoMap(state)
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    buttonLoadClicked: () => dispatch(load()),
-    mapData: () => dispatch(mapData())
+    loadTodos: () => dispatch(loadTodos()),
+    loadUsers: () => dispatch(loadUsers())
   };
 }
 
