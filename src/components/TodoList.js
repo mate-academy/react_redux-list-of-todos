@@ -5,7 +5,7 @@ import './TodoList.css';
 function TodoList(props) {
   const { todoMap, loadTodos, loadUsers, isLoading, isLoaded } = props;
   if (isLoaded) {
-    const itemsList = todoMap.map(item => <TodoItemHandler item={item} key={item.id} />);
+    const itemsList = todoMap.map(item => <TodoItemHandler {...item} key={item.id} />);
     return (
       <table className='todos'>
         <thead>

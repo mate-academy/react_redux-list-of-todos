@@ -3,12 +3,12 @@ import User from './User';
 import './TodoItem.css';
 
 function TodoItem(props) {
-  const { id, title, email, completed, author, removeItem } = props;
+  const { id, title, email, completed, user, removeItem } = props;
   return (
     <tr key = {id}>
       <td className='id'>{id}</td>
       <td className='title'>{title}</td>
-      <User name={author} email={email} />
+    <User name={user.name} email={email} />
       <td><input type="checkbox" defaultChecked={completed} />
       <button className='remove' onClick={() => removeItem(id)}>remove</button></td>
     </tr>
