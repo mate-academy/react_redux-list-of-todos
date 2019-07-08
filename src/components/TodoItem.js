@@ -8,7 +8,7 @@ export default function TodoItem(props) {
         <td><User user={props.user} /></td>
         <td>{props.email}</td>
         <td>{props.completed ? 'completed' : 'uncompleted'}</td>
-        <td onClick={() => props.removeTheItem(props.index)}>&times;</td>
+        <td className="delete" onClick={() => props.removeTheItem(props.index)}>&times;</td>
       </tr>
     );
   }
