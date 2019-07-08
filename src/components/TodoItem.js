@@ -2,7 +2,6 @@ import React from 'react';
 import User from './User';
 
 export default function TodoItem(props) {
- console.log(props.index);
     return (
       <tr className={props.completed ? 'completed' : 'uncompleted'}>
         <td>{props.title}</td>

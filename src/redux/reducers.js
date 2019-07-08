@@ -24,7 +24,7 @@ export function getNextState(state = initialState, action) {
       }
     case SORT:
       const dataItems = [...state.data];
-      dataItems.sort((x, y) => x[action.field].localeCompare(y[action.field]));
+      dataItems.sort((x, y) => (x[action.field]).toString().localeCompare((y[action.field]).toString()));
       return {
         ...state,
         data: dataItems

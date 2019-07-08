@@ -8,7 +8,6 @@ export default function TodoList(props) {
   if (props.articleData === null) {
     return <button className='requestingButton'>Loading<br />...</button>
   }
-  console.log(props.articleData);
   return (
     <table className='listOfTodos'>
       <thead>
