@@ -15,7 +15,7 @@ class TodoList extends React.Component {
         return (
           <table className='table'>
             <thead>
-              <tr onClick = {(e) => this.props.sort(e.target.innerText)}>
+              <tr onClick = {event => this.props.sort(event.target.innerText)}>
                 <th>id</th>
                 <th>Title</th>
                 <th>Author</th>

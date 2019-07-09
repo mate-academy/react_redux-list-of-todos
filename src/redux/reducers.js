@@ -1,8 +1,8 @@
-import {REMOVE_ITEM, LOAD_DATA, DISPLAY, SORT} from './actions'
+import { REMOVE_ITEM, LOAD_DATA, DISPLAY, SORT } from './actions';
 
 const initialState = {
   items: null,
-  requested: false
+  requested: false,
 }
 
 export function reducer(state = initialState, action) {
