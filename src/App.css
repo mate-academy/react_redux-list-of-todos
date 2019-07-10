@@ -1,33 +1,95 @@
-.App {
+body {
+  margin: 0;
+  background-color: blueviolet;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+table {
+  background-color: aqua;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: royalblue;
+  cursor: pointer;
+  border: 2px solid rgb(165, 68, 68);
+  padding: 15px 0;
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+td {
+  text-align: left;
+  padding: 5px 5px;
+  color: blue;
+  border: 1px solid rgb(194, 56, 56);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+td:first-child {
+  color: black;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+td:nth-child(4) {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+td.completed {
+  color: green;
+}
+
+td.notCompleted {
+  color: red;
+}
+
+button.loadItemButton {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  position: absolute;
+  left: calc(50% - 100px);
+  top: calc(50% - 100px);
+  outline: none;
+  cursor: pointer;
+  align-self: flex-end;
+  text-transform: uppercase;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  color: lightcoral;
+  background-color: blue;
+  width: 200px;
+  height: 200px;
+  border: 1px solid yellow;
+  border-radius: 50%;
+  transition: 1s ease-out;
+  box-shadow: 0 0 5px 2px yellow;
 }
 
-.App-link {
-  color: #61dafb;
+td.deleted {
+  cursor: pointer;
+  text-align: center;
+  color: black;
+  font-size: 13px;
+  font-weight: 700;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+td.deleted:hover {
+  color: red;
+}
+
+button.loadItemButton:hover {
+  transform: scale(2);
+}
+
+div.loading {
+  position: absolute;
+  text-transform: uppercase;
+  left: calc(50% - 25px);
+  top: 50%;
+  width: 50px;
+  font-size: 15px;
+  color: brown;
+  font-weight: 700;
 }
