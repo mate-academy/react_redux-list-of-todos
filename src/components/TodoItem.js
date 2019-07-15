@@ -1,13 +1,26 @@
 import React from 'react'
 
 export default function TodoItem(props) {
+  const {
+    title,
+    user,
+    email,
+    status,
+    index
+  } = props
+  console.log(status)
   return (
+
     <tr>
-      <td>{props.todo.user.name}</td>
-      <td>{props.todo.user.email}</td>
-      <td>{props.todo.title}</td>
-      <td className={props.todo.completed ? 'completed' : 'notCompleted'}>{props.todo.completed.toString()}</td>
-      <td onClick={() => props.removeTodo(props.todo.id)} className='deleted'>X</td>
+      <td>{title}</td>
+      <td className="userInfo">
+        <a className="email" href={`mailto: ${email}`}>
+          <span className="noselect">&#9993;</span>
+        </a>
+        {user}
+      </td>
+      <td className={status ? 'completed' : 'notCompleted'}>{status ? 'completed' : 'not completed'}</td>
+      <td onClick={() => props.removeTodo(index)} className='deleted'>&times;</td>
     </tr>
   )
 }

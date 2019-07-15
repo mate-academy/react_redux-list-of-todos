@@ -30,14 +30,11 @@ export function todoApp(state = initialState, action) {
           case 'author':
             copyTodos.sort((a, b) => a.user.name.localeCompare(b.user.name));
             break;
-          case 'email':
-            copyTodos.sort((a, b) => a.user.email.localeCompare(b.user.email));
-            break;
           case 'title': 
             copyTodos.sort((a, b) => a.title.localeCompare(b.title));
             break;
           case 'completed':
-            copyTodos.sort((a, b) => a.completed - b.completed);
+            copyTodos.sort((a, b) => b.completed - a.completed);
             break;
           default:
         }

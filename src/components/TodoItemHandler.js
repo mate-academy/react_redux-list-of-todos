@@ -4,7 +4,11 @@ import { removeItemAction } from '../redux/action';
 
 function mapStateToProps(state, ownProps) {
   return {
-    todo: ownProps.selectedTodo
+    title: ownProps.todo.title,
+    user: ownProps.todo.user.name,
+    email: ownProps.todo.user.email,
+    status: ownProps.todo.completed,
+    index: ownProps.index
   };
 };
 
