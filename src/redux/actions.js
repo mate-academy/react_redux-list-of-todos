@@ -3,13 +3,6 @@ export const REMOVE_ITEM = 'remove_item';
 export const DISPLAY_DATA = 'display_data';
 export const SORT_DATA = 'sort_data';
 
-export function removeData(id) {
-  return {
-    type: REMOVE_ITEM,
-    id,
-  };
-}
-
 export function loadData() {
   return (dispatch) => {
     dispatch({

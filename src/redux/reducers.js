@@ -29,7 +29,7 @@ export default function getNextState(state = initialState, action) {
       };
     case SORT_DATA:
       const duplicatedData = [...state.data];
-      duplicatedData.sort((a,b) => a[action.string].localeCompare(b[action.string]));
+      duplicatedData.sort((a, b) => a[action.string].localeCompare(b[action.string]));
       return {
         ...state,
         data: duplicatedData
