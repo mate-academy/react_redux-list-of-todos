@@ -1,0 +1,18 @@
+.remove-item {
+  cursor: pointer;
+}
+
+.completed {
+  background-color: lightgreen;
+}
+
+.not-completed {
+  background-color: lightpink;
+}
+
+.load-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
