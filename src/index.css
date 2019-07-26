@@ -1,0 +1,23 @@
+.table {
+  border-collapse: collapse;
+  text-align: center;
+}
+
+td {
+  border: 1px solid gray;
+}
+
+.table-head {
+  background-color: aquamarine;
+}
+
+.table-noborder {
+  border: none;
+}
+
+.table--button {
+  border: none;
+  background-color: rgb(209, 106, 106);
+  cursor: pointer;
+  border-radius: 10%;
+}
