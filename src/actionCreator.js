@@ -1,4 +1,6 @@
-import { LOAD_TODOS, REMOVE_TODO, ADD_TODO, SORT } from './constants';
+import {
+  LOAD_TODOS, REMOVE_TODO, ADD_TODO, SORT,
+} from './constants';
 
 export const loadTodos = todos => ({
   type: LOAD_TODOS,

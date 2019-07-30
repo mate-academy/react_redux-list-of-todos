@@ -2,15 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import User from './User';
-import { deleteTodo, addTodo } from './actionCreator';
+import { deleteTodo } from './actionCreator';
 
 function TodoItem(props) {
   const removeTodo = (id) => {
     const { deleteTodo } = props;
     deleteTodo(id);
   };
-
-
 
   return (
     <tr>
@@ -32,9 +30,10 @@ function TodoItem(props) {
 
 TodoItem.propTypes = {
   todo: PropTypes.objectOf(PropTypes.object).isRequired,
+  deleteTodo: PropTypes.func.isRequired,
 };
 
 export default connect(state => ({
   tasks: state.tasks,
 }),
-{ deleteTodo, addTodo })(TodoItem);
+{ deleteTodo })(TodoItem);

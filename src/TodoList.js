@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ID, TITLE, USER } from './constants';
 import TodoItem from './TodoItem';
@@ -37,9 +38,33 @@ function TodoList(props) {
         <table className="table">
           <thead className="table-head">
             <tr>
-              <td onClick={() => makeSorted(ID)}>id</td>
-              <td onClick={() => makeSorted(TITLE)}>title</td>
-              <td onClick={() => makeSorted(USER)}>user</td>
+              <td>
+                <button
+                  type="button"
+                  onClick={() => makeSorted(ID)}
+                  className="table--head-button"
+                >
+                  id
+                </button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  onClick={() => makeSorted(TITLE)}
+                  className="table--head-button"
+                >
+                  title
+                </button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  onClick={() => makeSorted(USER)}
+                  className="table--head-button"
+                >
+                  user
+                </button>
+              </td>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +93,12 @@ function TodoList(props) {
     </div>
   );
 }
+
+TodoList.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  sortBy: PropTypes.func.isRequired,
+  loadTodos: PropTypes.func.isRequired,
+};
 
 export default connect(state => ({
   tasks: state.tasks,

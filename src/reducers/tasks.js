@@ -1,4 +1,6 @@
-import { LOAD_TODOS, REMOVE_TODO, ADD_TODO, SORT, USER, ID, TITLE } from '../constants';
+import {
+  LOAD_TODOS, REMOVE_TODO, ADD_TODO, SORT, USER, TITLE,
+} from '../constants';
 
 const tasks = (state = [], {
   type,
