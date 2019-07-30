@@ -9,6 +9,7 @@ td {
 
 .table-head {
   background-color: aquamarine;
+  cursor: pointer;
 }
 
 .table-noborder {
