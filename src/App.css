@@ -1,0 +1,88 @@
+body {
+  background-color: rgb(243, 243, 243);
+}
+
+.App h1 {
+  text-align: center;
+  color:  palevioletred;
+}
+
+.load-button {
+  display: block;
+  width: 100px;
+  height: 50px;
+  margin: 10px auto;
+  border: 2px solid palevioletred;
+  border-radius: 4px;
+  background-color: white;
+  color: palevioletred;
+  font-weight: 600;
+}
+
+.load-button:hover {
+  background-color: palevioletred;
+  color: white;
+}
+
+.load-button:disabled {
+  background-color: rgb(247, 199, 215);
+  border: 2px solid rgb(247, 199, 215);
+  color: rgb(179, 179, 179);
+  font-weight: 600;
+}
+
+.table {
+  margin: 0 auto;
+  padding: 10px;
+  background-color: white;
+  border-collapse: collapse;
+  border-radius: 3px;
+}
+
+.table tr:hover {
+  outline: 1px solid pink;
+}
+
+.table td, th {
+  height: 20px;
+  padding: 5px 10px;
+}
+
+.table-head {
+  cursor: pointer;
+}
+
+.active {
+  color: palevioletred;
+  text-decoration: underline palevioletred;
+}
+
+.destroy {
+  position: relative;
+  background-color: inherit;
+  width: 20px;
+  height: 20px;
+  font-size: 15px;
+  line-height: 20px;
+  background-color: inherit;
+  border: none;
+  color: pink;
+}
+
+.destroy:hover {
+  color: palevioletred;
+}
+
+.destroy::after {
+  position: absolute;
+  bottom: 0;
+  left: 6px;
+  content: "x";
+  display: none;
+}
+
+.table tr:hover .destroy::after {
+  display: block;
+}
+
+
