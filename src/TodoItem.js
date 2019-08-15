@@ -14,17 +14,25 @@ const TodoItem = ({ todoData, handleTodoDelete }) => (
         {todoData.title}
       </li>
     </ul>
-    <ul>
+    <ul className="status">
       <b>Status: </b>
       {!todoData.completed
       ? <li className="progress">
           IN PROGRESS...
-          <button className="delete" onClick={() => handleTodoDelete(todoData.id)}>x</button>
         </li>
       : <li className="done">
           DONE!
-          <button className="delete" onClick={() => handleTodoDelete(todoData.id)}>x</button>
         </li>}
+      <ul className="delete">
+        <li className="todoitem_buttom">
+          <button
+            className="delete"
+            onClick={() => handleTodoDelete(todoData.id)}
+          >
+          delete
+          </button>
+        </li>
+      </ul>
     </ul>
   </div>
 );
