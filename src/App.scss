@@ -81,4 +81,17 @@
   &__tasks {
     text-align: left;
   }
+
+  &__detele-btn {
+    margin: 0;
+
+    width: 100%;
+    min-height: 31px;
+
+    background: #a7f0aa;
+  }
+}
+
+.delete-btn-td {
+  padding: 0;
 }

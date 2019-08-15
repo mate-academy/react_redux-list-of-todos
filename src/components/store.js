@@ -5,6 +5,7 @@ const SET_LOADING = 'setLoading';
 const SORT_BY_NAME = 'name';
 const SORT_BY_TITLE = 'title';
 const SORT_BY_ID = 'id';
+const DELETE_TODO = 'delete';
 
 export const getTodos = state => state.todos;
 export const getIsLoaded = state => state.isLoaded;
@@ -15,6 +16,7 @@ export const setTodos = value => ({ type: SET_TODOS, value });
 export const sortById = () => ({ type: SORT_BY_ID });
 export const sortByName = () => ({ type: SORT_BY_NAME });
 export const sortByTitle = () => ({ type: SORT_BY_TITLE });
+export const deleteTodo = value => ({ type: DELETE_TODO, value });
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -30,7 +32,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoading: true,
-      }
+      };
 
     case SORT_BY_NAME:
       return state.sortField === SORT_BY_NAME
@@ -40,21 +42,23 @@ const reducer = (state, action) => {
         }
         : {
           ...state,
-          todos: [...state.todos].sort((a, b) => a.user.name.localeCompare(b.user.name)),
-          sortField: SORT_BY_NAME
-        }
+          todos: [...state.todos]
+            .sort((a, b) => a.user.name.localeCompare(b.user.name)),
+          sortField: SORT_BY_NAME,
+        };
 
     case SORT_BY_TITLE:
-        return state.sortField === SORT_BY_TITLE
-          ? {
-            ...state,
-            todos: [...state.todos].reverse(),
-          }
-          : {
-            ...state,
-            todos: [...state.todos].sort((a, b) => a.title.localeCompare(b.title)),
-            sortField: SORT_BY_TITLE
-          }
+      return state.sortField === SORT_BY_TITLE
+        ? {
+          ...state,
+          todos: [...state.todos].reverse(),
+        }
+        : {
+          ...state,
+          todos: [...state.todos]
+            .sort((a, b) => a.title.localeCompare(b.title)),
+          sortField: SORT_BY_TITLE,
+        };
 
     case SORT_BY_ID:
       return state.sortField === SORT_BY_ID
@@ -65,20 +69,25 @@ const reducer = (state, action) => {
         : {
           ...state,
           todos: [...state.todos].sort((a, b) => a.id - b.id),
-          sortField: SORT_BY_ID
-        }
+          sortField: SORT_BY_ID,
+        };
+
+    case DELETE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.value),
+      };
 
     default:
       return state;
   }
-}
+};
 
 const initialState = {
   todos: [],
   isLoaded: false,
   isLoading: false,
   sortField: 'id',
-  currentField: 'id',
 };
 
 const store = createStore(reducer, initialState);
