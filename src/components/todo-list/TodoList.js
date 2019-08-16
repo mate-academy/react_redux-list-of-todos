@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import TodoItem from '../todo-item/TodoItem';
 import {
-  sortByCompleted, sortByTitle, sortByUser,
+  sortByCompleted, sortByTitle, sortByUser, removeTodo,
   SORT_ORDER_COMPLETED, SORT_ORDER_TITLE, SORT_ORDER_USER,
 } from '../../redux/todosData';
 
 const TodoList = ({
 // eslint-disable-next-line no-shadow
-  sortByUser, sortByCompleted, sortByTitle,
+  sortByUser, sortByCompleted, sortByTitle, removeTodo,
   sortedTodos, fieldDirection, fieldName,
 }) => {
   const sortOrderArrow = fieldDirection === 1
@@ -55,6 +55,9 @@ const TodoList = ({
                 : defaultSortArrow}
             </span>
           </th>
+          <th scope="col">
+            <span className="text-center">Remove</span>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -69,6 +72,7 @@ const TodoList = ({
               id={id}
               text={title}
               user={user}
+              removeTodo={removeTodo}
             />
           );
         })}
@@ -84,13 +88,14 @@ const mapState = state => ({
 });
 
 const mapDispatch = {
-  sortByCompleted, sortByTitle, sortByUser,
+  sortByCompleted, sortByTitle, sortByUser, removeTodo,
 };
 
 TodoList.propTypes = {
   fieldName: PropTypes.string.isRequired,
   fieldDirection: PropTypes.number.isRequired,
   sortByCompleted: PropTypes.func.isRequired,
+  removeTodo: PropTypes.func.isRequired,
   sortByTitle: PropTypes.func.isRequired,
   sortByUser: PropTypes.func.isRequired,
   sortedTodos: PropTypes.oneOfType([
