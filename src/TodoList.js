@@ -4,34 +4,31 @@ import { connect } from 'react-redux';
 import { ID, TITLE, USER } from './constants';
 import TodoItem from './TodoItem';
 import getData from './getData';
-import { loadTodos, sortBy } from './actionCreator';
+import { loadAction, sortAction } from './actionCreator';
 
-function TodoList(props) {
+function TodoList({ todos, loadTodos, sortTodos }) {
   const [isLoaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentSorting, setCurrentSorting] = useState('ID');
 
   const getTodos = async() => {
-    const { loadTodos } = props;
     setLoading(true);
-    const todos = await getData('todos');
-    const users = await getData('users');
-    const allTogether = todos.map(todo => ({
+    const todosData = await getData('todos');
+    const usersData = await getData('users');
+    const allTogether = todosData.map(todo => ({
       todo,
-      user: users.find(user => user.id === todo.userId),
+      user: usersData.find(user => user.id === todo.userId),
     }));
-    loadTodos(allTogether);
+    await loadTodos(allTogether);
     setLoading(false);
     setLoaded(true);
   };
 
   const makeSorted = (field) => {
-    const { sortBy } = props;
-    sortBy(field, currentSorting);
+    sortTodos(field, currentSorting);
     setCurrentSorting(field);
   };
 
-  const { tasks } = props;
   return (
     <div>
       {isLoaded ? (
@@ -69,13 +66,15 @@ function TodoList(props) {
           </thead>
           <tbody>
             {
-              tasks.map(todo => (
-                <TodoItem
-                  key={todo.todo.title}
-                  todo={todo}
-                  className="row"
-                />
-              ))
+              todos
+                ? todos.map(todo => (
+                  <TodoItem
+                    key={todo.todo.title}
+                    todo={todo}
+                    className="row"
+                  />
+                ))
+                : null
             }
           </tbody>
         </table>
@@ -83,7 +82,7 @@ function TodoList(props) {
         : (
           <button
             type="button"
-            onClick={() => getTodos()}
+            onClick={getTodos}
             disabled={loading}
           >
             {loading ? 'Loading' : 'Load'}
@@ -95,11 +94,25 @@ function TodoList(props) {
 }
 
 TodoList.propTypes = {
-  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
-  sortBy: PropTypes.func.isRequired,
+  sortTodos: PropTypes.func.isRequired,
   loadTodos: PropTypes.func.isRequired,
+  todos: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default connect(state => ({
-  tasks: state.tasks,
-}), { loadTodos, sortBy })(TodoList);
+TodoList.defaultProps = {
+  todos: [],
+};
+
+const mapStateToProps = state => ({
+  todos: state.todos,
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadTodos: todos => dispatch(loadAction(todos)),
+  sortTodos: (field, type) => dispatch(sortAction(field, type)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TodoList);
