@@ -11,14 +11,20 @@ body {
   font-weight: 300;
   font-size: 23px;
   background-color: #3CC9E5;
+  user-select: none;
 }
 
 .todos-list, .sort-buttons  {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
+  align-items: center;
   margin: 30px 100px;
   list-style-type: none;
+}
+
+.todos-list {
+  grid-template-columns: 1fr 2fr 1fr 1fr;
 }
 
 
@@ -40,3 +46,17 @@ body {
 .todos-list_name {
   font-weight: 600;
 }
+
+.todos-list_delet-todo {
+  background-color: yellow;
+  display: inline-block;
+  font-weight: 600;
+  padding: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.todos-list_delet-todo:hover {
+  transform: scale(1.2);
+}
+

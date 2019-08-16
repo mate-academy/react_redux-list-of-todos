@@ -9,9 +9,13 @@ const getMethods = (dispatch) => ({
   sortByName: () => dispatch({ type: 'SORT_BY_NAME' }),
   sortByTitle: () => dispatch({ type: 'SORT_BY_TITLE' }),
   sortByComplited: () => dispatch({ type: 'SORT_BY_COMPLITED' }),
+  handleDelit: (value) => dispatch({
+    type: 'DELETE_TODO',
+    value: value,
+  })
 })
 
-const  TodosList = ({ todos, sortByName, sortByTitle, sortByComplited }) => (
+const  TodosList = ({ todos, sortByName, sortByTitle, sortByComplited, handleDelit }) => (
   <div>
    <div className='sort-buttons'>
    <button
@@ -42,6 +46,11 @@ const  TodosList = ({ todos, sortByName, sortByTitle, sortByComplited }) => (
             type="checkbox"
             defaultChecked={todo.completed}
           />
+        <li
+          className='todos-list_delet-todo'
+          onClick={() => handleDelit(todo.id)}
+        >Delete Todo
+        </li>
       </ul>
     ))}
   </div>
