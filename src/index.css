@@ -17,7 +17,7 @@ body {
 .todos-list, .sort-buttons  {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  justify-items: center;
+  justify-items: flex-start;
   align-items: center;
   margin: 30px 100px;
   list-style-type: none;
