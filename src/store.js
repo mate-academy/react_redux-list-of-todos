@@ -42,13 +42,13 @@ const reducer = (state, action) => {
     case 'SORT_BY_NAME':
       return {
         ...state,
-        unitedData: state.unitedData.sort((a, b) =>
+        unitedData: [...state.unitedData].sort((a, b) =>
           String(a.user.name).localeCompare(String(b.user.name))),
       }
     case 'SORT_BY_VALUE':
       return {
         ...state,
-        unitedData: state.unitedData.sort((a, b) =>
+        unitedData: [...state.unitedData].sort((a, b) =>
           String(a[action.value]).localeCompare(String(b[action.value]))),
       }
     case 'DELETE_TODO':
