@@ -33,15 +33,16 @@ import { getUnitedData, setTodos, getLoading, getIsLoading, getIsLoaded, sortByN
   };
 
   render() {
-    if (!this.props.isLoaded) {
+    const { isLoaded, isLoading } = this.props
+    if (!isLoaded) {
       return (
         <button
           type="button"
           className="load-button"
           onClick={this.handleLoad}
-          disabled={this.props.isLoading}
+          disabled={isLoading}
         >
-          {this.props.isLoading ? 'Loading...' : 'Load'}
+          {isLoading ? 'Loading...' : 'Load'}
         </button>
       );
     }

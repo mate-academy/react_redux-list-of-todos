@@ -56,8 +56,8 @@ const reducer = (state, action) => {
         ...state,
         unitedData: state.unitedData.filter(todo => todo.id !== action.value)
       }
-      default:
-        return state;
+    default:
+      return state;
   }
 };
 
