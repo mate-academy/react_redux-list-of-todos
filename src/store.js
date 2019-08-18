@@ -54,7 +54,7 @@ const reducer = (state, action) => {
     case 'DELETE_TODO':
       return {
         ...state,
-        unitedData: state.unitedData.filter(todo => todo.id !== action.value)
+        unitedData: [...state.unitedData].filter(todo => todo.id !== action.value)
       }
     default:
       return state;

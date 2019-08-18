@@ -5,7 +5,15 @@ import './Styles/App.css';
 import TodoList from './TodoList';
 import getFromServer from './Get';
 
-import { getUnitedData, setTodos, getLoading, getIsLoading, getIsLoaded, sortByName, sortByValue, deleteTodo } from './store';
+import {
+  getUnitedData,
+  setTodos,
+  getLoading,
+  getIsLoading,
+  getIsLoaded,
+  sortByName,
+  sortByValue,
+  deleteTodo } from './store';
 
  class App extends React.Component {
 

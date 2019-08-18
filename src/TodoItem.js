@@ -1,8 +1,12 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 
-const TodoItem = ({ todoData, handleTodoDelete }) => (
+
+const TodoItem = ({todoData, handleTodoDelete }) => (
+
   <div className="todoitem">
+
     <ul> <b>Name: </b>
       <li className="user_user-name">
         {todoData.user.name}
@@ -11,7 +15,7 @@ const TodoItem = ({ todoData, handleTodoDelete }) => (
    <ul>
     <b>Title: </b>
       <li className="todoitem_title">
-        {todoData.title}
+        {  todoData.title}
       </li>
     </ul>
     <ul className="status">
@@ -43,5 +47,7 @@ TodoItem.propTypes = {
     completed: PropTypes.bool,
   }).isRequired,
 };
+
+
 
 export default TodoItem;
