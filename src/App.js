@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import TodoList from './TodoList';
-import { loadTodos, deleteTodo } from './store';
+import { loadTodos } from './store';
 import './App.css';
 
 class App extends React.Component {
@@ -50,13 +51,13 @@ const mapDispatchToProps = dispatch => ({
   loadTodos: () => dispatch(loadTodos()),
 });
 
-// App.propTypes = {
-//   loadTodos: PropTypes.shape().isRequired,
-//   todos: PropTypes.shape().isRequired,
-//   isLoading: PropTypes.bool.isRequired,
-//   hasError: PropTypes.string.isRequired,
+App.propTypes = {
+  loadTodos: PropTypes.shape().isRequired,
+  todos: PropTypes.shape().isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  hasError: PropTypes.string.isRequired,
 
-// };
+};
 
 export default connect(
   mapStateToProps,

@@ -1,35 +1,25 @@
+/* eslint-disable no-shadow */
 import React from 'react';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import { connect } from 'react-redux';
-// import { filterTodo } from './store';
+import PropTypes from 'prop-types';
+import {
+  sortedbyName, sortedbyId, sortedByTitle, sortedByCompleted,
+} from './store';
 import TodoItem from './TodoItem';
 
 const TodoList = ({
-  todos,
+  // eslint-disable-next-line react/prop-types
+  todos, sortedbyName, sortedbyId, sortedByTitle, sortedByCompleted,
 }) => (
   <table className="App">
     <thead>
       <tr>
-        <FormControl variant="filled"
-        // className={classes.formControl}
-        >
-          <InputLabel htmlFor="filled-age-simple">Age</InputLabel>
-          <Select
-            // value={values.age}
-            // onChange={filterTodo(todos, values.age)}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="id">id</MenuItem>
-            <MenuItem value="completed">completed</MenuItem>
-            <MenuItem value="title">title</MenuItem>
-            <MenuItem value="user">user</MenuItem>
-          </Select>
-        </FormControl>
+        <th><button type="button" onClick={sortedbyId}>id</button></th>
+        <th><button type="button" onClick={sortedbyName}>name</button></th>
+        <th><button type="button" onClick={sortedByTitle}>title</button></th>
+        <th>
+          <button type="button" onClick={sortedByCompleted}>Completed</button>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -40,12 +30,16 @@ const TodoList = ({
   </table>
 );
 
-// TodoList.propTypes = {
-//   todos: PropTypes.shape().isRequired,
-// };
+TodoList.propTypes = {
+  todos: PropTypes.shape().isRequired,
+  sortedbyName: PropTypes.func.isRequired,
+};
 
 const mapDispatchToProps = dispatch => ({
-  // filterTodo: (value, act) => dispatch(filterTodo(value, act)),
+  sortedbyName: () => dispatch(sortedbyName()),
+  sortedbyId: () => dispatch(sortedbyId()),
+  sortedByTitle: () => dispatch(sortedByTitle()),
+  sortedByCompleted: () => dispatch(sortedByCompleted()),
 });
 
 export default connect(
