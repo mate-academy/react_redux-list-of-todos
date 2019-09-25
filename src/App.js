@@ -18,7 +18,6 @@ const API_DATA = (todos, users) => {
 
 const initialState = {
   todos: API_DATA(Todos, Users),
-  sortedTodos: API_DATA(Todos, Users),
   direction: 1,
 }
 
@@ -28,7 +27,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         direction: state.direction === 1 ? -1 : 1,
-        todos: [...state.sortedTodos].sort((a, b) => (
+        todos: [...state.todos].sort((a, b) => (
           state.direction * (a.user.name.localeCompare(b.user.name))
         ))
       }
@@ -37,7 +36,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         direction: state.direction === 1 ? -1 : 1,
-        todos: [...state.sortedTodos].sort((a, b) => (
+        todos: [...state.todos].sort((a, b) => (
           state.direction * (a.title.localeCompare(b.title))
         ))
       }
@@ -46,7 +45,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         direction: state.direction === 1 ? -1 : 1,
-        todos: [...state.sortedTodos].sort((a, b) => (
+        todos: [...state.todos].sort((a, b) => (
           state.direction * (a.completed - b.completed)
         ))
       }
@@ -54,7 +53,6 @@ const reducer = (state, action) => {
       return {
         ...state,
         todos: state.todos.filter(todo => todo.id !== action.value),
-        sortedTodos: state.sortedTodos.filter(todo => todo.id !== action.value),
       }
 
     default:

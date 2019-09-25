@@ -9,13 +9,13 @@ const getMethods = (dispatch) => ({
   sortByName: () => dispatch({ type: 'SORT_BY_NAME' }),
   sortByTitle: () => dispatch({ type: 'SORT_BY_TITLE' }),
   sortByComplited: () => dispatch({ type: 'SORT_BY_COMPLITED' }),
-  handleDelit: (value) => dispatch({
+  handleDelete: (value) => dispatch({
     type: 'DELETE_TODO',
     value: value,
   })
 })
 
-const  TodosList = ({ todos, sortByName, sortByTitle, sortByComplited, handleDelit }) => (
+const  TodosList = ({ todos, sortByName, sortByTitle, sortByComplited, handleDelete }) => (
   <div>
    <div className='sort-buttons'>
    <button
@@ -43,12 +43,13 @@ const  TodosList = ({ todos, sortByName, sortByTitle, sortByComplited, handleDel
         <li className="todos-list_name">{todo.user.name} </li>
         <li className="todos-list_title">{todo.title}</li>
           <input
+            name="check"
             type="checkbox"
             defaultChecked={todo.completed}
           />
         <li
-          className='todos-list_delet-todo'
-          onClick={() => handleDelit(todo.id)}
+          className='todos-list_delete-todo'
+          onClick={() => handleDelete(todo.id)}
         >Delete Todo
         </li>
       </ul>
