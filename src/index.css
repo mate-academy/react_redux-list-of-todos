@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Raleway;
+  font-weight: 300;
+  font-size: 23px;
+  background-color: #3CC9E5;
+  user-select: none;
+}
+
+.todos-list, .sort-buttons  {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: flex-start;
+  align-items: center;
+  margin: 30px 100px;
+  list-style-type: none;
+}
+
+.todos-list {
+  grid-template-columns: 1fr 2fr 1fr 1fr;
+}
+
+
+.sort-button {
+  font-family: Raleway;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 10px;
+  background-color: yellow;
+  border: 0;
+  box-shadow: 0 0 10px gray;
+  transition: 0.3s;
+}
+
+.sort-button:hover {
+  transform: scale(1.2);
+}
+
+.todos-list_name {
+  font-weight: 600;
+}
+
+.todos-list_delete-todo {
+  background-color: yellow;
+  display: inline-block;
+  font-weight: 600;
+  padding: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.todos-list_deleet-todo:hover {
+  transform: scale(1.2);
+}
+
