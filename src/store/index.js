@@ -19,6 +19,7 @@ const ACTION_TYPES = {
   RESET_TODOS: 'TODOS::RESET',
   SET_DATA_TO_STORE: 'TODOS::TO-STORE',
   ISLOADING_TODOS: 'TODOS::ISLOADING',
+  DELETE_TODO: 'TODOS::DELETE-TODO',
 };
 
 export const sortTodos = () => ({
@@ -27,6 +28,11 @@ export const sortTodos = () => ({
 
 export const resetTodos = () => ({
   type: ACTION_TYPES.RESET_TODOS,
+});
+
+export const deleteTodo = itemId => ({
+  type: ACTION_TYPES.DELETE_TODO,
+  payload: itemId,
 });
 
 const dataToStore = data => ({
@@ -60,7 +66,7 @@ function reducer(state = initialState, action = {}) {
     case ACTION_TYPES.SORT_TODOS:
       return {
         ...state,
-        todos: [...state.originalTodos].sort((a, b) => {
+        todos: [...state.todos].sort((a, b) => {
           if (a.title > b.title) {
             return 1;
           }
@@ -82,7 +88,15 @@ function reducer(state = initialState, action = {}) {
         isLoading: !state.isLoading,
       };
     case ACTION_TYPES.RESET_TODOS:
-      return state;
+      return {
+        ...state,
+        todos: [...state.originalTodos],
+      };
+    case ACTION_TYPES.DELETE_TODO:
+      return {
+        ...state,
+        todos: [...state.todos].filter(item => item.id !== action.payload),
+      };
     default:
       return state;
   }

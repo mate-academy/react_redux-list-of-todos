@@ -1,26 +1,5 @@
 import PropTypes from 'prop-types';
 
-export const UserComponentProps = {
-  user: PropTypes.shape({
-    username: PropTypes.string,
-    name: PropTypes.string,
-    email: PropTypes.string,
-    phone: PropTypes.string,
-    website: PropTypes.string,
-  }),
-};
-
-const todoListShape = PropTypes.shape({
-  userid: PropTypes.number,
-  id: PropTypes.number,
-  title: PropTypes.string,
-  completed: PropTypes.bool,
-});
-
-export const TodoListProps = {
-  todos: PropTypes.arrayOf(PropTypes.shape(todoListShape)),
-};
-
 const userShape = PropTypes.shape({
   id: PropTypes.number,
   name: PropTypes.string,
@@ -45,10 +24,41 @@ const userShape = PropTypes.shape({
   }),
 });
 
+const todoListShape = PropTypes.shape({
+  userid: PropTypes.number,
+  id: PropTypes.number,
+  title: PropTypes.string,
+  completed: PropTypes.bool,
+  user: PropTypes.shape(userShape),
+});
+
+export const AppComponentProps = {
+  todos: PropTypes.arrayOf(PropTypes.shape(todoListShape)),
+  sortTodos: PropTypes.func,
+  resetTodos: PropTypes.func,
+  isLoading: PropTypes.bool,
+  getTodos: PropTypes.func,
+};
+
+export const UserComponentProps = {
+  user: PropTypes.shape({
+    username: PropTypes.string,
+    name: PropTypes.string,
+    email: PropTypes.string,
+    phone: PropTypes.string,
+    website: PropTypes.string,
+  }),
+};
+
+export const TodoListProps = {
+  todos: PropTypes.arrayOf(PropTypes.shape(todoListShape)),
+};
+
 export const TodoItemProps = {
   todo: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
     user: PropTypes.shape(userShape),
   }),
+  deleteTodo: PropTypes.func,
 };

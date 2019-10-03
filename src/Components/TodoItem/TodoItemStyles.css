@@ -13,6 +13,7 @@
   align-items: center;
   justify-content: space-between;
   opacity: 0.91;
+  position: relative;
 }
 
 .title-wrapper {
@@ -34,4 +35,34 @@
   font-weight: bold;
   color: #fff;
   font-size: 30px;
+}
+
+.destroy {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 10px;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  margin: 15px 0;
+  padding: 0;
+  font-size: 30px;
+  color: #cc9a9a;
+  margin-bottom: 11px;
+  transition: color 0.2s ease-out;
+  background-color: rgb(69, 102, 135);
+  border: none;
+}
+
+.destroy:hover {
+  color: rgb(245, 82, 73);
+}
+
+.destroy:after {
+  content: "×";
+}
+
+.todo-item:hover .destroy {
+  display: block;
 }

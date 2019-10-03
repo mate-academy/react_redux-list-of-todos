@@ -3,9 +3,9 @@ import App from './App';
 import { sortTodos, getTodos, resetTodos } from '../../store/index';
 
 const mapDispatchToProps = dispatch => ({
-  sortTodos: () => dispatch(sortTodos),
-  getTodos: () => dispatch(getTodos),
-  resetTodos: () => dispatch(resetTodos),
+  sortTodos: () => dispatch(sortTodos()),
+  getTodos: () => dispatch(getTodos()),
+  resetTodos: () => dispatch(resetTodos()),
 });
 
 const ImprovedApp = connect(
