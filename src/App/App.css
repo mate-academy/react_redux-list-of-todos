@@ -1,0 +1,41 @@
+.app {
+  text-align: center;
+}
+
+.start {
+  display: flex;
+  height: 90vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-button {
+  height: 60px;
+  width: 120px;
+  background-color: none;
+  color: red;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 500px;
+  transition: 500ms;
+  outline: none;
+}
+
+.start-button:hover,
+.button-sort:hover {
+  background-color: pink;
+  color: blue;
+}
+
+.button-sort {
+  margin: 10px 10px;
+  height: 60px;
+  width: 140px;
+  background-color: none;
+  color: red;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 500px;
+  transition: 500ms;
+  outline: none;
+}
