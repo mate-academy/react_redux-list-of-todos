@@ -10,6 +10,7 @@ function TodoItem({ todo }) {
       <p>{todo.completed ? 'completed' : 'not completed'}</p>
 
       <User user={todo.user} />
+      <button className="item-button" type="submit">delete</button>
     </div>
   );
 }

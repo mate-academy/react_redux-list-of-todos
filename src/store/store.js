@@ -3,8 +3,8 @@ import thunk from 'redux-thunk';
 
 // functions
 import reducer from './reducer';
-import getData from '../api';
-import getTodosWithUsers from '../dataMappers';
+import getData from '../utils/api';
+import getTodosWithUsers from '../utils/dataMappers';
 
 // constants
 import {
