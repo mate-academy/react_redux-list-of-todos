@@ -1,13 +1,18 @@
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import TodoList from './components/TodoList/TodoList';
+
+// functions
 import {
   startLoading,
   handleSuccess,
   handleError,
+  handleSort,
 } from './store';
-import TodoList from './components/TodoList/TodoList';
 import getTodosWithUsers from './dataMappers';
+
+// styles
 import './App.css';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/';
@@ -37,32 +42,11 @@ class App extends Component {
       .catch(handleFail);
   }
 
-  // sortPosts = (event) => {
-  //   const { value } = event.target;
-
-  //   this.setState((prevState) => {
-  //     switch (value) {
-  //       case 'name': return {
-  //         sortedTodosList: [...prevState.todosList]
-  //           .sort((todo1, todo2) => (
-  //             todo1.user.name.localeCompare(todo2.user.name))),
-  //       };
-  //       case 'title': return {
-  //         sortedTodosList: [...prevState.todosList]
-  //           .sort((todo1, todo2) => todo1.title.localeCompare(todo2.title)),
-  //       };
-  //       case 'completed': return {
-  //         sortedTodosList: [
-  //           ...prevState.todosList.filter(todo => todo.completed),
-  //           ...prevState.todosList.filter(todo => !todo.completed),
-  //         ],
-  //       };
-  //       default: return {
-  //         sortedTodosList: [...prevState.todosList],
-  //       };
-  //     }
-  //   });
-  // };
+  sortPosts = (event) => {
+    const { value } = event.target;
+    const { sortTodos } = this.props;
+    sortTodos(value);
+  }
 
   render() {
     const {
@@ -129,7 +113,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   todosList: state.todosList,
-  sortedTodosList: state.todosList,
+  sortedTodosList: state.sortedTodosList,
   isError: state.isError,
   isLoaded: state.isLoaded,
   isLoading: state.isLoading,
@@ -140,7 +124,31 @@ const mapDispatchToProps = dispatch => ({
   start: () => dispatch(startLoading()),
   handleOk: todosList => dispatch(handleSuccess(todosList)),
   handleFail: () => dispatch(handleError()),
+  sortTodos: typeOfSort => dispatch(handleSort(typeOfSort)),
+
 });
+
+App.propTypes = {
+  sortTodos: PropTypes.func.isRequired,
+  start: PropTypes.func.isRequired,
+  handleOk: PropTypes.func.isRequired,
+  handleFail: PropTypes.func.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  buttonText: PropTypes.string.isRequired,
+  isError: PropTypes.bool.isRequired,
+  sortedTodosList: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string,
+      completed: PropTypes.bool,
+      user: PropTypes.shape({
+        name: PropTypes.string,
+        username: PropTypes.string,
+        email: PropTypes.string,
+      }).isRequired,
+    }).isRequired,
+  ).isRequired,
+};
 
 export default connect(
   mapStateToProps,
