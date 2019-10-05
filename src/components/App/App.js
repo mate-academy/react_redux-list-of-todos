@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TodoList from '../TodoList/TodoList';
+import TodoList from '../TodoList/Index';
 import './App.css';
 
 const App = (props) => {
   const {
-    sortedTodosList,
     isLoaded,
     isLoading,
     buttonText,
@@ -71,7 +70,7 @@ const App = (props) => {
       >
         Reset
       </button>
-      <TodoList todos={sortedTodosList} />
+      <TodoList />
     </div>
   );
 };
@@ -83,17 +82,6 @@ App.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   buttonText: PropTypes.string.isRequired,
   isError: PropTypes.bool.isRequired,
-  sortedTodosList: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      completed: PropTypes.bool,
-      user: PropTypes.shape({
-        name: PropTypes.string,
-        username: PropTypes.string,
-        email: PropTypes.string,
-      }).isRequired,
-    }).isRequired,
-  ).isRequired,
 };
 
 export default App;

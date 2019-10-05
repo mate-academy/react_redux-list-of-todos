@@ -25,7 +25,6 @@ TodoItem.propTypes = {
       email: PropTypes.string,
     }).isRequired,
   }).isRequired,
-
 };
 
 export default TodoItem;
