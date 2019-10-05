@@ -37,6 +37,7 @@ const reducer = (state, action) => {
     case HANDLE_ERROR:
       return {
         buttonText: 'try again',
+        isLoaded: false,
         isError: true,
         isLoading: false,
       };
