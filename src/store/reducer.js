@@ -3,7 +3,16 @@ import {
   HANDLE_SUCCESS,
   HANDLE_ERROR,
   HANDLE_SORT,
+  TODO_ITEM_DELETE,
 } from './constants';
+
+const todosWithoutDelElem = (todos, todoId) => {
+  const deletedItemIndex = todos.findIndex(todo => todo.id === todoId);
+  return [
+    ...todos.slice(0, deletedItemIndex),
+    ...todos.slice(deletedItemIndex + 1),
+  ];
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -17,8 +26,9 @@ const reducer = (state, action) => {
     case HANDLE_SUCCESS:
       return {
         ...state,
-        todosList: action.todosList,
-        sortedTodosList: action.todosList,
+        todosListFromServer: action.todosListFromServer,
+        todosList: action.todosListFromServer,
+        sortedTodosList: action.todosListFromServer,
         isLoaded: true,
         isLoading: false,
         isError: false,
@@ -57,9 +67,20 @@ const reducer = (state, action) => {
 
         default: return {
           ...state,
-          sortedTodosList: [...state.todosList],
+          sortedTodosList: [...state.todosListFromServer],
+          todosList: [...state.todosListFromServer],
         };
       }
+
+    case TODO_ITEM_DELETE:
+      return {
+        ...state,
+        todosList: todosWithoutDelElem(state.todosList, action.todoId),
+        sortedTodosList: todosWithoutDelElem(
+          state.sortedTodosList,
+          action.todoId
+        ),
+      };
 
     default: return state;
   }

@@ -13,15 +13,16 @@ import {
   HANDLE_SUCCESS,
   HANDLE_ERROR,
   HANDLE_SORT,
+  TODO_ITEM_DELETE,
 } from './constants';
 
 export const startLoading = () => ({
   type: START_LOADING,
 });
 
-export const handleSuccess = todosList => ({
+export const handleSuccess = todosListFromServer => ({
   type: HANDLE_SUCCESS,
-  todosList,
+  todosListFromServer,
 });
 
 export const handleError = () => ({
@@ -31,6 +32,11 @@ export const handleError = () => ({
 export const handleSort = typeOfSort => ({
   type: HANDLE_SORT,
   typeOfSort,
+});
+
+export const todoItemDelete = todoId => ({
+  type: TODO_ITEM_DELETE,
+  todoId,
 });
 
 export const loadData = () => (dispatch) => {

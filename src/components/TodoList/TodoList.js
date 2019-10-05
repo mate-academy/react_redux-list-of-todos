@@ -1,15 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TodoItem from '../TodoItem/TodoItem';
+import TodoItem from '../TodoItem/Index';
 import './TodoList.css';
 
-function TodoList({ todos }) {
-  return (
-    <div className="todos-list">
-      {todos.map(todo => <TodoItem key={todo.id} todo={todo} />)}
-    </div>
-  );
-}
+const TodoList = ({ todos }) => (
+  <div className="todos-list">
+    <h2>{`todos: ${todos.length}`}</h2>
+    {todos.map(todo => <TodoItem key={todo.id} todo={todo} />)}
+  </div>
+);
 
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(
