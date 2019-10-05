@@ -1,36 +1,9 @@
-import { createStore } from 'redux';
-
-const initialState = {
-  todosList: [],
-  sortedTodosList: [],
-  isLoaded: false,
-  isLoading: false,
-  isError: false,
-  buttonText: 'Load',
-};
-
-const START_LOADING = 'START_LOADING';
-const HANDLE_SUCCESS = 'HANDLE_SUCCESS';
-const HANDLE_ERROR = 'HANDLE_ERROR';
-const HANDLE_SORT = 'HANDLE_SORT';
-
-export const startLoading = () => ({
-  type: START_LOADING,
-});
-
-export const handleSuccess = todosList => ({
-  type: HANDLE_SUCCESS,
-  todosList,
-});
-
-export const handleError = () => ({
-  type: HANDLE_ERROR,
-});
-
-export const handleSort = typeOfSort => ({
-  type: HANDLE_SORT,
-  typeOfSort,
-});
+import {
+  START_LOADING,
+  HANDLE_SUCCESS,
+  HANDLE_ERROR,
+  HANDLE_SORT,
+} from './constants';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -92,6 +65,4 @@ const reducer = (state, action) => {
   }
 };
 
-const store = createStore(reducer, initialState);
-
-export default store;
+export default reducer;

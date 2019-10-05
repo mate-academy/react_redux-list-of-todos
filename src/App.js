@@ -9,18 +9,12 @@ import {
   handleSuccess,
   handleError,
   handleSort,
-} from './store';
+} from './store/store';
+import getData from './api';
 import getTodosWithUsers from './dataMappers';
 
 // styles
 import './App.css';
-
-const API_URL = 'https://jsonplaceholder.typicode.com/';
-
-const getData = dataName => (
-  fetch(`${API_URL}${dataName}`)
-    .then(response => response.json())
-);
 
 class App extends Component {
   loadDataFromServer = () => {
