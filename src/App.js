@@ -2,38 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TodoList from './components/TodoList/TodoList';
-
-// functions
 import {
-  startLoading,
-  handleSuccess,
-  handleError,
   handleSort,
+  loadData,
 } from './store/store';
-import getData from './api';
-import getTodosWithUsers from './dataMappers';
-
-// styles
 import './App.css';
 
 class App extends Component {
   loadDataFromServer = () => {
-    const {
-      start,
-      handleOk,
-      handleFail,
-    } = this.props;
-    start();
-
-    Promise.all([
-      getData('todos'),
-      getData('users'),
-    ])
-      .then(([todos, users]) => {
-        const todosListWithUsers = getTodosWithUsers(todos, users);
-        handleOk(todosListWithUsers);
-      })
-      .catch(handleFail);
+    this.props.loadDataFromServer();
   }
 
   sortPosts = (event) => {
@@ -115,18 +92,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  start: () => dispatch(startLoading()),
-  handleOk: todosList => dispatch(handleSuccess(todosList)),
-  handleFail: () => dispatch(handleError()),
   sortTodos: typeOfSort => dispatch(handleSort(typeOfSort)),
-
+  loadDataFromServer: () => dispatch(loadData()),
 });
 
 App.propTypes = {
+  loadDataFromServer: PropTypes.func.isRequired,
   sortTodos: PropTypes.func.isRequired,
-  start: PropTypes.func.isRequired,
-  handleOk: PropTypes.func.isRequired,
-  handleFail: PropTypes.func.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   buttonText: PropTypes.string.isRequired,

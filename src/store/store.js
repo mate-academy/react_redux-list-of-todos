@@ -1,6 +1,12 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
+
+// functions
 import reducer from './reducer';
+import getData from '../api';
+import getTodosWithUsers from '../dataMappers';
+
+// constants
 import {
   initialState,
   START_LOADING,
@@ -26,6 +32,19 @@ export const handleSort = typeOfSort => ({
   type: HANDLE_SORT,
   typeOfSort,
 });
+
+export const loadData = () => (dispatch) => {
+  dispatch(startLoading());
+  Promise.all([
+    getData('todos'),
+    getData('users'),
+  ])
+    .then(([todos, users]) => {
+      const todosListWithUsers = getTodosWithUsers(todos, users);
+      dispatch(handleSuccess(todosListWithUsers));
+    })
+    .catch(() => dispatch(handleError()));
+};
 
 const store = createStore(
   reducer,
