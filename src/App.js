@@ -15,7 +15,7 @@ const App = ({
   const buttonText = (hasError ? 'Try again' : 'Load todos');
 
   return (
-    <div className="App">
+    <div className="app">
       <h1>Static list of todos</h1>
       {todos.length === 0
         ? (
