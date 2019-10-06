@@ -3,7 +3,9 @@ import TodoList from './TodoList';
 
 const enhancedTodoList = connect(
   state => ({
-    todos: state.todos,
+    todos: state.selectedSort === 'Do not sort'
+      ? state.todos
+      : state.sortedTodos,
   }),
 )(TodoList);
 
