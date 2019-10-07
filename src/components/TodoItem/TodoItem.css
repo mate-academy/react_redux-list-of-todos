@@ -1,0 +1,57 @@
+.todo-item {
+  list-style: none;
+  max-width: 320px;
+  background-color: #eede77;
+  padding: 10px 5px 10px 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: -10px 5px 10px rgba(0, 0, 0, 0.7);
+  font-family: Chilanka, sans-serif;
+}
+
+.todo-item:nth-child(even) {
+  transform: rotate(4deg);
+}
+
+.todo-item:nth-child(odd) {
+  transform: rotate(-5deg);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.completed {
+  text-decoration: line-through;
+}
+
+.drawing-pin {
+  height: 70px;
+  width: 70px;
+  margin-top: 10px;
+}
+
+.drawing-pin img {
+  height: 100%;
+}
+
+.item-title {
+  font-size: 25px;
+  margin: 10px;
+  text-align: center;
+}
+
+.btn-delete-todo {
+  background-color: #eede77;
+  border: 2px solid rgba(0, 0, 0, 0.7);
+  box-shadow: -2px 1px 2px rgba(0, 0, 0, 0.7);
+  outline: none;
+  cursor: pointer;
+  font-family: Chilanka, sans-serif;
+  width: 100px;
+  height: 50px;
+  font-size: 18px;
+}
