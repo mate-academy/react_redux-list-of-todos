@@ -1,0 +1,47 @@
+.app {
+  text-align: center;
+}
+
+.button {
+  min-width: 120px;
+  border: none;
+  padding: 10px 24px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: outline 1s;
+  margin: 10px;
+}
+
+.button:hover {
+  background-color: #ccc;
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button:focus {
+  outline: 1px solid #aaa;
+  outline-offset: -2px;
+}
+
+.button--delete {
+  background-color: lightcoral;
+  transition: background-color 0.3s;
+}
+
+.button--delete:hover {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+.todo-list__item {
+  border: 1px solid #ccc;
+  box-shadow: 10px 10px 20px -12px rgba(0, 0, 0, 0.5);
+  margin: 25px 25px 35px;
+  padding: 15px 0 30px;
+}
+
+.todo-list__item-name {
+  color: #292900;
+  font-size: 24px;
+}
