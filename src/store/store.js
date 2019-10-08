@@ -1,6 +1,9 @@
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
+const TODOS_API_URL = 'https://jsonplaceholder.typicode.com/todos';
+const USERS_API_URL = 'https://jsonplaceholder.typicode.com/users';
+
 const ACTION_TYPES = {
   ADD_DATA: 'DATA::ADD',
   LOAD_DATA: 'LOAD::ADD',
@@ -37,8 +40,8 @@ const initialState = {
 export const getData = () => (dispatch) => {
   store.dispatch(loadData());
   Promise.all([
-    fetch('https://jsonplaceholder.typicode.com/todos'),
-    fetch('https://jsonplaceholder.typicode.com/users'),
+    fetch(TODOS_API_URL),
+    fetch(USERS_API_URL),
   ])
     .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
     .then(([todos, users]) => store.dispatch(addData(todos.map(todo => (

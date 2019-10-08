@@ -5,7 +5,7 @@ import { getData, sortData, completeData } from '../store/store';
 const mapDispatchToProps = dispatch => ({
   getData: () => dispatch(getData()),
   sortData: () => dispatch(sortData()),
-  completeData: () => dispatch(completeData())
+  completeData: () => dispatch(completeData()),
 });
 
 const EnhancedApp = connect(
