@@ -5,6 +5,7 @@ const ACTION_TYPES = {
   ADD_TODOS: 'ADD::TODOS',
   TOGGLE_LOADING: 'TOGGLE::LOADING',
   SWITCH_SORT: 'SWITCH::SORT',
+  DELETE_TODO: 'DELETE::TODO',
 };
 
 const initialState = {
@@ -29,6 +30,11 @@ export const toggleLoading = isLoading => ({
 export const sortTodos = value => ({
   type: ACTION_TYPES.SWITCH_SORT,
   payload: value,
+});
+
+export const deleteTodo = id => ({
+  type: ACTION_TYPES.DELETE_TODO,
+  payload: id,
 });
 
 export const getTodos = () => (dispatch) => {
@@ -96,6 +102,18 @@ function reducer(state = initialState, action = {}) {
         }),
         isSorted: action.payload !== 'Do not sort',
         selectedSort: action.payload,
+      };
+    }
+
+    case ACTION_TYPES.DELETE_TODO: {
+      const todos = state.todos.filter(el => el.id !== action.payload);
+      const sortedTodos = state.sortedTodos
+        .filter(el => el.id !== action.payload);
+
+      return {
+        ...state,
+        todos,
+        sortedTodos,
       };
     }
 
