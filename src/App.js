@@ -17,45 +17,40 @@ const App = ({
   return (
     <div className="app">
       <h1>Static list of todos</h1>
-      {todos.length === 0
-        ? (
-          <>
+      {todos.length || (
+        <>
+          <p>
+            <strong>No yet todos</strong>
+          </p>
+
+          {hasError && (
             <p>
-              <strong>No yet todos</strong>
+              <span className="badge badge-warning">Error occurred!</span>
             </p>
+          )
+          }
 
-            {hasError
-              ? (
-                <p>
-                  <span className="badge badge-warning">Error occurred!</span>
-                </p>
-              )
-              : null
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => loadData()}
+            disabled={isLoading}
+          >
+            {isLoading
+              ? 'Loading...'
+              : buttonText
             }
+          </button>
+        </>
+      )
+      }
 
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={() => loadData()}
-              disabled={isLoading}
-            >
-              {isLoading
-                ? 'Loading...'
-                : buttonText
-              }
-            </button>
-          </>
-        )
-        : null}
-
-      {isLoading
-        ? (
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        )
-        : null}
-
+      {isLoading && (
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      )
+      }
       <p>
         <span>Todos: </span>
         {todos.length}

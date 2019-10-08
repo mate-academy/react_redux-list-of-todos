@@ -14,7 +14,8 @@ export const loadTodosAndUsers = () => (dispatch) => {
         }));
 
       dispatch(loadData(todos, listUsers));
-    }).catch(() => dispatch(errorOccur()));
+    })
+    .catch(() => dispatch(errorOccur()));
 };
 
 export const ACTION_TYPES = {
