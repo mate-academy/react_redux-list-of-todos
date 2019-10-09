@@ -1,0 +1,21 @@
+.todo-item {
+  height: 300px;
+  border: 1px solid black;
+
+  &__title {
+    font-size: 16px;
+    height: 60px;
+    width: 90%;
+    margin: 20px auto;
+  }
+}
+
+.todo-item__title-block {
+  display: flex;
+  align-items: baseline;
+  padding: 0 25px;
+}
+
+.todo-item__check {
+  text-align: center;
+}
