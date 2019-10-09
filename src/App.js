@@ -7,9 +7,6 @@ import {
 } from './store';
 import { getData } from './api/data';
 
-const TODOS_API_URL = 'https://jsonplaceholder.typicode.com/todos';
-const USERS_API_URL = 'https://jsonplaceholder.typicode.com/users';
-
 class App extends React.Component {
   state = {
     todos: store.getState().todos,
@@ -27,7 +24,7 @@ class App extends React.Component {
 
   getData = () => {
     store.dispatch(loading());
-    Promise.all([getData(TODOS_API_URL), getData(USERS_API_URL)]).then(
+    Promise.all([getData('todos'), getData('users')]).then(
       ([todos, users]) => {
         store.dispatch(loading());
         store.dispatch(getTodosWithUsers(todos, users));

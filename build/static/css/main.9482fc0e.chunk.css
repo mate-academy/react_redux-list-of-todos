@@ -1,0 +1,2 @@
+.main{text-align:center}.list-cards{display:grid;grid-template-columns:1fr 1fr 1fr 1fr}.card{padding:1.25em;border:1px solid #191970;border-radius:20%;margin:10px;-webkit-transition:1s;transition:1s}.card:hover{cursor:pointer;-webkit-transform:translateY(-15px);transform:translateY(-15px)}.task{color:#191970}.card-title{text-align:left}.card-title h5{text-align:center}.card-title ul{color:#575757}
+/*# sourceMappingURL=main.9482fc0e.chunk.css.map */

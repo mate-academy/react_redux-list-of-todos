@@ -1,1 +1,3 @@
-export const getData = url => fetch(url).then(response => response.json());
+const URL = 'https://jsonplaceholder.typicode.com/';
+
+export const getData = url => fetch(`${URL}${url}`).then(response => response.json());
