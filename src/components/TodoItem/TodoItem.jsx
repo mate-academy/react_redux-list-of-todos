@@ -1,7 +1,6 @@
 import React from 'react';
 import './Todo.scss';
 import User from '../User/User';
-// import { TodoProps } from '../../constants/PropTypes';
 
 const TodoItem = ({ todo, deleteTodoFromList }) => {
   const {

@@ -1,12 +1,15 @@
 import { handleError, startLoading, handleSuccess } from './actions';
 
 const loadTodosAndUsers = () => (dispatch) => {
+  const usersApi = 'https://jsonplaceholder.typicode.com/users';
+  const todosApi = 'https://jsonplaceholder.typicode.com/todos';
+
   dispatch(startLoading());
 
   function getData() {
     Promise.all([
-      fetch('https://jsonplaceholder.typicode.com/users'),
-      fetch('https://jsonplaceholder.typicode.com/todos'),
+      fetch(usersApi),
+      fetch(todosApi),
     ])
       .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
       .then(([users, todos]) => {
@@ -24,28 +27,3 @@ const loadTodosAndUsers = () => (dispatch) => {
 };
 
 export default loadTodosAndUsers;
-
-// const handleGetData = () => {
-//   this.setState({
-//     isButtonShow: false,
-//     isLoaded: true,
-//   });
-//
-//   Promise.all([
-//     fetch('https://jsonplaceholder.typicode.com/users'),
-//     fetch('https://jsonplaceholder.typicode.com/todos'),
-//   ])
-//     .then(([res1, res2]) => Promise.all([res1.json(), res2.json()]))
-//     .then(([users, todos]) => this.setState({
-//       isLoaded: false,
-//       users,
-//       todos,
-//     }))
-//     .catch(() => {
-//       this.setState({
-//         hasError: true,
-//       });
-//     });
-// };
-//
-// export default handleGetData();
