@@ -1,0 +1,16 @@
+.card {
+  padding: 1.25em;
+  border: 1px solid midnightblue;
+  border-radius: 20%;
+  margin: 10px;
+  transition: 1s;
+}
+
+.card:hover {
+  cursor: pointer;
+  transform: translate(0, -15px);
+}
+
+.task {
+  color: midnightblue;
+}
