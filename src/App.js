@@ -1,11 +1,12 @@
 import React from 'react';
+import TodosList from './containers/TodoList/TodoList';
 
-function App() {
-  return (
-    <div className="App">
-      <h1>Hello</h1>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <TodosList />
+    );
+  }
 }
 
 export default App;

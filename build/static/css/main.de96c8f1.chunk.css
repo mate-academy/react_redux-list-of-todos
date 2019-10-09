@@ -1,0 +1,2 @@
+.todo-item{height:300px;border:1px solid #000}.todo-item__title{font-size:16px;height:60px;width:90%;margin:20px auto}.todo-item__title-block{display:flex;align-items:baseline;padding:0 25px}.todo-item__check,.user-item{text-align:center}.user-item{opacity:.8}.red{background:red}.green{background:green}.todos{display:grid;grid-template-columns:repeat(4,1fr);grid-gap:20px}
+/*# sourceMappingURL=main.de96c8f1.chunk.css.map */
