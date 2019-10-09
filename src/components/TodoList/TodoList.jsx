@@ -18,11 +18,8 @@ class TodoList extends React.Component {
 
     switch (activeFilter) {
       case 'name':
-        filteredTodos = preparedTodos.sort((a, b) => {
-          if (a.user.username < b.user.username) { return -1; }
-          if (a.user.username > b.user.username) { return 1; }
-          return 0;
-        });
+        filteredTodos = preparedTodos.sort((a, b) => a.user.username
+          .localeCompare(b.user.username));
         break;
       case 'title':
         filteredTodos = preparedTodos.sort((a, b) => {
