@@ -24,8 +24,10 @@ export const initialState = {
   hasError: false,
   disabled: false,
   todosWithUsers: [],
-  // sortedTodos: [],
+  todosOriginal: [],
 };
+
+// let todosOriginal = [];
 
 export const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
@@ -37,9 +39,11 @@ export const reducer = (state = initialState, action = {}) => {
       };
 
     case HANDLE_SUCCESS:
+      // todosOriginal = action.todosWithUsers;
       return {
         ...state,
         todosWithUsers: action.todosWithUsers,
+        todosOriginal: action.todosWithUsers,
         isLoading: false,
         hasError: false,
         disabled: true,
@@ -54,7 +58,10 @@ export const reducer = (state = initialState, action = {}) => {
 
     case HANDLE_REMOVE:
       return {
+        ...state,
         todosWithUsers: [...state.todosWithUsers]
+          .filter(todo => todo.id !== action.payload),
+        todosOriginal: [...state.todosOriginal]
           .filter(todo => todo.id !== action.payload),
       };
 
@@ -63,21 +70,21 @@ export const reducer = (state = initialState, action = {}) => {
         case 'By user':
           return {
             ...state,
-            todosWithUsers: [...state.todosWithUsers]
+            todosWithUsers: [...state.todosOriginal]
               .sort((a, b) => a.user.username.localeCompare(b.user.username)),
           };
 
         case 'By title':
           return {
             ...state,
-            todosWithUsers: [...state.todosWithUsers]
+            todosWithUsers: [...state.todosOriginal]
               .sort((a, b) => a.title.localeCompare(b.title)),
           };
 
         case 'By status':
           return {
             ...state,
-            todosWithUsers: [...state.todosWithUsers]
+            todosWithUsers: [...state.todosOriginal]
               .sort((a, b) => a.completed - b.completed),
           };
 

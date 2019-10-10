@@ -38,7 +38,6 @@ class App extends React.Component {
       handleSort,
     } = this.props;
 
-    const sortedTodos = todosWithUsers;
     if (isLoading) {
       return (<p>Loading...</p>);
     }
@@ -46,7 +45,7 @@ class App extends React.Component {
     if (hasError) {
       return (
         <>
-          <p>Error priexal!</p>
+          <p>Error occured!</p>
           <button type="button" onClick={this.loadDatas}>Try again</button>
         </>
       );
@@ -77,7 +76,7 @@ class App extends React.Component {
             </select>
           )
         }
-        <TodoList todos={sortedTodos} />
+        <TodoList todos={todosWithUsers} />
       </>
     );
   }
