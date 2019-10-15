@@ -1,0 +1,17 @@
+.todo-item {
+  color: #fff;
+  background-color: darkseagreen;
+  border-radius: 10px;
+}
+
+.content {
+  text-align: center;
+}
+
+.todo-item__title {
+  font-size: 20px;
+}
+
+.todo-item__title::first-letter {
+  text-transform: uppercase;
+}

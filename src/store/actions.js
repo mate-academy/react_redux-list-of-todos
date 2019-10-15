@@ -1,12 +1,16 @@
 export const ACTION_TYPES = {
   START_LOADING: 'START_LOADING',
   TODOS_LIST_LOADED: 'TODOS_LIST_LOADED',
-  USERS_LIST_LOADED: 'USERS_LIST_LOADED',
   TODO_DELETE: 'TODO_DELETE',
+  HANDLE_SUCCESS: 'HANDLE_SUCCESS',
 };
 
 export const startLoading = () => ({
   type: ACTION_TYPES.START_LOADING,
+});
+
+export const handleSuccess = () => ({
+  type: ACTION_TYPES.HANDLE_SUCCESS,
 });
 
 export const loadedTodosList = listOfTodos => ({
@@ -14,13 +18,8 @@ export const loadedTodosList = listOfTodos => ({
   payload: listOfTodos,
 });
 
-export const loadedUsersList = users => ({
-  type: ACTION_TYPES.USERS_LIST_LOADED,
-  payload: users,
-});
-
 export const deleteTodo = id => ({
-  type: ACTION_TYPES.USERS_LIST_LOADED,
+  type: ACTION_TYPES.TODO_DELETE,
   payload: id,
 });
 
@@ -46,6 +45,7 @@ export const callAction = () => (dispatch) => {
         }));
 
         dispatch(loadedTodosList(todosWithUsers));
+        dispatch(handleSuccess());
       });
   }
 
