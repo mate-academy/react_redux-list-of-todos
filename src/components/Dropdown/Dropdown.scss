@@ -1,0 +1,8 @@
+.dropdown {
+  display: inline-block;
+  margin-bottom: 2em;
+
+  &-menu.show {
+    width: 100%;
+  }
+}
