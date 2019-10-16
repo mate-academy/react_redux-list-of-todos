@@ -1,11 +1,9 @@
-import React, {
-  useState,
-  useEffect,
-} from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import './TodoList.scss';
 import TodoItem from '../TodoItem/TodoItem';
-import { store } from '../../store/reducers';
 
 const useLink = (init) => {
   const [value, set] = useState(init);
@@ -13,38 +11,35 @@ const useLink = (init) => {
   return { value, set };
 };
 
-const TodoList = () => {
-  const $todos = useLink(store.getState().todos);
-  const $pattern = useLink(store.getState().filterPattern);
+const TodoList = ({ todos, filterPattern }) => {
+  const $todos = useLink(todos);
+  const $pattern = useLink(filterPattern);
 
   useEffect(() => {
-    store.subscribe(() => {
-      const { todos, filterPattern } = store.getState();
 
-      if (filterPattern === '') {
-        $todos.set(todos);
-      } else {
-        $todos.set(todos.sort((a, b) => {
-          if (a[filterPattern] > b[filterPattern]) {
-            return 1;
-          }
+    if (filterPattern === '') {
+      $todos.set(todos);
+    } else {
+      $todos.set(todos.sort((a, b) => {
+        if (a[filterPattern] > b[filterPattern]) {
+          return 1;
+        }
 
-          if (a[filterPattern] < b[filterPattern]) {
-            return -1;
-          }
+        if (a[filterPattern] < b[filterPattern]) {
+          return -1;
+        }
 
-          if (a.id > b.id) {
-            return 1;
-          }
+        if (a.id > b.id) {
+          return 1;
+        }
 
-          if (a.id < b.id) {
-            return -1;
-          }
-          return 0;
-        }));
-        $pattern.set(filterPattern);
-      }
-    });
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      }));
+      $pattern.set(filterPattern);
+    }
   });
 
   return (
@@ -54,4 +49,12 @@ const TodoList = () => {
   );
 };
 
-export default TodoList;
+TodoList.propTypes = {
+  todos: PropTypes.arrayOf(PropTypes.any).isRequired,
+  filterPattern: PropTypes.string.isRequired,
+};
+
+export default connect(({ todos, filterPattern }) => ({
+  todos,
+  filterPattern,
+}))(TodoList);
