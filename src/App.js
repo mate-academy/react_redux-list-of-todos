@@ -4,8 +4,8 @@ import './App.css';
 import TodoList from './components/TodoList/TodoList';
 import Dropdown from './components/Dropdown/Dropdown';
 
-import { store, dataFetch } from './store/reducers';
-import { loadTodos } from './store/action';
+import { store } from './store/reducers';
+import { loadTodos, setErrorMessage } from './store/action';
 
 const BASE_URL = `https://jsonplaceholder.typicode.com`;
 const DROPDOWN_LIST = [
@@ -36,26 +36,43 @@ export default class App extends Component {
     }));
   }
 
-  onLoadClick = () => {
+  onLoadClick = async() => {
     this.setState({ isLoading: true });
 
-    dataFetch( `${BASE_URL}/todos`, `${BASE_URL}/users`)
-      .then(({ todos, users }) => {
-        store.dispatch(loadTodos(todos
-          .map((todo) => ({
-            ...todo,
-            user: users.find((item) => item.id === todo.userId),
-          }))
-          .map((todo) => ({
-            ...todo,
-            userName: todo.user.name,
-          }))));
+    try {
+      const [todosResponse, usersResponse] = await Promise.all([
+        fetch(`${BASE_URL}/todos`),
+        fetch(`${BASE_URL}/users`),
+      ]);
 
-        this.setState({
-          isLoaded: true,
-          isLoading: false,
-        });
-      });
+      if (!todosResponse.ok) {
+        throw new Error('ToDo list fetch is broken');
+      }
+
+      if (!usersResponse.ok) {
+        throw new Error('User list fetch is broken');
+      }
+
+      const todos = await todosResponse.json();
+      const users = await usersResponse.json();
+
+      store.dispatch(loadTodos(todos
+        .map((todo) => ({
+          ...todo,
+          user: users.find((item) => item.id === todo.userId),
+        }))
+        .map((todo) => ({
+          ...todo,
+          userName: todo.user.name,
+        }))));
+    } catch (error) {
+      store.dispatch(setErrorMessage(error.message));
+    }
+
+    this.setState({
+      isLoaded: true,
+      isLoading: false,
+    });
   };
 
   loaderButton = () => (this.state.isLoading

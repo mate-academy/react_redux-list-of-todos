@@ -8,33 +8,6 @@ import {
   setErrorMessage,
 } from './action';
 
-export const dataFetch = async(todosUrl, usersUrl) => {
-  try {
-    const [todosResponse, usersResponse] = await Promise.all([
-      fetch(todosUrl),
-      fetch(usersUrl),
-    ]);
-
-    if (!todosResponse.ok) {
-      throw new Error('ToDo list fetch is broken');
-    }
-
-    if (!usersResponse.ok) {
-      throw new Error('User list fetch is broken');
-    }
-
-    const todos = await todosResponse.json();
-    const users = await usersResponse.json();
-
-    return ({
-      todos,
-      users,
-    });
-  } catch (error) {
-    store.dispatch(setErrorMessage(error.message));
-  }
-};
-
 function reducer(state, action) {
   const {
     LOAD_TODOS,
@@ -76,5 +49,9 @@ export const store = createStore(
     filterPattern: '',
     error: null,
   },
-  devToolsEnhancer(loadTodos(), setFilterPattern())
+  devToolsEnhancer(
+    loadTodos(),
+    setFilterPattern(),
+    setErrorMessage()
+  )
 );
