@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -11,36 +11,8 @@ const useLink = (init) => {
   return { value, set };
 };
 
-const TodoList = ({ todos, filterPattern }) => {
+const TodoList = ({ todos }) => {
   const $todos = useLink(todos);
-  const $pattern = useLink(filterPattern);
-
-  useEffect(() => {
-
-    if (filterPattern === '') {
-      $todos.set(todos);
-    } else {
-      $todos.set(todos.sort((a, b) => {
-        if (a[filterPattern] > b[filterPattern]) {
-          return 1;
-        }
-
-        if (a[filterPattern] < b[filterPattern]) {
-          return -1;
-        }
-
-        if (a.id > b.id) {
-          return 1;
-        }
-
-        if (a.id < b.id) {
-          return -1;
-        }
-        return 0;
-      }));
-      $pattern.set(filterPattern);
-    }
-  });
 
   return (
     <div className="todolist">
@@ -55,6 +27,23 @@ TodoList.propTypes = {
 };
 
 export default connect(({ todos, filterPattern }) => ({
-  todos,
+  todos: todos.sort((a, b) => {
+    if (a[filterPattern] > b[filterPattern]) {
+      return 1;
+    }
+
+    if (a[filterPattern] < b[filterPattern]) {
+      return -1;
+    }
+
+    if (a.id > b.id) {
+      return 1;
+    }
+
+    if (a.id < b.id) {
+      return -1;
+    }
+    return 0;
+  }),
   filterPattern,
 }))(TodoList);
