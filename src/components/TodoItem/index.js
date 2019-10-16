@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { handleRemove } from '../../store/reducer';
+import { handleRemove } from '../../store/actions';
 import TodoItem from './TodoItem';
 
 const mapDispatchToProps = dispatch => ({

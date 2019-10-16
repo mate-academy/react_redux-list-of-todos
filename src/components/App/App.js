@@ -8,13 +8,14 @@ class App extends React.Component {
     const {
       startLoading, handleSuccess, handleError,
     } = this.props;
-
+    const usersURL = 'https://jsonplaceholder.typicode.com/users';
+    const todosURL = 'https://jsonplaceholder.typicode.com/todos';
     startLoading();
 
     Promise.all([
-      fetch('https://jsonplaceholder.typicode.com/users')
+      fetch(usersURL)
         .then(users => users.json()),
-      fetch('https://jsonplaceholder.typicode.com/todos')
+      fetch(todosURL)
         .then(todos => todos.json()),
     ])
       .then(([users, todos]) => {
@@ -65,11 +66,13 @@ class App extends React.Component {
             </button>
           )
           : (
-            <select onChange={(e) => {
-              handleSort(e.target.value);
-            }}
+            <select
+              defaultValue="Sorting"
+              onChange={(e) => {
+                handleSort(e.target.value);
+              }}
             >
-              <option value="Sorting" selected hidden>Sorting</option>
+              <option value="Sorting" hidden>Sorting</option>
               <option value="By user">By user</option>
               <option value="By title">By title</option>
               <option value="By status">By status</option>

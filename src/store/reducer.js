@@ -1,33 +1,19 @@
-export const LOAD = 'LOAD';
-export const HANDLE_SUCCESS = 'HANDLE_SUCCESS';
-export const HANDLE_ERROR = 'HANDLE_ERROR';
-export const HANDLE_REMOVE = 'HANDLE_REMOVE';
-export const HANDLE_SORT = 'HANDLE_SORT';
+import { ACTION_TYPES } from './actions';
 
-export const startLoading = () => ({ type: LOAD });
-export const handleSuccess = todosWithUsers => ({
-  type: HANDLE_SUCCESS,
-  todosWithUsers,
-});
-export const handleError = () => ({ type: HANDLE_ERROR });
-export const handleRemove = id => ({
-  type: HANDLE_REMOVE,
-  payload: id,
-});
-export const handleSort = e => ({
-  type: HANDLE_SORT,
-  payload: e,
-});
+const {
+  LOAD,
+  HANDLE_SUCCESS,
+  HANDLE_ERROR,
+  HANDLE_REMOVE,
+  HANDLE_SORT,
+} = ACTION_TYPES;
 
 export const initialState = {
   isLoading: false,
   hasError: false,
   disabled: false,
   todosWithUsers: [],
-  todosOriginal: [],
 };
-
-// let todosOriginal = [];
 
 export const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
@@ -39,11 +25,9 @@ export const reducer = (state = initialState, action = {}) => {
       };
 
     case HANDLE_SUCCESS:
-      // todosOriginal = action.todosWithUsers;
       return {
         ...state,
         todosWithUsers: action.todosWithUsers,
-        todosOriginal: action.todosWithUsers,
         isLoading: false,
         hasError: false,
         disabled: true,
@@ -61,8 +45,6 @@ export const reducer = (state = initialState, action = {}) => {
         ...state,
         todosWithUsers: [...state.todosWithUsers]
           .filter(todo => todo.id !== action.payload),
-        todosOriginal: [...state.todosOriginal]
-          .filter(todo => todo.id !== action.payload),
       };
 
     case HANDLE_SORT:
@@ -70,21 +52,21 @@ export const reducer = (state = initialState, action = {}) => {
         case 'By user':
           return {
             ...state,
-            todosWithUsers: [...state.todosOriginal]
+            todosWithUsers: [...state.todosWithUsers]
               .sort((a, b) => a.user.username.localeCompare(b.user.username)),
           };
 
         case 'By title':
           return {
             ...state,
-            todosWithUsers: [...state.todosOriginal]
+            todosWithUsers: [...state.todosWithUsers]
               .sort((a, b) => a.title.localeCompare(b.title)),
           };
 
         case 'By status':
           return {
             ...state,
-            todosWithUsers: [...state.todosOriginal]
+            todosWithUsers: [...state.todosWithUsers]
               .sort((a, b) => a.completed - b.completed),
           };
 

@@ -6,7 +6,7 @@ import {
   handleError,
   handleRemove,
   handleSort,
-} from '../../store/reducer';
+} from '../../store/actions';
 
 const mapStateToProps = state => ({
   isLoading: state.isLoading,
@@ -16,15 +16,14 @@ const mapStateToProps = state => ({
   sortedTodos: state.sortedTodos,
 });
 
-const mapDispatchToProps = dispatch => ({
-  startLoading: () => dispatch(startLoading()),
-  handleSuccess: todosWithUsers => dispatch(handleSuccess(todosWithUsers)),
-  handleError: () => dispatch(handleError()),
-  handleRemove: id => dispatch(handleRemove(id)),
-  handleSort: e => dispatch(handleSort(e)),
-});
-
-const AppWrap = connect(mapStateToProps, mapDispatchToProps)(App);
+const AppWrap = connect(mapStateToProps,
+  {
+    startLoading,
+    handleSuccess,
+    handleError,
+    handleRemove,
+    handleSort,
+  })(App);
 
 export {
   AppWrap as App,// eslint-disable-line
