@@ -7,21 +7,15 @@ import './TodoList.scss';
 import TodoItem from '../TodoItem/TodoItem';
 import { store } from '../../store/reducers';
 
-const useTodos = ({ todos }) => {
-  const [value, set] = useState(todos);
-
-  return { value, set };
-};
-
-const usePattern = ({ filterPattern }) => {
-  const [value, set] = useState(filterPattern);
+const useLink = (init) => {
+  const [value, set] = useState(init);
 
   return { value, set };
 };
 
 const TodoList = () => {
-  const $todos = useTodos(store.getState());
-  const $pattern = usePattern(store.getState());
+  const $todos = useLink(store.getState().todos);
+  const $pattern = useLink(store.getState().filterPattern);
 
   useEffect(() => {
     store.subscribe(() => {
