@@ -3,13 +3,13 @@ import thunk from 'redux-thunk';
 import { getData } from '../api/data';
 
 const ACTION_TYPES = {
-  LOADI_TODOS_REQUEST: 'LOADI_TODOS_REQUEST',
+  LOAD_TODOS_REQUEST: 'LOAD_TODOS_REQUEST',
   LOAD_TODOS_SUCCESS: 'LOAD_TODOS_SUCCESS',
   GET_DATA: 'GET_DATA',
 };
 
 export const loading = () => ({
-  type: ACTION_TYPES.LOADI_TODOS_REQUEST,
+  type: ACTION_TYPES.LOAD_TODOS_REQUEST,
 });
 export const loaded = () => ({
   type: ACTION_TYPES.LOAD_TODOS_SUCCESS,
@@ -39,7 +39,7 @@ const initialState = {
 
 function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case ACTION_TYPES.LOADI_TODOS_REQUEST: {
+    case ACTION_TYPES.LOAD_TODOS_REQUEST: {
       return {
         ...state,
         isLoading: !state.isLoading,
