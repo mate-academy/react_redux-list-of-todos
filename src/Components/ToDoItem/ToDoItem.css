@@ -1,0 +1,29 @@
+.todoitem {
+  border: 1px solid black;
+  width: 350px;
+  height: 400px;
+  border-radius: 30px;
+  background-color: rgb(228, 55, 69);
+}
+
+.completed {
+  background-color: rgb(104, 199, 104);
+}
+
+.todoitem-list__item-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.todoitem-list {
+  text-align: left;
+}
+
+.item {
+  list-style-type: none;
+  text-align: center;
+}
+
+.todoitem-list {
+  padding: 0;
+}
