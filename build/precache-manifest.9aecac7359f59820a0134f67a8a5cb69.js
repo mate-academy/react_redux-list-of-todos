@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "e6c199009639bd18f1722cffa22dde89",
+    "revision": "f6ea2fb62bba6c6194e06cdae8c0f0ab",
     "url": "/react_redux-list-of-todos/index.html"
   },
   {
