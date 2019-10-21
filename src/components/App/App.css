@@ -1,0 +1,17 @@
+.app {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.ui.segment {
+  width: 100%;
+  padding-top: 900px;
+  border: white;
+}
+
+.positive.ui.button {
+  margin-top: 300px;
+}
