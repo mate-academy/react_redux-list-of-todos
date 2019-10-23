@@ -4,18 +4,15 @@ import { TodoListProps } from '../../constants/proptypes';
 
 import './TodoList.css';
 
-const TodoList = (props) => {
-  console.log('todolist, props: ', props.todos);
-  return (
-    <ul className="list-group todo-list">
-      {props.todos.map(todo => (
-        <li className="list-group-item" key={todo.id}>
-          <TodoItem todo={todo} />
-        </li>
-      ))}
-    </ul>
-  );
-};
+const TodoList = props => (
+  <ul className="list-group todo-list">
+    {props.todos.map(todo => (
+      <li className="list-group-item" key={todo.id}>
+        <TodoItem todo={todo} />
+      </li>
+    ))}
+  </ul>
+);
 
 TodoList.propTypes = TodoListProps;
 

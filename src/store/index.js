@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
 const TODOS_URL = 'https://jsonplaceholder.typicode.com/todos';
@@ -32,13 +32,12 @@ const startLoading = data => ({
   payload: data,
 });
 
-const setDataToStore = data => ({
+const setDataToStore = (data, dataUsers) => ({
   type: ACTION_TYPES.SET_DATA_TO_STORE,
-  payload: data,
-});
-
-const sortData = () => ({
-  type: ACTION_TYPES.SORT_DATA,
+  payload: {
+    data,
+    users: dataUsers,
+  },
 });
 
 export function sortType(value) {
@@ -58,21 +57,23 @@ export const loadData = () => (dispatch) => {
       [resTodos.json(), resUsers.json()]
     ))
     .then(([dataTodos, dataUsers]) => {
-      store.dispatch(setDataToStore(getTodosWithUsers(dataTodos, dataUsers)));
+      store.dispatch(
+        setDataToStore(getTodosWithUsers(dataTodos, dataUsers), dataUsers)
+      );
       store.dispatch(startLoading());
     });
 };
 
-export const sortTodos = (todos, sortMethod) => {
+export const sortTodos = (todos, preparedTodos, sortMethod) => {
   switch (sortMethod) {
     case 'title':
-      return todos.sort((a, b) => (a.title.localeCompare(b.title)));
+      return [...todos].sort((a, b) => (a.title.localeCompare(b.title)));
     case 'status':
-      return todos.sort((a, b) => a.completed - b.completed);
+      return [...todos].sort((a, b) => a.completed - b.completed);
     case 'user':
-      return todos.sort((a, b) => a.user.name.localeCompare(b.user.name));
+      return [...todos].sort((a, b) => a.user.name.localeCompare(b.user.name));
     default:
-      return todos;
+      return preparedTodos;
   }
 };
 
@@ -86,21 +87,17 @@ const reducer = (state = initialState, action) => {
     case ACTION_TYPES.SET_DATA_TO_STORE:
       return {
         ...state,
-        todos: action.payload,
+        todos: action.payload.data,
+        users: action.payload.users,
+        preparedTodos: action.payload.data,
       };
     case ACTION_TYPES.SORT_TYPE:
-      const { todos } = state;
+      const { todos, preparedTodos } = state;
 
       return {
         ...state,
         sortMethod: action.payload,
-        todos: sortTodos(todos, action.payload),
-      };
-    case ACTION_TYPES.SORT_DATA:
-
-      return {
-        ...state,
-        todos: sortTodos(state.todos, state.sortMethod),
+        todos: sortTodos(todos, preparedTodos, action.payload),
       };
     default:
       return state;

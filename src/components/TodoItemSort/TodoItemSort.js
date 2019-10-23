@@ -14,7 +14,6 @@ class TodoItemSort extends Component {
 
   render() {
     const { sortMethod, sortType } = this.props;
-    console.log('this.props: ', this.props);
 
     const buttons = this.buttons.map(({ name, label }) => {
       const isActive = sortMethod === name;
