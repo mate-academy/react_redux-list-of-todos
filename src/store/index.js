@@ -37,7 +37,7 @@ const setDataToStore = (data, dataUsers) => ({
   },
 });
 
-export const sortType = value => ({
+export const sortData = value => ({
   type: ACTION_TYPES.SORT_DATA,
   payload: value,
 });

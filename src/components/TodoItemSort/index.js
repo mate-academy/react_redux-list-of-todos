@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import TodoItemSort from './TodoItemSort';
-import { sortType } from '../../store';
+import { sortData } from '../../store';
 
 const mapDispatchToProps = {
-  sortType,
+  sortData: sortData,
 };
 
 const EnhancedTodoItemSort = connect(

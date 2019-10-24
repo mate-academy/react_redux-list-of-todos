@@ -13,7 +13,7 @@ class TodoItemSort extends Component {
   ];
 
   render() {
-    const { sortMethod, sortType } = this.props;
+    const { sortMethod, sortData } = this.props;
 
     const buttons = this.buttons.map(({ name, label }) => {
       const isActive = sortMethod === name;
@@ -28,7 +28,7 @@ class TodoItemSort extends Component {
           type="button"
           className={`btn ${sortBtnClasses}`}
           key={name}
-          onClick={() => sortType(name)}
+          onClick={() => sortData(name)}
         >
           {label}
         </button>

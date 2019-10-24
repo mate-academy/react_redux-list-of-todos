@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import App from './App';
-import { loadData, sortType, sortTodos } from '../../store';
+import { loadData, sortData, sortTodos } from '../../store';
 
 const mapDispatchToProps = dispatch => ({
   loadData: () => dispatch(loadData()),
-  sortType: value => dispatch(sortType(value)),
+  sortData: value => dispatch(sortData(value)),
   sortTodos: () => dispatch(sortTodos()),
 });
 
