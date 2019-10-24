@@ -8,7 +8,7 @@ const userShape = PropTypes.shape({
   name: PropTypes.string,
 }).isRequired;
 
-export const UserProps = {
+export const userProps = {
   user: userShape,
 };
 

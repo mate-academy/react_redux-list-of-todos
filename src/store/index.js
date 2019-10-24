@@ -21,7 +21,7 @@ function getTodosWithUsers(todosList, usersList) {
 const ACTION_TYPES = {
   START_DATA_LOADING: 'START_DATA_LOADING',
   SET_DATA_TO_STORE: 'SET_DATA_TO-STORE',
-  SORT_TYPE: 'SORT_TYPE',
+  SORT_DATA: 'SORT_DATA',
 };
 
 const startLoading = data => ({
@@ -38,7 +38,7 @@ const setDataToStore = (data, dataUsers) => ({
 });
 
 export const sortType = value => ({
-  type: ACTION_TYPES.SORT_TYPE,
+  type: ACTION_TYPES.SORT_DATA,
   payload: value,
 });
 
@@ -86,7 +86,7 @@ const reducer = (state = initialState, action) => {
         users: action.payload.users,
         preparedTodos: action.payload.data,
       };
-    case ACTION_TYPES.SORT_TYPE:
+    case ACTION_TYPES.SORT_DATA:
       const { todos, preparedTodos } = state;
 
       return {
