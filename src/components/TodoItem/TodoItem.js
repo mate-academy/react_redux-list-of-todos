@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import User from '../User/User';
-import { TodoItemProps } from '../../constants/proptypes';
+import { todoItemProps } from '../../constants/proptypes';
 
 import './TodoItem.css';
 
@@ -24,6 +24,6 @@ const TodoItem = ({ todo }) => {
   );
 };
 
-TodoItem.propTypes = TodoItemProps;
+TodoItem.propTypes = todoItemProps;
 
 export default TodoItem;

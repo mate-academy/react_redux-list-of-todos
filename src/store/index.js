@@ -1,8 +1,7 @@
 import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 
-const TODOS_URL = 'https://jsonplaceholder.typicode.com/todos';
-const USERS_URL = 'https://jsonplaceholder.typicode.com/users';
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
 
 const initialState = {
   todos: [],
@@ -22,9 +21,7 @@ function getTodosWithUsers(todosList, usersList) {
 const ACTION_TYPES = {
   START_DATA_LOADING: 'START_DATA_LOADING',
   SET_DATA_TO_STORE: 'SET_DATA_TO-STORE',
-  SORT_DATA: 'SORT_DATA',
   SORT_TYPE: 'SORT_TYPE',
-
 };
 
 const startLoading = data => ({
@@ -40,18 +37,16 @@ const setDataToStore = (data, dataUsers) => ({
   },
 });
 
-export function sortType(value) {
-  return {
-    type: ACTION_TYPES.SORT_TYPE,
-    payload: value,
-  };
-}
+export const sortType = value => ({
+  type: ACTION_TYPES.SORT_TYPE,
+  payload: value,
+});
 
 export const loadData = () => (dispatch) => {
   store.dispatch(startLoading());
   Promise.all([
-    fetch(TODOS_URL),
-    fetch(USERS_URL),
+    fetch(`${BASE_URL}/todos`),
+    fetch(`${BASE_URL}/users`),
   ])
     .then(([resTodos, resUsers]) => Promise.all(
       [resTodos.json(), resUsers.json()]

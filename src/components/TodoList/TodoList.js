@@ -1,6 +1,6 @@
 import React from 'react';
 import TodoItem from '../TodoItem/TodoItem';
-import { TodoListProps } from '../../constants/proptypes';
+import { todoListProps } from '../../constants/proptypes';
 
 import './TodoList.css';
 
@@ -14,6 +14,6 @@ const TodoList = props => (
   </ul>
 );
 
-TodoList.propTypes = TodoListProps;
+TodoList.propTypes = todoListProps;
 
 export default TodoList;

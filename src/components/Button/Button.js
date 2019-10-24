@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonProps } from '../../constants/proptypes';
+import { buttonProps } from '../../constants/proptypes';
 
 import './Button.css';
 
@@ -13,6 +13,6 @@ const Button = ({ text, listOfTodos, onClick }) => (
   </button>
 );
 
-Button.propTypes = ButtonProps;
+Button.propTypes = buttonProps;
 
 export default Button;

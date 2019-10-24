@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
-import { TodoItemSortProps } from '../../constants/proptypes';
+import { todoItemSortProps } from '../../constants/proptypes';
 
 import './TodoItemSort.css';
 
@@ -43,6 +43,6 @@ class TodoItemSort extends Component {
   }
 }
 
-TodoItemSort.propTypes = TodoItemSortProps;
+TodoItemSort.propTypes = todoItemSortProps;
 
 export default TodoItemSort;

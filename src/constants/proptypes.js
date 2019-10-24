@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const ButtonProps = {
+export const buttonProps = {
   text: PropTypes.string.isRequired,
 };
 
@@ -12,12 +12,11 @@ export const UserProps = {
   user: userShape,
 };
 
-export const TodoItemSortProps = {
-  // onSortChange: PropTypes.func.isRequired,
+export const todoItemSortProps = {
   sortMethod: PropTypes.string.isRequired,
 };
 
-export const TodoItemProps = {
+export const todoItemProps = {
   todo: PropTypes.shape({
     title: PropTypes.string,
     completed: PropTypes.bool,
@@ -26,7 +25,7 @@ export const TodoItemProps = {
   }).isRequired,
 };
 
-export const TodoListProps = {
+export const todoListProps = {
   todos: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string,
