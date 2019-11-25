@@ -7,7 +7,7 @@ const TodoList = ({ todos, sort }) => (
   <>
     <Button
       type="button"
-      onClick={() => sort()}
+      onClick={sort}
     >
       Sort by title
     </Button>
@@ -35,8 +35,7 @@ const TodoList = ({ todos, sort }) => (
       <Table.Body>
         {todos.map(todo => (
           <TodoItem todo={todo} key={todo.id} />
-        ))
-        }
+        ))}
       </Table.Body>
     </Table>
   </>

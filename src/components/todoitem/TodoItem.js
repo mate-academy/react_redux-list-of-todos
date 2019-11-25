@@ -7,15 +7,9 @@ const TodoItem = ({ todo }) => (
   <tr>
     <td>{todo.title}</td>
     <User user={todo.user} />
-    {todo.completed ? (
-      <Table.Cell positive>
-        Completed
-      </Table.Cell>
-    ) : (
-      <Table.Cell negative>
-        In progress
-      </Table.Cell>
-    )
+    {todo.completed
+      ? <Table.Cell positive>Completed</Table.Cell>
+      : <Table.Cell negative>In progress</Table.Cell>
     }
   </tr>
 );
