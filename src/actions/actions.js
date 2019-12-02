@@ -36,29 +36,24 @@ function closeTodo(item) {
   };
 }
 
+function getData(url) {
+  return fetch(url).then(response => response.json());
+}
+
 export function loadTodos() {
   return async(dispatch) => {
     dispatch(setLoadingError(null));
 
-    let success = false;
-
     try {
-      const responseTodos = await fetch(ENDPOINTS.TODOS);
-      const responseUsers = await fetch(ENDPOINTS.USERS);
-
-      if (responseTodos.status === 200 && responseUsers.status === 200) {
-        const todos = await responseTodos.json();
-        const users = await responseUsers.json();
-
+      Promise.all([
+        getData(ENDPOINTS.TODOS),
+        getData(ENDPOINTS.USERS),
+      ]).then(([todos, users]) => {
         dispatch(getTodos(todos));
         dispatch(getUsers(users));
-
-        success = true;
-      }
-    } finally {
-      if (!success) {
-        dispatch(setLoadingError(TODOS_TEXT.LOADING_ERROR));
-      }
+      });
+    } catch (e) {
+      dispatch(setLoadingError(TODOS_TEXT.LOADING_ERROR));
     }
   };
 }
