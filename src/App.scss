@@ -47,7 +47,7 @@ body {
   }
 
   &_remove {
-    background-image: url("images/trash_icon.png");
+    background-image: url("./images/trash_icon_light.png");
     background-color: inherit;
     background-size: contain;
     background-repeat: no-repeat;
@@ -55,7 +55,6 @@ body {
     height: 25px;
     width: 100%;
     border: none;
-    opacity: 40%;
     cursor: pointer;
 
     &:focus {
@@ -63,7 +62,7 @@ body {
     }
 
     &:hover {
-      opacity: 100%;
+      background-image: url("./images/trash_icon.png");
     }
   }
 }
