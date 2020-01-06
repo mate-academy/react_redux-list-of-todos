@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  background-color: aliceblue;
+  font-family: Arial, sans-serif;
+}
+
+.App {
+  text-align: center;
+}
+
+.button {
+  text-transform: inherit;
+  font-size: inherit;
+  box-sizing: border-box;
+  font-family: inherit;
+  padding: 10px;
+  outline: none;
+  border: none;
+
+  &:enabled {
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #ffb3b3;
+    }
+  }
+
+  &_load {
+    width: 180px;
+    height: 70px;
+    margin-top: 40vh;
+    border-radius: 10px;
+    background-color: #324960;
+    color: white;
+
+    &:disabled {
+      background-color: lightgrey;
+    }
+  }
+
+  &_head {
+    width: 100%;
+    color: inherit;
+    background-color: inherit;
+    position: relative;
+  }
+
+  &_remove {
+    background-image: url("images/trash_icon.png");
+    background-color: inherit;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 25px;
+    width: 100%;
+    border: none;
+    opacity: 40%;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      opacity: 100%;
+    }
+  }
+}
+
+.table {
+  border-collapse: collapse;
+  width: 1050px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  margin: 20px auto;
+
+  &__heading {
+    color: #324960;
+    text-transform: uppercase;
+    margin-top: 40px;
+  }
+
+  &__cell {
+    padding: 10px;
+    font-size: 0.8em;
+
+    &_remove {
+      padding: 0;
+    }
+  }
+
+  &__row:nth-child(even) {
+    background-color: #f8f8f8;
+  }
+
+  &__row:nth-child(odd) {
+    background-color: #fff;
+  }
+
+  &__head-cell {
+    color: #fff;
+    background: #324960;
+    padding: 0;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: normal;
+
+    &_non-sortable {
+      padding: 10px;
+    }
+  }
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 40vh;
+  font-size: 1.5em;
+}
+
+.arrow {
+  margin-left: 5px;
+  position: absolute;
+  top: 8px;
+}
