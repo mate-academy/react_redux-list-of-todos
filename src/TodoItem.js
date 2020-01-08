@@ -1,22 +1,23 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+import { handleRemove } from './store';
 import User from './User';
 
-const TodoItem = ({ todoItem, handleRemove, head }) => {
+const TodoItem = ({ todoItem, handleDelete, headers }) => {
   const { user, id, completed } = todoItem;
-  const tableHead = [...head].filter(field => field !== 'email');
   const done = completed ? 'done' : 'not done';
 
   return (
     <tr className="table__row">
-      {tableHead.map((field) => {
+      {Object.values(headers).map((field) => {
         switch (field) {
-          case 'name':
+          case headers.name:
             return (
               <User name={user.name} email={user.email} key={field} />
             );
 
-          case 'remove item':
+          case headers.remove:
             return (
               <td
                 className="table__cell table__cell_remove"
@@ -25,13 +26,15 @@ const TodoItem = ({ todoItem, handleRemove, head }) => {
                 <button
                   type="button"
                   className="button_remove"
-                  onClick={() => handleRemove(id)}
+                  onClick={() => handleDelete(id)}
                   title="Remove this todo."
                 />
               </td>
             );
 
-          default:
+          case headers.id:
+          case headers.title:
+          case headers.completed:
             return (
               <td
                 className="table__cell"
@@ -40,6 +43,9 @@ const TodoItem = ({ todoItem, handleRemove, head }) => {
                 {field === 'completed' ? done : todoItem[field]}
               </td>
             );
+
+          default:
+            return null;
         }
       })}
     </tr>
@@ -56,8 +62,15 @@ TodoItem.propTypes = {
     title: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
   }).isRequired,
-  handleRemove: PropTypes.func.isRequired,
-  head: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  headers: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    completed: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    remove: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-export default TodoItem;
+export default connect(null, { handleDelete: handleRemove })(TodoItem);

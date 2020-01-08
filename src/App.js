@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loadTodos, getIsLoading, getTodos, getHasError } from './store';
 import './App.scss';
-import TodoListHandler from './TodoListHandler';
+import TodoList from './TodoList';
 
 const App = (props) => {
-  const { loadTodos, isLoading, hasError, isLoaded } = props;
+  const { load, isLoading, hasError, todosCount } = props;
 
-  const load = async() => {
-    await loadTodos();
+  const loadData = async() => {
+    await load();
   };
 
   if (hasError) {
@@ -18,12 +20,12 @@ const App = (props) => {
 
   return (
     <div className="App">
-      {!isLoaded ? (
+      {!todosCount ? (
         <>
           <button
             className="button button_load"
             type="button"
-            onClick={load}
+            onClick={loadData}
             disabled={isLoading}
           >
             {isLoading ? 'Loading...' : 'Load'}
@@ -32,7 +34,7 @@ const App = (props) => {
       ) : (
         <>
           <h1 className="table__heading">Dynamic list of todos</h1>
-          <TodoListHandler />
+          <TodoList />
         </>
       )
       }
@@ -41,10 +43,16 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  loadTodos: PropTypes.func.isRequired,
+  load: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   hasError: PropTypes.bool.isRequired,
-  isLoaded: PropTypes.bool.isRequired,
+  todosCount: PropTypes.number.isRequired,
 };
 
-export default App;
+const mapStateToProps = state => ({
+  isLoading: getIsLoading(state),
+  hasError: getHasError(state),
+  todosCount: getTodos(state).length,
+});
+
+export default connect(mapStateToProps, { load: loadTodos })(App);

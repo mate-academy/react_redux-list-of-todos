@@ -27,10 +27,10 @@ export const handleRemove = id => ({
 });
 
 export const getIsLoading = state => state.isLoading;
-export const getIsLoaded = state => state.isLoaded;
 export const getHasError = state => state.hasError;
 export const getTodos = state => state.todos;
 export const getSortField = state => state.sortField;
+export const getPrevSortField = state => state.prevSortField;
 export const getSortedAsc = state => state.sortedAsc;
 
 export const loadTodos = () => async(dispatch) => {
@@ -52,10 +52,10 @@ export const loadTodos = () => async(dispatch) => {
 const initialState = {
   todos: [],
   isLoading: false,
-  isLoaded: false,
   hasError: false,
-  sortField: 'id',
-  sortedAsc: true,
+  prevSortField: '',
+  sortField: '',
+  sortedAsc: false,
 };
 
 const reducer = (state, action) => {
@@ -72,7 +72,6 @@ const reducer = (state, action) => {
         ...state,
         todos: action.todos,
         isLoading: false,
-        isLoaded: true,
       };
 
     case HANDLE_ERROR:
@@ -88,19 +87,7 @@ const reducer = (state, action) => {
         sortField: action.sortField,
         sortedAsc: action.sortField === state.sortField
           ? !state.sortedAsc : true,
-        todos: action.sortField === state.sortField
-          ? [...state.todos].reverse()
-          : [...state.todos]
-            .sort((todoA, todoB) => {
-              const comparator1 = todoA[action.sortField]
-                || todoA.user[action.sortField];
-              const comparator2 = todoB[action.sortField]
-                || todoB.user[action.sortField];
-
-              return typeof comparator1 === 'number'
-                ? comparator1 - comparator2
-                : String(comparator1).localeCompare(String(comparator2));
-            }),
+        prevSortField: state.sortField,
       };
 
     case HANDLE_REMOVE:
