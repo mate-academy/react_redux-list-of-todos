@@ -1,0 +1,37 @@
+.App {
+  text-align: center;
+}
+
+.rowOfTasks {
+  width: 25%;
+}
+
+.head {
+  background-color: #8e8ee3;
+  font-weight: bold;
+  height: 15vh;
+}
+
+.row:nth-child(even) {
+  background-color: lightgray;
+}
+
+.row:nth-child(odd) {
+  background-color: lightgreen;
+}
+
+.error {
+  text-align: center;
+  color: red;
+}
+
+.last_cell {
+  display: flex;
+  width: 98%;
+  justify-content: space-between;
+}
+
+.delete_button {
+  background-color: #fba8a8;
+  border: 0;
+}
