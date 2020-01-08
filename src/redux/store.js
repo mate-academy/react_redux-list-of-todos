@@ -1,4 +1,6 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { getTodos, getUsers } from '../api/getData';
 
 const START_LOAD = 'start_loading';
 const HANDLE_SUCCESS = 'handle_success';
@@ -13,6 +15,24 @@ export const handleSuccess = todoList => ({
 export const handleDelete = payload => ({
   type: HANDLE_DELETE, payload,
 });
+
+export const loadTodos = () => async(dispatch) => {
+  dispatch(startLoad());
+
+  const [
+    todosFromServer,
+    usersFromServer,
+  ] = await Promise.all([
+    getTodos(),
+    getUsers(),
+  ]);
+
+  dispatch(handleSuccess(todosFromServer.map(todo => (
+    {
+      ...todo,
+      user: usersFromServer.find(person => person.id === todo.userId),
+    }))));
+};
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -47,6 +67,6 @@ const initialState = {
   todoList: [],
 };
 
-const store = createStore(reducer, initialState);
+const store = createStore(reducer, initialState, applyMiddleware(thunk));
 
 export default store;

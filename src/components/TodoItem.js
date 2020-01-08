@@ -17,12 +17,8 @@ const TodoItem = (props) => {
             ? 'completed'
             : 'no completed'}
         </td>
-        <td>
-          {userName}
-        </td>
-        <td>
-          {userEmail}
-        </td>
+        <td>{userName}</td>
+        <td>{userEmail}</td>
         <td>
           <button
             type="button"

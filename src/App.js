@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { handleSuccess, handleDelete, startLoad } from './redux/store';
-import getTodos from './api/getTodos';
-import getUsers from './api/getUsers';
+import { loadTodos } from './redux/store';
 
 import TodoList from './components/TodoList';
 
@@ -11,21 +9,7 @@ const App = (props) => {
   const { todoList, isLoading } = props;
 
   const loadData = async() => {
-    // eslint-disable-next-line no-shadow
-    const { startLoad, handleSuccess } = props;
-
-    startLoad();
-
-    const [
-      todosFromServer,
-      usersFromServer,
-    ] = await Promise.all([getTodos(), getUsers()]);
-
-    handleSuccess(todosFromServer.map(todo => (
-      {
-        ...todo,
-        user: usersFromServer.find(person => person.id === todo.userId),
-      })));
+    await props.loadTodos();
   };
 
   return (
@@ -72,8 +56,7 @@ const mapStateToProps = state => ({
 });
 
 App.propTypes = {
-  startLoad: PropTypes.func.isRequired,
-  handleSuccess: PropTypes.func.isRequired,
+  loadTodos: PropTypes.func.isRequired,
   todoList: PropTypes.arrayOf(PropTypes.shape({
     userId: PropTypes.number,
     id: PropTypes.number,
@@ -86,9 +69,5 @@ App.propTypes = {
 
 export default connect(
   mapStateToProps,
-  {
-    startLoad,
-    handleSuccess,
-    handleDelete,
-  }
+  { loadTodos }
 )(App);
