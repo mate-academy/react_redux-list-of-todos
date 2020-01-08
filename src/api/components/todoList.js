@@ -1,52 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import {
-  handleDelete,
-} from '../../store';
+import TodoItem from './todoItem';
 
-const TodoList = ({ todos, handleDeleteTodo }) => (
+const TodoList = ({ todos }) => (
   <>
     {todos.map(todo => (
-      <tr key={todo.id}>
-        <td>{todo.id}</td>
-        <td>{todo.title}</td>
-        <td>
-          {todo.completed === true
-            ? 'completed'
-            : 'no completed'}
-        </td>
-        <td>
-          {todo.user.name}
-        </td>
-        <td>
-          {todo.user.email}
-        </td>
-        <td>
-          <button
-            type="button"
-            onClick={() => handleDeleteTodo(todo.id)}
-          >
-              Delete
-          </button>
-        </td>
-      </tr>
+      <TodoItem
+        key={todo.id}
+        id={todo.id}
+        title={todo.title}
+        completed={todo.completed}
+        userName={todo.user.name}
+        userEmail={todo.user.email}
+      />
     ))}
   </>
 );
 
-const mapStateToProps = state => ({
-  todos: state.todos,
-  isLoading: state.isLoading,
-  hasError: state.hasError,
-});
-
-const mapDispatchToProps = dispatch => ({
-  handleDeleteTodo: peyload => dispatch(handleDelete(peyload)),
-});
-
 TodoList.propTypes = {
-  handleDeleteTodo: PropTypes.func.isRequired,
   todos: PropTypes.arrayOf(PropTypes.shape({
     userId: PropTypes.number,
     id: PropTypes.number,
@@ -56,7 +27,4 @@ TodoList.propTypes = {
   })).isRequired,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TodoList);
+export default TodoList;
