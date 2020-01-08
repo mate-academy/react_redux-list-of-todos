@@ -60,10 +60,10 @@ function TodoList({
               <Button.Or />
               <Button value="user" onClick={sortTodos}>SORT BY USER</Button>
               <Button>
-Now is shown
+                Now is shown
                 {combineData.length}
                 {' '}
-todos
+                todos
               </Button>
               <Button onClick={loadTodos}>Reload all todos</Button>
             </Button.Group>
