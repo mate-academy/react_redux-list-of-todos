@@ -1,0 +1,93 @@
+body {
+  background-image: url(../../images/background2.jpg);
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: Amatic SC, sans-serif;
+  position: relative;
+}
+
+.data-button {
+  font-family: Amatic SC, sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  background-color: rgb(69, 102, 135);
+  opacity: 0.9;
+  border: 2px solid #fff;
+  border-radius: 20px;
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: color, background-color, border 0.5s;
+}
+
+.data-button:hover {
+  cursor: pointer;
+  background-color: #fff;
+  color: rgb(255, 180, 118);
+  border: 2px solid rgb(255, 180, 118);
+}
+
+.loading-text {
+  font-weight: bold;
+  color: rgb(41, 60, 80);
+  font-size: 29px;
+}
+
+.app {
+  text-align: center;
+  padding-left: 20px;
+}
+
+.main-title {
+  font-size: 50px;
+  margin-bottom: 10px;
+  color: rgb(41, 60, 80);
+}
+
+.title {
+  font-size: 25px;
+  color: rgb(41, 60, 80);
+}
+
+.sort-button {
+  height: 50px;
+  width: 170px;
+  background-color: #fff;
+  border: 1px solid rgb(41, 60, 80);
+  border-radius: 10px;
+  color: rgb(41, 60, 80);
+  margin-right: 20px;
+  font-family: Amatic SC, sans-serif;
+  font-size: 21px;
+  font-weight: bold;
+  transition: border, color, 0.3s;
+}
+
+.sort-button:hover{
+  cursor: pointer;
+  color: rgb(245, 82, 73);
+  border-color: rgb(245, 82, 73);
+}
+
+.reset-button {
+  height: 50px;
+  width: 120px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid rgb(41, 60, 80);
+  color: rgb(41, 60, 80);
+  font-family: Amatic SC, sans-serif;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.reset-button:hover{
+  cursor: pointer;
+  color: rgb(245, 82, 73);
+  border-color: rgb(245, 82, 73);
+}
