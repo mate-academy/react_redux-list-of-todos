@@ -1,0 +1,98 @@
+html {
+  font-family: "Calisto MT", helvetica, arial, sans-serif;
+  background-color: rgba(255,255,0,0.1);
+}
+
+.heading {
+  text-align: center;
+  color: mediumseagreen;
+}
+
+.btn {
+  cursor: pointer;
+  outline: none;
+  border: solid 1px transparent;
+  border-radius: 4px;
+  padding: 0.5em 1em;
+  color: mediumseagreen;
+  background-color: #dff5eb;
+}
+
+.btn:hover {
+  color: mediumseagreen;
+  border-color: currentColor;
+  background-color: white;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+  transition: 1s;
+}
+
+table {
+  width: 1000px;
+  border-collapse: collapse;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(255,0,0,0.22);
+  background-color: white;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+td {
+  padding: 13px;
+}
+
+tr:hover {
+  box-shadow: 0 5px 25px 5px rgba(223, 245, 225,1);
+}
+
+th {
+  padding-top: 10px;
+  text-align: center;
+}
+
+thead {
+  box-shadow: 0 10px 17px rgba(223, 245, 225,1);
+  border-radius: 10px;
+  background-color: #dff5eb;
+}
+
+#container {
+  width: 70px;
+  height: 35px;
+  overflow: hidden;
+  position: absolute;
+  top: calc(50% - 17px);
+  left: calc(50% - 35px);
+}
+
+.loader {
+  display: flex;
+  height: 50vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  height: 5vh;
+  width: 5vh;
+  border: 6px solid rgba(0, 174, 239, 0.2);
+  border-top-color: rgba(0, 174, 239, 0.8);
+  border-radius: 100%;
+  animation: rotation 0.6s infinite linear 0.25s;
+  opacity: 0;
+}
+
+@keyframes rotation {
+  from {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(359deg);
+  }
+}
