@@ -42,8 +42,6 @@ export const loadDataFromServer = () => async(dispatch) => {
   } catch (e) {
     dispatch(handleError());
   }
-
-  return 1;
 };
 export const getIsLoading = state => state.isLoading;
 export const getIsError = state => state.isError;
