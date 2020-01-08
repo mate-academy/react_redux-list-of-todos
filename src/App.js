@@ -8,6 +8,7 @@ import {
   handleSuccess,
   handleDelete,
 } from './store';
+import TodoList from './api/components/todoList';
 
 class App extends React.Component {
    loadData = async() => {
@@ -31,7 +32,7 @@ class App extends React.Component {
    };
 
    render() {
-     const { todos, isLoading, handleDeleteTodo } = this.props;
+     const { todos, isLoading } = this.props;
 
      return (
        isLoading
@@ -60,32 +61,7 @@ class App extends React.Component {
                    </tr>
                  </thead>
                  <tbody>
-                   {/* eslint-disable-next-line react/prop-types */}
-                   {todos.map(todo => (
-                     <tr key={todo.id}>
-                       <td>{todo.id}</td>
-                       <td>{todo.title}</td>
-                       <td>
-                         {todo.completed === true
-                           ? 'completed'
-                           : 'no completed'}
-                       </td>
-                       <td>
-                         {todo.user.name}
-                       </td>
-                       <td>
-                         {todo.user.email}
-                       </td>
-                       <td>
-                         <button
-                           type="button"
-                           onClick={() => handleDeleteTodo(todo.id)}
-                         >
-                           Delete
-                         </button>
-                       </td>
-                     </tr>
-                   ))}
+                   <TodoList todos={todos} />
                  </tbody>
                </table>
              </div>
@@ -119,7 +95,6 @@ const mapDispatchToProps = dispatch => ({
 App.propTypes = {
   startLoad: PropTypes.func.isRequired,
   handleOk: PropTypes.func.isRequired,
-  handleDeleteTodo: PropTypes.func.isRequired,
   todos: PropTypes.arrayOf(PropTypes.shape({
     userId: PropTypes.number,
     id: PropTypes.number,
