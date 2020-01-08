@@ -1,34 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import getTodos from './api/todosApi';
-import getUsers from './api/usersApi';
-import {
-  startLoading,
-  handleSuccess,
-  handleDelete,
-} from './store';
+import { loadTodos } from './store';
 import TodoList from './api/components/todoList';
 
 class App extends React.Component {
    loadData = async() => {
-     const { startLoad, handleOk } = this.props;
-
-     startLoad();
-
-     const [
-       todosFromServer,
-       usersFromServer,
-     ] = await Promise.all([
-       getTodos(),
-       getUsers(),
-     ]);
-
-     handleOk(todosFromServer.map(todo => (
-       {
-         ...todo,
-         user: usersFromServer.find(person => person.id === todo.userId),
-       })));
+     await this.props.loadingData();
    };
 
    render() {
@@ -87,14 +65,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  startLoad: () => dispatch(startLoading()),
-  handleOk: todos => dispatch(handleSuccess(todos)),
-  handleDeleteTodo: peyload => dispatch(handleDelete(peyload)),
+  loadingData: () => dispatch(loadTodos()),
 });
 
 App.propTypes = {
-  startLoad: PropTypes.func.isRequired,
-  handleOk: PropTypes.func.isRequired,
+  loadingData: PropTypes.func.isRequired,
   todos: PropTypes.arrayOf(PropTypes.shape({
     userId: PropTypes.number,
     id: PropTypes.number,
