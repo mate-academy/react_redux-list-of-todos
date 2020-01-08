@@ -12,10 +12,8 @@ const rootReducer = (state, action) => {
   }
 };
 
-const todosAndUsers = [[], []];
-
 const initialState = {
-  todosAndUsers,
+  todosAndUsers: [[], []],
 };
 
 const store = createStore(rootReducer, initialState);
