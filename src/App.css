@@ -1,0 +1,62 @@
+html {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.App {
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  color: #56433d;
+}
+
+.load-btn {
+  cursor: pointer;
+  border: 3px solid #f9c941;
+  background: #56433d;
+  padding: 10px;
+  color: #f9c941;
+  border-radius: 10px;
+  outline: none;
+}
+
+.load-btn:hover {
+  color: white;
+}
+
+table {
+  border-collapse: collapse;
+  border: 3px solid #56433d;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+th {
+  padding: 10px 20px;
+  background: #56433d;
+  color: #f9c941;
+  border: 3px solid #f9c941;
+  border-bottom: 3px solid #56433d;
+  cursor: pointer;
+}
+
+th:hover {
+  color: white;
+}
+
+td {
+  color: #2f4f4f;
+  vertical-align: middle;
+  line-height: 2.5;
+  font-size: 14px;
+  text-align: center;
+  border: 3px solid #56433d;
+}
+
+td:nth-child(2) {
+  padding-left: 10px;
+  text-align: left;
+}
