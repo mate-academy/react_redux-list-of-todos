@@ -47,8 +47,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchProps = dispatch => ({
-  loadTodos: () => dispatch(loadTodos),
-
+  loadTodos: () => dispatch(loadTodos()),
 });
 
 App.propTypes = {

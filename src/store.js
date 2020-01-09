@@ -18,20 +18,22 @@ export const todosDelete = item => ({
   item,
 });
 
-export const loadTodos = async(dispatch) => {
-  dispatch(isLoading());
+export const loadTodos = ()=>{
+  return async(dispatch) => {
+    dispatch(isLoading());
 
-  const [todos, users] = await Promise.all([
-    getTodos(),
-    getUsers(),
-  ]);
+    const [todos, users] = await Promise.all([
+      getTodos(),
+      getUsers(),
+    ]);
 
-  dispatch(handleSuccess(todos.map(todo => ({
-    ...todo,
-    user: users.find(user => user.id === todo.userId),
-  }))));
-  dispatch(isStart());
-};
+    dispatch(handleSuccess(todos.map(todo => ({
+      ...todo,
+      user: users.find(user => user.id === todo.userId),
+    }))));
+    dispatch(isStart());
+  };
+}
 
 export const isStart = () => ({ type: IS_START });
 
