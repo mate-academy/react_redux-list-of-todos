@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "homepage": "https://igorskiy.github.io/react_redux-list-of-todos/",
+=======
+  "homepage": "https://igorskiy.github.io/react_redux-list-of-todos",
+>>>>>>> 1636abb8c8b26f40a8138ca0f779a690282d5166
   "name": "react_redux-list-of-todos",
   "version": "0.1.0",
   "private": true,
