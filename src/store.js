@@ -1,10 +1,10 @@
 import { createStore } from 'redux';
 
-const SET_TODOS = 'set todos';
-const CHANGE_LOADING = 'change loading';
-const CHANGE_LOADED = 'change loaded';
-const CHANGE_ERROR = 'change error';
-const CHANGE_SORTEDCOLUMN = 'change sorted column';
+const SET_TODOS = 'SET_TODOS';
+const CHANGE_LOADING = 'CHANGE_LOADING';
+const CHANGE_LOADED = 'CHANGE_LOADED';
+const CHANGE_ERROR = 'CHANGE_ERROR';
+const CHANGE_SORTEDCOLUMN = 'CHANGE_SORTEDCOLUMN';
 
 export const createSet = value => ({
   type: SET_TODOS, value,
