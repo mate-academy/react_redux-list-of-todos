@@ -1,0 +1,75 @@
+* {
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  outline: none;
+}
+
+.App {
+  text-align: center;	  text-align: center;
+}
+
+.title {
+  color: #333;
+}
+
+.table {
+  line-height: 40px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background: lightblue;
+  border: 1px solid lightcoral;
+  border-radius: 10px;
+}
+
+.table td {
+  background: beige;
+  padding: 10px;
+  color: #333;
+  border: 1px solid lightcoral;
+}
+
+.table tr {
+  background: #a1a1a1;
+  color: white;
+}
+
+.table th:hover {
+  cursor: pointer;
+  color: lightcoral;
+  background: gray;
+}
+
+.table th {
+  border: 1px solid lightcoral;
+  transition: 0.5s;
+}
+
+.button {
+  background: #a1a1a1;
+  color: lightcoral;
+  border: none;
+  padding: 8px 45px;
+  border-radius: 5px;
+}
+
+.button:hover {
+  cursor: pointer;
+  color: #a1a1a1;
+  background: lightcoral;
+}
+
+.delete-button {
+  margin: 0 10px;
+  padding: 3px 30px;
+  background: #a1a1a1;
+  color: white;
+  border: 1px solid transparent;
+  transition: 0.5s ;
+}
+
+.delete-button:hover {
+  background: lightcoral;
+  color: #a1a1a1;
+  cursor: pointer;
+}
