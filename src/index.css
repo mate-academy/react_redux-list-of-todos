@@ -1,0 +1,42 @@
+.App {
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-spacing: 3px;
+}
+
+th {
+  color: white;
+  background-color: navy;
+  padding: 5px;
+  cursor: pointer;
+}
+
+td {
+  padding: 3px;
+}
+
+table tr:nth-child(even) {
+  background-color: rgb(217, 227, 252);
+}
+
+table tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+button {
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid navy;
+  background-color: rgb(217, 227, 252);
+}
+
+button:hover {
+  width: 200px;
+  height: 40px;
+  background-color: rgb(167, 190, 248);
+  cursor: pointer;
+}

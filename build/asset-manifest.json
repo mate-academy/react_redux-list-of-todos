@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/react_redux-list-of-todos/static/css/main.e05a3c63.chunk.css",
+    "main.js": "/react_redux-list-of-todos/static/js/main.f2cfe353.chunk.js",
+    "main.js.map": "/react_redux-list-of-todos/static/js/main.f2cfe353.chunk.js.map",
+    "runtime~main.js": "/react_redux-list-of-todos/static/js/runtime~main.054cc81e.js",
+    "runtime~main.js.map": "/react_redux-list-of-todos/static/js/runtime~main.054cc81e.js.map",
+    "static/js/2.19299713.chunk.js": "/react_redux-list-of-todos/static/js/2.19299713.chunk.js",
+    "static/js/2.19299713.chunk.js.map": "/react_redux-list-of-todos/static/js/2.19299713.chunk.js.map",
+    "index.html": "/react_redux-list-of-todos/index.html",
+    "precache-manifest.ab744b8b317851c70de63438a0d22572.js": "/react_redux-list-of-todos/precache-manifest.ab744b8b317851c70de63438a0d22572.js",
+    "service-worker.js": "/react_redux-list-of-todos/service-worker.js",
+    "static/css/main.e05a3c63.chunk.css.map": "/react_redux-list-of-todos/static/css/main.e05a3c63.chunk.css.map"
+  }
+}
