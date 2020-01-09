@@ -1,19 +1,20 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import TodoList from './TodoList';
 import getTodosWithUsers from './GetTodosWithUsers';
 import store from './store';
 import getURL from './api/getUrl';
 
-function Main({ todosAndUsers, setTodosAndUsers }) {
-  const [loaded, setLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const preparedTodos
-  = getTodosWithUsers(todosAndUsers[0], todosAndUsers[1]);
-
-  const LoadTodosAndUsers = async() => {
+function Main({
+  todos,
+  settodos,
+  loaded,
+  setLoaded,
+  isLoading,
+  setIsLoading,
+}) {
+  const LoadTodos = async() => {
     setIsLoading(true);
 
     const [usersObject, todosObject]
@@ -22,7 +23,7 @@ function Main({ todosAndUsers, setTodosAndUsers }) {
       getURL('https://jsonplaceholder.typicode.com/todos'),
     ]);
 
-    setTodosAndUsers([todosObject, usersObject]);
+    settodos(getTodosWithUsers(todosObject, usersObject));
     setIsLoading(false);
     setLoaded(true);
   };
@@ -38,7 +39,7 @@ function Main({ todosAndUsers, setTodosAndUsers }) {
   if (loaded === false) {
     return (
       <div className="App">
-        <button type="button" onClick={LoadTodosAndUsers}>
+        <button type="button" onClick={LoadTodos}>
           Load
         </button>
       </div>
@@ -47,25 +48,39 @@ function Main({ todosAndUsers, setTodosAndUsers }) {
 
   return (
     <div className="App">
-      <TodoList todos={preparedTodos} />
+      <TodoList todos={todos} />
     </div>
   );
 }
 
 const mapStateToProps = state => ({
-  todosAndUsers: state.todosAndUsers,
+  todos: state.todos,
+  loaded: state.loaded,
+  isLoading: state.isLoading,
 });
 
 const dataMethods = () => ({
-  setTodosAndUsers: newTodosAndUsers => store.dispatch({
+  settodos: newtodos => store.dispatch({
     type: 'CHANGE_ROW',
-    todosAndUsers: newTodosAndUsers,
+    todos: newtodos,
+  }),
+  setLoaded: changeLoaded => store.dispatch({
+    type: 'CHANGE_LOADED',
+    loaded: changeLoaded,
+  }),
+  setIsLoading: changeIsLoading => store.dispatch({
+    type: 'CHANGE_IS_LOADING',
+    isLoading: changeIsLoading,
   }),
 });
 
 Main.propTypes = {
-  todosAndUsers: PropTypes.arrayOf(PropTypes.any).isRequired,
-  setTodosAndUsers: PropTypes.func.isRequired,
+  todos: PropTypes.arrayOf(PropTypes.any).isRequired,
+  settodos: PropTypes.func.isRequired,
+  loaded: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  setLoaded: PropTypes.func.isRequired,
+  setIsLoading: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, dataMethods)(Main);

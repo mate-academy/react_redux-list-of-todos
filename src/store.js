@@ -5,15 +5,31 @@ const rootReducer = (state, action) => {
     case 'CHANGE_ROW':
       return {
         ...state,
-        todosAndUsers: action.todosAndUsers,
+        todos: action.todos,
       };
+
+    case 'CHANGE_LOADED': {
+      return {
+        ...state,
+        loaded: action.loaded,
+      };
+    }
+
+    case 'CHANGE_IS_LOADING': {
+      return {
+        ...state,
+        isLoading: action.isLoading,
+      };
+    }
     default:
       return state;
   }
 };
 
 const initialState = {
-  todosAndUsers: [[], []],
+  todos: [],
+  loaded: false,
+  isLoading: false,
 };
 
 const store = createStore(rootReducer, initialState);
