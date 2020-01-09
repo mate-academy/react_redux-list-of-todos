@@ -1,0 +1,34 @@
+.App {
+  text-align: center;	  text-align: center;
+}	
+
+button {
+  width: 200px;
+  height: 50px;
+  margin: 0 auto;
+  display: block;
+}
+
+table {
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+tr,
+td,
+th {
+  border: 1px solid grey;
+}
+
+th {
+  background: #e5dcdc;
+  cursor: pointer;
+}
+
+th:hover {
+  color: red;
+}
+
+tr:hover {
+  background: #e5dcdc;
+}
