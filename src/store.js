@@ -17,6 +17,11 @@ const rootReduser = (state, action) => {
         ...state,
         buttonStatus: action.buttonStatus,
       };
+    case 'SET_SORT_TYPE':
+      return {
+        ...state,
+        selectedSort: action.selectedSort,
+      };
     default:
       return state;
   }
@@ -26,6 +31,7 @@ const initialState = {
   todos: [],
   isLoading: false,
   buttonStatus: true,
+  selectedSort: 'id',
 };
 
 const store = createStore(rootReduser, initialState);
