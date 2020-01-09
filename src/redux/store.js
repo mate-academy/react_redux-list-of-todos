@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 
-const GET_TODOS = 'GET-TODOS';
+const GET_TODOS = 'GET_TODOS';
 
 export const getTodos = todos => ({
   type: GET_TODOS,
