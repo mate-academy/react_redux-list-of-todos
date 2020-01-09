@@ -1,0 +1,73 @@
+body * {
+  outline: none;
+}
+
+body {
+  margin: 0;
+}
+
+.todo-list {
+  text-align: center;
+}
+
+.todo-list__table {
+  margin: 20px auto;
+  border: 3px solid #95cef0;
+  border-collapse: collapse;
+}
+
+.table__item,
+.table__heading {
+  padding: 5px;
+}
+
+.table__heading {
+  background-color: #95cef0;
+  transition: background-color 1s;
+}
+
+.table__heading--sortable:hover {
+  cursor: pointer;
+  background-color: #4f97f0;
+}
+
+.table__heading--selected {
+  background-color: #4f97f0;
+}
+
+.todo-list__table td {
+  border: 1px solid #95cef0;
+}
+
+.todo-list__button {
+  width: 120px;
+  height: 80px;
+  margin: 100px auto;
+  border: 1px solid black;
+  border-radius: 10px;
+  font-size: 20px;
+  background-color: #95cef0;
+  transition: background-color 1s;
+}
+
+.todo-list__button:hover {
+  cursor: pointer;
+  background-color: #4f97f0;
+}
+
+.todo-list__loading-text {
+  font-size: 20px;
+  margin-top: 120px;
+}
+
+.table__remove-button {
+  width: 100%;
+  color: red;
+  background-color: rgba(149, 206, 240, 0.4);
+  border: none;
+}
+
+.table__remove-button:hover {
+  cursor: pointer;
+  background-color: rgba(149, 206, 240, 0.8);
+}

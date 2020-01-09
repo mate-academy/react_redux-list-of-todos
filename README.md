@@ -51,7 +51,7 @@ Additionally, you should provide a capability of sorting the items either by tit
 - Execute `npm run deploy`. This command will push the `/build` folder to branch
   `gh-pages` in your remote repository. 
 - Add links to your demo in readme.md.
-  - `[DEMO LINK](https://<your_account>.github.io/<repo_name>/)` - this will be a 
+  - `[DEMO LINK](https://YuliiaChupryna.github.io/react_redux-list-of-todos/)` - this will be a 
   link to your index.html
 - Commit and push all recent changes again.
 - Create `Pull Request` from forked repo `(<branch_name>)` to original repo 
