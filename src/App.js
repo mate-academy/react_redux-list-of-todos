@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -7,9 +7,7 @@ import { getTodos, getUsers } from './api';
 import { actionTypes } from './store/store';
 import TodoList from './Components/TodoList';
 
-const App = ({ todos, setTodos }) => {
-  const [isLoading, setLoading] = useState(false);
-
+const App = ({ isLoading, setLoading, todos, setTodos }) => {
   const loadTodosAndUsers = async() => {
     setLoading(true);
 
@@ -50,6 +48,7 @@ const App = ({ todos, setTodos }) => {
 
 const getData = state => ({
   todos: state.todos,
+  isLoading: state.isLoading,
 });
 
 const getMethods = dispatch => ({
@@ -57,9 +56,15 @@ const getMethods = dispatch => ({
     type: actionTypes.SET_TODOS,
     todos: newTodos,
   }),
+  setLoading: value => dispatch({
+    type: actionTypes.SET_LOADING,
+    value,
+  }),
 });
 
 App.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
   todos: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   setTodos: PropTypes.func.isRequired,
 };

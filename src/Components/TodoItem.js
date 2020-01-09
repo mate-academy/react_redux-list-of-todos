@@ -5,50 +5,38 @@ import PropTypes from 'prop-types';
 import { actionTypes } from '../store/store';
 import User from './User';
 
-const TodoItem = ({ todos, todo, setTodos }) => {
-  const deleteTodo = () => {
-    setTodos(todos.filter(todoItem => todoItem.id !== todo.id));
-  };
-
-  return (
-    <tbody>
-      <tr>
-        <td>{todo.id}</td>
-        <td>{todo.title}</td>
-        <User userData={todo.user} />
-        <td
-          className={todo.completed ? 'completed' : 'not-completed'}
+const TodoItem = ({ todo, deleteTodo }) => (
+  <tbody>
+    <tr>
+      <td>{todo.id}</td>
+      <td>{todo.title}</td>
+      <User userData={todo.user} />
+      <td
+        className={todo.completed ? 'completed' : 'not-completed'}
+      >
+        {todo.completed ? 'yes' : 'no'}
+      </td>
+      <td>
+        <button
+          type="button"
+          onClick={() => deleteTodo(todo.id)}
         >
-          {todo.completed ? 'yes' : 'no'}
-        </td>
-        <td>
-          <button
-            type="button"
-            onClick={deleteTodo}
-          >
-            x
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  );
-};
-
-const getData = state => ({
-  todos: state.todos,
-  sortedTodos: state.sortedTodos,
-});
+          x
+        </button>
+      </td>
+    </tr>
+  </tbody>
+);
 
 const getMethods = dispatch => ({
-  setTodos: newTodos => dispatch({
-    type: actionTypes.SET_TODOS,
-    todos: newTodos,
+  deleteTodo: todoId => dispatch({
+    type: actionTypes.DELETE_TODO,
+    todoId,
   }),
 });
 
 TodoItem.propTypes = {
-  todos: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  setTodos: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
   todo: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,
@@ -57,4 +45,4 @@ TodoItem.propTypes = {
   }).isRequired,
 };
 
-export default connect(getData, getMethods)(TodoItem);
+export default connect(() => ({}), getMethods)(TodoItem);

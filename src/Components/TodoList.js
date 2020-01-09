@@ -48,7 +48,6 @@ const TodoList = ({ todos, setTodos }) => {
 
 const getData = state => ({
   todos: state.todos,
-  sortedTodos: state.sortedTodos,
 });
 
 const getMethods = dispatch => ({
