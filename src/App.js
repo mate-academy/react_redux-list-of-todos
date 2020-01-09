@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import TodoList from './TodoList';
 import getDataFromServer from './getDataApi';
-import { todosURL, usersURL, SET_SORTING_TITLE, SET_FULL_TODOS } from './store';
+import { todosURL, usersURL, SET_SORTING_TITLE, SET_FULL_TODOS,
+  getFullTodos, getSortingTitle } from './store';
 
 const getTodosWithUsers = (todos, users) => (
   todos.map(todo => ({
@@ -12,8 +13,8 @@ const getTodosWithUsers = (todos, users) => (
   }))
 );
 
-const App = ({ fullTodos, setFullTodos,
-  currentSortingTitle, setSortingTitle }) => {
+const App = ({ fullTodos, sortingTitle,
+  setFullTodos, setSortingTitle }) => {
   const [isLoading, setLoading] = useState(false);
   const [isError, setError] = useState(false);
 
@@ -36,7 +37,7 @@ const App = ({ fullTodos, setFullTodos,
   };
 
   const setSortBy = (title) => {
-    if (currentSortingTitle === title) {
+    if (sortingTitle === title) {
       setFullTodos([...fullTodos].reverse());
     } else if (title === 'user') {
       setFullTodos([...fullTodos]
@@ -89,8 +90,6 @@ const App = ({ fullTodos, setFullTodos,
       {fullTodos.length > 0
         && (
           <TodoList
-            todos={fullTodos}
-            sortingTitle={currentSortingTitle}
             setSortBy={setSortBy}
             removeTodo={removeTodo}
           />
@@ -99,9 +98,9 @@ const App = ({ fullTodos, setFullTodos,
   );
 };
 
-const getExtraData = state => ({
-  fullTodos: state.fullTodos,
-  currentSortingTitle: state.currentSortingTitle,
+const mapStateToProps = state => ({
+  fullTodos: getFullTodos(state),
+  sortingTitle: getSortingTitle(state),
 });
 
 const getExtraMethods = dispatch => ({
@@ -126,8 +125,8 @@ App.propTypes = {
     }),
   })).isRequired,
   setFullTodos: PropTypes.func.isRequired,
-  currentSortingTitle: PropTypes.string.isRequired,
+  sortingTitle: PropTypes.string.isRequired,
   setSortingTitle: PropTypes.func.isRequired,
 };
 
-export default connect(getExtraData, getExtraMethods)(App);
+export default connect(mapStateToProps, getExtraMethods)(App);

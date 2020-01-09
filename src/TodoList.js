@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import cn from 'classnames';
 import TodoItem from './TodoItem';
-import { titles } from './store';
+import { getFullTodos, getSortingTitle, titles } from './store';
 
-const TodoList = ({ todos, sortingTitle, setSortBy, removeTodo }) => (
+const TodoList = ({ fullTodos, sortingTitle, setSortBy, removeTodo }) => (
   <table className="todo-list__table">
     <thead>
       <tr>
@@ -38,7 +39,7 @@ const TodoList = ({ todos, sortingTitle, setSortBy, removeTodo }) => (
       </tr>
     </thead>
     <tbody>
-      {todos.map(todo => (
+      {fullTodos.map(todo => (
         <TodoItem key={todo.id} todo={todo} removeTodo={removeTodo} />
       ))}
     </tbody>
@@ -46,10 +47,22 @@ const TodoList = ({ todos, sortingTitle, setSortBy, removeTodo }) => (
 );
 
 TodoList.propTypes = {
-  todos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fullTodos: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    completed: PropTypes.bool.isRequired,
+    user: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
+  })).isRequired,
   sortingTitle: PropTypes.string.isRequired,
   setSortBy: PropTypes.func.isRequired,
   removeTodo: PropTypes.func.isRequired,
 };
 
-export default TodoList;
+const mapStateToProps = state => ({
+  fullTodos: getFullTodos(state),
+  sortingTitle: getSortingTitle(state),
+});
+
+export default connect(mapStateToProps)(TodoList);

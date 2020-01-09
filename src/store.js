@@ -5,9 +5,12 @@ export const usersURL = 'https://jsonplaceholder.typicode.com/users';
 
 export const titles = ['id', 'title', 'completed', 'user', 'remove'];
 
+export const getFullTodos = state => state.fullTodos;
+export const getSortingTitle = state => state.sortingTitle;
+
 const initialState = {
   fullTodos: [],
-  currentSortingTitle: '',
+  sortingTitle: '',
 };
 
 export const SET_FULL_TODOS = 'setFullTodos';
@@ -23,7 +26,7 @@ const reducer = (state, action) => {
     case SET_SORTING_TITLE:
       return {
         ...state,
-        currentSortingTitle: action.value,
+        sortingTitle: action.value,
       };
     default:
       return state;
