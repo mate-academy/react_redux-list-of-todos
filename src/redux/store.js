@@ -2,9 +2,9 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { getTodos, getUsers } from '../api/getData';
 
-const START_LOAD = 'start_loading';
-const HANDLE_SUCCESS = 'handle_success';
-const HANDLE_DELETE = 'handle_delete';
+const START_LOAD = 'START_LOAD';
+const HANDLE_SUCCESS = 'HANDLE_SUCCESS';
+const HANDLE_DELETE = 'HANDLE_DELETE';
 
 export const startLoad = () => ({ type: START_LOAD });
 

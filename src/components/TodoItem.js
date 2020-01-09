@@ -8,28 +8,26 @@ const TodoItem = (props) => {
   const { id, title, completed, userName, userEmail, handleDelete } = props;
 
   return (
-    <>
-      <tr>
-        <td>{id}</td>
-        <td>{title}</td>
-        <td>
-          {completed === true
-            ? 'completed'
-            : 'no completed'}
-        </td>
-        <td>{userName}</td>
-        <td>{userEmail}</td>
-        <td>
-          <button
-            type="button"
-            className="btn btn-danger"
-            onClick={() => handleDelete(id)}
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    </>
+    <tr>
+      <td>{id}</td>
+      <td>{title}</td>
+      <td>
+        {completed === true
+          ? 'completed'
+          : 'no completed'}
+      </td>
+      <td>{userName}</td>
+      <td>{userEmail}</td>
+      <td>
+        <button
+          type="button"
+          className="btn btn-danger"
+          onClick={() => handleDelete(id)}
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
   );
 };
 
