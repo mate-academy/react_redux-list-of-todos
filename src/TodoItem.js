@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button, Card, Image } from 'semantic-ui-react';
-import { deleteTodo } from './store/store';
+import { createActionDeleteTodo } from './store/store';
 import User from './User';
 
-const TodoItem = ({ todo, deleteTodo }) => {  // eslint-disable-line
+const TodoItem = ({ todo, deleteTodo }) => {
   const { title, id, completed, user } = todo;
   const img = [
     'https://react.semantic-ui.com/images/avatar/large/steve.jpg',
@@ -60,7 +60,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  deleteTodo: id => dispatch(deleteTodo(id)),
+  deleteTodo: id => dispatch(createActionDeleteTodo(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoItem);

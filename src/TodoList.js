@@ -8,10 +8,10 @@ import { Button,
   Dimmer,
   Loader } from 'semantic-ui-react';
 import {
-  startLoading,
-  handleError,
-  handleSuccess,
-  sortTodos,
+  createActionStartLoading,
+  createActionHandleError,
+  createActionHandleSuccess,
+  createActionSortTodos,
 } from './store/store';
 import 'semantic-ui-css/semantic.min.css';
 import TodoItem from './TodoItem';
@@ -20,10 +20,10 @@ function TodoList({
   combineData,
   isLoading,
   hasError,
-  startLoading,   // eslint-disable-line
-  handleError,   // eslint-disable-line
-  handleSuccess,  // eslint-disable-line
-  sortTodos,      // eslint-disable-line
+  startLoading,
+  handleError,
+  handleSuccess,
+  sortTodos,
 }) {
   const loadTodos = async() => {
     startLoading();
@@ -123,10 +123,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  startLoading: () => dispatch(startLoading()),
-  handleError: () => dispatch(handleError()),
-  handleSuccess: combineData => dispatch(handleSuccess(combineData)),
-  sortTodos: event => dispatch(sortTodos(event)),
+  startLoading: () => dispatch(createActionStartLoading()),
+  handleError: () => dispatch(createActionHandleError()),
+  handleSuccess: combineData => dispatch(
+    createActionHandleSuccess(combineData)
+  ),
+  sortTodos: event => dispatch(createActionSortTodos(event)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

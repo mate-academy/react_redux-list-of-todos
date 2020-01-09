@@ -10,30 +10,28 @@ const TYPES_SORT_TODOS = {
   user: 'SORT_BY_USER',
 };
 
-export const sortTodos = (event) => {
+export const createActionSortTodos = (event) => {
   const { value } = event.target;
-
-  console.log(value);
 
   return {
     type: TYPES_SORT_TODOS[value],
   };
 };
 
-export const startLoading = () => ({
+export const createActionStartLoading = () => ({
   type: START_LOADING,
 });
 
-export const handleSuccess = combineData => ({
+export const createActionHandleSuccess = combineData => ({
   type: HANDLE_SUCCESS,
   combineData,
 });
 
-export const handleError = () => ({
+export const createActionHandleError = () => ({
   type: HANDLE_ERROR,
 });
 
-export const deleteTodo = id => ({
+export const createActionDeleteTodo = id => ({
   type: TODO_DELETE,
   id,
 });
@@ -68,7 +66,7 @@ const reducer = (state, action) => {
     case TODO_DELETE:
       return {
         ...state,
-        combineData: [...state.combineData]
+        combineData: state.combineData
           .filter(todo => todo.id !== action.id),
       };
     case TYPES_SORT_TODOS.title:
