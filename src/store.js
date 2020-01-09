@@ -3,8 +3,6 @@ import thunk from 'redux-thunk';
 import { getUsers } from './api/users';
 import { getTodos } from './api/todos';
 
-let sortedField = 'id';
-
 const ACTION_TYPES = {
   ADD_DATA: 'ADD_DATA',
   LOAD_DATA: 'LOAD_DATA',
@@ -36,6 +34,7 @@ const initialState = {
   data: [],
   isLoading: false,
   isReady: true,
+  sortedField: 'id',
 };
 
 export const getData = () => (dispatch) => {
@@ -77,79 +76,50 @@ const reducer = (state = initialState, action = {}) => {
     }
 
     case ACTION_TYPES.SORT_TODO: {
-      switch (action.payload) {
-        case 'name': {
-          if (sortedField === 'name') {
-            return {
-              ...state,
-              data: [...state.data]
-                .reverse(),
-            };
-          }
-          sortedField = 'name';
-
-          return {
-            ...state,
-            data: [...state.data]
-              .sort((a, b) => (a.user[action.payload]
-                .localeCompare(b.user[action.payload])
-              )),
-          };
-        }
-
-        case 'id': {
-          if (sortedField === 'id') {
-            return {
-              ...state,
-              data: [...state.data]
-                .reverse(),
-            };
-          }
-          sortedField = 'id';
-
-          return {
-            ...state,
-            data: [...state.data]
-              .sort((a, b) => (a.id - b.id)),
-          };
-        }
-
-        case 'completed': {
-          if (sortedField === 'completed') {
-            return {
-              ...state,
-              data: [...state.data]
-                .reverse(),
-            };
-          }
-          sortedField = 'completed';
-
-          return {
-            ...state,
-            data: [...state.data]
-              .sort((a, b) => (b.completed - a.completed)),
-          };
-        }
-
-        case 'title': {
-          if (sortedField === 'title') {
-            return {
-              ...state,
-              data: [...state.data]
-                .reverse(),
-            };
-          }
-          sortedField = 'title';
-
-          return {
-            ...state,
-            data: [...state.data]
-              .sort((a, b) => (a.title.localeCompare(b.title)
-              )),
-          };
-        }
-        default: return state;
+      if (action.payload === 'name' && state.sortedField !== 'name') {
+        return {
+          ...state,
+          data: [...state.data]
+            .sort((a, b) => (a.user[action.payload]
+              .localeCompare(b.user[action.payload])
+            )),
+          sortedField: 'name',
+        };
       }
+
+      if (action.payload === 'id' && state.sortedField !== 'id') {
+        return {
+          ...state,
+          data: [...state.data]
+            .sort((a, b) => (a.id - b.id)),
+          sortedField: 'id',
+        };
+      }
+
+      if (action.payload === 'completed' && state.sortedField !== 'completed') {
+        return {
+          ...state,
+          data: [...state.data]
+            .sort((a, b) => (b.completed - a.completed)),
+          sortedField: 'completed',
+        };
+      }
+
+      if (action.payload === 'title' && state.sortedField !== 'title') {
+        return {
+          ...state,
+          data: [...state.data]
+            .sort((a, b) => (a.title.localeCompare(b.title)
+            )),
+          sortedField: 'title',
+        };
+      }
+
+      return {
+        ...state,
+        data: [...state.data]
+          .reverse(),
+      };
     }
 
     default:
