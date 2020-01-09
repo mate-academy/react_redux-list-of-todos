@@ -6,9 +6,9 @@ import { todosDelete } from './store';
 
 const TodoItem = ({ todo, deleteItems }) => (
   <tr>
-    <td className="td">{todo.id}</td>
-    <td className="td">{todo.title}</td>
-    <td className="td">
+    <td >{todo.id}</td>
+    <td >{todo.title}</td>
+    <td >
       <Users user={todo.user} />
     </td>
     <button
