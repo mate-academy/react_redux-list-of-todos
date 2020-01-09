@@ -54,7 +54,7 @@ export const prepareTodos = preparedTodos => ({
 
 export const getIsloading = state => state.isLoading;
 export const getisShown = state => state.isShown;
-export const getTodosWithUsers = state => state.visibleTodos;
+export const getTodosWithUsers = state => state.preparedTodos;
 
 export const loadPreparedTodos = () => async(dispatch) => {
   await dispatch(startLoading());
@@ -82,7 +82,6 @@ const initialState = {
   isShown: true,
   isSorting: 'id',
   preparedTodos: [],
-  visibleTodos: [],
 };
 
 const reducer = (state = null, action) => {
@@ -107,15 +106,12 @@ const reducer = (state = null, action) => {
       return {
         ...state,
         preparedTodos: action.preparedTodos,
-        visibleTodos: action.preparedTodos,
         isLoading: false,
         isShown: false,
       };
     case DELETE_TODO:
       return {
         ...state,
-        visibleTodos:
-          state.visibleTodos.filter(todo => todo.id !== action.id),
         preparedTodos:
           state.preparedTodos.filter(todo => todo.id !== action.id),
 
@@ -124,15 +120,15 @@ const reducer = (state = null, action) => {
       return state.isSorting !== action.title
         ? {
           ...state,
-          visibleTodos:
+          preparedTodos:
           [...state.preparedTodos]
             .sort(getSortMethod(action.title)),
           isSorting: action.title,
         }
         : {
           ...state,
-          visibleTodos:
-            [...state.visibleTodos].reverse(),
+          preparedTodos:
+            [...state.preparedTodos].reverse(),
           isSorting: '',
         };
     default: return state;

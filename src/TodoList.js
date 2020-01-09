@@ -9,13 +9,12 @@ import {
   getisShown,
   getTodosWithUsers,
   sortByType,
-
 } from './store';
 
 const TodoList = ({
   isLoading,
   isShown,
-  visibleTodos,
+  preparedTodos,
   loadTodosWithUsers,
   sortTodosBy,
 
@@ -63,7 +62,7 @@ const TodoList = ({
                 </tr>
               </thead>
               <tbody>
-                {visibleTodos.map(todo => (
+                {preparedTodos.map(todo => (
                   <TodoItem
                     todo={todo}
                     key={todo.id}
@@ -82,7 +81,7 @@ const TodoList = ({
 const mapStateToProps = state => ({
   isLoading: getIsloading(state),
   isShown: getisShown(state),
-  visibleTodos: getTodosWithUsers(state),
+  preparedTodos: getTodosWithUsers(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -94,7 +93,7 @@ const mapDispatchToProps = dispatch => ({
 TodoList.propTypes = {
   isShown: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  visibleTodos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  preparedTodos: PropTypes.arrayOf(PropTypes.object).isRequired,
   loadTodosWithUsers: PropTypes.func.isRequired,
   sortTodosBy: PropTypes.func.isRequired,
 
