@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import User from './User';
-import { deleteTodo } from './store';
+import { deleteTodo as deletTodoAction } from './store';
 
-const TodoItem = ({ todo, onDeleteTodo }) => (
+const TodoItem = ({ todo, deleteTodo }) => (
   <tr>
     <td>{todo.id}</td>
     <td>{todo.title}</td>
@@ -21,7 +21,7 @@ const TodoItem = ({ todo, onDeleteTodo }) => (
       <button
         type="button"
         className="button button--delete"
-        onClick={() => onDeleteTodo(todo.id)}
+        onClick={() => deleteTodo(todo.id)}
       >
           x
       </button>
@@ -30,7 +30,7 @@ const TodoItem = ({ todo, onDeleteTodo }) => (
 );
 
 const mapDispatchToProps = dispatch => ({
-  onDeleteTodo: id => dispatch(deleteTodo(id)),
+  deleteTodo: id => dispatch(deletTodoAction(id)),
 });
 
 TodoItem.propTypes = {
@@ -41,6 +41,6 @@ TodoItem.propTypes = {
     completed: PropTypes.bool,
     user: PropTypes.object,
   }).isRequired,
-  onDeleteTodo: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
 };
 export default connect(null, mapDispatchToProps)(TodoItem);

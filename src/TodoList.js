@@ -8,42 +8,22 @@ import {
   getIsloading,
   getisShown,
   getTodosWithUsers,
-  sortByTitle,
-  sortByUser,
-  sortById,
-  sortByStatus,
+  sortByType,
+
 } from './store';
 
 const TodoList = ({
   isLoading,
   isShown,
-  filteredTodos,
+  visibleTodos,
   loadTodosWithUsers,
-  sortTitle,
-  sortUser,
-  sortId,
-  sortStatus,
+  sortTodosBy,
+
 }) => {
   const getPreparedTodos = async() => {
     await loadTodosWithUsers();
   };
-  const sortList = [
-    {
-      title: 'id', callback: sortId,
-    },
-    {
-      title: 'title', callback: sortTitle,
-    },
-    {
-      title: 'status', callback: sortStatus,
-    },
-    {
-      title: 'user', callback: sortUser,
-    },
-    {
-      title: 'delete',
-    },
-  ];
+  const sortList = ['id', 'title', 'status', 'user', 'delete'];
 
   return (
     <div className="App">
@@ -65,25 +45,25 @@ const TodoList = ({
               <thead>
                 <tr>
                   {sortList.map(sort => (
-                    sort.title !== 'delete' ? (
+                    sort !== 'delete' ? (
                       <th
-                        onClick={() => sort.callback(sort.title)}
-                        key={sort.title}
+                        onClick={() => sortTodosBy(sort)}
+                        key={sort}
                       >
-                        {sort.title}
+                        {sort}
                       </th>
                     ) : (
                       <th
-                        key={sort.title}
+                        key={sort}
                       >
-                        {sort.title}
+                        {sort}
                       </th>
                     )
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {filteredTodos.map(todo => (
+                {visibleTodos.map(todo => (
                   <TodoItem
                     todo={todo}
                     key={todo.id}
@@ -102,25 +82,21 @@ const TodoList = ({
 const mapStateToProps = state => ({
   isLoading: getIsloading(state),
   isShown: getisShown(state),
-  filteredTodos: getTodosWithUsers(state),
+  visibleTodos: getTodosWithUsers(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   loadTodosWithUsers: () => dispatch(loadPreparedTodos()),
-  sortTitle: title => dispatch(sortByTitle(title)),
-  sortUser: title => dispatch(sortByUser(title)),
-  sortId: title => dispatch(sortById(title)),
-  sortStatus: title => dispatch(sortByStatus(title)),
+  sortTodosBy: title => dispatch(sortByType(title)),
+
 });
 
 TodoList.propTypes = {
   isShown: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  filteredTodos: PropTypes.arrayOf(PropTypes.object).isRequired,
+  visibleTodos: PropTypes.arrayOf(PropTypes.object).isRequired,
   loadTodosWithUsers: PropTypes.func.isRequired,
-  sortTitle: PropTypes.func.isRequired,
-  sortUser: PropTypes.func.isRequired,
-  sortId: PropTypes.func.isRequired,
-  sortStatus: PropTypes.func.isRequired,
+  sortTodosBy: PropTypes.func.isRequired,
+
 };
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
