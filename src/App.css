@@ -1,0 +1,97 @@
+body {
+  background: #e2e6ea;
+  padding: 40px;
+}
+
+.App {
+  font-size: 14px;
+}
+
+.App button {
+  margin: 0 auto;
+}
+
+.Table {
+  width: 95%;
+  margin: auto;
+  font-family: Lato, Arial, sans-serif;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  color: #212121;
+  box-shadow: 10px 10px 30px 10px rgba(0,0,0,0.3);
+}
+
+a {
+  color: #212121;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #e83e8c;
+}
+
+.Table th {
+  cursor: pointer;
+}
+
+.Table td {
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  padding: 11px;
+}
+
+.thead th {
+  background-color: #0069d9;
+  color: white;
+  font-weight: bold;
+}
+
+.thead th:hover {
+  background-color: #e83e8c;
+}
+
+.progress {
+  background: #fde7a5;
+  color: #bd9826;
+}
+
+.done {
+  background: #8fd19e;
+  color: #22923b;
+}
+
+.Table tr:nth-child(even) {
+  background: #f2f2f2;
+}
+
+.Table tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+.button {
+  display: inline-block;
+  font-weight: 400;
+  color: #212529;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid #f8f9fa;
+  background-color: #f8f9fa;
+  padding: 0.38rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+}
+
+.button:disabled {
+  cursor: default;
+}
+
+.button:hover {
+  color: #212529;
+  background-color: #e2e6ea;
+  border-color: #dae0e5;
+}
