@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import TodoItem from './TodoItem';
 import { TodosContext } from '../context';
 
@@ -24,7 +23,3 @@ const TodoList = () => (
 );
 
 export default TodoList;
-
-TodoList.propTypes = {
-  todos: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
