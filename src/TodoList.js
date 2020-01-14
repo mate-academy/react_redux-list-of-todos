@@ -40,28 +40,24 @@ const TodoList = ({ todos, setTodos, selectedSort, setSelectedSort }) => {
           <tr>
             <th
               className="title"
-              style={{ cursor: 'pointer' }}
               onClick={() => sortTableBy('id')}
             >
               Sort by Id
             </th>
             <th
               className="title"
-              style={{ cursor: 'pointer' }}
               onClick={() => sortTableBy('title')}
             >
               Sort by Title
             </th>
             <th
               className="title"
-              style={{ cursor: 'pointer' }}
               onClick={() => sortTableBy('completed')}
             >
               Sort if is completed
             </th>
             <th
               className="title"
-              style={{ cursor: 'pointer' }}
               onClick={() => sortTableBy('user')}
             >
               Sort by Name
@@ -72,7 +68,7 @@ const TodoList = ({ todos, setTodos, selectedSort, setSelectedSort }) => {
         <tbody>
           {todos.map(todo => (
 
-            <TodoItem todo={todo} />
+            <TodoItem todo={todo} key={todo.id} />
           ))}
         </tbody>
       </table>

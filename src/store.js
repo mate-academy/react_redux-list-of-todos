@@ -1,5 +1,10 @@
 import { createStore } from 'redux';
 
+export const actionTypes = {
+  SET_TODOS: 'setTodos',
+  DELETE_TODO: 'handleDelete',
+};
+
 const rootReduser = (state, action) => {
   switch (action.type) {
     case 'SET_TODOS':
@@ -21,6 +26,11 @@ const rootReduser = (state, action) => {
       return {
         ...state,
         selectedSort: action.selectedSort,
+      };
+    case 'DELETE_TODO':
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.id),
       };
     default:
       return state;

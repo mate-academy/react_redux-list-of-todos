@@ -2,10 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-const TodoItem = ({ todo, todos, setTodos }) => {
-  const deleteTodo = (id) => {
-    setTodos(todos.filter(item => item.id !== id));
-  };
+const TodoItem = ({ todo, handleDelete }) => {
 
   return (
     <tr>
@@ -16,7 +13,7 @@ const TodoItem = ({ todo, todos, setTodos }) => {
       <td>
         <button
           type="button"
-          onClick={() => deleteTodo(todo.id)}
+          onClick={() => handleDelete(todo.id)}
         >
           <span>&#128465;</span>
         </button>
@@ -34,9 +31,15 @@ const getMethods = dispatch => ({
     type: 'SET_TODOS',
     todos: newTodos,
   }),
+  handleDelete: id => dispatch({
+    type: 'DELETE_TODO',
+    id,
+  }),
 });
 
+
 TodoItem.propTypes = {
+  handleDelete: PropTypes.func.isRequired,
   todo: PropTypes.shape({
     id: PropTypes.number,
     title: PropTypes.string,

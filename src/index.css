@@ -34,4 +34,5 @@ tr:nth-child(odd) {
 
 .title {
   background: lightgreen;
+  cursor: pointer;
 }
