@@ -1,0 +1,1 @@
+{"version":3,"sources":["App.css"],"names":[],"mappings":"AAAA,QACE,YAAa,CACb,WAAY,CACZ,cACF,CAMA,SACE,iBACF","file":"main.24771fdb.chunk.css","sourcesContent":[".button {\n  outline: none;\n  border: none;\n  cursor: pointer;\n}\n\nh1 {\n  text-align: center;\n}\n\n.load {\n  text-align: center;\n}\n"]}

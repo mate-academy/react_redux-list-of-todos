@@ -1,0 +1,13 @@
+.button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+h1 {
+  text-align: center;
+}
+
+.load {
+  text-align: center;
+}
