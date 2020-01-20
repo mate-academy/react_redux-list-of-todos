@@ -1,0 +1,11 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.td:hover {
+  background-color: lightslategray;
+  cursor: pointer;
+}
