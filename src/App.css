@@ -1,0 +1,15 @@
+.App {
+  text-align: center;
+}
+
+table {
+  margin: auto;
+}
+
+.aligned-left {
+  text-align: left;
+}
+
+th {
+  cursor: pointer;
+}
