@@ -1,0 +1,12 @@
+.todo-item__complete {
+  text-align: center;
+  border: 2px dashed blue;
+  background-color: aquamarine;
+}
+
+.todo-item__not-complete {
+  text-align: center;
+  border: 2px dashed blue;
+  background-color: rgb(255, 228, 232);
+  height: 100%;
+}
