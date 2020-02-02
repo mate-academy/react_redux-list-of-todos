@@ -14,7 +14,7 @@ const TodoList = () => (
     </thead>
     <tbody>
       <TodosContext.Consumer>
-        {value => value.todos.map(todo => (
+        {value => value.preparedTodos.map(todo => (
           <TodoItem todo={todo} key={todo.id} />
         ))}
       </TodosContext.Consumer>

@@ -9,13 +9,13 @@ function Buttons() {
         <>
           <Button
             type="button"
-            onClick={() => value.switcher('byTitle')}
+            onClick={() => value.switcher('byUser')}
           >
             By User!
           </Button>
           <Button
             type="button"
-            onClick={() => value.switcher('byUser')}
+            onClick={() => value.switcher('byTitle')}
           >
             By Title!
           </Button>
@@ -27,7 +27,7 @@ function Buttons() {
           </Button>
           <Button
             type="button"
-            onClick={() => value.refresher()}
+            onClick={() => value.loadData()}
           >
             Refresh!
           </Button>

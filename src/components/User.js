@@ -10,7 +10,6 @@ const User = ({ user }) => (
 User.propTypes = {
   user: PropTypes.shape({
     name: PropTypes.string,
-    username: PropTypes.string,
   }).isRequired,
 };
 

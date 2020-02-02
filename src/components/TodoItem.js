@@ -27,7 +27,7 @@ const TodoItem = ({ todo }) => (
           <Button icon>
             <Icon
               name="user delete"
-              onClick={() => value.deleteUser(todo.id)}
+              onClick={() => value.deleteTodo(todo.id)}
             />
           </Button>
         )}
@@ -41,8 +41,8 @@ export default TodoItem;
 
 TodoItem.propTypes = {
   todo: PropTypes.shape({
-    user: PropTypes.string,
-    id: PropTypes.string,
+    user: PropTypes.arrayOf(PropTypes.object).isRequired,
+    id: PropTypes.number,
     title: PropTypes.string,
     completed: PropTypes.bool,
   }).isRequired,
