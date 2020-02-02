@@ -66,8 +66,6 @@ export function rootReducer(state = initialState, action) {
     case ACTION_TYPES.SORT_TODOS: {
       const { payload } = action;
 
-      // debugger;
-
       switch (payload) {
         case 'byUser':
           return {
