@@ -70,21 +70,21 @@ export function rootReducer(state = initialState, action) {
         case 'byUser':
           return {
             ...state,
-            preparedTodos: state.preparedTodos.sort(
+            preparedTodos: state.preparedTodos.slice().sort(
               (a, b) => a.user.name.localeCompare(b.user.name)
             ),
           };
         case 'byTitle':
           return {
             ...state,
-            preparedTodos: state.preparedTodos.sort(
+            preparedTodos: state.preparedTodos.slice().sort(
               (a, b) => a.title.localeCompare(b.title)
             ),
           };
         case 'byStatus':
           return {
             ...state,
-            preparedTodos: state.preparedTodos.sort(
+            preparedTodos: state.preparedTodos.slice().sort(
               (a, b) => a.completed - b.completed
             ),
           };
