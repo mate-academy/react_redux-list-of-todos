@@ -21,6 +21,9 @@
     "gh-pages": "^2.2.0",
     "husky": "^4.0.10",
     "lint-staged": "^9.5.0",
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
     "stylelint": "^13.0.0"
   },
   "scripts": {
