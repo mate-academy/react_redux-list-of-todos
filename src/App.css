@@ -1,0 +1,73 @@
+.load-btn {
+  display: block;
+  margin: auto;
+  margin-top: calc(50vh - 40px);
+  width: 100px;
+  height: 40px;
+  background-color: yellow;
+  border-radius: 5px;
+}
+
+.load-btn:hover {
+  background-color: darkorange;
+}
+
+.load-btn:disabled {
+  background-color: yellow;
+}
+
+.loading-text {
+  text-align: center;
+}
+
+.App {
+  text-align: center;
+}
+
+.user-list {
+  border-collapse: collapse;
+  margin: auto;
+  padding: 20px;
+  display: block;
+}
+
+.user-list-title {
+  background-color: lightblue;
+}
+
+.user-list-title-item-row {
+  border: 1px solid black;
+}
+
+.user-list-title-item-column {
+  min-width: 130px;
+  padding: 10px 0;
+}
+
+.user-item {
+  border: 1px solid black;
+  padding: 10px 20px;
+}
+
+.sorted-btn {
+  border: none;
+  height: 30px;
+  width: 100px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 9px lightsteelblue;
+  cursor: pointer;
+  background-color: yellow;
+  font-weight: bold;
+}
+
+.sorted-btn:hover {
+  background-color: white;
+}
+
+.succes-load {
+  background-color: lightgreen;
+}
+
+.faild-load {
+  background-color: lightcoral;
+}
