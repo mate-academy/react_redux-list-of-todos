@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Todo } from '../Todo/Todo';
-import { TodoWithUsers } from '../../types';
+import { TodoWithUsers } from '../../interfaces';
 import './TodoList.css';
 
 interface Props {

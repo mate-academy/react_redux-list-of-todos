@@ -1,4 +1,4 @@
-import { TodoType, UserType } from './types';
+import { TodoType, UserType } from './interfaces';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/';
 
@@ -8,10 +8,10 @@ async function getData<T>(url: string): Promise<T> {
   return response.json();
 }
 
-export const getUsers = () => {
-  return getData<UserType[]>(`${API_URL}users`);
+export const getUsers = (): Promise<UserType[]> => {
+  return getData(`${API_URL}users`);
 };
 
-export const getTodos = () => {
-  return getData<TodoType[]>(`${API_URL}todos`);
+export const getTodos = (): Promise<TodoType[]> => {
+  return getData(`${API_URL}todos`);
 };

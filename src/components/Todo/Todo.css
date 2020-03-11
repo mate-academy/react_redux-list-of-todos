@@ -14,3 +14,9 @@
   width: 10%;
   padding: 5px;
 }
+
+.remove-button {
+  cursor: pointer;
+  border: none;
+  background-color: inherit;
+}

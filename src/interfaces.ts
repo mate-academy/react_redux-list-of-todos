@@ -38,3 +38,7 @@ export interface TodoType {
 export interface TodoWithUsers extends TodoType {
   user: UserType;
 }
+
+export interface State {
+  todos: TodoWithUsers[];
+}
