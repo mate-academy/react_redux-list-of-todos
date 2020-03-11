@@ -1,7 +1,15 @@
 import {
   AppState,
   TodoWithUser,
+  Todo,
+  User,
 } from '../constants/types';
+
+import {
+  loadTodos,
+  loadUsers,
+} from './api';
+
 
 const sortTodosByTitle = (todos: TodoWithUser[]): TodoWithUser[] => {
   return todos
@@ -49,4 +57,22 @@ export const getSortedTodos = (state: AppState): TodoWithUser[] => {
     default:
       return todos;
   }
+};
+
+export const getTodos = async () => {
+  const [initialTodos, initialUsers] = await Promise.all([
+    loadTodos(),
+    loadUsers(),
+  ]);
+
+  const todos = initialTodos.map((todo: Todo) => {
+    return {
+      ...todo,
+      user: initialUsers.find(
+        (currentUser: User) => currentUser.id === todo.userId,
+      ) as User,
+    };
+  });
+
+  return todos;
 };

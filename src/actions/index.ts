@@ -1,4 +1,4 @@
-import { Dispatch } from 'redux';
+import { Dispatch, Action } from 'redux';
 
 import {
   SET_IS_LOADING,
@@ -10,25 +10,19 @@ import {
 
 import {
   IsLoadingAction,
-  DataWasLoadedAction,
   SortOptionAction,
   SortOption,
   TodosAction,
-  Todo,
-  User,
 } from '../constants/types';
 
-import {
-  loadTodos,
-  loadUsers,
-} from '../utils/api';
+import { getTodos } from '../utils/helpers';
 
 export const setIsLoading = (isLoading: boolean): IsLoadingAction => ({
   type: SET_IS_LOADING,
   payload: isLoading,
 });
 
-export const setDataWasLoaded = (): DataWasLoadedAction => ({
+export const setDataWasLoaded = (): Action => ({
   type: SET_DATA_WAS_LOADED,
 });
 
@@ -39,19 +33,7 @@ export const setSortOption = (option: SortOption): SortOptionAction => ({
 
 export const loadData = () => {
   return async (dispatch: Dispatch) => {
-    const [initialTodos, initialUsers] = await Promise.all([
-      loadTodos(),
-      loadUsers(),
-    ]);
-
-    const todos = initialTodos.map((todo: Todo) => {
-      return {
-        ...todo,
-        user: initialUsers.find(
-          (currentUser: User) => currentUser.id === todo.userId,
-        ) as User,
-      };
-    });
+    const todos = await getTodos();
 
     dispatch<TodosAction>({
       type: LOAD_DATA,

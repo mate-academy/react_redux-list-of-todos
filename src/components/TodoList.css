@@ -4,9 +4,6 @@
   flex-direction: column;
   max-width: 400px;
   padding: 5px 40px 5px 0;
-  /* padding-top: 5px;
-  padding-right: 40px;
-  padding-bottom: 5px; */
 }
 
 .delete-todo-item {

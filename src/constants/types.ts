@@ -1,3 +1,5 @@
+import { Action } from 'redux';
+
 export interface AppState {
   isLoading: boolean;
   todos: TodoWithUser[];
@@ -48,27 +50,19 @@ export interface TodoWithUser extends Todo {
 
 export type SortOption = 'title' | 'completeness' | 'name' | 'default';
 
-export interface IsLoadingAction {
-  type: string;
+export interface IsLoadingAction extends Action {
   payload: boolean;
 }
 
-export interface DataWasLoadedAction {
-  type: string;
-}
-
-export interface SortOptionAction {
-  type: string;
+export interface SortOptionAction extends Action {
   payload: string;
 }
 
-export interface LoadDataAction {
-  type: string;
+export interface LoadDataAction extends Action {
   payload: TodoWithUser[];
 }
 
-export interface DeleteTodoAction {
-  type: string;
+export interface DeleteTodoAction extends Action {
   payload: number;
 }
 

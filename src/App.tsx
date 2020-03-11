@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { Action } from 'redux';
 import { connect } from 'react-redux';
 
 import { Button } from './components/Button';
@@ -13,7 +14,6 @@ import {
 import {
   AppState,
   IsLoadingAction,
-  DataWasLoadedAction,
 } from './constants/types';
 import './App.css';
 
@@ -22,7 +22,7 @@ interface Props {
   isLoading: boolean;
   loadData: Function;
   setIsLoading(isLoading: boolean): IsLoadingAction;
-  setDataWasLoaded(): DataWasLoadedAction;
+  setDataWasLoaded(): Action;
 }
 
 

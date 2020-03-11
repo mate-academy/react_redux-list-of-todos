@@ -50,11 +50,9 @@ const TodoListTemplate: FC<Props> = (props) => {
   );
 };
 
-const mapStateToProps = (state: AppState) => {
-  return {
-    todos: getSortedTodos(state),
-  };
-};
+const mapStateToProps = (state: AppState) => ({
+  todos: getSortedTodos(state),
+});
 
 export const TodoList = connect(
   mapStateToProps,
