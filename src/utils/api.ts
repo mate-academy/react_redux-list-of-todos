@@ -2,7 +2,9 @@ import { BASE_URL } from '../constants/api';
 import { Todo, User } from '../constants/types';
 
 const loadData = async <T>(specificUrl: string): Promise<T[]> => {
-  const response = await fetch(`${BASE_URL}/${specificUrl}`);
+  const response = await fetch(`${BASE_URL}/${specificUrl}`, {
+    mode: 'no-cors',
+  });
 
   return response.json();
 };
