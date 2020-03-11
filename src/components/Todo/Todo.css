@@ -1,0 +1,16 @@
+.todo {
+  display: flex;
+  margin: auto;
+  text-align: center;
+  border-bottom: 1px solid lightsteelblue;
+}
+
+.todo__title {
+  width: 50%;
+  padding: 5px;
+}
+
+.todo__status {
+  width: 10%;
+  padding: 5px;
+}

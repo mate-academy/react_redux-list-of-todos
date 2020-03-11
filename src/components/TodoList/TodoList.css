@@ -1,0 +1,12 @@
+.list {
+  list-style: none;
+  padding: 0 20px;
+  border: 3px solid lightslategray;
+}
+
+@media (min-width: 768px) {
+  .list {
+    width: 720px;
+    margin: auto;
+  }
+}
