@@ -39,3 +39,8 @@ interface Todo {
 interface TodoWithUser extends Todo{
   user: User;
 }
+
+interface State {
+  prepearedTodoList: TodoWithUser[];
+  isLoaded: boolean;
+}
