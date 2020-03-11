@@ -1,12 +1,27 @@
-import { createStore } from 'redux';
+import { createStore, Action, Reducer } from 'redux';
 
 const initialState = {
   prepearedTodoList: [],
   isLoaded: false,
 };
 
+interface ReducerTodoState {
+  prepearedTodoList: TodoWithUser[] | [];
+  isLoaded: boolean;
+}
 
-const reducerTodo = (state: any, action: any) => {
+enum ActionType {
+  IsLoaded = 'isLoaded',
+  PrepearedTodoList = 'prepearedTodoList',
+}
+
+interface StoreAction extends Action<ActionType>{
+  value: Partial<ReducerTodoState>;
+}
+
+const reducerTodo: Reducer<ReducerTodoState, any> = (
+  state = initialState, action,
+) => {
   if (action.type === 'isLoaded') {
     return {
       ...state,
@@ -24,4 +39,4 @@ const reducerTodo = (state: any, action: any) => {
   return state;
 };
 
-export const store = createStore(reducerTodo, initialState);
+export const store: any = createStore<ReducerTodoState, StoreAction, null, null>(reducerTodo);

@@ -41,7 +41,7 @@ const getMethods = (dispatch: any) => ({
   },
 });
 
-const InitialButton: FC<State & any> = ({ loadUsers, isLoaded, prepearedTodoList }) => {
+const InitialButton: FC<State & any> = ({ isLoaded, prepearedTodoList, loadUsers }) => {
   return (
     <>
       {
