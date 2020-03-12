@@ -111,6 +111,7 @@ export const TodosTemplate: FC<Props> = ({
                     <th className="table__cell">User</th>
                     <th className="table__cell">Todo</th>
                     <th className="table__cell">Status</th>
+                    <th className="table__cell">Delete</th>
                   </tr>
                 </thead>
                 <tbody>

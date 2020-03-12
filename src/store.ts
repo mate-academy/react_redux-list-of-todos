@@ -29,7 +29,10 @@ function reduser(state = initualState, action: AnyAction) {
     case 'SET_SELECTED_SORT':
       return { ...state,
       selectedSort: action.selectedSort}
-      default:
+   case 'DELETE_TASK':
+    return { ...state,
+      todos: [...state.todos].filter(todo => todo.id !== action.id)}
+    default:
       return state;
   }
 };

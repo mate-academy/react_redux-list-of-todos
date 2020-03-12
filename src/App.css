@@ -9,7 +9,8 @@
   font-weight: 600;
 }
 
-.loading_button {
+.loading_button,
+.deleted_button {
   cursor: pointer;
   width: 100px;
   height: 30px;
@@ -22,7 +23,8 @@
     color 300ms linear;
 }
 
-.loading_button:hover {
+.loading_button:hover,
+.deleted_button:hover {
   background-color: #62989e;
   color: #fff;
 }
