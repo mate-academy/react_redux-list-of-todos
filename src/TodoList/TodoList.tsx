@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { actions } from '../Store/ActionTypes';
 
 interface Props {
   todos: Todo[];
@@ -62,7 +63,7 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    deleteItem: (id: number) => dispatch({ type: 'DELETE_ITEM', payload: id }),
+    deleteItem: (id: number) => dispatch({ type: actions.DELETE_ITEM, payload: id }),
   };
 };
 

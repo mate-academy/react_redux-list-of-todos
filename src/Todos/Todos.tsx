@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { TodoList } from '../TodoList/TodoList';
 import { getCompleteTodos } from '../Api/Api';
+import { actions } from '../Store/ActionTypes';
 
 interface Props {
   todos: Todo[];
@@ -63,10 +64,10 @@ const mapStateToProps = (state: Todo[]) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    setTodos: (todos: Todo[]) => dispatch({ type: 'SET_TODOS', payload: todos }),
-    sortByTitle: () => dispatch({ type: 'SORT_BY_TITLE' }),
-    sortByStatus: () => dispatch({ type: 'SORT_BY_STATUS' }),
-    sortByUserName: () => dispatch({ type: 'SORT_BY_USERNAME' }),
+    setTodos: (todos: Todo[]) => dispatch({ type: actions.SET_TODOS, payload: todos }),
+    sortByTitle: () => dispatch({ type: actions.SORT_BY_TITLE }),
+    sortByStatus: () => dispatch({ type: actions.SORT_BY_STATUS }),
+    sortByUserName: () => dispatch({ type: actions.SORT_BY_USERNAME }),
   };
 };
 
