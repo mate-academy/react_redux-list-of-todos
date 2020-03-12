@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { InitialState } from './store';
 import { getTodos, getUsers } from './api';
 import TodoList from './components/TodoList/TodoList';
 

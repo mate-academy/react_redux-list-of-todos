@@ -47,3 +47,7 @@ interface TodoWithUser extends Todo {
 }
 
 type TodosWithUser = TodoWithUser[];
+
+interface InitialState {
+  todos: TodosWithUser | [];
+}

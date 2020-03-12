@@ -1,9 +1,5 @@
 import { Action, Reducer, createStore } from 'redux';
 
-export interface InitialState {
-  todos: TodosWithUser | [];
-}
-
 interface DispatchAction extends Action {
   type: string;
   todos: TodosWithUser;
