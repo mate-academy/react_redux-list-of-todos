@@ -1,0 +1,20 @@
+.app {
+  margin: 10vh auto;
+  width: 70vw;
+  font-family: monospace;
+  text-align: center;
+}
+
+.table {
+  white-space: nowrap;
+}
+
+.th {
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.button-delete {
+  padding: 5px;
+  margin: 0 15%;
+}
