@@ -22,8 +22,17 @@ interface Methods {
 
 type Props = StateProps & Methods;
 
-export const TodosTemplate: FC<Props> = ({ isLoading, setIsLoading, setIsLoaded, isLoaded, todos, setTodos, setSelectedSort, selectedSort }) => {
-  
+export const TodosTemplate: FC<Props> = ({
+  isLoading,
+  setIsLoading,
+  setIsLoaded,
+  isLoaded,
+  todos,
+  setTodos,
+  setSelectedSort,
+  selectedSort
+}) => {
+
   const showedAllTodos = async () => {
     setIsLoading(true);
 
@@ -115,7 +124,12 @@ export const TodosTemplate: FC<Props> = ({ isLoading, setIsLoading, setIsLoaded,
     )
 }
 
-const mapStateToProps = (state: State) => ({ isLoading: state.isLoading, isLoaded: state.isLoaded, todos: state.todos, selectedSort: state.selectedSort });
+const mapStateToProps = (state: State) => ({
+  isLoading: state.isLoading,
+  isLoaded: state.isLoaded,
+  todos: state.todos,
+  selectedSort: state.selectedSort
+});
 const mapDispatchToProps = (dispatch: any) => {
   return {
     setIsLoading: (status: boolean) => dispatch({ type: 'SET_IS_LOADING', isLoading: status }),

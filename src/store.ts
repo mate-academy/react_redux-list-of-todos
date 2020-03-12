@@ -34,4 +34,4 @@ function reduser(state = initualState, action: AnyAction) {
   }
 };
 
-export const store = createStore(reduser, initualState);
+export const store = createStore(reduser);
