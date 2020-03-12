@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { PreparedTodo } from './types';
 import { TodoList } from './components/TodoList/TodoList';
 import { getPreparedTodos } from './helpers_api';
@@ -49,7 +50,7 @@ export const TodosTemplate: FC<Props> = ({
   }
 
   const sortedTodos = useMemo(() => {
-    return selectedSort === 'initual'
+    return selectedSort === 'initial'
         ? [...todos]
         : [...todos].sort((aTodo, bTodo) => {
           switch(selectedSort) {
@@ -100,7 +101,7 @@ export const TodosTemplate: FC<Props> = ({
                 className="selected_button"
               >
                 <option disabled value='choose'>Choose sort method</option>
-                <option value='initual'>Initual view</option>
+                <option value='initial'>Initial view</option>
                 <option value='title'>Title</option>
                 <option value='name'>Name</option>
                 <option value='completed'>Completed</option>
@@ -131,7 +132,7 @@ const mapStateToProps = (state: State) => ({
   todos: state.todos,
   selectedSort: state.selectedSort
 });
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     setIsLoading: (status: boolean) => dispatch({ type: 'SET_IS_LOADING', isLoading: status }),
     setIsLoaded: () => dispatch({ type: 'SET_IS_LOADED', isLoaded: true }),

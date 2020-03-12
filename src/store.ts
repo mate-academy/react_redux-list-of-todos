@@ -8,14 +8,14 @@ export interface State {
   selectedSort: string
 }
 
-const initualState: State = {
+const initialState: State = {
   todos: [],
   isLoading: false,
   isLoaded: false,
   selectedSort: 'choose',
 }
 
-function reduser(state = initualState, action: AnyAction) {
+function reduser(state = initialState, action: AnyAction) {
   switch(action.type) {
     case 'SET_IS_LOADING':
       return { ...state,

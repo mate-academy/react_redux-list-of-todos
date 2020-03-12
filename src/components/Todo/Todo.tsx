@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { PreparedTodo } from '../../types';
 
 import '../../App.css';
@@ -30,7 +31,7 @@ export const TodoTemplate: FC<Props> = ({ todo, setDeleted }) => {
   );
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
     setDeleted: (id: number) => dispatch({ type: 'DELETE_TASK', id: id})
   }
