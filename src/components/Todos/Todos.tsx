@@ -2,8 +2,8 @@ import React, { FC, useState } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { TodoList } from '../TodoList/TodoList';
-import { UserType, TodoWithUsers, State } from '../../interfaces';
-import { getUsers, getTodos } from '../../api';
+import { TodoWithUsers, State } from '../../interfaces';
+import { getTodosWithUsers } from '../../api';
 import { SET_TODOS } from '../../constants';
 
 interface Actions {
@@ -13,41 +13,31 @@ interface Actions {
 type Props = State & Actions;
 
 const TodosTemplate: FC<Props> = ({ todos, setTodos }) => {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
 
-  const showTodos = async () => {
-    setLoading(true);
+  const loadTodos = async () => {
+    setIsLoading(true);
 
-    const [todosFromServer, users] = await Promise.all(
-      [getTodos(), getUsers()],
-    );
+    const loadedTodos = await getTodosWithUsers();
 
-    const preparedTodos = todosFromServer.map((todo) => {
-      const user = users.find((person) => person.id === todo.userId) as UserType;
-
-      return {
-        ...todo,
-        user,
-      };
-    });
-
-    setTodos(preparedTodos);
-    setLoading(false);
+    setTodos(loadedTodos);
   };
 
-  const filter = (typeOfFilter: string) => {
-    switch (typeOfFilter) {
+  const filter = (field: string) => {
+    const visibleTodos = [...todos];
+
+    switch (field) {
       case 'sortByTitle':
-        setTodos([...todos]
+        setTodos(visibleTodos
           .sort((a, b) => a.title.localeCompare(b.title)));
         break;
       case 'sortByName':
-        setTodos([...todos]
+        setTodos(visibleTodos
           .sort((a, b) => a.user.name.localeCompare(b.user.name)));
         break;
       case 'sortByCompleted':
-        setTodos([...todos]
+        setTodos(visibleTodos
           .sort((a, b) => b.completed.toString()
             .localeCompare(a.completed.toString())));
         break;
@@ -60,7 +50,7 @@ const TodosTemplate: FC<Props> = ({ todos, setTodos }) => {
       <button
         className="start-button"
         type="button"
-        onClick={showTodos}
+        onClick={loadTodos}
         disabled={isLoading}
       >
         {isLoading ? 'Loading...' : 'Start Load'}

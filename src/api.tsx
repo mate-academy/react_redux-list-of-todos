@@ -15,3 +15,20 @@ export const getUsers = (): Promise<UserType[]> => {
 export const getTodos = (): Promise<TodoType[]> => {
   return getData(`${API_URL}todos`);
 };
+
+export const getTodosWithUsers = async () => {
+  const [todosFromServer, users] = await Promise.all(
+    [getTodos(), getUsers()],
+  );
+
+  const preparedTodos = todosFromServer.map((todo) => {
+    const user = users.find((person) => person.id === todo.userId) as UserType;
+
+    return {
+      ...todo,
+      user,
+    };
+  });
+
+  return preparedTodos;
+};

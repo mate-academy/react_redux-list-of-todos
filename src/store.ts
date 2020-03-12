@@ -11,14 +11,11 @@ function reducer(state: State = initialState, action: AnyAction) {
   switch (action.type) {
     case SET_TODOS:
       return {
-        ...state,
         todos: action.value,
       };
-
     case REMOVE_TODO:
       return {
-        ...state,
-        todos: [...state.todos].filter(item => item.id !== action.value),
+        todos: state.todos.filter(item => item.id !== action.value),
       };
 
     default:
