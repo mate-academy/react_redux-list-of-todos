@@ -1,16 +1,18 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import * as actions from '../redux/actions';
 
 interface Props {
   id: number;
   title: string;
   completed: boolean;
   user?: User;
-  setDeteteTodo: (id: number) => void;
+  setDeleteTodo: (id: number) => void;
 }
 
 const TodoTemplate: FC<Props> = ({
-  id, title, completed, user, setDeteteTodo,
+  id, title, completed, user, setDeleteTodo,
 }) => {
   return (
     <>
@@ -22,23 +24,20 @@ const TodoTemplate: FC<Props> = ({
       <button
         type="button"
         className="button--close"
-        onClick={() => setDeteteTodo(id)}
+        onClick={() => setDeleteTodo(id)}
       >
-X
+        X
       </button>
     </>
   );
 };
 
-const mapStateToProps = (state: GlobalState) => ({
-  ...state,
-});
-
-const mapDispatchToProps = (dispatch: (arg0: { type: string; index: number }) => unknown) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    setDeteteTodo: (id: number) => dispatch({ type: 'DELETE_TODO', index: id }),
+    setDeleteTodo: (id: number) => dispatch(
+      actions.setDeleteTodo(id),
+    ),
   };
 };
 
-
-export const Todo = connect(mapStateToProps, mapDispatchToProps)(TodoTemplate);
+export const Todo = connect(null, mapDispatchToProps)(TodoTemplate);

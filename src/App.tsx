@@ -1,17 +1,22 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { TodoList } from './components/TodoList';
 import './App.css';
 import { getTodos, getUsers } from './api/getData';
 import { Actions } from './components/Actions';
+import * as actions from './redux/actions';
 
 interface Methods {
-  setIsLoaded: () => void;
+  setIsLoaded: (status: boolean) => void;
   setIsLoading: (status: boolean) => void;
   setTodos: (todos: Todo[]) => void;
 }
 
-type Props = GlobalState & Methods;
+type Props = Methods & {
+  isLoaded: boolean;
+  isLoading: boolean;
+};
 
 
 const AppTemplate: FC<Props> = ({
@@ -19,7 +24,7 @@ const AppTemplate: FC<Props> = ({
   setIsLoading, setTodos,
 }) => {
   async function handleStart() {
-    setIsLoaded();
+    setIsLoaded(true);
     setIsLoading(true);
 
     const [
@@ -62,20 +67,18 @@ const AppTemplate: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: GlobalState) => {
+const mapStateToProps = (state: { loadReducer: LoadState }) => {
   return {
-    ...state,
-    isLoaded: state.isLoaded,
-    isLoading: state.isLoading,
+    isLoaded: state.loadReducer.isLoaded,
+    isLoading: state.loadReducer.isLoading,
   };
 };
 
-const mapDispatchToProps = (dispatch:
-(arg0: { type: string; isLoaded?: boolean; isLoading?: boolean; todos?: Todo[] }) => unknown) => {
+const mapDispatchToProps = (dispatch: Dispatch) => {
   return {
-    setIsLoaded: () => dispatch({ type: 'SET_IS_LOADED', isLoaded: true }),
-    setIsLoading: (status: boolean) => dispatch({ type: 'SET_IS_LOADING', isLoading: status }),
-    setTodos: (todos: Todo[]) => dispatch({ type: 'SET_TODOS', todos: [...todos] }),
+    setIsLoaded: (status: boolean) => dispatch(actions.setIsLoaded(status)),
+    setIsLoading: (status: boolean) => dispatch(actions.setIsLoading(status)),
+    setTodos: (todos: Todo[]) => dispatch(actions.setTodos(todos)),
   };
 };
 

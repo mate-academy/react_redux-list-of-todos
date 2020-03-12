@@ -40,8 +40,15 @@ interface Todo {
   user?: User;
 }
 
-interface GlobalState {
+interface LoadState {
   isLoaded: boolean;
   isLoading: boolean;
+}
+
+interface TodoState {
   todos: Todo[];
+}
+
+interface QuerySort {
+  query: string;
 }

@@ -1,32 +1,32 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { setQuerySort } from '../redux/actions';
 
 interface Props {
-  setTitleSort: () => void;
-  setUserSort: () => void;
-  setCompleteSort: () => void;
-  setReverseTodos: () => void;
+  setQuery: (query: string) => void;
 }
 
 const ActionsTemplate: FC<Props> = ({
-  setTitleSort, setUserSort, setCompleteSort, setReverseTodos,
+  setQuery,
 }) => (
   <>
-    <button className="button" type="button" onClick={setTitleSort}>Sort by title</button>
-    <button className="button" type="button" onClick={setUserSort}>Sort by user</button>
-    <button className="button" type="button" onClick={setCompleteSort}>Sort by completed</button>
-    <button className="button" type="button" onClick={setReverseTodos}>Reverse</button>
+    <button className="button" type="button" onClick={() => setQuery('title')}>Sort by title</button>
+    <button className="button" type="button" onClick={() => setQuery('user')}>Sort by user</button>
+    <button className="button" type="button" onClick={() => setQuery('completed')}>Sort by completed</button>
+    <button className="button" type="button" onClick={() => setQuery('reverse')}>Reverse</button>
   </>
 );
 
-const mapStateToProps = (state: GlobalState) => ({ ...state });
-
-const mapDispatchToProps = (dispatch: (arg0: { type: string }) => unknown) => {
+const mapStateToProps = (state: { queryReducer: QuerySort }) => {
   return {
-    setTitleSort: () => dispatch({ type: 'SORT_BY_TITLE' }),
-    setUserSort: () => dispatch({ type: 'SORT_BY_USER' }),
-    setCompleteSort: () => dispatch({ type: 'SORT_BY_COMPLETED' }),
-    setReverseTodos: () => dispatch({ type: 'REVERSE_TODOS' }),
+    query: state.queryReducer.query,
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    setQuery: (query: string) => dispatch(setQuerySort(query)),
   };
 };
 
