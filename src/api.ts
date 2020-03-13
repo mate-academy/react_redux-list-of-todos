@@ -6,10 +6,10 @@ export const getData = async <T>(url: string): Promise<T> => {
   return response.json();
 };
 
-export const getTodos = (): Promise<Todos> => {
-  return getData<Todos>(`${API_URL}todos`);
+export const getTodos = (): Promise<Todo[]> => {
+  return getData<Todo[]>(`${API_URL}todos`);
 };
 
-export const getUsers = (): Promise<Users> => {
-  return getData<Users>(`${API_URL}users`);
+export const getUsers = (): Promise<User[]> => {
+  return getData<User[]>(`${API_URL}users`);
 };

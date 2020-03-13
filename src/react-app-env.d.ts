@@ -1,14 +1,9 @@
-// eslint-disable-next-line
-/// <reference types="react-scripts" />
-
 interface Todo {
   userId: number;
   id: number;
   title: string;
   completed: boolean;
 }
-
-type Todos = Todo[];
 
 interface User {
   id: number;
@@ -39,8 +34,6 @@ interface Company {
   catchPhrase: string;
   bs: string;
 }
-
-type Users = User[];
 
 interface TodoWithUser extends Todo {
   user: User;

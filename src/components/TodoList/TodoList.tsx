@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { SORT_BY_NAME, SORT_BY_TITLE, SORT_BY_COMPLETE } from '../../store';
 import Todo from '../Todo/Todo';
 
 interface Props {
@@ -57,16 +58,20 @@ const TodoList: FC<Props> = ({
   </table>
 );
 
+const mapStateToProps = (state: InitialState) => ({
+  todos: state.todos,
+});
+
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   sortByName: () => dispatch({
-    type: 'SORT_BY_NAME',
+    type: SORT_BY_NAME,
   }),
   sortByTitle: () => dispatch({
-    type: 'SORT_BY_TITLE',
+    type: SORT_BY_TITLE,
   }),
   sortByComplete: () => dispatch({
-    type: 'SORT_BY_COMPLETE',
+    type: SORT_BY_COMPLETE,
   }),
 });
 
-export default connect(null, mapDispatchToProps)(TodoList);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

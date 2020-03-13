@@ -6,35 +6,41 @@ interface DispatchAction extends Action {
   id?: number;
 }
 
+export const LOAD_FROM_API = 'LOAD_FROM_API';
+export const SORT_BY_NAME = 'SORT_BY_NAME';
+export const SORT_BY_TITLE = 'SORT_BY_TITLE';
+export const SORT_BY_COMPLETE = 'SORT_BY_COMPLETE';
+export const DELETE_TASK = 'DELETE_TASK';
+
 const initialState: InitialState = {
   todos: [],
 };
 
 const todosReducer: Reducer<InitialState, DispatchAction> = (state = initialState, action) => {
   switch (action.type) {
-    case 'LOAD_FROM_API':
+    case LOAD_FROM_API:
       return {
         todos: action.todos,
       };
 
-    case 'SORT_BY_NAME':
+    case SORT_BY_NAME:
       return {
         todos: [...state.todos].sort((a, b) => a.user.name.localeCompare(b.user.name)),
       };
 
-    case 'SORT_BY_TITLE':
+    case SORT_BY_TITLE:
       return {
         todos: [...state.todos].sort((a, b) => a.title.localeCompare(b.title)),
       };
 
-    case 'SORT_BY_COMPLETE':
+    case SORT_BY_COMPLETE:
       return {
         todos: [...state.todos].sort((a, b) => Number(a.completed) - Number(b.completed)),
       };
 
-    case 'DELETE_TASK':
+    case DELETE_TASK:
       return {
-        todos: [...state.todos].filter(todo => todo.id !== action.id),
+        todos: state.todos.filter(todo => todo.id !== action.id),
       };
 
     default:
