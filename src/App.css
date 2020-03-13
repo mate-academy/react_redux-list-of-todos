@@ -1,0 +1,72 @@
+.btn-load {
+  display: block;
+  width: 100px;
+  height: 50px;
+  margin: auto;
+  text-transform: uppercase;
+  font-family: "Spartan", sans-serif;
+  font-weight: bold;
+  background: linear-gradient(60deg,
+  rgba(105,219,200,1) 0%, rgba(55,184,203,1) 100%);
+  border: none;
+  border-radius: 4px;
+  transition: transform 0.5s, box-shadow 0.5s;
+}
+
+.btn-load:hover {
+  box-shadow: 0 0 5px 0 rgb(40, 84, 187);
+}
+
+.btn-load:active {
+  transform: scale(0.95);
+}
+
+.text {
+  text-align: center;
+}
+
+.table {
+  width: 80%;
+  margin: 20px auto 0;
+  border-collapse: collapse;
+  border-bottom: 2px solid #142850;
+  border-top: 2px solid #142850;
+}
+
+.table__header {
+  background-color: #69dbc8;
+  text-align: left;
+}
+
+.table__icon {
+  height: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+th {
+  position: relative;
+}
+
+th:not(:first-of-type) {
+  padding-left: 30px;
+}
+
+td,
+th {
+  padding: 10px 5px;
+  border-bottom: 2px solid #0f4c75;
+}
+
+.btn {
+  display: block;
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 7px;
+  border: none;
+  left: 0;
+  cursor: pointer;
+  background-color: transparent;
+}
