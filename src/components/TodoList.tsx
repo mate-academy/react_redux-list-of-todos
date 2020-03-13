@@ -19,6 +19,7 @@ export const TodoListTemplate: FC<Props> = ({ todos, query, setDeleteTodo }) => 
     switch (query) {
       case 'title':
         return todos.sort((a, b) => a.title.localeCompare(b.title));
+
       case 'user':
         return todos
           .sort((a, b) => {
@@ -28,6 +29,7 @@ export const TodoListTemplate: FC<Props> = ({ todos, query, setDeleteTodo }) => 
 
             return 0;
           });
+
       case 'completed':
         return todos
           .sort((a, b) => {
@@ -37,7 +39,6 @@ export const TodoListTemplate: FC<Props> = ({ todos, query, setDeleteTodo }) => 
       case 'reverse': {
         return todos.reverse();
       }
-
 
       default:
         return todos;

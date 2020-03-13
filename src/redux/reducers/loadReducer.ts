@@ -13,11 +13,13 @@ export const loadReducer = (state = loadState, action: AnyAction): LoadState => 
         ...state,
         isLoaded: action.isLoaded,
       };
+
     case type.SET_IS_LOADING:
       return {
         ...state,
         isLoading: action.isLoading,
       };
+
     default:
       return state;
   }
