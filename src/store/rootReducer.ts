@@ -6,7 +6,7 @@ export const initialState: State = {
   todos: [],
   isLoading: false,
 };
-export const reduser = (state = initialState, action: AnyAction) => {
+export const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case ActionTypes.SET_TODOS:
       return {

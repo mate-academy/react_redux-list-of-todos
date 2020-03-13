@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
-import { initialState, reduser } from './reduser';
+import { initialState, rootReducer } from './rootReducer';
 
 export const store = createStore(
-  reduser,
+  rootReducer,
   initialState,
 );
