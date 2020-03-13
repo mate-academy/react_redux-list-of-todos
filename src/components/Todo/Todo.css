@@ -1,0 +1,21 @@
+.table__cell {
+  position: relative;
+}
+
+.table__cell:hover .btn-remove {
+  display: block;
+}
+
+.btn-remove {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 10px;
+  display: none;
+  background: transparent;
+  border: none;
+}
+
+.remove-icon {
+  height: 30px;
+}
