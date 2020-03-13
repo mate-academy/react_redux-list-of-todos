@@ -15,10 +15,10 @@ const TodoList: FC<Props> = (props) => {
     <table className="table">
       <thead>
         <tr>
-          <th className="cell cell--head">Name</th>
-          <th className="cell cell--head">Title</th>
-          <th className="cell cell--head">completed</th>
-          <th className="cell cell--head">Delete</th>
+          <th className="cell cell__head">Name</th>
+          <th className="cell cell__head">Title</th>
+          <th className="cell cell__head">completed</th>
+          <th className="cell cell__head">Delete</th>
         </tr>
       </thead>
       <tbody>

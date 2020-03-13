@@ -19,7 +19,7 @@
   border-collapse: collapse;
 }
 
-.cell--head {
+.cell__head {
   background-color: aquamarine;
   height: 40px;
   color: cornflowerblue;

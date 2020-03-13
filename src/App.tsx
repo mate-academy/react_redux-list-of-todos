@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import './App.css';
 import { getData } from './components/getData/getData';
 import TodoList from './components/TodoList/TodoList';
 import { State, setIsLoad, setTodosWithUsers } from './store';
-
 
 interface Props {
   todos: TodoWithUser[] | [];
@@ -96,9 +96,9 @@ const mapStateToProps = (state: State) => ({
   isLoading: state.isLoading,
 });
 
-const mapDispatchToProps = {
-  setIsLoading: setIsLoad,
-  setTodos: setTodosWithUsers,
-};
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setIsLoading: (isLoading: boolean) => dispatch(setIsLoad(isLoading)),
+  setTodos: (todos: TodoWithUser[] | []) => dispatch(setTodosWithUsers(todos)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
