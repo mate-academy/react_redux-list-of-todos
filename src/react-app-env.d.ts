@@ -1,7 +1,3 @@
-// eslint-disable-next-line
-/// <reference types="react-scripts" />
-
-
 interface Geo {
   lat: string;
   lng: string;

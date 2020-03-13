@@ -1,4 +1,4 @@
-import { URL_TODOS, URL_USES } from './constatns';
+import { URL_TODOS, URL_USES } from './constants';
 
 async function getData <T>(url: string): Promise<T> {
   const response = await fetch(url);

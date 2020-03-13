@@ -24,7 +24,6 @@ const AppTemplate: FC<Props> = ({
   setIsLoading, setTodos,
 }) => {
   async function handleStart() {
-    setIsLoaded(true);
     setIsLoading(true);
 
     const [
@@ -33,7 +32,7 @@ const AppTemplate: FC<Props> = ({
     ] = await Promise.all([
       getTodos(),
       getUsers(),
-    ]);
+    ]).finally(() => setIsLoaded(true));
 
     setTodos(todosFromServer.map((todo) => (
       {
@@ -47,22 +46,22 @@ const AppTemplate: FC<Props> = ({
 
   return (
     <>
-      {isLoaded
-    && (
-      <Actions />
-    )}
+      {isLoaded ? (
+        <>
+          <Actions />
+          <TodoList />
+        </>
+      ) : (
+        <button
+          className="button"
+          type="button"
+          onClick={handleStart}
+        >
+             Press to start
+        </button>
+      )}
 
-      {!isLoaded
-     && (
-       <button
-         className="button"
-         type="button"
-         onClick={handleStart}
-       >
-       Press to start
-       </button>
-     )}
-      {isLoading ? <p>Loading...</p> : <TodoList />}
+      {isLoading && <p>Loading...</p>}
     </>
   );
 };

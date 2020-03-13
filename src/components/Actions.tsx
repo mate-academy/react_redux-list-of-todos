@@ -11,10 +11,37 @@ const ActionsTemplate: FC<Props> = ({
   setQuery,
 }) => (
   <>
-    <button className="button" type="button" onClick={() => setQuery('title')}>Sort by title</button>
-    <button className="button" type="button" onClick={() => setQuery('user')}>Sort by user</button>
-    <button className="button" type="button" onClick={() => setQuery('completed')}>Sort by completed</button>
-    <button className="button" type="button" onClick={() => setQuery('reverse')}>Reverse</button>
+    <button
+      className="button"
+      type="button"
+      onClick={() => setQuery('title')}
+    >
+      Sort by title
+    </button>
+
+    <button
+      className="button"
+      type="button"
+      onClick={() => setQuery('user')}
+    >
+      Sort by user
+    </button>
+
+    <button
+      className="button"
+      type="button"
+      onClick={() => setQuery('completed')}
+    >
+      Sort by completed
+    </button>
+
+    <button
+      className="button"
+      type="button"
+      onClick={() => setQuery('reverse')}
+    >
+      Reverse
+    </button>
   </>
 );
 

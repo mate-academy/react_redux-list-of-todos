@@ -1,13 +1,16 @@
 import React, { FC, useMemo } from 'react';
+import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Todo } from './Todo';
+import * as actions from '../redux/actions';
 
 interface Props {
   todos: Todo[];
   query: string;
+  setDeleteTodo: (id: number) => void;
 }
 
-export const TodoListTemplate: FC<Props> = ({ todos, query }) => {
+export const TodoListTemplate: FC<Props> = ({ todos, query, setDeleteTodo }) => {
   const todosToShow = useMemo(() => {
     if (!todos.length) {
       return [];
@@ -15,23 +18,27 @@ export const TodoListTemplate: FC<Props> = ({ todos, query }) => {
 
     switch (query) {
       case 'title':
-        return [...todos].sort((a, b) => a.title.localeCompare(b.title));
+        return todos.sort((a, b) => a.title.localeCompare(b.title));
       case 'user':
-        return [...todos
+        return todos
           .sort((a, b) => {
             if (a.user && b.user) {
               return a.user.name.localeCompare(b.user.name);
             }
 
             return 0;
-          })];
+          });
       case 'completed':
-        return [...todos
+        return todos
           .sort((a, b) => {
             return Number(a.completed) - Number(b.completed);
-          })];
-      case 'reverse':
-        return [...todos.reverse()];
+          });
+
+      case 'reverse': {
+        return todos.reverse();
+      }
+
+
       default:
         return todos;
     }
@@ -43,9 +50,7 @@ export const TodoListTemplate: FC<Props> = ({ todos, query }) => {
       <ul className="card-list">
         {todosToShow.map(todo => (
           <li className="card-item" key={todo.id}>
-            <>
-              <Todo {...todo} />
-            </>
+            <Todo {...todo} deleteTodo={setDeleteTodo} />
           </li>
         ))}
       </ul>
@@ -58,4 +63,12 @@ const mapStateToProps = (state: { todosReducer: TodoState; queryReducer: QuerySo
   query: state.queryReducer.query,
 });
 
-export const TodoList = connect(mapStateToProps)(TodoListTemplate);
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    setDeleteTodo: (id: number) => dispatch(
+      actions.setDeleteTodo(id),
+    ),
+  };
+};
+
+export const TodoList = connect(mapStateToProps, mapDispatchToProps)(TodoListTemplate);
