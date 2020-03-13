@@ -1,10 +1,65 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './App.css';
+import 'bulma/css/bulma.css';
+import { connect } from 'react-redux';
+import { TodoList } from './components/TodoList/TodoList';
+import { getTodosWithUser } from './utils/api';
+import { State, TodoWithUser } from './constants/types';
+import {
+  getLoading,
+  getTodos,
+  setLoading,
+  setTodos,
+} from './store/actionCreators';
 
-const App = () => (
-  <div className="App">
-    <h1>Redux list of todos</h1>
-  </div>
-);
 
-export default App;
+interface Props {
+  todos: TodoWithUser[];
+  isLoading: boolean;
+  setLoading: (value: boolean) => void;
+  setTodos: (value: TodoWithUser[]) => void;
+}
+
+const App: FC<Props> = (props) => {
+  const {
+    isLoading,
+    todos,
+    setLoading: setLoadingTemplate,
+    setTodos: setTodosTemplate,
+  } = props;
+
+  const handleStart = async () => {
+    setLoadingTemplate(true);
+
+    const visibleTodos = await getTodosWithUser();
+
+    setTodosTemplate(visibleTodos);
+    setLoadingTemplate(false);
+  };
+
+  return (
+    <div className="app">
+      <h1 className="title">Dynamic list of TODOs</h1>
+      {!todos.length ? (
+        <button
+          className="button"
+          type="button"
+          onClick={handleStart}
+        >
+          {isLoading ? 'Loading.......' : 'Start load'}
+        </button>
+      ) : (
+        <TodoList />
+      )}
+    </div>
+  );
+};
+
+const mapDispatchToProps = { setLoading, setTodos };
+
+const mapStateToProps = (state: State) => ({
+  todos: getTodos(state),
+  isLoading: getLoading(state),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
