@@ -3,14 +3,14 @@ import './App.css';
 import 'bulma/css/bulma.css';
 import { connect } from 'react-redux';
 import { TodoList } from './components/TodoList/TodoList';
+import { getTodosWithUser } from './utils/api';
+import { State, TodoWithUser } from './constants/types';
 import {
   getLoading,
   getTodos,
   setLoading,
   setTodos,
-} from './store';
-import { getTodosWithUser } from './utils/api';
-import { State, TodoWithUser } from './constants/types';
+} from './store/actionCreators';
 
 
 interface Props {
@@ -21,6 +21,11 @@ interface Props {
 }
 
 const App: FC<Props> = (props) => {
+  const {
+    isLoading,
+    todos,
+  } = props;
+
   const handleStart = async () => {
     props.setLoading(true);
 
@@ -33,18 +38,17 @@ const App: FC<Props> = (props) => {
   return (
     <div className="app">
       <h1 className="title">Dynamic list of TODOs</h1>
-      {!props.todos.length
-        ? (
-          <button
-            className="button"
-            type="button"
-            onClick={handleStart}
-          >
-            {props.isLoading ? 'Loading.......' : 'Start load'}
-          </button>
-        ) : (
-          <TodoList />
-        )}
+      {!todos.length ? (
+        <button
+          className="button"
+          type="button"
+          onClick={handleStart}
+        >
+          {isLoading ? 'Loading.......' : 'Start load'}
+        </button>
+      ) : (
+        <TodoList />
+      )}
     </div>
   );
 };

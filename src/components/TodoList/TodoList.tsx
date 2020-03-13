@@ -8,7 +8,7 @@ import {
   sortByName,
   sortByStatus,
   sortByTitle,
-} from '../../store';
+} from '../../store/actionCreators';
 
 interface Props {
   todos: TodoWithUser[];
@@ -19,6 +19,7 @@ interface Props {
 }
 
 export const TodoListTemplate: FC<Props> = (props) => {
+  const { todos } = props;
   return (
     <table className="table is-hoverable">
       <thead className="thead">
@@ -31,7 +32,7 @@ export const TodoListTemplate: FC<Props> = (props) => {
         </tr>
       </thead>
       <tbody className="tbody">
-        {props.todos.map((todo: TodoWithUser) => (
+        {todos.map((todo: TodoWithUser) => (
           <TodoItem
             key={todo.id}
             todo={todo}

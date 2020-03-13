@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { TodoWithUser } from '../../constants/types';
-import { deleteTodo } from '../../store';
+import { deleteTodo } from '../../store/actionCreators';
 
 interface Props {
   todo: TodoWithUser;
@@ -16,6 +16,11 @@ export const TodoItemTemplate: FC<Props> = (props) => {
     completed,
   } = props.todo;
 
+  const handleDelete = useCallback(() => {
+    props.deleteTodo(id);
+  },
+  [deleteTodo, id]);
+
   return (
     <tr className="tr">
       <td className="td">{id}</td>
@@ -26,7 +31,7 @@ export const TodoItemTemplate: FC<Props> = (props) => {
         <button
           type="button"
           className="button button-delete"
-          onClick={() => props.deleteTodo(id)}
+          onClick={handleDelete}
         >
           Delete
         </button>

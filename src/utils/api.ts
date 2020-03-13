@@ -30,7 +30,8 @@ export const getTodosWithUser: () => Promise<TodoWithUser[]> = async () => {
   ]);
 
   const todosWithUser = todos.map((todo: Todo) => {
-    const user = users.find((person: UserInterface) => person.id === todo.userId) as UserInterface;
+    const user = users
+      .find((person: UserInterface) => person.id === todo.userId) as UserInterface;
 
     return {
       ...todo,
