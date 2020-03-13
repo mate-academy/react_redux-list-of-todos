@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { deleteTodo } from '../../actions/actions';
 
@@ -7,13 +7,15 @@ interface Props {
   setDelete: (id: number) => void;
 }
 
-const TodoLayout: React.FC<Props> = ({ todo, setDelete }) => {
+const TodoLayout: FC<Props> = ({ todo, setDelete }) => {
   const {
     id,
     user,
     title,
     completed,
   } = todo;
+
+  const onDelete = useCallback(() => setDelete(id), [todo, id]);
 
   return (
     <tr className="table__row">
@@ -24,7 +26,7 @@ const TodoLayout: React.FC<Props> = ({ todo, setDelete }) => {
       <td className="table__cell">
         <button
           type="button"
-          onClick={() => setDelete(id)}
+          onClick={onDelete}
         >
           Delete
         </button>
