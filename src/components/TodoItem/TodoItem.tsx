@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { TodoWithUser } from '../../constants/types';
 import { deleteTodo } from '../../store/actionCreators';
 
+
 interface Props {
   todo: TodoWithUser;
   deleteTodo: (id: number) => void;
@@ -15,11 +16,12 @@ export const TodoItemTemplate: FC<Props> = (props) => {
     title,
     completed,
   } = props.todo;
+  const { deleteTodo: deleteTodoTemplate } = props;
 
   const handleDelete = useCallback(() => {
-    props.deleteTodo(id);
+    deleteTodoTemplate(id);
   },
-  [deleteTodo, id]);
+  [deleteTodoTemplate, id]);
 
   return (
     <tr className="tr">

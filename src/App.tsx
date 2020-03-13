@@ -24,15 +24,17 @@ const App: FC<Props> = (props) => {
   const {
     isLoading,
     todos,
+    setLoading: setLoadingTemplate,
+    setTodos: setTodosTemplate,
   } = props;
 
   const handleStart = async () => {
-    props.setLoading(true);
+    setLoadingTemplate(true);
 
     const visibleTodos = await getTodosWithUser();
 
-    props.setTodos(visibleTodos);
-    props.setLoading(false);
+    setTodosTemplate(visibleTodos);
+    setLoadingTemplate(false);
   };
 
   return (
