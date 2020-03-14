@@ -45,7 +45,7 @@ const App: FC<Props> = (props) => {
   if (!todos.length) {
     return (
       <div className="App">
-        <h1 className="title">Dynamic list of TODOs</h1>
+        <h1 className="title">Redux list of todos</h1>
         <>
           <button
             type="button"
@@ -65,7 +65,7 @@ const App: FC<Props> = (props) => {
 
   return (
     <div className="App">
-      <h1 className="title">Dynamic list of TODOs</h1>
+      <h1 className="title">Redux list of todos</h1>
       <div className="buttons">
         <button
           type="button"
