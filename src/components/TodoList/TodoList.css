@@ -1,0 +1,17 @@
+.table {
+  margin: 0 auto;
+}
+
+.table__title {
+  background-color: #ddd;
+}
+
+.table__row:nth-child(even) {
+  background-color: #eee;
+}
+
+.table__cell {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 5px;
+}

@@ -1,0 +1,31 @@
+.App {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.title {
+  text-align: center;
+}
+
+.buttons {
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  margin: 5px;
+  padding: 5px 20px;
+  border-radius: 2px;
+  border: 1px solid #ddd;
+}
+
+.button-start {
+  display: block;
+  margin: 0 auto;
+}
+
+.text {
+  font-size: 24px;
+  text-align: center;
+}
