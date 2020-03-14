@@ -6,12 +6,22 @@ import { getTodosFromServer } from './api/todosApi';
 import { getUsersFromServer } from './api/usersApi';
 
 import {
-  setTodosAC, setLoadingAC, setLoadedAC, setSortFieldAC,
-  getTodos, getIsLoading, getIsLoaded, getSortfield,
-} from './store';
+  getTodos,
+  getIsLoading,
+  getIsLoaded,
+  getSortfield,
+} from './store/rootReducer';
+
+import {
+  setTodosAction,
+  setLoadingAction,
+  setLoadedAction,
+  setSortFieldAction,
+  deleteTodoAction,
+} from './store/actionCreators';
 
 import { TodoList } from './components/TodoList';
-import { StoreType, PreparedTodoType, UserType } from './utils/interfaces';
+import { RootState, PreparedTodoType, UserType } from './utils/interfaces';
 
 interface Props {
   todos: PreparedTodoType[];
@@ -22,6 +32,7 @@ interface Props {
   setLoaded: (value: boolean) => void;
   sortField: string;
   setSortField: (value: string) => void;
+  deleteTodo: (value: number) => void;
 }
 
 const App: FC<Props> = ({
@@ -33,6 +44,7 @@ const App: FC<Props> = ({
   setLoaded,
   sortField,
   setSortField,
+  deleteTodo,
 }) => {
   const loadTodos = async () => {
     setLoading(true);
@@ -93,13 +105,13 @@ const App: FC<Props> = ({
           </button>
         )
         : (
-          <TodoList sortTodos={sortTodos} />
+          <TodoList todos={todos} sortTodos={sortTodos} deleteTodo={deleteTodo} />
         )}
     </div>
   );
 };
 
-const mapStateToProps = (state: StoreType) => ({
+const mapStateToProps = (state: RootState) => ({
   todos: getTodos(state),
   isLoading: getIsLoading(state),
   isLoaded: getIsLoaded(state),
@@ -107,10 +119,11 @@ const mapStateToProps = (state: StoreType) => ({
 });
 
 const mapDispatchToProps = {
-  setTodos: setTodosAC,
-  setLoading: setLoadingAC,
-  setLoaded: setLoadedAC,
-  setSortField: setSortFieldAC,
+  setTodos: setTodosAction,
+  setLoading: setLoadingAction,
+  setLoaded: setLoadedAction,
+  setSortField: setSortFieldAction,
+  deleteTodo: deleteTodoAction,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,18 +1,23 @@
 import React, { FC } from 'react';
 import { PreparedTodoType } from '../utils/interfaces';
 
+
 interface Props {
   todo: PreparedTodoType;
   deleteTodo: (value: number) => void;
 }
 
-export const TodoItem: FC<Props> = ({ todo }, deleteTodo) => {
+export const TodoItem: FC<Props> = ({ todo, deleteTodo }) => {
   const {
     id,
     title,
     completed,
     user,
   } = todo;
+
+  //  const onDelete = useCallback(() => deleteTodo(id), [todo, id]);
+
+  const onDelete = () => deleteTodo(id);
 
   return (
     <tr className="table__row">
@@ -23,7 +28,7 @@ export const TodoItem: FC<Props> = ({ todo }, deleteTodo) => {
       <td className="table__cell">
         <button
           type="button"
-          onClick={() => deleteTodo(id)}
+          onClick={onDelete}
         >
           Delete
         </button>

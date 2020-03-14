@@ -39,7 +39,7 @@ export interface PreparedTodoType extends TodoType {
   user: UserType;
 }
 
-export interface StoreType {
+export interface RootState{
   todos: PreparedTodoType[];
   isLoading: boolean;
   isLoaded: boolean;

@@ -1,22 +1,12 @@
 import React, { FC } from 'react';
-import { connect } from 'react-redux';
 import { TodoItem } from './TodoItem';
-import { StoreType, PreparedTodoType } from '../utils/interfaces';
-import { getTodos, setDeleteTodoAC } from '../store';
+import { PreparedTodoType } from '../utils/interfaces';
 
-interface OwnProps {
-  sortTodos: (sortBy: string) => void;
-}
-
-interface StateProps {
+interface Props {
   todos: PreparedTodoType[];
-}
-
-interface DispatchProps {
+  sortTodos: (sortBy: string) => void;
   deleteTodo: (value: number) => void;
 }
-
-type Props = OwnProps & StateProps & DispatchProps;
 
 export const TodoList: FC<Props> = ({ todos, sortTodos, deleteTodo }) => (
   <table className="table">
@@ -44,16 +34,3 @@ export const TodoList: FC<Props> = ({ todos, sortTodos, deleteTodo }) => (
     </tbody>
   </table>
 );
-
-const mapStateToProps = (state: StoreType) => ({
-  todos: getTodos(state),
-});
-
-const mapDispatchToProps = {
-  deleteTodo: setDeleteTodoAC,
-};
-
-export default connect<StateProps, DispatchProps, OwnProps, StoreType>(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TodoList);
