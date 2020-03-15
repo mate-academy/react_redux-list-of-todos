@@ -1,8 +1,6 @@
 import { createStore, AnyAction } from 'redux';
 import { State } from './interfaces';
-
-export const ADD_TODO = 'ADD_TODO';
-export const DELETE_TODO = 'DELETE_TODO';
+import { ADD_TODO, DELETE_TODO } from './constants';
 
 const initialState = {
   todos: [],

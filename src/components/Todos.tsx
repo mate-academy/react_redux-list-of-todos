@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { getPreparedTodos } from '../api';
-import { ADD_TODO } from '../store';
+import { ADD_TODO } from '../constants';
 import { State, PreparedTodo } from '../interfaces';
 import { TodosList } from './TodosList';
 

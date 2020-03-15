@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { DELETE_TODO } from '../store';
+import { DELETE_TODO } from '../constants';
 import { PreparedTodo, State } from '../interfaces';
 
 interface Props {
