@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { User } from '../User/User';
-import { TodoWithUsers, State } from '../../interfaces';
-import { REMOVE_TODO } from '../../constants';
+import { TodoWithUsers, RootState } from '../../utils/interfaces';
+import { removeTodo as deleteTodo } from '../../store/actionCreators';
 import './Todo.css';
 
 interface Props {
@@ -35,15 +34,12 @@ const TodoTemplate: FC<Props> = ({ todo, removeTodo }) => {
   );
 };
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: RootState) => ({
   todos: state.todos,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  removeTodo: (id: number) => dispatch({
-    type: REMOVE_TODO,
-    value: id,
-  }),
-});
+const mapDispatchToProps = {
+  removeTodo: deleteTodo,
+};
 
 export const Todo = connect(mapStateToProps, mapDispatchToProps)(TodoTemplate);

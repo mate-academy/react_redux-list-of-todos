@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { UserType } from '../../interfaces';
+import { UserType } from '../../utils/interfaces';
 import './User.css';
 
 interface Props {

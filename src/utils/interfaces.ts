@@ -39,6 +39,11 @@ export interface TodoWithUsers extends TodoType {
   user: UserType;
 }
 
-export interface State {
-  todos: TodoWithUsers[];
+export interface RootState {
+  isLoaded: boolean;
+  isLoading: boolean;
+  todos: TodoType[];
+  users: UserType[];
+  error: string | null;
+  sortField: string;
 }
