@@ -1,56 +1,114 @@
-import { createStore } from 'redux';
-import {ActionType, AppActions, DecrementInterface, IncrementInterface, SetValueInterface} from "../actions/actions";
+import { createStore, applyMiddleware } from 'redux';
+import thunk, { ThunkMiddleware } from 'redux-thunk';
+import { getTodos, getUsers } from '../api/DataFromServer';
+// eslint-disable-next-line import/no-cycle
+import {
+  AppActions,
+  deleteTodoItemInterface,
+  setLoadingConditionActionInterface,
+  setPrepearedTodoListActionInterface,
+  setSortedTodoListInterface,
+} from '../actionsType/actionsType';
 
-const initialState: InitialState = {
-    currentValue: 0,
+
+const initialState = {
+  loadingCondition: false,
+  prepearedTodoList: [],
+  sortedTodoList: [],
+};
+
+// Action
+export const Actions = {
+  SET_LOADING_CONDITION: 'SET_LOADING_CONDITION',
+  SET_PREPEARED_TODO_LIST: 'SET_PREPEARED_TODO_LIST',
+  DELETE_TODO_ITEM: 'DELETE_TODO_ITEM',
+  SET_SORTED_TODO_LIST: 'SET_SORTED_TODO_LIST',
 };
 
 
-//Action
-const INCREMENT = 'INCREMENT';
-const DECREMENT = 'DECREMENT';
-const SET_VALUE = 'SET_VALUE';
+// ActionCreators
+export const setPrepearedTodoListAction = (PreperedTdoList: TodoWithUser[]): setPrepearedTodoListActionInterface => ({
+  type: Actions.SET_PREPEARED_TODO_LIST,
+  prepearedTodoList: PreperedTdoList,
 
-// Action Creator
-export const IncrementCreator = (): IncrementInterface => ({
-    type: INCREMENT,
 });
 
-export const DecrementCreator = (): DecrementInterface => ({
-    type: DECREMENT,
+export const setLoadingConditionAction = (): setLoadingConditionActionInterface => ({
+  type: Actions.SET_LOADING_CONDITION,
 });
 
-export const setValue = (value: number): SetValueInterface => ({
-    type: SET_VALUE,
-    value,
+export const deleteTodoItem = (deletedItemId: number): deleteTodoItemInterface => ({
+  type: Actions.DELETE_TODO_ITEM,
+  deletedItemId,
 });
 
+export const setSortedTodoList = (sortedTodoList: TodoWithUser[]): setSortedTodoListInterface => ({
+  type: Actions.SET_SORTED_TODO_LIST,
+  sortedTodoList,
+});
 
-const reducer = (state = initialState, action: ActionType) => {
-    switch (action.type) {
-        case 'INCREMENT':
-            return {
-                ...state,
-                currentValue: state.currentValue - 1,
-            };
+export const loadUsers = () => {
+  return (dispatch: any) => {
+    dispatch(setLoadingConditionAction());
 
-        case 'DECREMENT':
-            return {
-                ...state,
-                currentValue: state.currentValue + 1,
-            };
+    Promise.all([getUsers(), getTodos()])
+      .then(([user, todo]) => {
+        const todoWithUser = todo.map((todoItem: Todo) => (
+          {
+            ...todoItem,
+            user: user.find((userItem: User) => userItem.id === todoItem.userId),
+          }
+        ));
 
-        case 'SET_VALUE':
-            return {
-                ...state,
-                currentValue: action.value,
-            };
-
-        default:
-            return state
-    }
+        dispatch(setPrepearedTodoListAction(todoWithUser));
+      });
+  };
 };
 
-const store = createStore(reducer, initialState);
+
+const reducer = (state: InitialStateInterface = initialState, action: any): InitialStateInterface => {
+  switch (action.type) {
+    case Actions.SET_LOADING_CONDITION:
+      return {
+        ...state,
+        loadingCondition: true,
+      };
+
+    case Actions.SET_PREPEARED_TODO_LIST:
+      return {
+        ...state,
+        loadingCondition: false,
+        prepearedTodoList: action.prepearedTodoList,
+        sortedTodoList: action.prepearedTodoList,
+      };
+
+    case Actions.DELETE_TODO_ITEM:
+      return {
+        ...state,
+        prepearedTodoList: state.prepearedTodoList.filter(todo => {
+          return action.deletedItemId !== todo.id;
+        }),
+        sortedTodoList: state.prepearedTodoList.filter(todo => {
+          return action.deletedItemId !== todo.id;
+        }),
+      };
+
+    case Actions.SET_SORTED_TODO_LIST:
+      return {
+        ...state,
+        sortedTodoList: action.sortedTodoList,
+        prepearedTodoList: action.sortedTodoList,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const store = createStore(
+  reducer,
+  initialState,
+  applyMiddleware(thunk as ThunkMiddleware<InitialStateInterface, AppActions>),
+);
 
 export default store;
