@@ -35,10 +35,6 @@ export interface User {
   company: Сompany
 }
 
-export interface PreparedTodo {
-  userId: number
-  id: number
-  title: string
-  completed: boolean
+export interface PreparedTodo extends Todo {
   user: User | undefined
 }

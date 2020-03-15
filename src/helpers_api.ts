@@ -1,4 +1,4 @@
-import { User, Todo, PreparedTodo } from './types';
+import { User, Todo, PreparedTodo } from './constants_types/types';
 
 const API_URL = 'https://jsonplaceholder.typicode.com/';
 
@@ -17,9 +17,9 @@ export const getUsers = (): Promise<User[]> => {
 };
 
 export const getPreparedTodos = async (): Promise<PreparedTodo[]> => {
-  const todos: Todo[] = await getTodos();
-  const users: User[] = await getUsers();
-  const preparedTodos: PreparedTodo[] = todos.map(todo => ({
+  const todos = await getTodos();
+  const users = await getUsers();
+  const preparedTodos = todos.map(todo => ({
     ...todo,
     user: users.find(person => person.id === todo.userId),
   }));
