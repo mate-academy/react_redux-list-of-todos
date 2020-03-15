@@ -2,7 +2,7 @@ import { Action, Reducer, createStore } from 'redux';
 
 interface DispatchAction extends Action {
   type: string;
-  todos: TodosWithUser;
+  payload: TodosWithUser;
   id?: number;
 }
 
@@ -16,11 +16,16 @@ const initialState: InitialState = {
   todos: [],
 };
 
+export const setTodos = (payload: TodosWithUser) => ({
+  type: LOAD_FROM_API,
+  payload,
+});
+
 const todosReducer: Reducer<InitialState, DispatchAction> = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_FROM_API:
       return {
-        todos: action.todos,
+        todos: action.payload,
       };
 
     case SORT_BY_NAME:

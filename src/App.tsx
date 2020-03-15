@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { LOAD_FROM_API } from './store';
+import { setTodos as setTodosStore } from './store';
 import { getTodos, getUsers } from './api';
 import TodoList from './components/TodoList/TodoList';
 
@@ -50,11 +49,8 @@ const App: FC<Props> = ({ setTodos }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setTodos: (receivedTodos: TodosWithUser) => dispatch({
-    type: LOAD_FROM_API,
-    todos: receivedTodos,
-  }),
-});
+const mapDispatchToProps = {
+  setTodos: setTodosStore,
+};
 
 export default connect(null, mapDispatchToProps)(App);
