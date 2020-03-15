@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { User } from '../User/User';
-import { TodoWithUsers, RootState } from '../../utils/interfaces';
+import { TodoWithUsers } from '../../utils/interfaces';
 import { removeTodo as deleteTodo } from '../../store/actionCreators';
 import './Todo.css';
 
@@ -34,12 +34,8 @@ const TodoTemplate: FC<Props> = ({ todo, removeTodo }) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
-  todos: state.todos,
-});
-
 const mapDispatchToProps = {
   removeTodo: deleteTodo,
 };
 
-export const Todo = connect(mapStateToProps, mapDispatchToProps)(TodoTemplate);
+export const Todo = connect(null, mapDispatchToProps)(TodoTemplate);
