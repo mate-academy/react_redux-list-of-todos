@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { PreparedTodoType } from '../utils/interfaces';
 
 
@@ -15,9 +15,7 @@ export const TodoItem: FC<Props> = ({ todo, deleteTodo }) => {
     user,
   } = todo;
 
-  //  const onDelete = useCallback(() => deleteTodo(id), [todo, id]);
-
-  const onDelete = () => deleteTodo(id);
+  const onDelete = useCallback(() => deleteTodo(id), [todo, id]);
 
   return (
     <tr className="table__row">
