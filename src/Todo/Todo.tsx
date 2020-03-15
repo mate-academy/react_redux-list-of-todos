@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { TodoWithUser } from '../types';
+import { removeTodo } from '../actionCreators';
 import './Todo.css';
 
 interface Props {
@@ -28,11 +28,6 @@ const Todo: FC<Props> = ({ todo, onRemoveTodo }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onRemoveTodo: (id: number) => dispatch({
-    type: 'REMOVE_TODO',
-    id,
-  }),
-});
+const mapDispatchToProps = ({ onRemoveTodo: removeTodo });
 
 export default connect(null, mapDispatchToProps)(Todo);

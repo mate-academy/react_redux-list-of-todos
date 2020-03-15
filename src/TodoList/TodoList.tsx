@@ -3,6 +3,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { TodoWithUser } from '../types';
 import Todo from '../Todo/Todo';
+import { sortByName, sortByTitle, sortByCompleted } from '../actionCreators';
 import './TodoList.css';
 
 interface Props {
@@ -69,15 +70,9 @@ const TodoList: FC<Props> = (props) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  handleSortByName: () => dispatch({
-    type: 'SORT_BY_NAME',
-  }),
-  handleSortByTitle: () => dispatch({
-    type: 'SORT_BY_TITLE',
-  }),
-  handleSortByCompleted: () => dispatch({
-    type: 'SORT_BY_COMPLETED',
-  }),
+  handleSortByName: () => dispatch(sortByName),
+  handleSortByTitle: () => dispatch(sortByTitle),
+  handleSortByCompleted: () => dispatch(sortByCompleted),
 });
 
 export default connect(null, mapDispatchToProps)(TodoList);

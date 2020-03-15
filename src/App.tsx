@@ -5,6 +5,7 @@ import { loadTodos, loadUsers } from './loadData';
 import { TodosWithUsers, User, Todo } from './types';
 import TodoList from './TodoList/TodoList';
 import { InitialState } from './store';
+import { loadTodo } from './actionCreators';
 import './App.css';
 
 interface Props {
@@ -71,10 +72,7 @@ const mapStateToProps = (state: InitialState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setTodos: (todoWithUser: TodosWithUsers) => dispatch({
-    type: 'LOAD_TODOS',
-    todos: todoWithUser,
-  }),
+  setTodos: (todoWithUser: TodosWithUsers) => dispatch(loadTodo(todoWithUser)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
