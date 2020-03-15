@@ -1,0 +1,36 @@
+.App {
+  text-align: center;
+}
+
+.table {
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  border: 2px solid lightcoral;
+  border-collapse: collapse;
+}
+
+.table__heading {
+  padding: 5px;
+  border: 2px solid lightcoral;
+  background-color: crimson;
+  cursor: pointer;
+}
+
+.table__row {
+  border: 2px solid lightcoral;
+  background-color: lightgoldenrodyellow;
+}
+
+.table__cell {
+  padding: 5px;
+  border: 2px solid lightcoral;
+}
+
+.table__cell:nth-child(3) {
+  text-align: left;
+  width: 50vw;
+}
+
+.table__cell:last-child {
+  width: 100px;
+}
