@@ -1,10 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './App.css';
+import { Todos } from './components/Todos';
 
-const App = () => (
-  <div className="App">
-    <h1>Redux list of todos</h1>
-  </div>
+export const App: FC = () => (
+  <Todos />
 );
-
-export default App;
