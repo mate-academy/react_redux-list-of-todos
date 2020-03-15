@@ -1,73 +1,38 @@
-.load-btn {
-  display: block;
-  margin: auto;
-  margin-top: calc(50vh - 40px);
-  width: 100px;
-  height: 40px;
-  background-color: yellow;
-  border-radius: 5px;
-}
-
-.load-btn:hover {
-  background-color: darkorange;
-}
-
-.load-btn:disabled {
-  background-color: yellow;
-}
-
-.loading-text {
-  text-align: center;
-}
-
 .App {
   text-align: center;
 }
 
-.user-list {
-  border-collapse: collapse;
-  margin: auto;
-  padding: 20px;
-  display: block;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-.user-list-title {
-  background-color: lightblue;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-.user-list-title-item-row {
-  border: 1px solid black;
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-.user-list-title-item-column {
-  min-width: 130px;
-  padding: 10px 0;
+.App-link {
+  color: #61dafb;
 }
 
-.user-item {
-  border: 1px solid black;
-  padding: 10px 20px;
-}
-
-.sorted-btn {
-  border: none;
-  height: 30px;
-  width: 100px;
-  border-radius: 5px;
-  box-shadow: 1px 1px 9px lightsteelblue;
-  cursor: pointer;
-  background-color: yellow;
-  font-weight: bold;
-}
-
-.sorted-btn:hover {
-  background-color: white;
-}
-
-.succes-load {
-  background-color: lightgreen;
-}
-
-.faild-load {
-  background-color: lightcoral;
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

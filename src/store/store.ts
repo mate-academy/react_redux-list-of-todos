@@ -1,42 +1,56 @@
-import { createStore, Action, Reducer } from 'redux';
+import { createStore } from 'redux';
+import {ActionType, AppActions, DecrementInterface, IncrementInterface, SetValueInterface} from "../actions/actions";
 
-const initialState = {
-  prepearedTodoList: [],
-  isLoaded: false,
+const initialState: InitialState = {
+    currentValue: 0,
 };
 
-interface ReducerTodoState {
-  prepearedTodoList: TodoWithUser[] | [];
-  isLoaded: boolean;
-}
 
-enum ActionType {
-  IsLoaded = 'isLoaded',
-  PrepearedTodoList = 'prepearedTodoList',
-}
+//Action
+const INCREMENT = 'INCREMENT';
+const DECREMENT = 'DECREMENT';
+const SET_VALUE = 'SET_VALUE';
 
-interface StoreAction extends Action<ActionType>{
-  value: Partial<ReducerTodoState>;
-}
+// Action Creator
+export const IncrementCreator = (): IncrementInterface => ({
+    type: INCREMENT,
+});
 
-const reducerTodo: Reducer<ReducerTodoState, any> = (
-  state = initialState, action,
-) => {
-  if (action.type === 'isLoaded') {
-    return {
-      ...state,
-      isLoaded: action.value,
-    };
-  }
+export const DecrementCreator = (): DecrementInterface => ({
+    type: DECREMENT,
+});
 
-  if (action.type === 'prepearedTodoList') {
-    return {
-      ...state,
-      prepearedTodoList: action.value,
-    };
-  }
+export const setValue = (value: number): SetValueInterface => ({
+    type: SET_VALUE,
+    value,
+});
 
-  return state;
+
+const reducer = (state = initialState, action: ActionType) => {
+    switch (action.type) {
+        case 'INCREMENT':
+            return {
+                ...state,
+                currentValue: state.currentValue - 1,
+            };
+
+        case 'DECREMENT':
+            return {
+                ...state,
+                currentValue: state.currentValue + 1,
+            };
+
+        case 'SET_VALUE':
+            return {
+                ...state,
+                currentValue: action.value,
+            };
+
+        default:
+            return state
+    }
 };
 
-export const store: any = createStore<ReducerTodoState, StoreAction, null, null>(reducerTodo);
+const store = createStore(reducer, initialState);
+
+export default store;
