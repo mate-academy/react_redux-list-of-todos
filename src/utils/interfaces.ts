@@ -44,6 +44,6 @@ export interface RootState {
   isLoading: boolean;
   todos: TodoType[];
   users: UserType[];
-  error: string | null;
+  error: boolean;
   sortField: string;
 }

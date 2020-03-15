@@ -17,7 +17,7 @@ const initialState: RootState = {
   isLoading: false,
   todos: [],
   users: [],
-  error: null,
+  error: false,
   sortField: '',
 };
 

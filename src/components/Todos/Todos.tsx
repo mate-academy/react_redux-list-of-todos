@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { TodoList } from '../TodoList/TodoList';
 import {
@@ -13,6 +13,7 @@ import {
   startLoading as onStartLoading,
   stopLoading as onStopLoading,
   setError as onSetError,
+  setNoError as onSetNoError,
   setIsLoaded as onSetLoaded,
   setTodos as onSetTodos,
   setUsers as onSetUsers,
@@ -27,7 +28,8 @@ interface Props extends Pick<RootState,
   startLoading: () => void;
   stopLoading: () => void;
   setIsLoaded: () => void;
-  setError: (error: string | null) => void;
+  setError: () => void;
+  setNoError: () => void;
   setSortField: (field: string) => void;
 }
 
@@ -44,6 +46,7 @@ const TodosTemplate: FC<Props> = ({
   stopLoading,
   setIsLoaded,
   setError,
+  setNoError,
   setSortField,
 }) => {
   const loadData = useCallback(() => {
@@ -54,68 +57,69 @@ const TodosTemplate: FC<Props> = ({
         setUsers(loadedUsers);
         setTodos(loadedTodos);
         setIsLoaded();
-        setError(null);
+        setNoError();
       })
-      .catch((serverError) => setError(serverError.message))
+      .catch(() => setError())
       .finally(() => stopLoading());
-  }, [setError, setIsLoaded, setTodos, setUsers, startLoading, stopLoading]);
+  }, [setError, setNoError, setIsLoaded, setTodos, setUsers, startLoading, stopLoading]);
 
   const sortHandler = (field: string) => {
     setSortField(field);
   };
 
-  const sortedTodos = sortTodos(sortField, todos);
+  const sortedTodos = useMemo(() => sortTodos(sortField, todos), [sortField, todos]);
 
   if (error) {
     return (
       <p>
-        {error}
+        `Error loading! Try again!`
       </p>
     );
   }
 
-  if (!isLoaded) {
-    return (
-      <button
-        className="start-button"
-        type="button"
-        onClick={loadData}
-        disabled={isLoading}
-      >
-        {isLoading ? 'Loading...' : 'Start Load'}
-      </button>
-    );
-  }
-
   return (
-    <div className="App">
-      <h1 className="title">Static list of todos</h1>
-      <div className="buttons">
-        <button
-          className="button"
-          type="button"
-          onClick={() => sortHandler('sortByTitle')}
-        >
-        Sort by title
-        </button>
-        <button
-          className=" button"
-          type="button"
-          onClick={() => sortHandler('sortByName')}
-        >
-          Sort by name
-        </button>
-        <button
-          className="button"
-          type="button"
-          onClick={() => sortHandler('sortByCompleted')}
-        >
-          Sort by completed
-        </button>
-      </div>
-      <p className="amount">{`Amount of todos: ${todos.length}`}</p>
-      <TodoList todos={sortedTodos} />
-    </div>
+    <>
+      {!isLoaded
+        ? (
+          <button
+            className="start-button"
+            type="button"
+            onClick={loadData}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Loading...' : 'Start Load'}
+          </button>
+        ) : (
+          <div className="App">
+            <h1 className="title">Static list of todos</h1>
+            <div className="buttons">
+              <button
+                className="button"
+                type="button"
+                onClick={() => sortHandler('sortByTitle')}
+              >
+                Sort by title
+              </button>
+              <button
+                className=" button"
+                type="button"
+                onClick={() => sortHandler('sortByName')}
+              >
+                Sort by name
+              </button>
+              <button
+                className="button"
+                type="button"
+                onClick={() => sortHandler('sortByCompleted')}
+              >
+                Sort by completed
+              </button>
+            </div>
+            <p className="amount">{`Amount of todos: ${todos.length}`}</p>
+            <TodoList todos={sortedTodos} />
+          </div>
+        )}
+    </>
   );
 };
 
@@ -137,6 +141,7 @@ const mapDispatchToProps = {
   stopLoading: onStopLoading,
   setIsLoaded: onSetLoaded,
   setError: onSetError,
+  setNoError: onSetNoError,
   setSortField: onSetSortField,
 };
 

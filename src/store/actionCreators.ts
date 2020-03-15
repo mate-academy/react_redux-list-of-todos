@@ -34,9 +34,14 @@ export const setIsLoaded = () => ({
   payload: true,
 });
 
-export const setError = (error: string | null) => ({
+export const setError = () => ({
   type: SET_ERROR,
-  payload: error,
+  payload: true,
+});
+
+export const setNoError = () => ({
+  type: SET_ERROR,
+  payload: false,
 });
 
 export const removeTodo = (id: number) => ({
