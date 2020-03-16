@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Todo } from './Todo';
 import * as actions from '../redux/actions';
@@ -59,17 +58,20 @@ export const TodoListTemplate: FC<Props> = ({ todos, query, setDeleteTodo }) => 
   );
 };
 
-const mapStateToProps = (state: { todosReducer: TodoState; queryReducer: QuerySort }) => ({
+const mapStateToProps = (
+  state: {
+    todosReducer: TodoState;
+    queryReducer: QuerySort; },
+) => ({
   todos: state.todosReducer.todos,
   query: state.queryReducer.query,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    setDeleteTodo: (id: number) => dispatch(
-      actions.setDeleteTodo(id),
-    ),
-  };
+const mapDispatchToProps = {
+  setDeleteTodo: actions.setDeleteTodo,
 };
 
-export const TodoList = connect(mapStateToProps, mapDispatchToProps)(TodoListTemplate);
+export const TodoList = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TodoListTemplate);

@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { setQuerySort } from '../redux/actions';
 
 interface Props {
@@ -45,16 +44,11 @@ const ActionsTemplate: FC<Props> = ({
   </>
 );
 
-const mapStateToProps = (state: { queryReducer: QuerySort }) => {
-  return {
-    query: state.queryReducer.query,
-  };
+const mapDispatchToProps = {
+  setQuery: setQuerySort,
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    setQuery: (query: string) => dispatch(setQuerySort(query)),
-  };
-};
-
-export const Actions = connect(mapStateToProps, mapDispatchToProps)(ActionsTemplate);
+export const Actions = connect(
+  null,
+  mapDispatchToProps,
+)(ActionsTemplate);

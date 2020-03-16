@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { TodoList } from './components/TodoList';
 import './App.css';
 import { getTodos, getUsers } from './api/getData';
@@ -66,19 +65,22 @@ const AppTemplate: FC<Props> = ({
   );
 };
 
-const mapStateToProps = (state: { loadReducer: LoadState }) => {
-  return {
-    isLoaded: state.loadReducer.isLoaded,
-    isLoading: state.loadReducer.isLoading,
-  };
+const mapStateToProps = (
+  state: {
+    loadReducer: LoadState;
+  },
+) => ({
+  isLoaded: state.loadReducer.isLoaded,
+  isLoading: state.loadReducer.isLoading,
+});
+
+const mapDispatchToProps = {
+  setIsLoaded: actions.setIsLoaded,
+  setIsLoading: actions.setIsLoading,
+  setTodos: actions.setTodos,
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    setIsLoaded: (status: boolean) => dispatch(actions.setIsLoaded(status)),
-    setIsLoading: (status: boolean) => dispatch(actions.setIsLoading(status)),
-    setTodos: (todos: Todo[]) => dispatch(actions.setTodos(todos)),
-  };
-};
-
-export const App = connect(mapStateToProps, mapDispatchToProps)(AppTemplate);
+export const App = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AppTemplate);
