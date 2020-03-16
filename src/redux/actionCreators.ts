@@ -1,9 +1,11 @@
 import { PreparedTodo } from '../constants_types/types';
-import { SET_IS_LOADING,
+import {
+  SET_IS_LOADING,
   SET_IS_LOADED,
   SET_TODOS,
   SET_SELECTED_SORT,
-  DELETE_TASK } from '../constants_types/constants';
+  DELETE_TASK,
+} from '../constants_types/constants';
 
 export const setIsLoading = (status: boolean) => ({
   type: SET_IS_LOADING,
@@ -22,7 +24,7 @@ export const setTodos = (todosFromApi: PreparedTodo[]) => ({
 
 export const deleteTask = (id: number) => ({
   type: DELETE_TASK,
-  id: id,
+  id,
 });
 
 export const setSelectedSort = (sort: string) => ({

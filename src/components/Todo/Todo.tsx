@@ -1,18 +1,22 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { PreparedTodo } from '../../constants_types/types';
 import { deleteTask } from '../../redux/actionCreators';
 
 import '../../App.css';
 
 interface Props {
-  todo: PreparedTodo
-  removeTodo: (id: number) => void
+  todo: PreparedTodo;
+  removeTodo: (id: number) => void;
 }
 
 export const TodoTemplate: FC<Props> = ({ todo, removeTodo }) => {
-  const { user, title, completed, id } = todo;
+  const {
+    user,
+    title,
+    completed,
+    id,
+  } = todo;
 
   return (
     <tr>
@@ -32,15 +36,13 @@ export const TodoTemplate: FC<Props> = ({ todo, removeTodo }) => {
       </td>
     </tr>
   );
-}
+};
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    removeTodo: (id: number) => dispatch(deleteTask(id))
-  }
-}
+const mapDispatchToProps = {
+  removeTodo: deleteTask,
+};
 
 export const Todo = connect(
   null,
   mapDispatchToProps,
-)(TodoTemplate)
+)(TodoTemplate);

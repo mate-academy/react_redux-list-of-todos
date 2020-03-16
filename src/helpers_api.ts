@@ -6,7 +6,7 @@ export const getData = async <T>(url: string): Promise<T> => {
   const response = await fetch(url);
 
   return response.json();
-}
+};
 
 export const getTodos = (): Promise<Todo[]> => {
   return getData<Todo[]>(`${API_URL}todos`);
@@ -23,5 +23,6 @@ export const getPreparedTodos = async (): Promise<PreparedTodo[]> => {
     ...todo,
     user: users.find(person => person.id === todo.userId),
   }));
+
   return preparedTodos;
 };
