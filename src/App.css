@@ -1,0 +1,55 @@
+.app {
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.loading {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.loading_button,
+.deleted_button {
+  cursor: pointer;
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #cecece;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background-color 300ms linear,
+    color 300ms linear;
+}
+
+.loading_button:hover,
+.deleted_button:hover {
+  background-color: #62989e;
+  color: #fff;
+}
+
+.selected_button {
+  margin-bottom: 20px;
+  font-size: 14px;
+  outline: none;
+}
+
+.table {
+  margin: auto;
+  border-collapse: collapse;
+  max-width: 600px;
+}
+
+.table__title {
+  background-color: #62989e;
+}
+
+.table__cell {
+  border: 2px solid #192729;
+  padding: 4px 8px;
+}
+
+.table__cell-completed {
+  width: 15%;
+}
