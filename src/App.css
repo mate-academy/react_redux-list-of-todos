@@ -1,0 +1,26 @@
+.cell,
+.table__title {
+  padding: 5px;
+  border: 1px solid black;
+  text-align: center;
+}
+
+.table__title {
+  padding: 0;
+  background-color: lightgoldenrodyellow;
+}
+
+.todo__table {
+  border-collapse: collapse;
+}
+
+.table__button {
+  padding: 10px;
+  width: 100%;
+  margin: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background-color: lightgoldenrodyellow;
+}
