@@ -38,9 +38,3 @@ interface Company {
 interface TodoWithUser extends Todo {
   user: User;
 }
-
-type TodosWithUser = TodoWithUser[];
-
-interface InitialState {
-  todos: TodosWithUser | [];
-}

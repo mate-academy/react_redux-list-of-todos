@@ -1,11 +1,15 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { SORT_BY_NAME, SORT_BY_TITLE, SORT_BY_COMPLETE } from '../../store';
+import {
+  sortByName as sortByNameStore,
+  sortByTitle as sortByTitleStore,
+  sortByComplete as sortByCompleteStore,
+  InitialState,
+} from '../../store';
 import Todo from '../Todo/Todo';
 
 interface Props {
-  todos: TodosWithUser;
+  todos: TodoWithUser[];
   sortByName: () => void;
   sortByTitle: () => void;
   sortByComplete: () => void;
@@ -62,16 +66,10 @@ const mapStateToProps = (state: InitialState) => ({
   todos: state.todos,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  sortByName: () => dispatch({
-    type: SORT_BY_NAME,
-  }),
-  sortByTitle: () => dispatch({
-    type: SORT_BY_TITLE,
-  }),
-  sortByComplete: () => dispatch({
-    type: SORT_BY_COMPLETE,
-  }),
-});
+const mapDispatchToProps = {
+  sortByName: sortByNameStore,
+  sortByTitle: sortByTitleStore,
+  sortByComplete: sortByCompleteStore,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

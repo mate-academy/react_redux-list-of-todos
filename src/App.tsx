@@ -7,7 +7,7 @@ import TodoList from './components/TodoList/TodoList';
 import './App.css';
 
 interface Props {
-  setTodos: (receivedTodos: TodosWithUser) => void;
+  setTodos: (receivedTodos: TodoWithUser[]) => void;
 }
 
 const App: FC<Props> = ({ setTodos }) => {
@@ -17,17 +17,22 @@ const App: FC<Props> = ({ setTodos }) => {
   const loadData = () => {
     setLoading(true);
 
-    Promise.all([getTodos(), getUsers()])
-      .then(([todosFromApi, usersFromApi]) => {
-        const receivedTodos = todosFromApi.map(todo => ({
-          ...todo,
-          user: usersFromApi.find(person => todo.userId === person.id) as User,
-        }));
+    Promise.all([
+      getTodos(),
+      getUsers(),
+    ]).then(([
+      todosFromApi,
+      usersFromApi,
+    ]) => {
+      const receivedTodos = todosFromApi.map(todo => ({
+        ...todo,
+        user: usersFromApi.find(person => todo.userId === person.id) as User,
+      }));
 
-        setTodos(receivedTodos);
-        setLoading(false);
-        setStarted(false);
-      });
+      setTodos(receivedTodos);
+      setLoading(false);
+      setStarted(false);
+    });
   };
 
   return (
