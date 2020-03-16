@@ -1,13 +1,13 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, Reducer, Dispatch } from 'redux';
 import thunk, { ThunkMiddleware } from 'redux-thunk';
 import { getTodos, getUsers } from '../api/DataFromServer';
 // eslint-disable-next-line import/no-cycle
 import {
   AppActions,
-  deleteTodoItemInterface,
-  setLoadingConditionActionInterface,
-  setPrepearedTodoListActionInterface,
-  setSortedTodoListInterface,
+  DeleteTodoItemInterface,
+  SetLoadingConditionActionInterface,
+  SetPrepearedTodoListActionInterface,
+  SetSortedTodoListInterface,
 } from '../actionsType/actionsType';
 
 
@@ -27,28 +27,29 @@ export const Actions = {
 
 
 // ActionCreators
-export const setPrepearedTodoListAction = (PreperedTdoList: TodoWithUser[]): setPrepearedTodoListActionInterface => ({
-  type: Actions.SET_PREPEARED_TODO_LIST,
-  prepearedTodoList: PreperedTdoList,
+export const setPrepearedTodoListAction
+  = (PreperedTdoList: TodoWithUser[]): SetPrepearedTodoListActionInterface => ({
+    type: Actions.SET_PREPEARED_TODO_LIST,
+    prepearedTodoList: PreperedTdoList,
 
 });
 
-export const setLoadingConditionAction = (): setLoadingConditionActionInterface => ({
+export const setLoadingConditionAction = (): SetLoadingConditionActionInterface => ({
   type: Actions.SET_LOADING_CONDITION,
 });
 
-export const deleteTodoItem = (deletedItemId: number): deleteTodoItemInterface => ({
+export const deleteTodoItem = (deletedItemId: number): DeleteTodoItemInterface => ({
   type: Actions.DELETE_TODO_ITEM,
   deletedItemId,
 });
 
-export const setSortedTodoList = (sortedTodoList: TodoWithUser[]): setSortedTodoListInterface => ({
+export const setSortedTodoList = (sortedTodoList: TodoWithUser[]): SetSortedTodoListInterface => ({
   type: Actions.SET_SORTED_TODO_LIST,
   sortedTodoList,
 });
 
-export const loadUsers = () => {
-  return (dispatch: any) => {
+export const loadUsers = (): any => {
+  return (dispatch: Dispatch) => {
     dispatch(setLoadingConditionAction());
 
     Promise.all([getUsers(), getTodos()])
@@ -66,18 +67,21 @@ export const loadUsers = () => {
 };
 
 
-const reducer = (state: InitialStateInterface = initialState, action: any): InitialStateInterface => {
+const reducer: Reducer = (
+  state = initialState,
+  action,
+): InitialStateInterface => {
   switch (action.type) {
     case Actions.SET_LOADING_CONDITION:
       return {
         ...state,
-        loadingCondition: true,
+        isLoading: true,
       };
 
     case Actions.SET_PREPEARED_TODO_LIST:
       return {
         ...state,
-        loadingCondition: false,
+        isLoading: false,
         prepearedTodoList: action.prepearedTodoList,
         sortedTodoList: action.prepearedTodoList,
       };
@@ -85,10 +89,10 @@ const reducer = (state: InitialStateInterface = initialState, action: any): Init
     case Actions.DELETE_TODO_ITEM:
       return {
         ...state,
-        prepearedTodoList: state.prepearedTodoList.filter(todo => {
+        prepearedTodoList: state.prepearedTodoList.filter((todo: Todo) => {
           return action.deletedItemId !== todo.id;
         }),
-        sortedTodoList: state.prepearedTodoList.filter(todo => {
+        sortedTodoList: state.prepearedTodoList.filter((todo: Todo) => {
           return action.deletedItemId !== todo.id;
         }),
       };

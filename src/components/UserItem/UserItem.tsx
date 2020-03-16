@@ -1,5 +1,6 @@
-import React, { Dispatch, FC } from 'react';
-import { connect } from 'react-redux';
+import React, { FC } from 'react';
+import {connect} from 'react-redux';
+import {Dispatch} from 'redux';
 import { deleteTodoItem } from '../../store/store';
 import { AppActions } from '../../actionsType/actionsType';
 

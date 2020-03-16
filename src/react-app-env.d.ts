@@ -41,7 +41,7 @@ interface TodoWithUser extends Todo{
 }
 
 interface InitialStateInterface {
-  loadingCondition: boolean;
+  isLoading: boolean;
   prepearedTodoList: TodoWithUser[] | [];
   sortedTodoList: TodoWithUser[] | [];
 }

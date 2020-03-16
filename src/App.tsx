@@ -1,12 +1,19 @@
 import React, { FC } from 'react';
-
 import { connect } from 'react-redux';
+import {Dispatch} from 'redux';
 
 import UserList from './components/UserList/UserList';
 import './App.css';
 import { loadUsers } from './store/store';
 
-const App: FC<any> = ({ prepearedTodoList, loadingCondition, loadUsers }) => {
+interface AppProps {
+  prepearedTodoList: TodoWithUser[];
+  isLoading: boolean;
+  loadUsers: Dispatch;
+}
+
+// eslint-disable-next-line no-shadow
+const App: FC<AppProps> = ({ prepearedTodoList, isLoading, loadUsers }) => {
   return (
     <>
       {
@@ -15,7 +22,7 @@ const App: FC<any> = ({ prepearedTodoList, loadingCondition, loadUsers }) => {
             <button
               type="button"
               onClick={loadUsers}
-              disabled={loadingCondition}
+              disabled={isLoading}
               className="load-btn"
             >
                     Load
@@ -23,7 +30,7 @@ const App: FC<any> = ({ prepearedTodoList, loadingCondition, loadUsers }) => {
           )
           : <UserList prepearedTodoList={prepearedTodoList} />
       }
-      {loadingCondition && (
+      {isLoading && (
         <p className="loading-text">Loading ...</p>
       )}
     </>
@@ -31,11 +38,11 @@ const App: FC<any> = ({ prepearedTodoList, loadingCondition, loadUsers }) => {
 };
 
 const mapStateToProps = (state: InitialStateInterface) => ({
-  loadingCondition: state.loadingCondition,
+  isLoading: state.isLoading,
   prepearedTodoList: state.prepearedTodoList,
 });
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: Dispatch) => ({
   loadUsers: () => dispatch(loadUsers()),
 });
 

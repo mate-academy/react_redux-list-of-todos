@@ -4,6 +4,12 @@ import UserItem from '../UserItem/UserItem';
 import { setSortedTodoList } from '../../store/store';
 import { AppActions } from '../../actionsType/actionsType';
 
+// interface UserListProps {
+//   prepearedTodoList: TodoWithUser[];
+//   sortedTodoList: TodoWithUser[];
+//   sortBy: any;
+// }
+
 const UserList: FC<any> = ({ prepearedTodoList, sortBy, sortedTodoList }) => {
   function sortedBy(param: string) {
     switch (param) {
