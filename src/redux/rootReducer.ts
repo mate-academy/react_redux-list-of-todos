@@ -3,11 +3,13 @@ import { Type } from '../actions/actionCreator';
 
 export interface InitialState {
   todos: PreparedTodo[] | [];
+  field: string;
 }
 
 interface Payload {
   todos: PreparedTodo[];
   id: number;
+  sort: string;
 }
 interface DispatchActions extends Action {
   payload: Payload;
@@ -15,32 +17,24 @@ interface DispatchActions extends Action {
 
 const initialState: InitialState = {
   todos: [],
+  field: Type.SORT_BY_NAME,
 };
 
 const rootReducer: Reducer<InitialState, DispatchActions> = (state = initialState, action) => {
   switch (action.type) {
     case Type.LOAD_FROM_API:
       return {
+        ...state,
         todos: action.payload.todos,
       };
-
-    case Type.SORT_BY_NAME:
+    case 'sort':
       return {
-        todos: [...state.todos].sort((a, b) => a.user.name.localeCompare(b.user.name)),
+        ...state,
+        field: action.payload.sort,
       };
-
-    case Type.SORT_BY_TITLE:
-      return {
-        todos: [...state.todos].sort((a, b) => a.title.localeCompare(b.title)),
-      };
-
-    case Type.SORT_BY_COMPLETE:
-      return {
-        todos: [...state.todos].sort((a, b) => Number(b.completed) - Number(a.completed)),
-      };
-
     case Type.DELETE_TASK:
       return {
+        ...state,
         todos: [...state.todos].filter(todo => todo.id !== action.payload.id),
       };
 

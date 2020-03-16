@@ -6,6 +6,7 @@ import TodoList from './components/TodoList';
 import { InitialState } from './redux/rootReducer';
 import './App.css';
 import { setTodos as setTodosData } from './actions/actionCreator';
+import { getSortedTodos } from './utils/SortBy';
 
 
 interface Props {
@@ -58,7 +59,7 @@ const App: FC<Props> = ({ todos, setTodos }) => {
 
 const mapStateToProps = (state: InitialState) => {
   return {
-    todos: state.todos,
+    todos: getSortedTodos(state),
   };
 };
 

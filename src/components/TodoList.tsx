@@ -2,22 +2,18 @@ import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Todo from './Todo';
-import { sortByName, sortByTitle, sortByComplete } from '../actions/actionCreator';
+import { setSortField as setSort, Type } from '../actions/actionCreator';
 
 
 interface Props {
   todos: PreparedTodo[];
-  sortByTitle: () => void;
-  sortByName: () => void;
-  sortByComplete: () => void;
+  setSortField: (field: string) => void;
 }
 
 
 const TodoList: FC<Props> = ({
   todos,
-  sortByTitle,
-  sortByComplete,
-  sortByName,
+  setSortField,
 }) => {
   return (
     <>
@@ -25,21 +21,21 @@ const TodoList: FC<Props> = ({
         <button
           className="btn btn-info button-margin"
           type="button"
-          onClick={sortByTitle}
+          onClick={() => setSortField(Type.SORT_BY_TITLE)}
         >
           sort by title
         </button>
         <button
           className="btn btn-info button-margin"
           type="button"
-          onClick={sortByComplete}
+          onClick={() => setSortField(Type.SORT_BY_COMPLETE)}
         >
           show completed
         </button>
         <button
           className="btn btn-info"
           type="button"
-          onClick={sortByName}
+          onClick={() => setSortField(Type.SORT_BY_NAME)}
         >
           by user name
         </button>
@@ -62,9 +58,7 @@ const TodoList: FC<Props> = ({
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  sortByName: () => dispatch(sortByName()),
-  sortByTitle: () => dispatch(sortByTitle()),
-  sortByComplete: () => dispatch(sortByComplete()),
+  setSortField: (field: string) => dispatch(setSort(field)),
 });
 
 export default connect(null, mapDispatchToProps)(TodoList);
