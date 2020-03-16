@@ -1,20 +1,16 @@
 import { Action, Reducer, createStore } from 'redux';
-import {
-  LOAD_FROM_API,
-  SORT_BY_NAME,
-  SORT_BY_TITLE,
-  SORT_BY_COMPLETE,
-  DELETE_TASK,
-} from '../constants/constants';
+import { Type } from '../actions/actionCreator';
 
 export interface InitialState {
   todos: PreparedTodo[] | [];
 }
 
+interface Payload {
+  todos: PreparedTodo[];
+  id: number;
+}
 interface DispatchActions extends Action {
-  type: string;
-  payload: PreparedTodo[];
-  id?: number;
+  payload: Payload;
 }
 
 const initialState: InitialState = {
@@ -23,29 +19,29 @@ const initialState: InitialState = {
 
 const rootReducer: Reducer<InitialState, DispatchActions> = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_FROM_API:
+    case Type.LOAD_FROM_API:
       return {
-        todos: action.payload,
+        todos: action.payload.todos,
       };
 
-    case SORT_BY_NAME:
+    case Type.SORT_BY_NAME:
       return {
         todos: [...state.todos].sort((a, b) => a.user.name.localeCompare(b.user.name)),
       };
 
-    case SORT_BY_TITLE:
+    case Type.SORT_BY_TITLE:
       return {
         todos: [...state.todos].sort((a, b) => a.title.localeCompare(b.title)),
       };
 
-    case SORT_BY_COMPLETE:
+    case Type.SORT_BY_COMPLETE:
       return {
         todos: [...state.todos].sort((a, b) => Number(b.completed) - Number(a.completed)),
       };
 
-    case DELETE_TASK:
+    case Type.DELETE_TASK:
       return {
-        todos: [...state.todos].filter(todo => todo.id !== action.id),
+        todos: [...state.todos].filter(todo => todo.id !== action.payload.id),
       };
 
     default:
@@ -53,4 +49,7 @@ const rootReducer: Reducer<InitialState, DispatchActions> = (state = initialStat
   }
 };
 
-export const store = createStore(rootReducer);
+const devTool = (window as any).__REDUX_DEVTOOLS_EXTENSION__
+    && (window as any).__REDUX_DEVTOOLS_EXTENSION__();
+
+export const store = createStore(rootReducer, devTool);
