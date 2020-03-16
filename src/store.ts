@@ -1,17 +1,17 @@
 import { createStore, AnyAction } from 'redux';
 import { TodoWithUser } from './utils/types';
 
-export const TYPE_SET_ERROR = 'error';
-export const TYPE_SET_LOAD = 'loading';
-export const TYPE_SET_SORT = 'sort';
-export const TYPE_SET_NEW_TODOS = 'downloaded';
-export const TYPE_DELETE_TODO = 'delete_item';
+export const TYPE_SET_ERROR = 'TYPE_SET_ERROR';
+export const TYPE_SET_LOAD = 'TYPE_SET_LOAD';
+export const TYPE_SET_SORT = 'TYPE_SET_SORT';
+export const TYPE_SET_NEW_TODOS = 'TYPE_SET_NEW_TODOS';
+export const TYPE_DELETE_TODO = 'TYPE_DELETE_TODO';
 
 
 export interface Storage {
   isLoading: boolean;
   isError: string;
-  todos: TodoWithUser[];
+  todos: TodoWithUser[] | [];
 }
 
 
@@ -25,7 +25,7 @@ export const getLoading = (state: Storage) => state.isLoading;
 export const getError = (state: Storage) => state.isError;
 export const getTodos = (state: Storage) => state.todos;
 
-export const setLoad = (value: boolean) => ({ type: TYPE_SET_LOAD, value });
+export const setLoading = (value: boolean) => ({ type: TYPE_SET_LOAD, value });
 export const setError = (value: string) => ({ type: TYPE_SET_ERROR, value });
 export const setSort = (value: string) => ({ type: TYPE_SET_SORT, value });
 export const setNewTodos = (value: TodoWithUser[]) => ({ type: TYPE_SET_NEW_TODOS, value });
@@ -38,25 +38,25 @@ const reducer = (state: Storage | undefined, action: AnyAction): Storage => {
   }
 
   switch (action.type) {
-    case 'delete_item': {
+    case TYPE_DELETE_TODO: {
       const newTodos = state.todos.filter(item => item.id !== action.value);
 
       return { ...state, todos: newTodos };
     }
 
-    case 'loading': {
+    case TYPE_SET_LOAD: {
       return { ...state, isLoading: action.value };
     }
 
-    case 'error': {
+    case TYPE_SET_ERROR: {
       return { ...state, isError: action.value };
     }
 
-    case 'downloaded': {
+    case TYPE_SET_NEW_TODOS: {
       return { ...state, todos: action.value };
     }
 
-    case 'sort': {
+    case TYPE_SET_SORT: {
       const newTodos = [...state.todos];
 
       switch (action.value) {
@@ -66,7 +66,7 @@ const reducer = (state: Storage | undefined, action: AnyAction): Storage => {
           return { ...state, todos: newTodos };
         }
 
-        case 'ID': {
+        case 'id': {
           newTodos.sort((item1, item2) => item1.id - item2.id);
 
           return { ...state, todos: newTodos };

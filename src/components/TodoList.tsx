@@ -10,14 +10,14 @@ import {
 interface Props {
   todos: TodoWithUser[];
   handlerSort: (value: string) => void;
-  handlerDelete: (value: number) => void;
+  handleDelete: (value: number) => void;
 }
 
 const TodoListInner: FC<Props> = (props) => {
   const {
     todos,
     handlerSort,
-    handlerDelete,
+    handleDelete,
   } = props;
 
   return (
@@ -27,7 +27,7 @@ const TodoListInner: FC<Props> = (props) => {
           <th className="table__title">
             <button
               type="button"
-              onClick={() => handlerSort('ID')}
+              onClick={() => handlerSort('id')}
               className="table__button"
             >
               number task
@@ -64,13 +64,13 @@ const TodoListInner: FC<Props> = (props) => {
         </tr>
       </thead>
       <tbody>
-        {todos.map(todo => <Todo key={todo.id} todo={todo} onDelete={handlerDelete} />)}
+        {todos.map(todo => <Todo key={todo.id} todo={todo} onDelete={handleDelete} />)}
       </tbody>
     </table>
   );
 };
 
-const getMethods = { handlerSort: setSort, handlerDelete: deleteTodo };
+const getMethods = { handlerSort: setSort, handleDelete: deleteTodo };
 const getData = (state: Storage) => ({
   todos: getTodos(state),
 });
