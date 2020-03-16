@@ -2,24 +2,29 @@ import { Action, Reducer, createStore } from 'redux';
 import { TodosWithUsers } from './types';
 import {
   LOAD_TODOS,
+  SET_LOAD,
   REMOVE_TODO,
-  SORT_BY_NAME,
-  SORT_BY_TITLE,
-  SORT_BY_COMPLETED,
+  SORTED_TODOS,
 } from './constants';
 
 export interface InitialState {
   todos: TodosWithUsers | [];
+  isLoading?: boolean;
+  sortField?: string;
 }
 
 interface DispatchAction extends Action {
   type: string;
   todos: TodosWithUsers;
   id?: number;
+  isLoading?: boolean;
+  sortField?: string;
 }
 
 const initialState: InitialState = {
   todos: [],
+  isLoading: false,
+  sortField: undefined,
 };
 
 const reduser: Reducer<InitialState, DispatchAction> = (state = initialState, action) => {
@@ -28,21 +33,18 @@ const reduser: Reducer<InitialState, DispatchAction> = (state = initialState, ac
       return {
         todos: action.todos,
       };
+    case SET_LOAD:
+      return {
+        ...state,
+        isLoading: action.isLoading,
+      };
     case REMOVE_TODO:
       return {
         todos: [...state.todos].filter(todo => todo.id !== action.id),
       };
-    case SORT_BY_NAME:
+    case SORTED_TODOS:
       return {
-        todos: [...state.todos].sort((a, b) => a.user.name.localeCompare(b.user.name)),
-      };
-    case SORT_BY_TITLE:
-      return {
-        todos: [...state.todos].sort((a, b) => a.title.localeCompare(b.title)),
-      };
-    case SORT_BY_COMPLETED:
-      return {
-        todos: [...state.todos].sort((a, b) => Number(a.completed) - Number(b.completed)),
+        todos: action.todos,
       };
     default:
       return state;

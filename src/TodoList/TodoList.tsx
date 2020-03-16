@@ -1,25 +1,39 @@
 import React, { FC } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { TodoWithUser } from '../types';
+import { TodosWithUsers } from '../types';
 import Todo from '../Todo/Todo';
-import { sortByName, sortByTitle, sortByCompleted } from '../actionCreators';
+import { InitialState } from '../store';
+import { sortedTodos } from '../actionCreators';
 import './TodoList.css';
 
 interface Props {
-  todos: TodoWithUser[];
-  handleSortByName(): void;
-  handleSortByTitle(): void;
-  handleSortByCompleted(): void;
+  todos: TodosWithUsers;
+  setTodos: (todoWithUser: TodosWithUsers) => void;
 }
 
 const TodoList: FC<Props> = (props) => {
   const {
     todos,
-    handleSortByName,
-    handleSortByTitle,
-    handleSortByCompleted,
+    setTodos,
   } = props;
+
+  const handleFilter = (field: string) => {
+    const filteredTodos = [...todos];
+
+    switch (field) {
+      case 'name':
+        setTodos(filteredTodos.sort((a, b) => a.user.name.localeCompare(b.user.name)));
+        break;
+      case 'title':
+        setTodos(filteredTodos.sort((a, b) => a.title.localeCompare(b.title)));
+        break;
+      case 'completed':
+        setTodos(filteredTodos.sort((a, b) => Number(a.completed) - Number(b.completed)));
+        break;
+      default:
+    }
+  };
 
   return (
     <table className="table">
@@ -29,7 +43,7 @@ const TodoList: FC<Props> = (props) => {
             <button
               type="button"
               className="table__button table__button-header"
-              onClick={handleSortByName}
+              onClick={() => handleFilter('name')}
             >
               Name
             </button>
@@ -38,7 +52,7 @@ const TodoList: FC<Props> = (props) => {
             <button
               type="button"
               className="table__button table__button-header"
-              onClick={handleSortByTitle}
+              onClick={() => handleFilter('title')}
             >
               Todo
             </button>
@@ -47,7 +61,7 @@ const TodoList: FC<Props> = (props) => {
             <button
               type="button"
               className="table__button table__button-header"
-              onClick={handleSortByCompleted}
+              onClick={() => handleFilter('completed')}
             >
               Status
             </button>
@@ -69,10 +83,12 @@ const TodoList: FC<Props> = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  handleSortByName: () => dispatch(sortByName),
-  handleSortByTitle: () => dispatch(sortByTitle),
-  handleSortByCompleted: () => dispatch(sortByCompleted),
+const mapStateToProps = (state: InitialState) => ({
+  todos: state.todos,
 });
 
-export default connect(null, mapDispatchToProps)(TodoList);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  setTodos: (todoWithUser: TodosWithUsers) => dispatch(sortedTodos(todoWithUser)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

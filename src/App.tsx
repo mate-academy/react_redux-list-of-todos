@@ -1,27 +1,29 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { loadTodos, loadUsers } from './loadData';
 import { TodosWithUsers, User, Todo } from './types';
 import TodoList from './TodoList/TodoList';
 import { InitialState } from './store';
-import { loadTodo } from './actionCreators';
+import { loadAllTodos, setLoading } from './actionCreators';
 import './App.css';
 
 interface Props {
   todos: TodosWithUsers | [];
+  isLoading: boolean | undefined;
   setTodos: (todoWithUser: TodosWithUsers) => void;
+  setIsLoad: (value: boolean) => void;
 }
 
-const App: FC<Props> = ({ todos, setTodos }) => {
-  const [isLoading, setIsLoading] = useState(false);
-
+const App: FC<Props> = ({
+  todos, setTodos, isLoading, setIsLoad,
+}) => {
   const handleLoadTodos = () => {
-    setIsLoading(true);
+    setIsLoad(true);
 
     Promise.all([
-      loadTodos,
-      loadUsers,
+      loadTodos(),
+      loadUsers(),
     ])
       .then(([todosFromApi, usersFromApi]) => {
         const todoWithUser = todosFromApi.map((todo: Todo) => {
@@ -33,7 +35,7 @@ const App: FC<Props> = ({ todos, setTodos }) => {
         });
 
         setTodos(todoWithUser);
-        setIsLoading(false);
+        setIsLoad(false);
       });
   };
 
@@ -44,9 +46,7 @@ const App: FC<Props> = ({ todos, setTodos }) => {
         todos.length
           ? (
             <div className="app">
-              <TodoList
-                todos={todos}
-              />
+              <TodoList />
             </div>
           )
           : (
@@ -69,10 +69,12 @@ const App: FC<Props> = ({ todos, setTodos }) => {
 
 const mapStateToProps = (state: InitialState) => ({
   todos: state.todos,
+  isLoading: state.isLoading,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setTodos: (todoWithUser: TodosWithUsers) => dispatch(loadTodo(todoWithUser)),
+  setTodos: (todoWithUser: TodosWithUsers) => dispatch(loadAllTodos(todoWithUser)),
+  setIsLoad: (value: boolean) => dispatch(setLoading(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

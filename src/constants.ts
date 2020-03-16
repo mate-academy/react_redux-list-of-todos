@@ -1,5 +1,4 @@
 export const LOAD_TODOS = 'LOAD_TODOS';
+export const SET_LOAD = 'SET_LOAD';
 export const REMOVE_TODO = 'REMOVE_TODO';
-export const SORT_BY_NAME = 'SORT_BY_NAME';
-export const SORT_BY_TITLE = 'SORT_BY_TITLE';
-export const SORT_BY_COMPLETED = 'SORT_BY_COMPLETED';
+export const SORTED_TODOS = 'SORTED_TODOS';
