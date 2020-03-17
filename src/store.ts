@@ -4,7 +4,7 @@ import {
   LOAD_TODOS,
   SET_LOAD,
   REMOVE_TODO,
-  SORTED_TODOS,
+  SET_SORTED,
 } from './constants';
 
 export interface InitialState {
@@ -24,7 +24,7 @@ interface DispatchAction extends Action {
 const initialState: InitialState = {
   todos: [],
   isLoading: false,
-  sortField: undefined,
+  sortField: '',
 };
 
 const reduser: Reducer<InitialState, DispatchAction> = (state = initialState, action) => {
@@ -42,9 +42,10 @@ const reduser: Reducer<InitialState, DispatchAction> = (state = initialState, ac
       return {
         todos: [...state.todos].filter(todo => todo.id !== action.id),
       };
-    case SORTED_TODOS:
+    case SET_SORTED:
       return {
-        todos: action.todos,
+        ...state,
+        sortField: action.sortField,
       };
     default:
       return state;
