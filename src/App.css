@@ -1,0 +1,22 @@
+.app {
+  text-align: center;
+}
+
+.button {
+  margin: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.loading-text {
+  margin: 10px;
+}
+
+.table__button {
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  outline: none;
+  transition: 0.2s;
+}
