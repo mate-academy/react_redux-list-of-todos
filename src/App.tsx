@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import './App.css';
 import TodoList from './components/TodoList/TodoList';
 import {
-  State, setIsLoad, setTodosWithUsers,
-  filterByTitle, filterByName, filterByComplete, loadTodos,
+  State,
+  filterByTitle,
+  filterByName,
+  filterByComplete,
+  loadTodos,
 } from './store';
 
 interface Props {
@@ -81,8 +84,6 @@ const mapStateToProps = (state: State) => ({
 
 const mapDispatchToProps = {
   loadedTodos: loadTodos,
-  setIsLoading: setIsLoad,
-  setTodos: setTodosWithUsers,
   setFilterByTitle: filterByTitle,
   setFilterByName: filterByName,
   setFilterByCompleted: filterByComplete,
