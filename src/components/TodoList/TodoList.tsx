@@ -3,12 +3,7 @@ import { connect } from 'react-redux';
 import { Action } from 'redux';
 import Todo from '../Todo/Todo';
 import { InitialState } from '../../store';
-import {
-  SORT_BY_COMPLETED,
-  SORT_BY_TITLE,
-  SORT_BY_NAME,
-} from '../../constants';
-
+import { sortByTitleAction, sortByNameAction, sortByCompletedAction } from '../../actionCreators';
 
 interface Props {
   todos: PreparedTodo[];
@@ -73,15 +68,9 @@ const mapStateToProps = (state: InitialState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Action>) => ({
-  sortByTitle: () => dispatch({
-    type: SORT_BY_TITLE,
-  }),
-  sortByName: () => dispatch({
-    type: SORT_BY_NAME,
-  }),
-  sortByCompleted: () => dispatch({
-    type: SORT_BY_COMPLETED,
-  }),
+  sortByTitle: () => dispatch(sortByTitleAction()),
+  sortByName: () => dispatch(sortByNameAction()),
+  sortByCompleted: () => dispatch(sortByCompletedAction()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

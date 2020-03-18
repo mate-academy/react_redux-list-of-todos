@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { ON_DELETE } from '../../constants';
+import { onDeleteAction } from '../../actionCreators';
 
 interface Props {
   todo: PreparedTodo;
@@ -25,10 +25,7 @@ const Todo: FC<Props> = ({ todo, onDelete }) => (
 );
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onDelete: (id: number) => dispatch({
-    type: ON_DELETE,
-    payload: id,
-  }),
+  onDelete: (id: number) => dispatch(onDeleteAction(id)),
 });
 
 export default connect(null, mapDispatchToProps)(Todo);

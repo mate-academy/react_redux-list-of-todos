@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import './App.css';
 import TodoList from './components/TodoList/TodoList';
 import { getPreparedTodos } from './api';
-import { SET_TODOS } from './constants';
+import { setTodosAction } from './actionCreators';
 
 interface Props {
   setTodos: (todos: PreparedTodo[]) => void;
@@ -46,10 +46,7 @@ const App: FC<Props> = ({ setTodos }) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setTodos: (todos: PreparedTodo[]) => dispatch({
-    type: SET_TODOS,
-    todos,
-  }),
+  setTodos: (todos: PreparedTodo[]) => dispatch(setTodosAction(todos)),
 });
 
 export default connect(null, mapDispatchToProps)(App);
