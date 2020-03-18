@@ -2,14 +2,11 @@ import React, { FC } from 'react';
 import { connect } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import './App.css';
-import { getTodos, getUsers } from './api/getData';
 import { Actions } from './components/Actions';
 import * as actions from './redux/actions';
 
 interface Methods {
-  setIsLoaded: (status: boolean) => void;
-  setIsLoading: (status: boolean) => void;
-  setTodos: (todos: Todo[]) => void;
+  loadData: () => void;
 }
 
 type Props = Methods & {
@@ -19,28 +16,12 @@ type Props = Methods & {
 
 
 const AppTemplate: FC<Props> = ({
-  isLoaded, isLoading, setIsLoaded,
-  setIsLoading, setTodos,
+  isLoaded,
+  isLoading,
+  loadData,
 }) => {
-  async function handleStart() {
-    setIsLoading(true);
-
-    const [
-      todosFromServer,
-      usersFromServer,
-    ] = await Promise.all([
-      getTodos(),
-      getUsers(),
-    ]).finally(() => setIsLoaded(true));
-
-    setTodos(todosFromServer.map((todo) => (
-      {
-        ...todo,
-        user: usersFromServer
-          .find((user) => user.id === todo.userId),
-      })));
-
-    setIsLoading(false);
+  function handleStart() {
+    loadData();
   }
 
   return (
@@ -75,9 +56,7 @@ const mapStateToProps = (
 });
 
 const mapDispatchToProps = {
-  setIsLoaded: actions.setIsLoaded,
-  setIsLoading: actions.setIsLoading,
-  setTodos: actions.setTodos,
+  loadData: actions.loadData,
 };
 
 export const App = connect(

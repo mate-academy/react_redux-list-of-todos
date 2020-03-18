@@ -2,6 +2,7 @@ import React, { FC, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { Todo } from './Todo';
 import * as actions from '../redux/actions';
+import { selectTodosWithUser } from '../redux/selectors';
 
 interface Props {
   todos: Todo[];
@@ -63,7 +64,7 @@ const mapStateToProps = (
     todosReducer: TodoState;
     queryReducer: QuerySort; },
 ) => ({
-  todos: state.todosReducer.todos,
+  todos: selectTodosWithUser(state.todosReducer),
   query: state.queryReducer.query,
 });
 

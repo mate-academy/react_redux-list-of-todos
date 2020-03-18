@@ -43,6 +43,7 @@ interface LoadState {
 
 interface TodoState {
   todos: Todo[];
+  users: User[];
 }
 
 interface QuerySort {
