@@ -4,12 +4,14 @@ import { Type } from '../actions/actionCreator';
 export interface InitialState {
   todos: PreparedTodo[] | [];
   field: string;
+  isLoading: boolean;
 }
 
 interface Payload {
   todos: PreparedTodo[];
   id: number;
   sort: string;
+  isLoading: boolean;
 }
 interface DispatchActions extends Action {
   payload: Payload;
@@ -18,6 +20,7 @@ interface DispatchActions extends Action {
 const initialState: InitialState = {
   todos: [],
   field: Type.SORT_BY_NAME,
+  isLoading: false,
 };
 
 const rootReducer: Reducer<InitialState, DispatchActions> = (state = initialState, action) => {
@@ -27,10 +30,15 @@ const rootReducer: Reducer<InitialState, DispatchActions> = (state = initialStat
         ...state,
         todos: action.payload.todos,
       };
-    case 'sort':
+    case Type.SORT:
       return {
         ...state,
         field: action.payload.sort,
+      };
+    case Type.IS_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload.isLoading,
       };
     case Type.DELETE_TASK:
       return {
