@@ -1,50 +1,33 @@
 import React, { FC } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import './App.css';
-import { getData } from './components/getData/getData';
 import TodoList from './components/TodoList/TodoList';
-import { State, setIsLoad, setTodosWithUsers } from './store';
+import {
+  State, setIsLoad, setTodosWithUsers,
+  filterByTitle, filterByName, filterByComplete, loadTodos,
+} from './store';
 
 interface Props {
   todos: TodoWithUser[] | [];
-  setTodos: (value: TodoWithUser[]) => void;
   isLoading: boolean;
-  setIsLoading: (value: boolean) => void;
+  setFilterByTitle: () => void;
+  setFilterByName: () => void;
+  setFilterByCompleted: () => void;
+  loadedTodos: () => void;
 }
 
 const App: FC<Props> = (props) => {
   const {
+    loadedTodos,
     todos,
-    setTodos,
     isLoading,
-    setIsLoading,
+    setFilterByTitle,
+    setFilterByName,
+    setFilterByCompleted,
   } = props;
 
-  const handleStart = async () => {
-    setIsLoading(true);
-    const todosFromServer = await getData();
-
-    setTodos(todosFromServer);
-    setIsLoading(false);
-  };
-
-  const filterForAll = (filterType: string) => {
-    switch (filterType) {
-      case 'title':
-        setTodos([...todos]
-          .sort((a, b) => a.title.localeCompare(b.title)));
-        break;
-      case 'name':
-        setTodos([...todos]
-          .sort((a, b) => a.user.name.localeCompare(b.user.name)));
-        break;
-      case 'completed':
-        setTodos([...todos]
-          .sort((a, b) => +a.completed - +b.completed));
-        break;
-      default:
-    }
+  const handleStart = () => {
+    loadedTodos();
   };
 
   if (!todos.length) {
@@ -55,7 +38,7 @@ const App: FC<Props> = (props) => {
           type="button"
           onClick={handleStart}
         >
-          {(isLoading) ? 'Loading....' : 'Add'}
+          {isLoading ? 'Loading....' : 'Add'}
         </button>
       </div>
     );
@@ -67,21 +50,21 @@ const App: FC<Props> = (props) => {
         <button
           className="button is-info"
           type="button"
-          onClick={() => filterForAll('title')}
+          onClick={setFilterByTitle}
         >
           Filter Title
         </button>
         <button
           className="button is-info"
           type="button"
-          onClick={() => filterForAll('name')}
+          onClick={setFilterByName}
         >
           Filter Name
         </button>
         <button
           className="button is-info"
           type="button"
-          onClick={() => filterForAll('completed')}
+          onClick={setFilterByCompleted}
         >
           Filter Completed
         </button>
@@ -96,9 +79,13 @@ const mapStateToProps = (state: State) => ({
   isLoading: state.isLoading,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setIsLoading: (isLoading: boolean) => dispatch(setIsLoad(isLoading)),
-  setTodos: (todos: TodoWithUser[] | []) => dispatch(setTodosWithUsers(todos)),
-});
+const mapDispatchToProps = {
+  loadedTodos: loadTodos,
+  setIsLoading: setIsLoad,
+  setTodos: setTodosWithUsers,
+  setFilterByTitle: filterByTitle,
+  setFilterByName: filterByName,
+  setFilterByCompleted: filterByComplete,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
