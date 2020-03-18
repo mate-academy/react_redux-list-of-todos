@@ -12,14 +12,14 @@ interface Props {
   todos: PreparedTodo[];
   setTodos: (todos: PreparedTodo[]) => void;
   setLoading: (value: boolean) => void;
-  isLoaded: boolean;
+  isLoad: boolean;
 }
 
 const App: FC<Props> = ({
   todos,
   setTodos,
   setLoading,
-  isLoaded,
+  isLoad,
 }) => {
   const loadTodos = async () => {
     setLoading(true);
@@ -33,7 +33,7 @@ const App: FC<Props> = ({
     setLoading(false);
   };
 
-  if (isLoaded) {
+  if (isLoad) {
     return <p className="loading">Loading...</p>;
   }
 
@@ -63,7 +63,7 @@ const App: FC<Props> = ({
 const mapStateToProps = (state: InitialState) => {
   return {
     todos: getSortedTodos(state),
-    isLoaded: state.isLoading,
+    isLoad: state.isLoading,
   };
 };
 
