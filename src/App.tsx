@@ -8,22 +8,21 @@ import './App.css';
 import { setTodos as setTodosData, setIsLoading } from './actions/actionCreator';
 import { getSortedTodos } from './utils/getSortedTodos';
 
-
 interface Props {
   todos: PreparedTodo[];
   setTodos: (todos: PreparedTodo[]) => void;
-  isLoading: (value: boolean) => void;
-  isLoad: boolean;
+  setLoading: (value: boolean) => void;
+  isLoaded: boolean;
 }
 
 const App: FC<Props> = ({
   todos,
   setTodos,
-  isLoading,
-  isLoad,
+  setLoading,
+  isLoaded,
 }) => {
   const loadTodos = async () => {
-    isLoading(true);
+    setLoading(true);
     const todosFromApi = await getTodos();
     const usersFromApi = await getUsers();
 
@@ -31,10 +30,10 @@ const App: FC<Props> = ({
       ...todo,
       user: usersFromApi.find(person => person.id === todo.userId) as User,
     })));
-    isLoading(false);
+    setLoading(false);
   };
 
-  if (isLoad) {
+  if (isLoaded) {
     return <p className="loading">Loading...</p>;
   }
 
@@ -64,13 +63,13 @@ const App: FC<Props> = ({
 const mapStateToProps = (state: InitialState) => {
   return {
     todos: getSortedTodos(state),
-    isLoad: state.isLoading,
+    isLoaded: state.isLoading,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setTodos: (todos: PreparedTodo[]) => dispatch(setTodosData(todos)),
-  isLoading: (value: boolean) => dispatch(setIsLoading(value)),
+  setLoading: (value: boolean) => dispatch(setIsLoading(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
