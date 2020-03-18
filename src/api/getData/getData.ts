@@ -1,7 +1,7 @@
 import { BASE_URL } from '../../constants/constants';
 
-const todos = 'todos';
-const users = 'users';
+const TODOS = 'todos';
+const USERS = 'users';
 
 const getData = async <T>(url: string): Promise<T> => {
   const response = await fetch(url);
@@ -10,9 +10,9 @@ const getData = async <T>(url: string): Promise<T> => {
 };
 
 export const getTodos = async () => {
-  return getData<Todo[]>(`${BASE_URL}${todos}`);
+  return getData<Todo[]>(`${BASE_URL}${TODOS}`);
 };
 
 export const getUsers = async () => {
-  return getData<User[]>(`${BASE_URL}${users}`);
+  return getData<User[]>(`${BASE_URL}${USERS}`);
 };

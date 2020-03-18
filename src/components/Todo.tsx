@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { deleteTask as delTask } from '../actions/actionCreator';
+import { deleteTask as removeTask } from '../actions/actionCreator';
 
 interface Props {
   todo: PreparedTodo;
@@ -29,7 +29,7 @@ const Todo: React.FC<Props> = ({ todo, deleteTask }) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  deleteTask: (id: number) => dispatch(delTask(id)),
+  deleteTask: (id: number) => dispatch(removeTask(id)),
 });
 
 export default connect(null, mapDispatchToProps)(Todo);

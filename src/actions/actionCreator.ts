@@ -8,8 +8,19 @@ export const Type = {
   IS_LOADING: 'IS_LOADING',
 };
 
-export const setTodos = (todos: PreparedTodo[]) => (
-  { type: Type.LOAD_FROM_API, payload: { todos } });
-export const setSortField = (sort: string) => ({ type: Type.SORT, payload: { sort } });
-export const deleteTask = (id: number) => ({ type: Type.DELETE_TASK, payload: { id } });
-export const setIsLoading = (value: boolean) => ({ type: Type.IS_LOADING, payload: { value } });
+export const setTodos = (todos: PreparedTodo[]) => ({
+  type: Type.LOAD_FROM_API,
+  payload: { todos },
+});
+export const setSortField = (sort: string) => ({
+  type: Type.SORT,
+  payload: { sort },
+});
+export const deleteTask = (id: number) => ({
+  type: Type.DELETE_TASK,
+  payload: { id },
+});
+export const setIsLoading = (value: boolean) => ({
+  type: Type.IS_LOADING,
+  payload: { value },
+});
