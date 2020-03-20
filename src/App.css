@@ -1,0 +1,32 @@
+* {
+  color: #2c3437;
+  background-color: #f5f9fb;
+}
+
+body {
+  text-align: center;
+}
+
+.table {
+  margin: auto;
+  background-color: #edf2f5;
+}
+
+.button {
+  color: #2c3437;
+  background-color: #ddeef5;
+  margin: 3px;
+  padding: 3px 7px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.button:hover {
+  border-color: rgba(175, 47, 47, 0.1);
+  cursor: pointer;
+}
+
+.selected {
+  border-color: rgba(175, 47, 47, 0.2);
+}
