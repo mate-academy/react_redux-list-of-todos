@@ -5,7 +5,7 @@ import {
   setIsLoadind,
   setTodos,
   setSortType,
-} from './store/store';
+} from './store/actionCreators';
 import { TodoList } from './components/TodoList/TodoList';
 import './App.css';
 
@@ -36,22 +36,6 @@ export const AppTemplate: FC<Props> = (props) => {
 
     return todosPrepared;
   };
-
-  /* const handleTypeOfSort = (typeOfSort: string) => {
-    switch (typeOfSort) {
-      case 'title':
-        setTodos([...todos].sort((a, b) => a.title.localeCompare(b.title)));
-        break;
-      case 'completed':
-        setTodos([...todos]
-          .sort((todoA, todoB) => (Number(todoB.completed) - Number(todoA.completed))));
-        break;
-      case 'user':
-        setTodos([...todos].sort((a, b) => a.user.name.localeCompare(b.user.name)));
-        break;
-      default:
-    }
-  }; */
 
   const sortedTodo = useMemo(() => {
     switch (typeOfSort) {
@@ -95,7 +79,6 @@ export const AppTemplate: FC<Props> = (props) => {
               type="button"
               onClick={() => {
                 setSortType('completed');
-                console.log(typeOfSort);
               }}
             >
               sort by status
