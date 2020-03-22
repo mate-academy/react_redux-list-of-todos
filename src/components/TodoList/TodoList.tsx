@@ -1,24 +1,14 @@
-import React, { FC } from 'react';
-import { Todo } from '../Todo/Todo';
+import { connect } from 'react-redux';
+import { setSortType } from '../../store/actionCreators';
+import { TodoListTemplate } from './TodoListTemplate';
 
-interface Props {
-  todos: PreparedTodo[];
-}
+const mapState = (state: RootState) => ({
+  todos: state.todos,
+  typeOfSort: state.typeOfSort,
+});
 
-export const TodoList: FC<Props> = ({ todos }) => (
-  <table className="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>User</th>
-        <th>Task</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {todos.map(todo => (
-        <Todo key={todo.id} todo={todo} />
-      ))}
-    </tbody>
-  </table>
-);
+const mapDispatch = {
+  setSortType,
+};
+
+export const TodoList = connect(mapState, mapDispatch)(TodoListTemplate);
