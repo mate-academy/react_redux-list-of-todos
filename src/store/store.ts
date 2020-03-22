@@ -11,9 +11,9 @@ export const SET_TODOS = 'SET_TODOS';
 export const SET_SORT_TYPE = 'SET_SORT_TYPE';
 export const DELETE_TODO = 'DELETE_TODO';
 
-export const setIsLoadind = (val: boolean) => ({
+export const setIsLoadind = (value: boolean) => ({
   type: IS_LOADING,
-  isLoading: val,
+  isLoading: value,
 });
 
 export const setTodos = (preparedTodos: PreparedTodo[]) => ({
@@ -43,7 +43,7 @@ export const rootReducer = (state = initialState, action: AnyAction) => {
         ...state,
         todos: action.todos,
       };
-    case setSortType:
+    case SET_SORT_TYPE:
       return {
         ...state,
         typeOfSort: action.typeOfSort,

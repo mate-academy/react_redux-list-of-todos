@@ -1,103 +1,18 @@
-/* import React, { useState, FC } from 'react';
-import './App.css';
-import { getTodos } from './api/utils/getTodos';
-import { getUsers } from './api/utils/getUsers';
-import { TodoList } from './components/TodoList/TodoList';
-
-export const App: FC = () => {
-  const [isLoading, setIsLoadindg] = useState(false);
-  const [preparedTodos, setPreparedTodos] = useState<PreparedTodo[]>([]);
-  const [typeOfSort, setTypeOfSort] = useState('');
-
-  const handleLoadButton = async () => {
-    setIsLoadindg(true);
-    const todos = await getTodos();
-    const users = await getUsers();
-
-    const addUserForTodos = () => todos.map(todo => ({
-      ...todo,
-      user: users.find(user => user.id === todo.userId) as User,
-    }));
-
-    setPreparedTodos(addUserForTodos());
-  };
-
-  const handleTypeOfSort = () => {
-    switch (typeOfSort) {
-      case 'title':
-        return [...preparedTodos].sort((a, b) => a.title.localeCompare(b.title));
-      case 'completed':
-        return [...preparedTodos]
-          .sort((todoA, todoB) => (Number(todoB.completed) - Number(todoA.completed)));
-      case 'user':
-        return [...preparedTodos].sort((a, b) => a.user.name.localeCompare(b.user.name));
-      default:
-        return preparedTodos;
-    }
-  };
-
-  return (
-    <>
-      <h1>Dynamic list of TODOs</h1>
-      {preparedTodos.length === 0
-        ? (
-          <button
-            type="button"
-            disabled={isLoading}
-            onClick={handleLoadButton}
-            className="button"
-          >
-            {isLoading ? (<>Loading...</>) : <>Load Todos</>}
-          </button>
-        )
-        : (
-          <>
-            <button
-              className="button"
-              type="button"
-              onClick={() => setTypeOfSort('title')}
-            >
-              sort by title
-            </button>
-            <button
-              className="button"
-              type="button"
-              onClick={() => setTypeOfSort('completed')}
-            >
-              sort by status
-            </button>
-            <button
-              className="button"
-              type="button"
-              onClick={() => setTypeOfSort('user')}
-            >
-              by user name
-            </button>
-            <TodoList todos={handleTypeOfSort()} />
-          </>
-        )}
-    </>
-  );
-};
- */
-
 import React, { FC, useMemo } from 'react';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { todosPreparer } from './api/utils/todosPrepader';
 import {
   setIsLoadind,
   setTodos,
-  deleteTodo,
   setSortType,
 } from './store/store';
 import { TodoList } from './components/TodoList/TodoList';
+import './App.css';
 
 interface Props extends RootState {
   setIsLoadind: (value: boolean) => void;
   setTodos: (todos: PreparedTodo[]) => void;
-  deleteTodo: (id: number) => void;
-  setSortType: (sort: string) => void;
+  setSortType: (sortType: string) => void;
 }
 
 export const AppTemplate: FC<Props> = (props) => {
@@ -105,32 +20,40 @@ export const AppTemplate: FC<Props> = (props) => {
     isLoading,
     typeOfSort,
     todos,
+    // eslint-disable-next-line no-shadow
+    setIsLoadind,
+    // eslint-disable-next-line no-shadow
+    setTodos,
+    // eslint-disable-next-line no-shadow
+    setSortType,
   } = props;
 
   const handleLoadButton = async () => {
     setIsLoadind(true);
     const todosPrepared = await todosPreparer();
 
-    console.log(todosPrepared);
+    setTodos(todosPrepared);
 
     return todosPrepared;
   };
 
-  /* const handleTypeOfSort = () => {
+  /* const handleTypeOfSort = (typeOfSort: string) => {
     switch (typeOfSort) {
       case 'title':
-        return [...todos].sort((a, b) => a.title.localeCompare(b.title));
+        setTodos([...todos].sort((a, b) => a.title.localeCompare(b.title)));
+        break;
       case 'completed':
-        return [...todos]
-          .sort((todoA, todoB) => (Number(todoB.completed) - Number(todoA.completed)));
+        setTodos([...todos]
+          .sort((todoA, todoB) => (Number(todoB.completed) - Number(todoA.completed))));
+        break;
       case 'user':
-        return [...todos].sort((a, b) => a.user.name.localeCompare(b.user.name));
+        setTodos([...todos].sort((a, b) => a.user.name.localeCompare(b.user.name)));
+        break;
       default:
-        return todos;
     }
   }; */
 
-  const todosSorted = useMemo(() => {
+  const sortedTodo = useMemo(() => {
     switch (typeOfSort) {
       case 'title':
         return [...todos].sort((a, b) => a.title.localeCompare(b.title));
@@ -170,7 +93,10 @@ export const AppTemplate: FC<Props> = (props) => {
             <button
               className="button"
               type="button"
-              onClick={() => setSortType('completed')}
+              onClick={() => {
+                setSortType('completed');
+                console.log(typeOfSort);
+              }}
             >
               sort by status
             </button>
@@ -181,7 +107,7 @@ export const AppTemplate: FC<Props> = (props) => {
             >
               by user name
             </button>
-            <TodoList todos={todosSorted} />
+            <TodoList todos={sortedTodo} />
           </>
         )}
     </>
@@ -194,12 +120,11 @@ const mapState = (state: RootState) => ({
   typeOfSort: state.typeOfSort,
 });
 
-const mapDispatch = (dispatch: Dispatch) => ({
-  setIsLoadind: (val: boolean) => dispatch(setIsLoadind(val)),
-  setTodos: (todos: PreparedTodo[]) => dispatch(setTodos(todos)),
-  deleteTodo: (id: number) => dispatch(deleteTodo(id)),
-  setSortType: (sort: string) => dispatch(setSortType(sort)),
-});
+const mapDispatch = {
+  setIsLoadind,
+  setTodos,
+  setSortType,
+};
 
 export const App = connect(
   mapState,
