@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
-/* import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { deleteTodo } from '../../store/store'; */
+import { connect } from 'react-redux';
+import { deleteTodo } from '../../store/actionCreators';
 
 interface Props {
   todo: PreparedTodo;
-  /* delTodo: (id: number) => void; */
+  deleteTodo: (id: number) => void;
 }
 
-export const Todo: FC<Props> = ({ todo /* delTodo */ }) => {
+// eslint-disable-next-line no-shadow
+export const TodoTemplate: FC<Props> = ({ todo, deleteTodo }) => {
   const {
     id,
     title,
@@ -22,20 +22,21 @@ export const Todo: FC<Props> = ({ todo /* delTodo */ }) => {
       <th>{user?.name}</th>
       <th>{title}</th>
       <th>{completed ? 'complete' : 'active'}</th>
-      {/* <th>
+      <th>
         <button
+          className="button"
           type="button"
-          onClick={() => delTodo(id)}
+          onClick={() => deleteTodo(id)}
         >
           delete
         </button>
-      </th> */}
+      </th>
     </tr>
   );
 };
-/*
-const mapDispatch = (dispatch: Dispatch) => ({
-  deleteTodo: (id: number) => dispatch(deleteTodo(id)),
-});
 
-export const Todo = connect(null, mapDispatch)(TodoTemplate); */
+const mapDispatch = {
+  deleteTodo,
+};
+
+export const Todo = connect(null, mapDispatch)(TodoTemplate);
