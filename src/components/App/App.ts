@@ -1,8 +1,5 @@
 import { connect } from 'react-redux';
-import {
-  setIsLoadind,
-  setTodos,
-} from '../../store/actionCreators';
+import { loadTodos } from '../../store/actionCreators';
 import './App.css';
 import { AppTemplate } from './AppTemplate';
 
@@ -13,8 +10,7 @@ const mapState = (state: RootState) => ({
 });
 
 const mapDispatch = {
-  setIsLoadind,
-  setTodos,
+  loadTodos,
 };
 
 export const App = connect(
