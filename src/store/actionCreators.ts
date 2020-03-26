@@ -5,7 +5,7 @@ import {
   DELETE_TODO,
   SET_SORT_TYPE,
 } from './actionTypes';
-import { todosPreparer } from '../api/utils/todosPrepader';
+import { todosPreparer } from '../api/utils/todosPreparer';
 
 
 export const setIsLoadind = (value: boolean) => ({
@@ -13,7 +13,7 @@ export const setIsLoadind = (value: boolean) => ({
   isLoading: value,
 });
 
-export const setTodos = (preparedTodos: PreparedTodo[]) => ({
+export const setTodos = (preparedTodos: TodoWithUser[]) => ({
   type: SET_TODOS,
   todos: preparedTodos,
 });
@@ -31,8 +31,8 @@ export const setSortType = (sortType: string) => ({
 export const loadTodos = () => {
   return async (dispatch: Dispatch) => {
     dispatch(setIsLoadind(true));
-    const todosPrepared = await todosPreparer();
+    const todosWithUser = await todosPreparer();
 
-    dispatch(setTodos(todosPrepared));
+    dispatch(setTodos(todosWithUser));
   };
 };

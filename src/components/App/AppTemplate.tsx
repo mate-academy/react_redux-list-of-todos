@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { TodoList } from '../TodoList/TodoList';
 
 interface Props {
-  todos: PreparedTodo[];
+  todos: TodoWithUser[];
   isLoading: boolean;
   loadTodos: () => void;
 }

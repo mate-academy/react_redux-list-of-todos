@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 
 interface Props {
-  todo: PreparedTodo;
+  todo: TodoWithUser;
   deleteTodo: (id: number) => void;
 }
 

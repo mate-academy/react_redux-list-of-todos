@@ -29,12 +29,12 @@ interface User {
   };
 }
 
-interface PreparedTodo extends Todo {
+interface TodoWithUser extends Todo {
   user: User;
 }
 
 interface RootState{
   isLoading: boolean;
-  todos: PreparedTodo[] | [];
+  todos: TodoWithUser[] | [];
   typeOfSort: string;
 }

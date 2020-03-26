@@ -3,7 +3,7 @@ import { Todo } from '../Todo/Todo';
 
 interface Props {
   typeOfSort: string;
-  todos: PreparedTodo[];
+  todos: TodoWithUser[];
   setSortType: (typeOfSort: string) => void;
 }
 
