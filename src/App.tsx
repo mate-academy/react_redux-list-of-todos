@@ -1,26 +1,48 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
 
-import { isLoading, getMessage } from './store';
+import { getTodos, isLoaded, isLoading } from './helpers/selectors';
+import { setIsLoaded, setIsLoading, setTodos } from './helpers/actions';
+import { getPreparedData } from './api/data';
+
+import { LoadButton } from './components/LoadButton';
+import { Loader } from './components/Loader';
+import { TodoList } from './components/TodoList';
 
 
 const App = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector(getTodos);
   const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const loaded = useSelector(isLoaded);
+  const areTodosExist = loaded && todos.length > 0;
+  const shouldButtonHide = !loading && !loaded;
+
+  const loadTodos = useCallback(() => {
+    dispatch(setIsLoading(true));
+
+    setTimeout(() => {
+      getPreparedData()
+        .then(data => dispatch(setTodos(data)));
+
+      dispatch(setIsLoading(false));
+    }, 3000);
+
+    dispatch(setIsLoaded(true));
+  }, [dispatch]);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
-    </div>
+    <>
+      <div className="heading">
+        <h1>Redux list of TODOs</h1>
+        {shouldButtonHide && <LoadButton loadTodos={loadTodos} />}
+        {loading && <Loader />}
+      </div>
+      {areTodosExist && (
+        <TodoList todos={todos} />)}
+    </>
   );
 };
 

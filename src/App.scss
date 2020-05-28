@@ -1,0 +1,36 @@
+.heading {
+  text-align: center;
+}
+
+.mgb20 {
+  margin-bottom: 20px;
+}
+
+.collection {
+  margin: 0 auto;
+  width: 900px;
+}
+
+.collection .collection-item.avatar {
+  min-height: auto;
+}
+
+.color-red {
+  color: red;
+}
+
+.color-green {
+  color: seagreen;
+}
+
+.sort-panel {
+  display: flex;
+  justify-content: center;
+}
+
+.delete {
+  text-align: right;
+  cursor: pointer;
+  color: red;
+  font-weight: 500;
+}
