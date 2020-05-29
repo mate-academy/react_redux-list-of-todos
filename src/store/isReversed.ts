@@ -4,14 +4,15 @@ const REVERSE = 'REVERSE';
 
 export const reverseTodos = (status: boolean) => ({ type: REVERSE, status });
 
-export const getReverseStatus = (state: RootState) => state.isReverse;
-
-export const reverseReducer = (state = { isReverse: false }, action: AnyAction) => {
+const reverseReducer = (state: boolean, action: AnyAction) => {
+  console.log(state)
   switch (action.type) {
     case REVERSE:
-      return { ...state, isReverse: action.status };
+      return action.status;
 
     default:
       return state;
   }
-}
+};
+
+export default reverseReducer;

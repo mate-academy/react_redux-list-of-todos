@@ -3,9 +3,12 @@ import './App.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { LoadSpinner } from './components/LoadSpinner';
 import {
-  setTodos, isLoading, getLoaded, setLoaded, loadProcess,
+  isLoading, getLoaded
 } from './store';
+import { setTodos } from './store/todos';
+import { setLoaded } from './store/loaded';
 import { getData } from './helpers/getData';
+import { loadProcess } from './store/loading';
 import { ListTodos } from './components/TodosList';
 import { DowloadButton } from './components/DowloadButton';
 

@@ -2,8 +2,11 @@ import React, { useMemo } from 'react';
 import cn from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  getTodos, deleteTodo, getSortType, setSortType, reverseTodos, getReverseStatus,
+  getTodos, getSortType, getReverseStatus,
 } from '../store';
+import { deleteTodo } from './../store/todos';
+import { reverseTodos } from '../store/isReversed';
+import { setSortType } from '../store/sortType';
 import { controlPanelConfig } from '../helpers/config';
 
 export const ListTodos: React.FC = () => {
