@@ -4,7 +4,7 @@ const LOAD_PROCESS = 'LOAD_PROCESS';
 
 export const loadProcess = (status: boolean) => ({ type: LOAD_PROCESS, status });
 
-const loadingReducer = (state: boolean, action: AnyAction) => {
+const loadingReducer = (state = false, action: AnyAction) => {
   switch (action.type) {
     case LOAD_PROCESS:
       return !state;

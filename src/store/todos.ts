@@ -6,7 +6,7 @@ const DELETE_TODO = 'DELETE_TODO';
 export const setTodos = (todos: Todo[]) => ({ type: SET_TODOS, todos });
 export const deleteTodo = (id: number) => ({ type: DELETE_TODO, id });
 
-const todosReducer = (state: Todo[], action: AnyAction) => {
+const todosReducer = (state = [] as Todo[], action: AnyAction) => {
   switch (action.type) {
     case SET_TODOS:
       return action.todos;
