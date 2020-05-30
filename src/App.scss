@@ -1,0 +1,14 @@
+
+.Todo {
+  position: relative;
+  border: 1px solid grey;
+  margin: 10px;
+  width: 50%;
+  &__button {
+    width: 50px;
+    height: 25px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
