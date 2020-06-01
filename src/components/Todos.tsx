@@ -2,8 +2,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { getSortedTodos } from '../store';
-import { RootState, CustomTodo } from '../types';
-import TodoTemplate from './Todo';
+import { RootState, WithUserTodo } from '../types';
+import { Todo } from './Todo';
 import { Dispatch } from 'redux';
 
 const Todos = ({
@@ -13,7 +13,7 @@ const Todos = ({
 }: {
   sortField: string;
   setSortField: (sortField: string) => Object;
-  sortedTodos: CustomTodo[]
+  sortedTodos: WithUserTodo[]
 }) => {
 
   return (
@@ -30,9 +30,9 @@ const Todos = ({
         <option value="Completed">Completed</option>
       </select>
       <ul>
-        {sortedTodos.map((todo: CustomTodo) => (
+        {sortedTodos.map((todo: WithUserTodo) => (
           <li>
-            <TodoTemplate todo={todo} />
+            <Todo todo={todo} />
           </li>
         ))}
       </ul>

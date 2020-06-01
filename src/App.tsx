@@ -3,16 +3,17 @@ import './App.scss';
 import Todos from './components/Todos';
 import { connect, useSelector } from 'react-redux';
 import { getIsLoaded } from './store'
-import { CustomTodo, RootState } from './types';
-import { getCustomTodos } from './api';
+import { WithUserTodo, RootState } from './types';
+import { getWithUserTodos } from './api';
+import { SET_WITH_USER_TODOS, SET_IS_LOADED, SET_BUTTON_TEXT } from './store/index';
 
 const App = ({
   buttonText,
-  setCustomTodos,
+  setWithUserTodos,
   setButtonText,
   setIsLoaded
 }: {
-  setCustomTodos: (customTodos: CustomTodo[]) => void;
+  setWithUserTodos: (withUserTodos: WithUserTodo[]) => void;
   setIsLoaded: (isLoaded: boolean) => void;
   setButtonText: (buttonText: string) => void;
   buttonText: string;
@@ -20,8 +21,8 @@ const App = ({
 
   const handleButtonClick = () => {
     setButtonText('Data is loaded now...')
-    getCustomTodos().then(customTodos => {
-      setCustomTodos(customTodos);
+    getWithUserTodos().then(withUserTodos => {
+      setWithUserTodos(withUserTodos);
       setIsLoaded(true);
     });
   }
@@ -31,9 +32,13 @@ const App = ({
       <h1>Redux list of todos</h1>
       {useSelector(getIsLoaded)
         ? <Todos />
-        : <button
-          onClick={handleButtonClick}
-        >{buttonText}</button>}
+        : (
+          <button
+            onClick={handleButtonClick}
+          >
+            {buttonText}
+          </button>
+        )}
     </div>
   );
 };
@@ -43,19 +48,19 @@ const mapState = (state: RootState) => ({
   buttonText: state.buttonText,
 })
 
-const mapDisp = (dispatch: any) => ({
-  setCustomTodos: (customTodos: CustomTodo[]) => dispatch({
-    type: 'SET_CUSTOM_TODOS',
-    customTodos
+const mapDispatch = (dispatch: any) => ({
+  setWithUserTodos: (withUserTodos: WithUserTodo[]) => dispatch({
+    type: SET_WITH_USER_TODOS,
+    withUserTodos
   }),
   setIsLoaded: (isLoaded: boolean) => dispatch({
-    type: 'SET_IS_LOADED',
+    type: SET_IS_LOADED,
     isLoaded
   }),
   setButtonText: (buttonText: string) => dispatch({
-    type: 'SET_BUTTON_TEXT',
+    type: SET_BUTTON_TEXT,
     buttonText
   }),
 })
 
-export default connect(mapState, mapDisp)(App);
+export default connect(mapState, mapDispatch)(App);

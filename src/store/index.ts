@@ -3,12 +3,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { RootState } from '../types';
 
 // Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
-const SET_SORT_FIELD = 'SET_SORT_FIELD';
-const SET_CUSTOM_TODOS = 'SET_CUSTOM_TODOS';
-const SET_IS_LOADED = 'SET_IS_LOADED';
-const SET_BUTTON_TEXT = 'SET_BUTTON_TEXT';
+export const START_LOADING = 'START_LOADING';
+export const FINISH_LOADING = 'FINISH_LOADING';
+export const SET_SORT_FIELD = 'SET_SORT_FIELD';
+export const SET_WITH_USER_TODOS = 'SET_WITH_USER_TODOS';
+export const SET_IS_LOADED = 'SET_IS_LOADED';
+export const SET_BUTTON_TEXT = 'SET_BUTTON_TEXT';
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: START_LOADING });
@@ -27,19 +27,19 @@ const initialState: RootState = {
   users: [],
   todos: [],
   sortField: 'title',
-  customTodos: [],
+  withUserTodos: [],
 };
 
-export const getSortedTodos = ({ sortField, customTodos }: RootState) => {
+export const getSortedTodos = ({ sortField, withUserTodos }: RootState) => {
   switch (sortField) {
     case 'UserName':
-      return [...customTodos].sort((a, b) => a.user.name.localeCompare(b.user.name));
+      return [...withUserTodos].sort((a, b) => a.user.name.localeCompare(b.user.name));
     case 'Title':
-      return [...customTodos].sort((a, b) => a.title.localeCompare(b.title));
+      return [...withUserTodos].sort((a, b) => a.title.localeCompare(b.title));
     case 'Completed':
-      return [...customTodos].sort((a, b) => +a.completed - +b.completed);
+      return [...withUserTodos].sort((a, b) => +a.completed - +b.completed);
     default:
-      return [...customTodos];
+      return [...withUserTodos];
   }
 }
 
@@ -52,8 +52,8 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return { ...state, sortField: action.sortField };
     case SET_BUTTON_TEXT:
       return { ...state, buttonText: action.buttonText };
-    case SET_CUSTOM_TODOS:
-      return { ...state, customTodos: action.customTodos };
+    case SET_WITH_USER_TODOS:
+      return { ...state, withUserTodos: action.withUserTodos };
     case SET_IS_LOADED:
       return { ...state, isLoaded: action.isLoaded };
     case FINISH_LOADING:

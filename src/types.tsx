@@ -5,7 +5,7 @@ export type RootState = {
   todos: Todo[];
   users: User[];
   sortField: string;
-  customTodos: CustomTodo[];
+  withUserTodos: WithUserTodo[];
   isLoaded: boolean;
 };
 
@@ -17,7 +17,7 @@ export interface User {
   address: Address;
   phone: string;
   website: string;
-  company: Object;
+  company: Company;
 }
 
 export interface Todo {
@@ -28,7 +28,7 @@ export interface Todo {
   completed: boolean;
 }
 
-export interface CustomTodo extends Todo {
+export interface WithUserTodo extends Todo {
   'user': User;
 }
 
@@ -38,6 +38,12 @@ export interface Address {
   city: string;
   zipcode: string;
   geo: Geo;
+}
+
+export interface Company {
+  name:string;
+  catchPhrase: string;
+  bs: string;
 }
 
 export interface Geo {

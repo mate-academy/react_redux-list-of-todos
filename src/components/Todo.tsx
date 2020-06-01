@@ -1,17 +1,17 @@
 
 import React from 'react';
-import { CustomTodo, RootState } from '../types';
+import { WithUserTodo, RootState } from '../types';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 const TodoTemplate = ({
   todo,
-  setCustomTodos,
-  customTodos
+  setWithUserTodos,
+  withUserTodos
 }: {
-  todo: CustomTodo
-  setCustomTodos: (customTodos: CustomTodo[]) => void;
-  customTodos: CustomTodo[];
+  todo: WithUserTodo
+  setWithUserTodos: (withUserTodos: WithUserTodo[]) => void;
+  withUserTodos: WithUserTodo[];
 }) => {
   return (
     <div className="Todo">
@@ -25,7 +25,9 @@ const TodoTemplate = ({
       <p><strong>User name: </strong>{todo.user.name}</p>
       <button
         onClick={() => {
-          setCustomTodos(customTodos.filter((item: CustomTodo) => item.id !== todo.id))
+          setWithUserTodos(withUserTodos
+            .filter((item: WithUserTodo) => item.id !== todo.id)
+          )
         }}
         className="Todo__button"
       >Delete</button>
@@ -34,14 +36,14 @@ const TodoTemplate = ({
 }
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  setCustomTodos: (customTodos: CustomTodo[]) => dispatch({
-    type: 'SET_CUSTOM_TODOS',
-    customTodos
+  setWithUserTodos: (withUserTodos: WithUserTodo[]) => dispatch({
+    type: 'SET_WITH_USER_TODOS',
+    withUserTodos
   })
 })
 
 const mapState = (state: RootState) => ({
-  customTodos: state.customTodos,
+  withUserTodos: state.withUserTodos,
 })
 
-export default connect(mapState, mapDispatch)(TodoTemplate)
+export const Todo = connect(mapState, mapDispatch)(TodoTemplate)
