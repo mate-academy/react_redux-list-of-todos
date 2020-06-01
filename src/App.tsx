@@ -1,27 +1,68 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
+import { connect, useDispatch } from 'react-redux';
+import { getTodos } from './api/api';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import {
+  startLoading, loadingTodos, finishLoading, RootState,
+} from './store/index';
+import { TodoList } from './TodoList';
+import Buttons from './Buttons';
 
-import { isLoading, getMessage } from './store';
 
+const App = (props: RootState) => {
+  const {
+    todosList,
+    isLoading,
+    isVisible,
+  } = props;
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+
+  const loadTodos = () => {
+    dispatch(startLoading());
+    getTodos()
+      .then(data => dispatch(loadingTodos(data)))
+      .finally(() => {
+        dispatch(finishLoading());
+      });
+  };
 
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="container">
+        {!isVisible
+          && (
+            <button
+              type="button"
+              className="button"
+              onClick={loadTodos}
+            >
+              Load Todos
+            </button>
+          )}
+        {isLoading
+          ? <div className="loader" />
+          : (isVisible
+          && (
+            <>
+              <Buttons />
+              <TodoList todos={todosList} />
+            </>
+          )
+          )}
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      </div>
     </div>
   );
 };
 
-export default App;
+
+const mapStateToProps = (state: RootState) => ({
+  todosList: state.todosList,
+  isLoading: state.isLoading,
+  isVisible: state.isVisible,
+});
+
+
+export default connect(mapStateToProps)(App);

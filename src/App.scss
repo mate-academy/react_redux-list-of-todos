@@ -1,0 +1,88 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.todos_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.todo {
+  height: 45px;
+  margin: 0;
+  display: flex;
+  border: 1px solid rgb(73, 73, 73);
+}
+
+.todo_completed ,
+.todo_inprocess {
+  margin: 0;
+  width: 10%;
+  background-color: rgb(116, 182, 86);
+}
+
+.todo_inprocess {
+  background-color: indianred;
+}
+
+.todo_title {
+  margin: 0;
+  width: 55%;
+  background-color: rgb(119, 119, 119);
+}
+
+.todo_user {
+  margin: 0;
+  width: 35%;
+  background-color: rgb(182, 182, 182);
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #4caf50;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.button {
+  background-color: white;
+  border: 2px solid #4caf50;
+  color: black;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #4caf50;
+  color: white;
+}
