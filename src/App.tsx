@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import './App.scss';
 
-import { getTodos, isLoaded, isLoading } from './store/selectors';
+import { getTodos, getLoaded, getLoading } from './store/selectors';
 import { setIsLoaded, setIsLoading, setTodos } from './store/actions';
 import { getPreparedData } from './api/data';
 
@@ -15,10 +15,12 @@ import { TodoList } from './components/TodoList';
 const App = () => {
   const dispatch = useDispatch();
   const todos = useSelector(getTodos);
-  const loading = useSelector(isLoading);
-  const loaded = useSelector(isLoaded);
-  const areTodosExist = useMemo(() => loaded && todos.length > 0, [loaded, todos.length]);
-  const shouldButtonHide = useMemo(() => !loading && !loaded, [loading, loaded]);
+  const isLoading = useSelector(getLoading);
+  const isLoaded = useSelector(getLoaded);
+  const doTodosExist = useMemo(() => isLoaded && todos.length > 0,
+    [isLoaded, todos.length]);
+  const isButtonVisible = useMemo(() => !isLoading && !isLoaded,
+    [isLoading, isLoaded]);
 
   const loadTodos = useCallback(() => {
     dispatch(setIsLoading(true));
@@ -37,10 +39,10 @@ const App = () => {
     <>
       <div className="heading">
         <h1>Redux list of TODOs</h1>
-        {shouldButtonHide && <LoadButton loadTodos={loadTodos} />}
-        {loading && <Loader />}
+        {isButtonVisible && <LoadButton loadTodos={loadTodos} />}
+        {isLoading && <Loader />}
       </div>
-      {areTodosExist && (
+      {doTodosExist && (
         <TodoList todos={todos} />)}
     </>
   );

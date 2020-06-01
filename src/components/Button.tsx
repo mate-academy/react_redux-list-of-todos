@@ -4,7 +4,8 @@ import { setSortType } from '../store/actions';
 
 export const Button = ({ sortType, title }: ButtonProps) => {
   const dispatch = useDispatch();
-  const handleSort = useCallback(() => dispatch(setSortType(sortType)), [dispatch, sortType]);
+  const handleSort = useCallback(() => dispatch(setSortType(sortType)),
+    [dispatch, sortType]);
 
   return (
     <button
