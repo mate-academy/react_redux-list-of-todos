@@ -1,0 +1,56 @@
+#root {
+  width: 90%;
+  margin: 16px auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+.todo__button {
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  display: flex;
+  margin: 8px auto;
+  justify-content: center;
+}
+
+.btn-danger {
+  position: absolute;
+  top: 0;
+  right: 8px;
+}
+
+.todo__list {
+  list-style-type: none;
+  display: grid;
+  grid-gap: 12px;
+  padding: 0;
+  margin: 16px auto;
+}
+
+.todo__item {
+  position: relative;
+  padding: 8px;
+  border: 1px solid grey;
+  border-radius: 4px;
+
+  &--user,
+  &--text {
+    text-align: center;
+  }
+}
+
+.item__status {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  color: blue;
+}
+
+.item__completed {
+  color: red;
+}
