@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { SortPanel } from './SortPanel';
-import { getSortType } from '../helpers/selectors';
+import { getSortType } from '../store/selectors';
 import { Todo } from './Todo';
 
 export const TodoList = ({ todos }: Todos) => {

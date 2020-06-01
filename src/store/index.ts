@@ -2,7 +2,7 @@ import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   LOAD_TODOS, REMOVE_TODO, SET_LOADED, SET_LOADING, SET_SORT_TYPE,
-} from '../helpers/constants';
+} from './constants';
 
 const initialState: RootState = {
   todos: [],
@@ -28,7 +28,7 @@ const rootReducer = (state = initialState, {
       return { ...state, sortType };
 
     case REMOVE_TODO:
-      return { ...state, todos: [...state.todos].filter(todo => todo.id !== id) };
+      return { ...state, todos: state.todos.filter(todo => todo.id !== id) };
 
     default:
       return state;

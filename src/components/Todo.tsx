@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { removeTodo } from '../helpers/actions';
+import { removeTodo } from '../store/actions';
 
 export const Todo = ({
   id, title, completed, user,
 }: Todo) => {
   const dispatch = useDispatch();
+  const handleDeleteTodo = useCallback(() => dispatch(removeTodo(id)), [dispatch, id]);
 
   return (
     <li key={id} className="collection-item avatar">
@@ -18,7 +19,7 @@ export const Todo = ({
       <p>{title}</p>
       <span
         className="delete"
-        onClick={() => dispatch(removeTodo(id))}
+        onClick={handleDeleteTodo}
       >
         Delete todo
       </span>

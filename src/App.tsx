@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './App.scss';
 
-import { getTodos, isLoaded, isLoading } from './helpers/selectors';
-import { setIsLoaded, setIsLoading, setTodos } from './helpers/actions';
+import { getTodos, isLoaded, isLoading } from './store/selectors';
+import { setIsLoaded, setIsLoading, setTodos } from './store/actions';
 import { getPreparedData } from './api/data';
 
 import { LoadButton } from './components/LoadButton';
@@ -17,8 +17,8 @@ const App = () => {
   const todos = useSelector(getTodos);
   const loading = useSelector(isLoading);
   const loaded = useSelector(isLoaded);
-  const areTodosExist = loaded && todos.length > 0;
-  const shouldButtonHide = !loading && !loaded;
+  const areTodosExist = useMemo(() => loaded && todos.length > 0, [loaded, todos.length]);
+  const shouldButtonHide = useMemo(() => !loading && !loaded, [loading, loaded]);
 
   const loadTodos = useCallback(() => {
     dispatch(setIsLoading(true));
