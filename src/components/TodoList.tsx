@@ -26,7 +26,10 @@ export const TodoList = ({ todos }: Todos) => {
     }
   };
 
-  const sortedTodos = useMemo(() => sort(todos, sortType), [todos, sortType]);
+  const sortedTodos = useMemo(
+    () => sort(todos, sortType),
+    [todos, sortType]
+  );
 
   return (
     <>

@@ -6,7 +6,10 @@ export const Todo = ({
   id, title, completed, user,
 }: Todo) => {
   const dispatch = useDispatch();
-  const handleDeleteTodo = useCallback(() => dispatch(removeTodo(id)), [dispatch, id]);
+  const handleDeleteTodo = useCallback(
+    () => dispatch(removeTodo(id)),
+    [dispatch, id]
+  );
 
   return (
     <li key={id} className="collection-item avatar">

@@ -17,10 +17,14 @@ const App = () => {
   const todos = useSelector(getTodos);
   const isLoading = useSelector(getLoading);
   const isLoaded = useSelector(getLoaded);
-  const doTodosExist = useMemo(() => isLoaded && todos.length > 0,
-    [isLoaded, todos.length]);
-  const isButtonVisible = useMemo(() => !isLoading && !isLoaded,
-    [isLoading, isLoaded]);
+  const doTodosExist = useMemo(
+    () => isLoaded && todos.length > 0,
+    [isLoaded, todos.length]
+  );
+  const isButtonVisible = useMemo(
+    () => !isLoading && !isLoaded,
+    [isLoading, isLoaded]
+  );
 
   const loadTodos = useCallback(() => {
     dispatch(setIsLoading(true));
