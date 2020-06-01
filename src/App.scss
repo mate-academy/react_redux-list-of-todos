@@ -1,0 +1,48 @@
+.app {
+  margin: 0 auto;
+  max-width: 800px;
+
+  &__list {
+    margin: 0 auto;
+    list-style: none;
+  }
+
+  &__todo {
+    position: relative;
+    border: 1px solid grey;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+
+  &__load-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  &__error {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  &__todo-detete {
+    position: absolute;
+    right: 1px;
+    top: 2px;
+    border-radius: 50%;
+    border: transparent;
+    background-color: grey;
+    color: white;
+    cursor: pointer;
+    outline: none;
+  }
+
+  &__list-filters {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+}
