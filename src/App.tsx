@@ -1,33 +1,28 @@
 import React from 'react';
-
-
 import './App.scss';
-import { ConnectedTodos } from './components/Todos';
+import Todos from './components/Todos';
 import { connect, useSelector } from 'react-redux';
-import { getIsLoaded} from './store'
+import { getIsLoaded } from './store'
 import { CustomTodo, RootState } from './types';
 import { getCustomTodos } from './api';
 
-
-
 const App = ({
-  message,
+  buttonText,
   setCustomTodos,
-  setMessage,
-  setIsLoaded}:{
-    setCustomTodos:(customTodos:CustomTodo[])=>void;
-    setIsLoaded:(isLoaded: boolean)=>void;
-    setMessage:(message: string)=>void;
-    message: string;
-  }) => {
-
+  setButtonText,
+  setIsLoaded
+}: {
+  setCustomTodos: (customTodos: CustomTodo[]) => void;
+  setIsLoaded: (isLoaded: boolean) => void;
+  setButtonText: (buttonText: string) => void;
+  buttonText: string;
+}) => {
 
   const handleButtonClick = () => {
-    setMessage('Data is loaded now...')
+    setButtonText('Data is loaded now...')
     getCustomTodos().then(customTodos => {
       setCustomTodos(customTodos);
       setIsLoaded(true);
-
     });
   }
 
@@ -35,27 +30,32 @@ const App = ({
     <div className="App">
       <h1>Redux list of todos</h1>
       {useSelector(getIsLoaded)
-      ? <ConnectedTodos />
-      : <button
-        onClick={handleButtonClick}
-      >{message}</button>}
-
+        ? <Todos />
+        : <button
+          onClick={handleButtonClick}
+        >{buttonText}</button>}
     </div>
   );
 };
 
 const mapState = (state: RootState) => ({
   isLoaded: state.isLoaded,
-  message: state.message,
-
+  buttonText: state.buttonText,
 })
 
 const mapDisp = (dispatch: any) => ({
-  setCustomTodos: (customTodos:CustomTodo[]) => dispatch({type: 'SET_CUSTOM_TODOS', customTodos}),
-  setIsLoaded: (isLoaded:boolean) => dispatch({type: 'SET_IS_LOADED', isLoaded}),
-  setMessage: (message: string) => dispatch({type: 'SET_MESSAGE', message}),
+  setCustomTodos: (customTodos: CustomTodo[]) => dispatch({
+    type: 'SET_CUSTOM_TODOS',
+    customTodos
+  }),
+  setIsLoaded: (isLoaded: boolean) => dispatch({
+    type: 'SET_IS_LOADED',
+    isLoaded
+  }),
+  setButtonText: (buttonText: string) => dispatch({
+    type: 'SET_BUTTON_TEXT',
+    buttonText
+  }),
 })
 
-
-
-export const ConnectedApp =  connect(mapState, mapDisp)(App);
+export default connect(mapState, mapDisp)(App);

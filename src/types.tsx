@@ -1,16 +1,13 @@
 
-
-
 export type RootState = {
   loading: boolean;
-  message: string;
+  buttonText: string;
   todos: Todo[];
   users: User[];
   sortField: string;
   customTodos: CustomTodo[];
   isLoaded: boolean;
 };
-
 
 export interface User {
   id: 1;
@@ -24,7 +21,7 @@ export interface User {
 }
 
 export interface Todo {
-  [key:string]: any;
+  [key: string]: any;
   userId: number;
   id: number;
   title: string;
@@ -35,17 +32,15 @@ export interface CustomTodo extends Todo {
   'user': User;
 }
 
-
-
-
 export interface Address {
   street: string;
   suite: string;
   city: string;
   zipcode: string;
-  geo: Object;
+  geo: Geo;
 }
 
-
-
-
+export interface Geo {
+  lat: string;
+  lng: string;
+}
