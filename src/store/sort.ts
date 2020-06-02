@@ -1,40 +1,42 @@
 import { AnyAction } from 'redux';
 
 const SORT_BY = 'SORT_BY';
+const REVERSE = 'REVERSE';
+const SORT_ASK = 'SORT_ASK';
 
-export const sortBy = (field: string) => ({ type: SORT_BY, field });
-
-type State = {
+type SortState = {
   field: string;
-  order: 'ASC' | 'DESC';
+  order: 'ASK' | 'DESK' ;
 };
 
-const initState: State = {
+const initialState: SortState = {
   field: '',
-  order: 'ASC',
+  order: 'ASK',
 };
 
-export const getSortField = (sort: State) => sort.field;
-export const isSortedAsc = (sort: State) => sort.order === 'ASC';
+export const setSortField = (value: string) => ({ type: SORT_BY, field: value });
+export const setSortOrder = () => ({ type: REVERSE });
+export const setSortAsk = () => ({ type: SORT_ASK });
 
-export const reducer = (sort = initState, action: AnyAction) => {
+const reducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case SORT_BY:
-      if (sort.field === action.field) {
-        return {
-          ...sort,
-          order: sort.order === 'ASC' ? 'DESC' : 'ASC',
-        };
-      }
-
       return {
-        ...sort,
+        ...state,
         field: action.field,
-        order: 'ASC',
       };
-
+    case REVERSE:
+      return {
+        ...state,
+        order: state.order === 'ASK' ? 'DESK' : 'ASK',
+      };
+    case SORT_ASK:
+      return {
+        ...state,
+        order: 'ASK',
+      };
     default:
-      return sort;
+      return state;
   }
 };
 

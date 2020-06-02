@@ -1,22 +1,17 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getTodos } from './api/api';
 import './App.scss';
-import {
-  startLoading, loadingTodos, finishLoading, RootState,
-} from './store/index';
+import { startLoading, finishLoading } from './store/loading';
+import { loadingTodos } from './store/todos';
 import { TodoList } from './TodoList';
-import Buttons from './Buttons';
+import * as selectors from './store/index';
 
 
-const App = (props: RootState) => {
-  const {
-    todosList,
-    isLoading,
-    isVisible,
-  } = props;
-
+const App = () => {
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectors.isLoading);
+  const isVisible = useSelector(selectors.isVisible);
 
   const loadTodos = () => {
     dispatch(startLoading());
@@ -46,8 +41,7 @@ const App = (props: RootState) => {
           : (isVisible
           && (
             <>
-              <Buttons />
-              <TodoList todos={todosList} />
+              <TodoList />
             </>
           )
           )}
@@ -57,12 +51,4 @@ const App = (props: RootState) => {
   );
 };
 
-
-const mapStateToProps = (state: RootState) => ({
-  todosList: state.todosList,
-  isLoading: state.isLoading,
-  isVisible: state.isVisible,
-});
-
-
-export default connect(mapStateToProps)(App);
+export default App;

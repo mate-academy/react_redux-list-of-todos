@@ -1,26 +1,20 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { sortTodos, todosList } from './store/index';
+import { useDispatch, useSelector } from 'react-redux';
 import { BUTTONS } from './api/helpers';
+import { setSortField, setSortOrder, setSortAsk } from './store/sort';
+import * as selectors from './store/index';
+
 
 const Buttons = () => {
-  const todos = useSelector(todosList);
   const dispatch = useDispatch();
+  const sortTitle = useSelector(selectors.field);
 
   const handleSort = (sortField: string) => {
-    switch (sortField) {
-      case 'title':
-      case 'user':
-        dispatch(sortTodos(todos.sort((a, b) => (
-          a[sortField].localeCompare(b[sortField])
-        ))));
-        break;
-      case 'completed':
-        dispatch(sortTodos(todos.sort((a, b) => (
-          +a.completed - +b.completed
-        ))));
-        break;
-      default: dispatch(sortTodos(todos));
+    dispatch(setSortField(sortField));
+    if (sortTitle === sortField) {
+      dispatch(setSortOrder());
+    } else {
+      dispatch(setSortAsk());
     }
   };
 
