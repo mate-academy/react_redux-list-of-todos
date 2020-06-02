@@ -39,11 +39,7 @@ const App = () => {
         {isLoading
           ? <div className="loader" />
           : (isVisible
-          && (
-            <>
-              <TodoList />
-            </>
-          )
+          && <TodoList />
           )}
 
       </div>

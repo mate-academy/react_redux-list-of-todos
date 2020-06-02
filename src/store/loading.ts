@@ -6,11 +6,6 @@ const FINISH_LOADING = 'FINISH_LOADING';
 export const startLoading = () => ({ type: START_LOADING });
 export const finishLoading = () => ({ type: FINISH_LOADING });
 
-// type State = {
-//   isLoading: boolean;
-//   isVisible: boolean;
-// };
-
 const initialState = {
   isLoading: false,
   isVisible: false,

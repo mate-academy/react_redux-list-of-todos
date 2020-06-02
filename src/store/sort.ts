@@ -2,23 +2,23 @@ import { AnyAction } from 'redux';
 
 const SORT_BY = 'SORT_BY';
 const REVERSE = 'REVERSE';
-const SORT_ASK = 'SORT_ASK';
+const SORT_ASC = 'SORT_ASC';
 
 type SortState = {
   field: string;
-  order: 'ASK' | 'DESK' ;
+  order: 'ASC' | 'DESC' ;
 };
 
 const initialState: SortState = {
   field: '',
-  order: 'ASK',
+  order: 'ASC',
 };
 
 export const setSortField = (value: string) => ({ type: SORT_BY, field: value });
 export const setSortOrder = () => ({ type: REVERSE });
-export const setSortAsk = () => ({ type: SORT_ASK });
+export const setSortAsc = () => ({ type: SORT_ASC });
 
-const reducer = (state = initialState, action: AnyAction) => {
+const reducer = (state: SortState = initialState, action: AnyAction) => {
   switch (action.type) {
     case SORT_BY:
       return {
@@ -28,12 +28,12 @@ const reducer = (state = initialState, action: AnyAction) => {
     case REVERSE:
       return {
         ...state,
-        order: state.order === 'ASK' ? 'DESK' : 'ASK',
+        order: state.order === 'ASC' ? 'DESC' : 'ASC',
       };
-    case SORT_ASK:
+    case SORT_ASC:
       return {
         ...state,
-        order: 'ASK',
+        order: 'ASC',
       };
     default:
       return state;

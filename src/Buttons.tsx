@@ -1,21 +1,23 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { BUTTONS } from './api/helpers';
-import { setSortField, setSortOrder, setSortAsk } from './store/sort';
+import { setSortField, setSortOrder, setSortAsc } from './store/sort';
 import * as selectors from './store/index';
 
 
 const Buttons = () => {
   const dispatch = useDispatch();
-  const sortTitle = useSelector(selectors.field);
+  const sortTitle = useSelector(selectors.getSortField);
+  const sortOrder = useSelector(selectors.getSortOrder);
 
   const handleSort = (sortField: string) => {
-    dispatch(setSortField(sortField));
-    if (sortTitle === sortField) {
+    if (sortTitle === sortField && sortOrder === 'ASC') {
       dispatch(setSortOrder());
     } else {
-      dispatch(setSortAsk());
+      dispatch(setSortAsc());
     }
+
+    dispatch(setSortField(sortField));
   };
 
   return (
