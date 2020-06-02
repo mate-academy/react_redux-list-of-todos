@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { SORT_BY_OPTIONS, ORDER } from '../constants';
 
 const START_LOADING = 'START_LOADING';
-const HANDLE_SUCCESS = 'HANDLE_SUCCESS';
+const SET_TODOS = 'SET_TODOS';
 const HANDLE_ERROR = 'HANDLE_ERROR';
 const FINISH_LOADING = 'FINISH_LOADING';
 const DELETE_TODO = 'DELETE_TODO';
@@ -13,21 +13,21 @@ const SORT_BY = 'SORT_BY';
 
 export const startLoading = () => ({ type: START_LOADING });
 export const finishLoading = () => ({ type: FINISH_LOADING });
-export const handleSuccess = (todos: Todo[]) => ({ type: HANDLE_SUCCESS, todos });
-export const handleError = () => ({ type: HANDLE_ERROR });
+export const setTodos = (todos: Todo[]) => ({ type: SET_TODOS, todos });
+export const handleError = (errorMessage: string) => ({ type: HANDLE_ERROR, errorMessage });
 export const deleteTodo = (id: number) => ({ type: DELETE_TODO, id });
 export const setStatus = (id: number) => ({ type: SET_STATUS, id });
-export const sortBy = (field: string) => ({ type: SORT_BY, field })
+export const sortBy = (field: string) => ({ type: SORT_BY, field });
 
 export const isLoading = (state: RootState) => state.isLoading;
-export const hasError = (state: RootState) => state.hasError;
+export const hasError = (state: RootState) => state.errorMessage;
 export const listOfTodos = (state: RootState) => state.todos;
 export const getOrder = (state: RootState) => state.order;
 export const getSortBy = (state: RootState) => state.sortBy;
 
 export type RootState = {
   isLoading: boolean;
-  hasError: boolean;
+  errorMessage: string;
   sortBy: string;
   order: string;
   todos: Todo[];
@@ -35,7 +35,7 @@ export type RootState = {
 
 const initialState: RootState = {
   isLoading: false,
-  hasError: false,
+  errorMessage: '',
   sortBy: SORT_BY_OPTIONS.title,
   order: ORDER.asc,
   todos: [],
@@ -47,10 +47,10 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         loading: true,
-        hasError: false,
+        hasError: '',
       };
 
-    case HANDLE_SUCCESS:
+    case SET_TODOS:
       return {
         ...state,
         todos: action.todos,
@@ -60,7 +60,7 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     case HANDLE_ERROR:
       return {
         ...state,
-        hasError: true,
+        errorMessage: action.errorMessage,
         isLoading: false,
       };
 
@@ -73,8 +73,8 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     case DELETE_TODO:
       return {
         ...state,
-        todos: state.todos.filter(todo => todo.id !== action.id)
-      }
+        todos: state.todos.filter(todo => todo.id !== action.id),
+      };
 
     case SORT_BY:
       if (state.sortBy === action.field) {
@@ -88,7 +88,7 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         ...state,
         order: ORDER.asc,
         sortBy: action.field,
-      }
+      };
 
     case SET_STATUS:
       return {
@@ -97,12 +97,13 @@ const rootReducer = (state = initialState, action: AnyAction) => {
           if (todo.id === action.id) {
             return {
               ...todo,
-              completed: !todo.completed
-            }
+              completed: !todo.completed,
+            };
           }
-          return todo
-        })
-      }
+
+          return todo;
+        }),
+      };
 
     default:
       return state;

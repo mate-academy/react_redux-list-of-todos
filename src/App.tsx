@@ -7,7 +7,7 @@ import { getTodos, getUsers } from './helpers/api';
 import {
   startLoading,
   finishLoading,
-  handleSuccess,
+  setTodos,
   handleError,
   hasError,
   isLoading,
@@ -18,7 +18,7 @@ import TodoList from './components/TodoList';
 const App = () => {
   const dispatch = useDispatch();
   const loading = useSelector(isLoading);
-  const error = useSelector(hasError);
+  const errorMessage = useSelector(hasError);
   const todos = useSelector(listOfTodos);
 
   const getData = () => {
@@ -34,10 +34,10 @@ const App = () => {
           };
         });
 
-        dispatch(handleSuccess(preparedTodosList as Todo[]));
+        dispatch(setTodos(preparedTodosList as Todo[]));
       })
-      .catch(() => {
-        dispatch(handleError());
+      .catch((e) => {
+        dispatch(handleError(e.message || e));
       })
       .finally(() => {
         dispatch(finishLoading());
@@ -55,9 +55,9 @@ const App = () => {
           {loading ? 'Loading...' : 'LOAD DATA'}
         </button>
       )}
-      {error && (
+      {errorMessage && (
         <div className="app__error">
-          ERROR OCCURRED, TRY AGAIN
+          {`Error: ${errorMessage}`}
         </div>
       )}
       {todos.length !== 0 && (
