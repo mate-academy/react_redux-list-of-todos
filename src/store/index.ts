@@ -1,51 +1,72 @@
-import { createStore, AnyAction } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+import todosReducer from './todos';
+import loadingReducer from './loading';
+import sortReducer from './sort';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+export const todosList = (state: RootState) => state.todosList;
+export const isLoading = (state: RootState) => state.loading.isLoading;
+export const isVisible = (state: RootState) => state.loading.isVisible;
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const getSortField = (state: RootState) => state.sort.field;
+export const getSortOrder = (state: RootState) => state.sort.order;
 
-// Initial state
-export type RootState = {
-  loading: boolean;
-  message: string;
-};
+export const getSortedTodos = (state: RootState) => {
+  const visibleTodos = [...state.todosList];
+  const { order, field } = state.sort;
 
-const initialState: RootState = {
-  loading: false,
-  message: '',
-};
+  switch (field) {
+    case 'user':
+    case 'title':
+      if (order === 'ASC') {
+        visibleTodos
+          .sort((a, b) => a[field].localeCompare(b[field]));
+      } else {
+        visibleTodos
+          .sort((a, b) => b[field].localeCompare(a[field]));
+      }
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
-  switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
+      break;
+    case 'completed':
+      if (order === 'ASC') {
+        visibleTodos
+          .sort((a, b) => (+a.completed - +b.completed));
+      } else {
+        visibleTodos
+          .sort((a, b) => (+b.completed - +a.completed));
+      }
 
-    case FINISH_LOADING:
-      return {
-        ...state,
-        loading: false,
-        message: action.message,
-      };
-
+      break;
     default:
-      return state;
   }
+
+  return visibleTodos;
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
+type RootState = {
+  todosList: Todo[];
+  loading: {
+    isLoading: boolean;
+    isVisible: boolean;
+  };
+  sort: {
+    field: string;
+    order: 'ASC' | 'DESC' ;
+  };
+};
+
+const rootReducer = combineReducers(
+  {
+    todosList: todosReducer,
+    loading: loadingReducer,
+    sort: sortReducer,
+  },
+);
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;

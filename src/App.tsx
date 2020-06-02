@@ -1,25 +1,48 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { getTodos } from './api/api';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
+import { startLoading, finishLoading } from './store/loading';
+import { loadingTodos } from './store/todos';
+import { TodoList } from './TodoList';
+import * as selectors from './store/index';
 
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectors.isLoading);
+  const isVisible = useSelector(selectors.isVisible);
+
+  const loadTodos = () => {
+    dispatch(startLoading());
+    getTodos()
+      .then(data => dispatch(loadingTodos(data)))
+      .finally(() => {
+        dispatch(finishLoading());
+      });
+  };
 
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="container">
+        {!isVisible
+          && (
+            <button
+              type="button"
+              className="button"
+              onClick={loadTodos}
+            >
+              Load Todos
+            </button>
+          )}
+        {isLoading
+          ? <div className="loader" />
+          : (isVisible
+          && <TodoList />
+          )}
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      </div>
     </div>
   );
 };
