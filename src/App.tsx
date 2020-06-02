@@ -1,25 +1,89 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPrepareTodos } from './components/helpers/api';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import TodoList from './components/TodoList';
+import Loading from './components/Loading';
+import ButtonsSort from './components/ButtonsSort';
 
-import { isLoading, getMessage } from './store';
+import {
+  startLoading,
+  finishLoading,
+  handleSuccess,
+  handleError,
+  getIsLoading,
+  getFinishLoading,
+  getError,
+  getVisibleTodos,
+} from './store';
 
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+
+  const hasError = useSelector(getError);
+  const isLoading = useSelector(getIsLoading);
+  const todos = useSelector(getVisibleTodos);
+  const loaded = useSelector(getFinishLoading);
+  const [isToggle, setIsToggle] = useState(false);
+
+  const loadTodos = () => {
+    setIsToggle(!isToggle);
+    dispatch(startLoading());
+
+    getPrepareTodos()
+      .then(todosFromServe => {
+        dispatch(finishLoading());
+        dispatch(handleSuccess(todosFromServe));
+      })
+      .catch(() => {
+        dispatch(handleError());
+      });
+  };
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <div className="container">
+      <h1 className="title is-1">Redux list of todos</h1>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      {(!isToggle && !hasError) && (
+        <button
+          type="button"
+          className="button is-primary is-medium"
+          onClick={loadTodos}
+        >
+          Load
+        </button>
+      )}
+
+      {isLoading && (
+        <Loading loaded={loaded} />
+      )}
+
+      {hasError && (
+        <>
+          <p>Error occurred!!!</p>
+          <button
+            type="button"
+            className="button is-primary is-medium"
+            onClick={loadTodos}
+          >
+            Try again
+          </button>
+        </>
+      )}
+      {loaded && (
+        <div className="bd-snippet-preview ">
+          <table className="table is-striped is-hoverable">
+            <thead className="has-background-grey-lighter">
+              <ButtonsSort />
+            </thead>
+            <tfoot className="has-background-grey-lighter" />
+            <tbody>
+              <TodoList todos={todos} />
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
