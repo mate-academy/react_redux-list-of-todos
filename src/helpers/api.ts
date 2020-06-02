@@ -1,8 +1,9 @@
-const TODOS_URL = 'https://jsonplaceholder.typicode.com/todos';
-const USERS_URL = 'https://jsonplaceholder.typicode.com/users';
+const API_URL = 'https://mate-academy.github.io/react_dynamic-list-of-todos/api/';
+const TODOS_URL = '/todos.json';
+const USERS_URL = '/users.json';
 
 const getDataFromServer = async (url: string) => {
-  const response = await fetch(url);
+  const response = await fetch(`${API_URL}${url}`);
 
   return response.json();
 };
