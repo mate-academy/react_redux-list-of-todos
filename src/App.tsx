@@ -3,7 +3,11 @@ import React, { useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDataFromServer } from './helpers/api';
 import {
-  startLoading, handleSuccess, handleError, RootState, handleSort,
+  startLoading,
+  handleSuccess,
+  handleError,
+  RootState,
+  handleSort,
 } from './store';
 
 import { ToDoList } from './components/ToDoList';
@@ -62,9 +66,27 @@ const App = () => {
         </button>
       ) : (
         <>
-          <button type="button" className="button" onClick={() => dispatch(handleSort('title'))}>Sort By Title</button>
-          <button type="button" className="button" onClick={() => dispatch(handleSort('status'))}>Sort By Status</button>
-          <button type="button" className="button" onClick={() => dispatch(handleSort('name'))}>Sort By Name</button>
+          <button
+            type="button"
+            className="button"
+            onClick={() => dispatch(handleSort('title'))}
+          >
+            Sort By Title
+          </button>
+          <button
+            type="button"
+            className="button"
+            onClick={() => dispatch(handleSort('completness'))}
+          >
+            Sort By Status
+          </button>
+          <button
+            type="button"
+            className="button"
+            onClick={() => dispatch(handleSort('name'))}
+          >
+            Sort By Name
+          </button>
           <div className="container">
             <ToDoList todos={visibleTodos} />
           </div>

@@ -23,6 +23,7 @@
     width: 100px;
     border-radius: 5px;
     cursor: pointer;
+    transition: all 0.3s;
     &:hover {
       background-color: rgb(245, 142, 142);
     }
