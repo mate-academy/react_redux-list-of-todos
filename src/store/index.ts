@@ -3,43 +3,75 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Action types - is just a constant. MUST have a unique value.
 const START_LOADING = 'START_LOADING';
+const SET_TODOS = 'SET_TODOS';
+const SET_ERROR = 'SET_ERROR';
 const FINISH_LOADING = 'FINISH_LOADING';
 const REMOVE_TODO = 'REMOVE_TODO';
 const SORT_TODO = 'SORT_TODO';
+
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({
   type: START_LOADING,
 });
-export const finishLoading = (todos: TodosFromServer[]) => ({
+export const setTodos = (todos: TodosFromServer[]) => ({
+  type: SET_TODOS,
+  todos,
+});
+
+export const setError = (error = '') => ({
+  type: SET_ERROR,
+  error,
+});
+
+export const finishLoading = (message = '') => ({
   type: FINISH_LOADING,
-  todos,
+  message,
 });
-export const removeTodo = (todos: TodosFromServer[]) => ({
+export const removeTodo = (data: number) => ({
   type: REMOVE_TODO,
-  todos,
+  id: data,
 });
-export const sortTodo = (todos: TodosFromServer[]) => ({
+export const sortTodo = (sortByField: string) => ({
   type: SORT_TODO,
-  todos,
+  sortByField,
 });
 
 // Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
 export const getTodos = (state: RootState) => state.todos;
+export const getSortByField = (state: RootState) => state.sortByField;
 export const loadSortButtons = (state: RootState) => state.loadSortButtons;
+export const getSortedTodos = (state: RootState) => {
+  switch (state.sortByField) {
+    case 'userName':
+      return [...state.todos].sort((a, b) => a.user.name.localeCompare(b.user.name));
+      break;
+    case 'title':
+      return [...state.todos].sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case 'status':
+      return [...state.todos].sort((a, b) => +a.completed - +b.completed);
+      break;
+    default: return [...state.todos];
+  }
+};
 
 // Initial state
 export type RootState = {
   loading: boolean;
   todos: TodosFromServer[];
   loadSortButtons: boolean;
+  message: string;
+  sortByField: string;
 };
 
 const initialState: RootState = {
   loading: false,
   todos: [],
   loadSortButtons: false,
+  message: '',
+  sortByField: 'userName',
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -52,23 +84,28 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         loadSortButtons: true,
       };
 
+    case SET_TODOS:
+      return {
+        ...state,
+        todos: [...action.todos],
+      };
+
     case FINISH_LOADING:
       return {
         ...state,
         loading: false,
-        todos: [...action.todos]
       };
 
     case REMOVE_TODO:
       return {
         ...state,
-        todos: [...action.todos],
+        todos: state.todos.filter(todo => todo.id !== action.id),
       };
 
     case SORT_TODO:
       return {
         ...state,
-        todos: [...action.todos],
+        sortByField: action.sortByField,
       };
 
     default:

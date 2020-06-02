@@ -6,7 +6,9 @@ import './App.scss';
 
 import {
   isLoading,
-  getTodos,
+  getSortedTodos,
+  setTodos,
+  setError,
   startLoading,
   finishLoading,
   sortTodo,
@@ -15,26 +17,33 @@ import {
 
 const App = () => {
   const loading = useSelector(isLoading);
-  const todos = useSelector(getTodos);
+  const todos = useSelector(getSortedTodos);
   const isLoadSortButtons = useSelector(loadSortButtons);
   const dispatch = useDispatch();
 
-  const downloadTodos = () => {
+  const downloadTodos = async () => {
     dispatch(startLoading());
-    getPreparedTodos()
-      .then(todo => dispatch(finishLoading(todo)));
+    try {
+      const data = await getPreparedTodos();
+
+      dispatch(setTodos(data));
+    } catch (error) {
+      dispatch(setError(`ERROR: ${error}`));
+    }
+
+    dispatch(finishLoading());
   };
 
   const sortByTitle = () => {
-    dispatch(sortTodo([...todos].sort((a, b) => a.title.localeCompare(b.title))));
+    dispatch(sortTodo('title'));
   };
 
   const sortByUserName = () => {
-    dispatch(sortTodo([...todos].sort((a, b) => a.user.name.localeCompare(b.user.name))));
+    dispatch(sortTodo('userName'));
   };
 
   const sortByStatus = () => {
-    dispatch(sortTodo([...todos].sort((a, b) => +a.completed - +b.completed)));
+    dispatch(sortTodo('status'));
   };
 
   return (

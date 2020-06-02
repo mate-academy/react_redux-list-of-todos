@@ -9,9 +9,6 @@ type Props = {
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
   const dispatch = useDispatch();
-  const remove = (id: number) => {
-    dispatch(removeTodo(todos.filter(todo => todo.id !== id)));
-  };
 
   return (
     <>
@@ -33,7 +30,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
             <button
               type="button"
               className="btn btn-danger"
-              onClick={() => remove(todo.id)}
+              onClick={() => dispatch(removeTodo(todo.id))}
             >
               X
             </button>
