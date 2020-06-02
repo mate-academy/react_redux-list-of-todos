@@ -18,4 +18,13 @@
   &--finished {
     color: green;
   }
+  &__remove-btn {
+    color: red;
+    width: 100px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: rgb(245, 142, 142);
+    }
+  }
 }

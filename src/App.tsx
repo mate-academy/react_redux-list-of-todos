@@ -1,14 +1,18 @@
-import React from 'react';
+import './App.scss';
+import React, { useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDataFromServer } from './helpers/api';
 import {
-  startLoading, handleSuccess, handleError, RootState,
+  startLoading, handleSuccess, handleError, RootState, handleSort,
 } from './store';
 
 import { ToDoList } from './components/ToDoList';
 
 const App = () => {
   const tasks = useSelector((state: RootState) => state.todos);
+  const hasError = useSelector((state: RootState) => state.hasError);
+  const isLoading = useSelector((state: RootState) => state.isLoading);
+  const sortType = useSelector((state: RootState) => state.sortType);
   const dispatch = useDispatch();
 
   const handleLoadClick = async () => {
@@ -27,13 +31,45 @@ const App = () => {
     }
   };
 
+  const getSortedTodos = useCallback((typeOfSort: string) => {
+    switch (typeOfSort) {
+      case 'title':
+        return [...tasks].sort((a, b) => a.title.localeCompare(b.title));
+      case 'completness':
+        return [...tasks].sort((a, b) => (Number(a.completed) - Number(b.completed)));
+      case 'name':
+        return [...tasks].sort((a, b) => a.user.name.localeCompare(b.user.name));
+      default:
+        return tasks;
+    }
+  }, [tasks]);
+
+  const visibleTodos = useMemo(() => {
+    return getSortedTodos(sortType);
+  }, [sortType, getSortedTodos]);
+
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <button type="button" onClick={handleLoadClick}> Load Data</button>
-      <div className="container">
-        <ToDoList todos={tasks} />
-      </div>
+      {hasError && <h1>Some errors appeared. Please, try again</h1>}
+      {tasks.length === 0 ? (
+        <button
+          className="button"
+          type="button"
+          onClick={handleLoadClick}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Loading...' : 'Load'}
+        </button>
+      ) : (
+        <>
+          <button type="button" className="button" onClick={() => dispatch(handleSort('title'))}>Sort By Title</button>
+          <button type="button" className="button" onClick={() => dispatch(handleSort('status'))}>Sort By Status</button>
+          <button type="button" className="button" onClick={() => dispatch(handleSort('name'))}>Sort By Name</button>
+          <div className="container">
+            <ToDoList todos={visibleTodos} />
+          </div>
+        </>
+      )}
     </div>
   );
 };
