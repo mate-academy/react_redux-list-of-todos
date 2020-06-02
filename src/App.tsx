@@ -1,8 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
 import { getTODOs, getUsers } from './API';
 import TodoList from './TodoList';
 import {
@@ -81,9 +79,6 @@ const App = () => {
           )}
       </div>
       <TodoList todos={todos} />
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
     </div>
   );
 };
