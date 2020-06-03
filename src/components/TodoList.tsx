@@ -4,14 +4,9 @@ import { getTodos, getSortType, getReverseValue } from '../store';
 import { deleteTodo } from '../store/todos';
 import { setSortType } from '../store/sort';
 import { setReverseValue } from '../store/reverse';
+import { FILTER_BUTTONS } from '../helpers/constants';
 import Icon from '@material-ui/core/Icon';
 
-const FILTER_BUTTONS: FilterButton[] = [
-  { id: 1, title: 'id'},
-  { id: 2, title: 'name'},
-  { id: 3, title: 'title'},
-  { id: 4, title: 'completed'},
-];
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -95,13 +90,6 @@ export const TodoList: React.FC = () => {
           </li>
         ))}
       </ul>
-
     </>
   );
 }
-
-
-
-/*{todo.completed
-  ? (<i className="material-icons green-text">check_circle</i>)
-  : (<i className="material-icons orange-text">lens</i>)}*/

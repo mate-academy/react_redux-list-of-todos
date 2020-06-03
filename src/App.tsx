@@ -6,7 +6,7 @@ import { setLoading } from './store/loading';
 import { TodoList } from './components/TodoList';
 import { isLoading, isLoaded, getErrorMessage } from './store/';
 import { setLoaded } from './store/loaded';
-import { setErrorMessage } from './store/message';
+import { setErrorMessage } from './store/errorMessage';
 import { Preloader } from './components/Preloader'
 
 
@@ -21,7 +21,6 @@ const App = () => {
   const dispatch = useDispatch();
 
   const init = async() => {
-    dispatch(setErrorMessage(``));
     dispatch(setLoading(true));
 
     try {

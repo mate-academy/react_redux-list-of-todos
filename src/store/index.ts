@@ -5,7 +5,7 @@ import { todosReducer } from './todos';
 import { sortTypeReducer } from './sort';
 import { reverseReducer } from './reverse';
 import { loadedReducer }  from './loaded';
-import { errorReducer } from './message';
+import { errorReducer } from './errorMessage';
 
 
 export const isLoading = (state: RootState) => state.loading;

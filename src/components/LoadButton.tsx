@@ -1,26 +1,16 @@
 import React from 'react';
-import { connect, ConnectedProps} from 'react-redux';
-import { RootState, isLoading } from '../store';
-import { setLoading } from '../store/loading';
+import { useSelector } from 'react-redux';
+import { isLoading } from '../store';
 
-const mapState = (state: RootState) => {
-  return {
-    loading: isLoading(state), // we use a selector `isLoading` defined in the store
-  };
-};
 
-const mapDispatch = {
-  load: setLoading,
-};
-
-const connector = connect(mapState, mapDispatch);
-
-type Props = ConnectedProps<typeof connector> & {
+type Props = {
   title: string;
   init: () => void;
 };
 
-const LoadButton: React.FC<Props> = ({ init, loading, title }) => {
+const LoadButton: React.FC<Props> = ({ init, title }) => {
+
+const loading = useSelector(isLoading);
 
   return (
     <button
@@ -34,4 +24,4 @@ const LoadButton: React.FC<Props> = ({ init, loading, title }) => {
   );
 };
 
-export default connector(LoadButton);
+export default LoadButton;
