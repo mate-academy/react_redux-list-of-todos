@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 // Action types - is just a constant. MUST have a unique value.
 const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
-const SORT_BY = 'SORT_BY';
+const SORT_TODOS = 'SORT_TODOS';
 const REMOVED_TODO = 'REMOVED_TODO';
 
 // Action creators - a function returning an action object
@@ -16,13 +16,13 @@ export const finishLoading = (message: string, todos: Todo[]) => ({
   todos,
 });
 
-export const removedTodo = (todos: GetTodos[]) => ({
+export const removedTodo = (todos: Todos[]) => ({
   type: REMOVED_TODO,
   todos,
 });
 
 export const setSortField = (field: string) => ({
-  type: SORT_BY,
+  type: SORT_TODOS,
   field,
 });
 
@@ -37,8 +37,8 @@ export const getVisibleTodos = createSelector(
   getTodos,
   sortBy,
 
-  (todos: GetTodos[], sortField: string) => {
-    let callback: (a: GetTodos, b: GetTodos) => number;
+  (todos: Todos[], sortField: string) => {
+    let callback: (a: Todos, b: Todos) => number;
 
     switch (sortField) {
       case 'title':
@@ -61,7 +61,7 @@ export const getVisibleTodos = createSelector(
 
 // Initial state
 export type RootState = {
-  todos: GetTodos[];
+  todos: Todos[];
   loading: boolean;
   sortField: string;
   visibleButton: boolean;
@@ -95,9 +95,9 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         todos: action.todos,
-      }
+      };
 
-    case SORT_BY:
+    case SORT_TODOS:
       return {
         ...state,
         sortField: action.field,

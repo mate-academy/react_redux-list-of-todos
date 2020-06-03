@@ -10,7 +10,7 @@ const getUsers = () => {
     .then(response => response.json());
 };
 
-export const getDataFromServer = async (): Promise<GetTodos[]> => {
+export const getDataFromServer = async (): Promise<Todos[]> => {
   const [todos, users] = await Promise.all([getTodos(), getUsers()]);
 
   return todos.map((todo: Todo) => ({

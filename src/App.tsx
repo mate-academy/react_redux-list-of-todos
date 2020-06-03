@@ -16,9 +16,9 @@ import { getDataFromServer } from './api';
 const App = () => {
   const dispatch = useDispatch();
   const loading = useSelector(isLoading);
-  const hideButton = useSelector(setUnvisibleButton);
+  const isButtonHidden = useSelector(setUnvisibleButton);
 
-  const downLoadData = () => {
+  const downloadData = () => {
     dispatch(startLoading());
 
     getDataFromServer()
@@ -28,15 +28,15 @@ const App = () => {
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      {hideButton && (
+      {isButtonHidden && (
         <button
           className="button"
           type="button"
-          onClick={downLoadData}>
+          onClick={downloadData}>
           Load
         </button>
       )}
-      {loading ? 'Loading...' : !hideButton && <TodoList />}
+      {loading ? 'Loading...' : !isButtonHidden && <TodoList />}
     </div>
   );
 };

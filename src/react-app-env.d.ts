@@ -19,7 +19,7 @@ interface Todo {
   completed: boolean;
 }
 
-interface GetTodos {
+interface Todos {
   userId: number;
   id: number;
   title: string;
