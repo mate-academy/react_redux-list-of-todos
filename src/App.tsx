@@ -1,25 +1,71 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getPreparedTodos } from './api';
+import { TodoList } from './components/ToDoList';
+import './App.css';
 
-import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
-
+import {
+  isLoading,
+  getSortedTodos,
+  setTodos,
+  setError,
+  startLoading,
+  finishLoading,
+  sortTodo,
+  loadSortButtons,
+} from './store';
 
 const App = () => {
+  const sortType = ['Name', 'Title', 'Status'];
   const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const todos = useSelector(getSortedTodos);
+  const loadButtons = useSelector(loadSortButtons);
+  const dispatch = useDispatch();
+
+  const downloadTodos = async () => {
+    dispatch(startLoading());
+    try {
+      const data = await getPreparedTodos();
+
+      dispatch(setTodos(data));
+    } catch (error) {
+      dispatch(setError(`ERROR: ${error}`));
+    }
+
+    dispatch(finishLoading());
+  };
+
+  const handleSort = (sort: string) => {
+    return dispatch(sortTodo(sort));
+  };
 
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      {loadButtons
+        ? (
+          <div className="todo__button">
+            {sortType.map(st => (
+              <button type="button" className="btn btn-info" onClick={() => handleSort(st)}>
+                Sort By
+                {' '}
+                {st}
+              </button>
+            ))}
+          </div>
+        )
+        : (
+          <button
+            type="button"
+            className="btn btn-load"
+            onClick={downloadTodos}
+          >
+            Load ToDos
+          </button>
+        )}
+      {loading
+        ? 'Loading...'
+        : <TodoList todos={todos} />}
     </div>
   );
 };

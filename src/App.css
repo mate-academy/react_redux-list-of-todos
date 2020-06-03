@@ -1,0 +1,67 @@
+.todo__button {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.btn {
+  margin-right: 25px;
+  height: 35px;
+  width: 250px;
+  background: darkgray;
+  color: darkblue;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.btn-load {
+  margin-left: 48%;
+  width: 200px;
+  height: 50px;
+  background: lightseagreen;
+  color: darkgreen;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.btn-delete {
+  background: indianred;
+  color: darkred;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.todo__item {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  border: darkcyan 1px solid;
+  width: 80%;
+  margin: 10px auto;
+}
+
+.todo__item--user {
+  text-align: center;
+  width: 25%;
+  font-size: 14px;
+  color: cadetblue;
+}
+
+.todo__item--text {
+  width: 25%;
+  font-size: 12px;
+  text-align: center;
+}
+
+.item__status {
+  width: 25%;
+  font-size: 16px;
+  font-weight: bolder;
+  text-align: center;
+  color: red;
+}
+
+.item__completed {
+  color: green;
+}
