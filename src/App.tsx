@@ -1,25 +1,51 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import { TodoList } from "./components/TodoList";
+import { getPreparedData } from "./helpers/api";
+import { isLoaded, isLoading, setTodos, getloading, getloaded, getTodos } from "./store";
 
-import { isLoading, getMessage } from './store';
+// import { isLoading, getMessage } from './store';
 
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  // const loading = useSelector(isLoading);
+  // const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+  const todos = useSelector(getTodos);
+  const loading = useSelector(getloading);
+  const loaded = useSelector(getloaded);
+
+  const loadData = async () => {
+    dispatch(isLoading());
+
+    getPreparedData()
+      .then(data => {
+        dispatch(setTodos(data as Todo[]));
+        console.log('ff');
+        dispatch(isLoaded());
+      })
+      .finally(() => dispatch(isLoading()));
+  };
 
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      {!loaded
+      && (
+        <button
+          type="button"
+          disabled={loading}
+          className="button waves-effect waves-light btn mgb20"
+          onClick={loadData}
+        >
+          {loading ? 'Loading...' : 'load todos'}
+        </button>
+      )}
+      {loaded && (
+        <TodoList todos={todos} />
+      )}
     </div>
   );
 };
