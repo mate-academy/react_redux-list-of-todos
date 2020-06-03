@@ -52,9 +52,9 @@ const App = () => {
       {loadButtons
         ? (
           <div className="todo__button">
+            <button type="button" className="btn btn-info" onClick={sortByUserName}>Sort By Name</button>
             <button type="button" className="btn btn-info" onClick={sortByTitle}>Sort By Title</button>
             <button type="button" className="btn btn-info" onClick={sortByStatus}>Sort By Status</button>
-            <button type="button" className="btn btn-info" onClick={sortByUserName}>Sort By Name</button>
           </div>
         )
         : (
