@@ -1,0 +1,20 @@
+body {
+  padding: 50px;
+  text-align: center;
+}
+
+.alert {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.btn {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.todo-title {
+  width: 65%;
+  text-align: left;
+}
