@@ -1,0 +1,29 @@
+.app__list {
+  margin: 0 auto;
+  list-style: none;
+}
+
+.app__list-filters {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.button__inner {
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: rgb(36, 126, 230);
+  color: #fff;
+  border: 1px solid  rgb(36, 126, 230);
+
+  &:hover {
+    transition: 0.3s;
+    border: 1px solid  rgb(36, 126, 230);
+    background-color: #fff;
+    color: rgb(36, 126, 230);
+  }
+}
