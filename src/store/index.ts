@@ -9,8 +9,8 @@ import errorMessageReducer from './errorMessage';
 
 
 // Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const isLoaded = (state: RootState) => state.loaded;
+export const getLoadingStatus = (state: RootState) => state.loading;
+export const getLoadedStatus = (state: RootState) => state.loaded;
 export const getSortType = (state: RootState) => state.sortType;
 export const getTodos = (state: RootState) => state.todos;
 export const getErrorMessage = (state: RootState) => state.errorMessage;

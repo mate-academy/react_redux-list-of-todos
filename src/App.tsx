@@ -1,11 +1,20 @@
-import React, { useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setTodosAction } from './store/todos';
+import { loadingAction } from './store/loading';
+import { loadedAction } from './store/loaded';
+import { setErrorMessageAction } from './store/errorMessage';
+import { setSortTypeAction } from './store/sortType';
+import {
+  getTodos,
+  getSortType,
+  getErrorMessage,
+  getLoadedStatus,
+  getLoadingStatus,
+} from './store';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getErrorMessage } from './store';
 
 import { getData } from './helpers/getData';
 
@@ -14,47 +23,49 @@ import { TodoButton } from './components/TodoButton/TodoButton';
 import { getSortedTodos } from './helpers/helpers';
 
 const App = () => {
-  const [sortType, setSortType] = useState('');
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const dispatch = useDispatch();
+
+  const todos: Todo[] = useSelector(getTodos);
+  const isLoading = useSelector(getLoadingStatus)
+  const isLoaded = useSelector(getLoadedStatus);
+  const sortType = useSelector(getSortType);
+  const errorMessage = useSelector(getErrorMessage);
 
   const handleLoadClick = async () => {
-    setIsLoading(true);
+    dispatch(loadingAction(true));
 
     try {
       const todoList = await getData();
 
-      setTodos(todoList);
-      setIsLoaded(true);
+      dispatch(setTodosAction(todoList));
+      dispatch(loadedAction(true));
 
       if (todoList.length === 0) {
-        setErrorMessage('No Todos, try again later.');
+        dispatch(setErrorMessageAction('No Todos, try again later.'));
       } else {
-        setErrorMessage('');
+        dispatch(setErrorMessageAction(''));
       }
     } catch (exeption) {
-      setErrorMessage('Network error, try again.');
+      dispatch(setErrorMessageAction('Network error, try again.'));
     }
 
-    setIsLoading(false);
+    dispatch(loadingAction(false));
   }
 
   const reset = () => {
-    setSortType('');
+    dispatch(setSortTypeAction(''));
   }
 
   const sortListByTitle = () => {
-    setSortType('title');
+    dispatch(setSortTypeAction('title'));
   }
 
   const sortListByUser = () => {
-    setSortType('author');
+    dispatch(setSortTypeAction('author'));
   }
 
   const sortListByStatus = () => {
-    setSortType('status');
+    dispatch(setSortTypeAction('status'));
   }
 
   const sortedTodos = useMemo(() => {
@@ -119,20 +130,3 @@ const App = () => {
 };
 
 export default App;
-
-
-export const App2 = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getErrorMessage) || 'Ready!';
-
-  return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
-    </div>
-  );
-};

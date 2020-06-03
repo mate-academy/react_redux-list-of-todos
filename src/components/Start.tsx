@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
-import { isLoading } from '../store';
+import { getLoadingStatus } from '../store';
 import { loadingAction } from '../store/loading';
 
 /**
@@ -12,10 +12,11 @@ import { loadingAction } from '../store/loading';
  * @param {object} state - full Redux state
  *
  * @return {object}
+ *
  */
 const mapState = (state: RootState) => {
   return {
-    loading: isLoading(state), // we use a selector `isLoading` defined in the store
+    loading: getLoadingStatus(state), // we use a selector `isLoading` defined in the store
   };
 };
 
@@ -42,11 +43,11 @@ type Props = ConnectedProps<typeof connector> & {
   title: string; // a regular prop passed like <Start title="Start loading" />
 };
 
-const Start: React.FC<Props> = ({ load, loading, title }) => {
+const Start: React.FC<Props> = ({ loading, title }) => {
   return (
     <button
       type="button"
-      onClick={load}
+      onClick={() => {}}
       disabled={loading}
     >
       {title}
@@ -55,3 +56,4 @@ const Start: React.FC<Props> = ({ load, loading, title }) => {
 };
 
 export default connector(Start);
+
