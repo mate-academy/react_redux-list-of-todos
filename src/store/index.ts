@@ -4,12 +4,17 @@ import { createSelector } from 'reselect';
 
 // Action types - is just a constant. MUST have a unique value.
 const START_LOADING = 'START_LOADING';
+const HANDLE_ERROR = 'HANDLE_ERROR';
 const FINISH_LOADING = 'FINISH_LOADING';
 const DELETE_TODO = 'DELETE_TODO';
 const SET_SORT_FIELD = 'SET_SORT_FIELD';
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: START_LOADING });
+export const handleError = (errorMessage: string) => ({
+  type: HANDLE_ERROR,
+  errorMessage,
+});
 export const finishLoading = (todos: Todo[]) => ({
   type: FINISH_LOADING,
   todos,
@@ -27,8 +32,8 @@ export const setSortField = (sortField: string) => ({
 export const getTodos = (state: RootState) => state.todos;
 export const getSortType = (state: RootState) => state.sortField;
 export const isLoading = (state: RootState) => state.loading;
-export const isVisibleSortButtons = (state: RootState) => state.visibleSortButtons;
 export const getOrder = (state: RootState) => state.order;
+export const hasError = (state: RootState) => state.errorMessage;
 export const getVisibleTodos = createSelector(
   getTodos,
   getSortType,
@@ -61,17 +66,17 @@ export const getVisibleTodos = createSelector(
 export type RootState = {
   todos: Todo[],
   loading: boolean;
-  visibleSortButtons: boolean,
   sortField: string,
   order: string;
+  errorMessage: string;
 };
 
 const initialState: RootState = {
   todos: [],
   loading: false,
-  visibleSortButtons: false,
   sortField: '',
   order: 'ASC',
+  errorMessage: '',
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -81,7 +86,14 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         loading: true,
-        visibleSortButtons: true,
+        errorMessage: '',
+      };
+
+      case HANDLE_ERROR:
+      return {
+        ...state,
+        errorMessage: action.errorMessage,
+        loading: false,
       };
 
     case FINISH_LOADING:

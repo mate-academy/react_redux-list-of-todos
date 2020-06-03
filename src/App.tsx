@@ -10,21 +10,25 @@ import {
   startLoading,
   finishLoading,
   isLoading,
-  isVisibleSortButtons,
   getVisibleTodos,
   setSortField,
+  handleError,
+  hasError,
 } from './store';
 
 const App = () => {
   const dispatch = useDispatch();
   const todos = useSelector(getVisibleTodos);
   const loading = useSelector(isLoading);
-  const visibleSortButtons = useSelector(isVisibleSortButtons);
+  const errorMessage = useSelector(hasError);
 
   const handleGetTodos = () => {
     dispatch(startLoading());
     getTodosFromServer()
-      .then(todosFromServer => dispatch(finishLoading(todosFromServer)));
+      .then(todosFromServer => dispatch(finishLoading(todosFromServer)))
+      .catch((e) => {
+        dispatch(handleError(e.message));
+      })
   };
 
   const handleSort = (sortType: string) => {
@@ -38,19 +42,8 @@ const App = () => {
   ];
 
   return (
-    <div className="App">
+    <div className="app">
       <h1>Redux list of todos</h1>
-      {
-        visibleSortButtons
-          ? <Buttons buttonsInit={buttonsInit} />
-          : <button
-            type="button"
-            className="todo__button"
-            onClick={handleGetTodos}
-          >
-            Load Todos
-          </button>
-      }
       {loading
         ? (
           <div className="lds-ellipsis">
@@ -61,7 +54,29 @@ const App = () => {
           </div>
         )
         :
-        <TodosList todos={todos} />}
+        <>
+          {todos.length === 0 &&
+            <button
+              type="button"
+              className="todo__button"
+              onClick={handleGetTodos}
+            >
+              Load Todos
+            </button>}
+
+          {todos.length !== 0 && (
+            <>
+              <Buttons buttonsInit={buttonsInit} />
+              <TodosList todos={todos} />
+            </>
+          )}
+          {errorMessage && (
+            <p>
+              {`Error: ${errorMessage}`}
+            </p>
+          )}
+        </>
+      }
     </div>
   );
 };
