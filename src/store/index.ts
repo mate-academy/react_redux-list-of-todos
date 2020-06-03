@@ -10,13 +10,13 @@ import {
 
 // import sortReducer from './sort';
 // import loadingReducer from './loading';
-// import removReducer from './remove';
+// import removeReducer from './remove';
 
-export const startLoading = () => ({ type: START_LOADING });
-export const handleSuccess = (todos: PreparedTodos) => ({ type: HANLDE_SUCCESS, todos });
-export const handleError = () => ({ type: HANDLE_ERROR });
+export const startLoadingData = () => ({ type: START_LOADING });
+export const handleSuccessLoading = (todos: PreparedTodos) => ({ type: HANLDE_SUCCESS, todos });
+export const handleErrorLoading = () => ({ type: HANDLE_ERROR });
 export const handleSort = (sortType: string) => ({ type: HANDLE_SORT, sortType });
-export const handleRemove = (taskId: number) => ({ type: HANDLE_REMOVE, taskId });
+export const handleRemoveTodo = (taskId: number) => ({ type: HANDLE_REMOVE, taskId });
 
 export type RootState = {
   isLoading: boolean;
@@ -70,6 +70,13 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return state;
   }
 };
+
+// const rootReducer = combineReducers({
+//   isLoading: loadingReducer,
+//   sortType: sortReducer,
+//   hasError: loadingReducer,
+//   todos: loadingReducer,
+// });
 
 const store = createStore(
   rootReducer, composeWithDevTools(),

@@ -3,9 +3,9 @@ import React, { useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDataFromServer } from './helpers/api';
 import {
-  startLoading,
-  handleSuccess,
-  handleError,
+  startLoadingData,
+  handleSuccessLoading,
+  handleErrorLoading,
   RootState,
   handleSort,
 } from './store';
@@ -21,7 +21,7 @@ const App = () => {
 
   const handleLoadClick = async () => {
     try {
-      dispatch(startLoading());
+      dispatch(startLoadingData());
       const res = await getDataFromServer();
       const [users, todos] = res;
       const preparedTodos = todos.map((task: ToDo) => ({
@@ -29,9 +29,9 @@ const App = () => {
         user: users.find((user: User) => user.id === task.userId),
       }));
 
-      dispatch(handleSuccess(preparedTodos));
+      dispatch(handleSuccessLoading(preparedTodos));
     } catch {
-      dispatch(handleError());
+      dispatch(handleErrorLoading());
     }
   };
 
