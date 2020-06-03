@@ -1,51 +1,107 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-// Action types - is just a constant. MUST have a unique value.
 const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
 
-// Action creators - a function returning an action object
+export const BY_TITLE = 'BY_TITLE';
+export const BY_NAME = 'BY_NAME';
+export const BY_STATUS = 'BY_STATUS';
+
+const SORT_BY = 'SORT_BY';
+const DELETE_TODO = 'DELETE';
+
 export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+export const finishLoading = (todos: PreparedTodo[]) => ({
+  type: FINISH_LOADING,
+  todos,
+});
+export const setSortField = (sortField: string) => ({
+  type: SORT_BY,
+  sortField,
+});
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const deleteTodo = (id: number) => ({
+  type: DELETE_TODO,
+  id,
+});
 
-// Initial state
+export const getTodos = (state: RootState) => state.todos;
+export const getIsLoading = (state: RootState) => state.isLoading;
+export const getIsLoaded = (state: RootState) => state.isLoaded;
+export const getSortField = (state: RootState) => state.sortField;
+
+export const getVisibleTodos = (state: RootState) => {
+  const visibleTodos = [...state.todos];
+
+  switch (state.sortField) {
+    case BY_TITLE:
+      visibleTodos.sort((a: PreparedTodo, b: PreparedTodo) => (a.title.localeCompare(b.title)));
+      break;
+
+    case BY_NAME:
+      visibleTodos
+        .sort((a: PreparedTodo, b: PreparedTodo) => (a.user.name.localeCompare(b.user.name)));
+      break;
+
+    case BY_STATUS:
+      visibleTodos.sort((a: PreparedTodo, b: PreparedTodo) => (+a.completed - +b.completed));
+      break;
+
+    default:
+      return visibleTodos;
+  }
+
+  return visibleTodos;
+};
+
 export type RootState = {
-  loading: boolean;
-  message: string;
+  todos: PreparedTodo[];
+  sortField: string;
+  isLoaded: boolean;
+  isLoading: boolean;
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  todos: [],
+  sortField: '',
+  isLoaded: false,
+  isLoading: false,
 };
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
+const rootReducer = (state = initialState, action: AnyAction): RootState => {
   switch (action.type) {
     case START_LOADING:
-      return { ...state, loading: true };
+      return {
+        ...state,
+        isLoading: true,
+        isLoaded: false,
+      };
 
     case FINISH_LOADING:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        todos: [...action.todos],
+        isLoaded: true,
+        isLoading: false,
       };
 
-    default:
-      return state;
+    case SORT_BY:
+      return {
+        ...state,
+        sortField: action.sortField,
+      };
+
+    case DELETE_TODO:
+      return {
+        ...state,
+        todos: [...state.todos].filter(todo => todo.id !== action.id),
+      };
+
+    default: return state;
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
-);
+const store = createStore(rootReducer, composeWithDevTools());
 
 export default store;
