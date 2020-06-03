@@ -1,0 +1,36 @@
+.button_wrapper {
+  text-align: right;
+}
+
+.delete-button {
+  text-align: center;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: red;
+  border: 3px solid black;
+}
+
+.list {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border: 3px solid black;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 0;
+  font-style: italic;
+  font-size: 140%;
+}
+
+.completed {
+  border: 2px solid green;
+  margin: 10px;
+  background-color: deepskyblue;
+}
+
+.notCompleted {
+  border: 2px solid red;
+  margin: 10px;
+  background-color: orange;
+}
