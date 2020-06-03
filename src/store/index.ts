@@ -5,7 +5,7 @@ const START_LOADING = 'START_LOADING';
 const SET_TODOS = 'SET_TODOS';
 const SET_ERROR = 'SET_ERROR';
 const FINISH_LOADING = 'FINISH_LOADING';
-const REMOVE_TODO = 'REMOVE_TODO';
+const DELETE_TODO = 'DELETE_TODO';
 const SORT_TODO = 'SORT_TODO';
 
 export const startLoading = () => ({
@@ -25,8 +25,8 @@ export const finishLoading = (message = '') => ({
   type: FINISH_LOADING,
   message,
 });
-export const removeTodo = (data: number) => ({
-  type: REMOVE_TODO,
+export const deleteTask = (data: number) => ({
+  type: DELETE_TODO,
   id: data,
 });
 export const sortTodo = (sortByField: string) => ({
@@ -89,7 +89,7 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         loading: false,
       };
 
-    case REMOVE_TODO:
+    case DELETE_TODO:
       return {
         ...state,
         todos: state.todos.filter(todo => todo.id !== action.id),

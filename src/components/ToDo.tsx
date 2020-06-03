@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { useDispatch } from 'react-redux';
-import { removeTodo } from '../store';
+import { deleteTask } from '../store';
 
 type Props = {
   todo: TodosFromServer;
@@ -30,7 +30,7 @@ export const ToDo: React.FC<Props> = ({ todo }) => {
         <button
           type="button"
           className="btn btn-delete"
-          onClick={() => dispatch(removeTodo(todo.id))}
+          onClick={() => dispatch(deleteTask(todo.id))}
         >
           DELETE
         </button>
