@@ -1,25 +1,130 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setTodosAction } from './store/todos';
+import { loadingAction } from './store/loading';
+import { loadedAction } from './store/loaded';
+import { setErrorMessageAction } from './store/errorMessage';
+import { setSortTypeAction } from './store/sortType';
+import {
+  getTodos,
+  getSortType,
+  getErrorMessage,
+  getLoadedStatus,
+  getLoadingStatus,
+} from './store';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
 
-import { isLoading, getMessage } from './store';
+import { getData } from './helpers/getData';
 
+import { TodoList } from './components/TodoList/TodoList';
+import { TodoButton } from './components/TodoButton/TodoButton';
+import { getSortedTodos } from './helpers/helpers';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+
+  const todos: Todo[] = useSelector(getTodos);
+  const isLoading = useSelector(getLoadingStatus)
+  const isLoaded = useSelector(getLoadedStatus);
+  const sortType = useSelector(getSortType);
+  const errorMessage = useSelector(getErrorMessage);
+
+  const handleLoadClick = async () => {
+    dispatch(loadingAction(true));
+
+    try {
+      const todoList = await getData();
+
+      dispatch(setTodosAction(todoList));
+      dispatch(loadedAction(true));
+
+      if (todoList.length === 0) {
+        dispatch(setErrorMessageAction('No Todos, try again later.'));
+      } else {
+        dispatch(setErrorMessageAction(''));
+      }
+    } catch (exeption) {
+      dispatch(setErrorMessageAction('Network error, try again.'));
+    }
+
+    dispatch(loadingAction(false));
+  }
+
+  const reset = () => {
+    dispatch(setSortTypeAction(''));
+  }
+
+  const sortListByTitle = () => {
+    dispatch(setSortTypeAction('title'));
+  }
+
+  const sortListByUser = () => {
+    dispatch(setSortTypeAction('author'));
+  }
+
+  const sortListByStatus = () => {
+    dispatch(setSortTypeAction('status'));
+  }
+
+  const sortedTodos = useMemo(() => {
+    return getSortedTodos(todos, sortType);
+  }, [todos, sortType]);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <div className="todo">
+      <h1 className="todo__title">List of Todos</h1>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      {!isLoaded ? (
+        <>
+          {errorMessage && <span className="todo__error">{errorMessage}</span>}
+
+          <TodoButton
+            title="Load"
+            handleClick={handleLoadClick}
+            status={isLoading}
+          />
+        </>
+      ) : (
+        !errorMessage.length ? (
+          <>
+            <div className="todo__sort-buttons">
+              <TodoButton
+                title="Sort by title"
+                handleClick={sortListByTitle}
+                status={isLoading}
+              />
+              <TodoButton
+                title="Sort by authors"
+                handleClick={sortListByUser}
+                status={isLoading}
+              />
+              <TodoButton
+                title="Sort by status"
+                handleClick={sortListByStatus}
+                status={isLoading}
+              />
+              <TodoButton
+                title="Reset"
+                handleClick={reset}
+                status={isLoading}
+              />
+            </div>
+            <TodoList todoList={sortedTodos} />
+          </>
+        ) : (
+          <>
+            <span className="todo__error">{errorMessage}</span>
+
+            <TodoButton
+              title="Reload"
+              handleClick={handleLoadClick}
+              status={isLoading}
+            />
+          </>
+        )
+      )}
     </div>
   );
 };
