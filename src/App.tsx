@@ -16,6 +16,7 @@ import {
 } from './store';
 
 const App = () => {
+  const sortType = ['Name', 'Title', 'Status'];
   const loading = useSelector(isLoading);
   const todos = useSelector(getSortedTodos);
   const loadButtons = useSelector(loadSortButtons);
@@ -34,16 +35,8 @@ const App = () => {
     dispatch(finishLoading());
   };
 
-  const sortByTitle = () => {
-    dispatch(sortTodo('title'));
-  };
-
-  const sortByUserName = () => {
-    dispatch(sortTodo('userName'));
-  };
-
-  const sortByStatus = () => {
-    dispatch(sortTodo('status'));
+  const handleSort = (sort: string) => {
+    return dispatch(sortTodo(sort));
   };
 
   return (
@@ -52,9 +45,13 @@ const App = () => {
       {loadButtons
         ? (
           <div className="todo__button">
-            <button type="button" className="btn btn-info" onClick={sortByUserName}>Sort By Name</button>
-            <button type="button" className="btn btn-info" onClick={sortByTitle}>Sort By Title</button>
-            <button type="button" className="btn btn-info" onClick={sortByStatus}>Sort By Status</button>
+            {sortType.map(st => (
+              <button type="button" className="btn btn-info" onClick={() => handleSort(st)}>
+                Sort By
+                {' '}
+                {st}
+              </button>
+            ))}
           </div>
         )
         : (

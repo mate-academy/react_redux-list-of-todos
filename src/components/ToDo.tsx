@@ -4,16 +4,14 @@ import { useDispatch } from 'react-redux';
 import { deleteTask } from '../store';
 
 type Props = {
-  todo: TodosFromServer;
+  todo: PreparedTodos;
 };
 
 export const ToDo: React.FC<Props> = ({ todo }) => {
   const dispatch = useDispatch();
 
   return (
-
     <>
-
       <li
         key={todo.id}
         className="todo__item"

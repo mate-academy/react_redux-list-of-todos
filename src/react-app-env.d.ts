@@ -12,7 +12,7 @@ interface UserFromServer {
   email: string;
 }
 
-interface TodosFromServer {
+interface PreparedTodos {
   userId: number;
   id: number;
   title: string;

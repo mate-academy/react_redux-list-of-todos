@@ -11,7 +11,7 @@ const SORT_TODO = 'SORT_TODO';
 export const startLoading = () => ({
   type: START_LOADING,
 });
-export const setTodos = (todos: TodosFromServer) => ({
+export const setTodos = (todos: PreparedTodos) => ({
   type: SET_TODOS,
   todos,
 });
@@ -34,27 +34,27 @@ export const sortTodo = (sortByField: string) => ({
   sortByField,
 });
 
-
 export const isLoading = (state: RootState) => state.loading;
 export const loadSortButtons = (state: RootState) => state.loadSortButtons;
 export const getSortedTodos = (state: RootState) => {
   switch (state.sortByField) {
-    case 'userName':
+    case 'Name':
       return [...state.todos]
         .sort((a, b) => a.user.name.localeCompare(b.user.name));
-    case 'title':
+    case 'Title':
       return [...state.todos]
         .sort((a, b) => a.title.localeCompare(b.title));
-    case 'status':
+    case 'Status':
       return [...state.todos]
         .sort((a, b) => Number(a.completed) - Number(b.completed));
-    default: return [...state.todos];
+    default:
+      return [...state.todos];
   }
 };
 
 export type RootState = {
   loading: boolean;
-  todos: TodosFromServer[];
+  todos: PreparedTodos[];
   loadSortButtons: boolean;
   message: string;
   sortByField: string;
@@ -65,7 +65,7 @@ const initialState: RootState = {
   todos: [],
   loadSortButtons: false,
   message: '',
-  sortByField: 'userName',
+  sortByField: '',
 };
 
 const rootReducer = (state = initialState, action: AnyAction) => {
