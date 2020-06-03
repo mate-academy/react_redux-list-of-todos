@@ -11,14 +11,13 @@ import {
   finishLoading,
   isLoading,
   isVisibleSortButtons,
-  getTodos,
-  sortedTodos
+  getVisibleTodos,
+  setSortField,
 } from './store';
-
 
 const App = () => {
   const dispatch = useDispatch();
-  const todos = useSelector(getTodos);
+  const todos = useSelector(getVisibleTodos);
   const loading = useSelector(isLoading);
   const visibleSortButtons = useSelector(isVisibleSortButtons);
 
@@ -29,21 +28,7 @@ const App = () => {
   };
 
   const handleSort = (sortType: string) => {
-    switch (sortType) {
-      case 'title':
-        dispatch(sortedTodos(todos.sort((a, b) => (
-          a.title.localeCompare(b.title)
-        )))); break;
-      case 'complete':
-        dispatch(sortedTodos(todos.sort((a, b) => (
-          +a.completed - +b.completed
-        )))); break;
-      case 'user':
-        dispatch(sortedTodos(todos.sort((a, b) => (
-          a.userCatalog.name.localeCompare(b.userCatalog.name)
-        )))); break;
-      default: dispatch(sortedTodos(todos));
-    }
+    dispatch(setSortField(sortType));
   };
 
   const buttonsInit: Button[] = [
