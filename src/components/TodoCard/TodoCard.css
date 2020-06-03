@@ -1,0 +1,38 @@
+.todo__item {
+  display: flex;
+  flex-direction: column;
+  margin: 24px 0;
+  padding: 10px 20px 24px;
+  width: 100%;
+  box-sizing: border-box;
+
+  color: #34275f;
+  background-color: #d0c8e9;
+  border: 2px solid #7b59e9;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.35s;
+}
+
+.todo__item:hover {
+  background-color: #ab98e9;
+}
+
+.todo__item-title {
+  font-size: 36px;
+  margin: 0 0 12px;
+}
+
+.todo__item-completed--true {
+  color: green;
+}
+
+.todo__item-completed--false {
+  color: red;
+}
+
+.todo__user {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-style: italic;
+}

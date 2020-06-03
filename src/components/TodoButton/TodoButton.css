@@ -1,0 +1,22 @@
+.todo__button {
+  width: 140px;
+  padding: 12px 24px;
+
+  text-transform: uppercase;
+  border-radius: 4px;
+  color: #34275f;
+  background-color: #d0c8e9;
+  border: 2px solid #7b59e9;
+  cursor: pointer;
+  transition: all 0.35s;
+}
+
+.todo__button:hover {
+  background-color: #ab98e9;
+}
+
+.todo__sort-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}

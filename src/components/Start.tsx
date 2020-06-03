@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 
-import { RootState, isLoading, startLoading } from '../store';
+import { isLoading } from '../store';
+import { loadingAction } from '../store/loading';
 
 /**
  * mapState - is a function receiving full Redux state as the first argument
@@ -24,7 +25,7 @@ const mapState = (state: RootState) => {
  * `startLoading` - is an action creator defined in the store
  */
 const mapDispatch = {
-  load: startLoading,
+  load: loadingAction,
 };
 
 /**
