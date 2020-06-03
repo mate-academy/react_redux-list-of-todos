@@ -2,15 +2,18 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import './App.scss';
-import { TodoList } from "./components/TodoList";
-import { getPreparedData } from "./helpers/api";
-import { isLoaded, isLoading, setTodos, getloading, getloaded, getTodos } from "./store";
-
-// import { isLoading, getMessage } from './store';
-
+import { TodoList } from './components/TodoList';
+import { getPreparedData } from './helpers/api';
+import {
+  isLoaded,
+  isLoading,
+  setTodos,
+  getloading,
+  getloaded,
+  getTodos,
+} from './store';
 
 const App = () => {
-  // const loading = useSelector(isLoading);
   // const message = useSelector(getMessage) || 'Ready!';
   const dispatch = useDispatch();
   const todos = useSelector(getTodos);
@@ -23,7 +26,6 @@ const App = () => {
     getPreparedData()
       .then(data => {
         dispatch(setTodos(data as Todo[]));
-        console.log('ff');
         dispatch(isLoaded());
       })
       .finally(() => dispatch(isLoading()));
@@ -31,21 +33,23 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      {!loaded
-      && (
-        <button
-          type="button"
-          disabled={loading}
-          className="button waves-effect waves-light btn mgb20"
-          onClick={loadData}
-        >
-          {loading ? 'Loading...' : 'load todos'}
-        </button>
-      )}
-      {loaded && (
-        <TodoList todos={todos} />
-      )}
+      <div className="wrapper">
+        <h1>Redux list of todos</h1>
+        {!loaded
+        && (
+          <button
+            type="button"
+            disabled={loading}
+            className="button waves-effect waves-light btn mgb20"
+            onClick={loadData}
+          >
+            {loading ? 'Loading...' : 'load todos'}
+          </button>
+        )}
+        {loaded && (
+          <TodoList todos={todos} />
+        )}
+      </div>
     </div>
   );
 };

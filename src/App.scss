@@ -1,0 +1,54 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  .button {
+    margin: 0 auto;
+  }
+
+  .button__list {
+    display: flex;
+    justify-content: center;
+    .item {
+      margin-right: 5px;
+    }
+  }
+
+  .sort-button {
+    margin: 0 10px;
+  }
+}
+
+.todo-list {
+  display: grid;
+  justify-content: center;
+  grid-gap: 20px;
+
+  &__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid slategrey;
+    border-radius: 20px;
+    padding-bottom: 15px;
+
+    .remove-button {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      border: 1px solid red;
+      border-radius: 8px;
+      outline: none;
+
+      &:hover {
+        cursor: pointer;
+        background-color: seashell;
+      }
+    }
+  }
+
+  .color-red {
+    color: red;
+  }
+}

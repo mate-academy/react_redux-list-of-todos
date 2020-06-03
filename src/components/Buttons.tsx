@@ -1,6 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getReverseStatus, getSortType, reverseTodos, setSortType } from '../store';
+import {
+  getReverseStatus,
+  getSortType,
+  reverseTodos,
+  setSortType,
+} from '../store';
 
 export const controlButtonConfig = [
   {
@@ -30,8 +35,8 @@ export const Button = () => {
     if (type === sortType) {
       dispatch(reverseTodos(!isReverse));
     } else {
-      dispatch(setSortType(type));
       dispatch(reverseTodos(false));
+      dispatch(setSortType(type));
     }
   };
 
@@ -39,13 +44,13 @@ export const Button = () => {
     <ul className="button__list">
       {controlButtonConfig.map(button => (
         <li className="item" key={button.name}>
-          <a
-            href="#"
-            className="link"
+          <button
+            type="button"
+            className="button waves-effect waves-light btn mgb20"
             onClick={() => changeSortType(button.sortType)}
           >
             {button.name}
-          </a>
+          </button>
         </li>
       ))}
     </ul>
