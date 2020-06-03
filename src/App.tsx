@@ -5,8 +5,8 @@ import './App.scss';
 import { TodoList } from './components/TodoList';
 import { getPreparedData } from './helpers/api';
 import {
-  isLoaded,
-  isLoading,
+  setIsLoaded,
+  setIsLoading,
   setTodos,
   getloading,
   getloaded,
@@ -17,36 +17,36 @@ const App = () => {
   // const message = useSelector(getMessage) || 'Ready!';
   const dispatch = useDispatch();
   const todos = useSelector(getTodos);
-  const loading = useSelector(getloading);
-  const loaded = useSelector(getloaded);
+  const isLoading = useSelector(getloading);
+  const isLoaded = useSelector(getloaded);
 
   const loadData = async () => {
-    dispatch(isLoading());
+    dispatch(setIsLoading());
 
     getPreparedData()
       .then(data => {
         dispatch(setTodos(data as Todo[]));
-        dispatch(isLoaded());
+        dispatch(setIsLoaded());
       })
-      .finally(() => dispatch(isLoading()));
+      .finally(() => dispatch(setIsLoading()));
   };
 
   return (
     <div className="App">
       <div className="wrapper">
         <h1>Redux list of todos</h1>
-        {!loaded
+        {!isLoaded
         && (
           <button
             type="button"
-            disabled={loading}
+            disabled={isLoading}
             className="button waves-effect waves-light btn mgb20"
             onClick={loadData}
           >
-            {loading ? 'Loading...' : 'load todos'}
+            {isLoading ? 'Loading...' : 'load todos'}
           </button>
         )}
-        {loaded && (
+        {isLoaded && (
           <TodoList todos={todos} />
         )}
       </div>

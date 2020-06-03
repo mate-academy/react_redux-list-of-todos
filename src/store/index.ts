@@ -16,8 +16,8 @@ const initialState: RootState = {
 // export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
 export const setTodos = (todos: Todo[]) => ({ type: SET_TODOS, todos });
 export const deleteTodo = (id: number) => ({ type: REMOVE_TODO, id });
-export const isLoading = () => ({ type: SET_LOADING });
-export const isLoaded = () => ({ type: SET_LOADED });
+export const setIsLoading = () => ({ type: SET_LOADING });
+export const setIsLoaded = () => ({ type: SET_LOADED });
 export const setSortType = (sortType: string) => ({ type: SET_SORT_TYPE, sortType });
 export const reverseTodos = (status: boolean) => ({ type: REVERSE, status });
 
