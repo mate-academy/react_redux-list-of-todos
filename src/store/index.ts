@@ -28,22 +28,25 @@ export const getTodos = (state: RootState) => state.todos;
 export const getSortType = (state: RootState) => state.sortField;
 export const isLoading = (state: RootState) => state.loading;
 export const isVisibleSortButtons = (state: RootState) => state.visibleSortButtons;
+export const getOrder = (state: RootState) => state.order;
 export const getVisibleTodos = createSelector(
   getTodos,
   getSortType,
+  getOrder,
 
-  (todos: Todo[], sortField: string) => {
+  (todos: Todo[], sortField: string, order: string) => {
     let callback: (a: Todo, b: Todo) => number;
+    const sortDirection = (order === 'ASC') ? 1 : -1;
 
     switch (sortField) {
       case 'title':
-        callback = (a, b) => a.title.localeCompare(b.title);
+        callback = (a, b) => (a.title.localeCompare(b.title)* sortDirection);
         break;
       case 'complete':
-        callback = (a, b) => +a.completed - +b.completed;
+        callback = (a, b) => (+a.completed - +b.completed)* sortDirection;
         break;
       case 'user':
-        callback = (a, b) => a.userCatalog.name.localeCompare(b.userCatalog.name);
+        callback = (a, b) => (a.userCatalog.name.localeCompare(b.userCatalog.name))* sortDirection;
         break;
       default: callback = () => 0;
     }
@@ -60,6 +63,7 @@ export type RootState = {
   loading: boolean;
   visibleSortButtons: boolean,
   sortField: string,
+  order: string;
 };
 
 const initialState: RootState = {
@@ -67,6 +71,7 @@ const initialState: RootState = {
   loading: false,
   visibleSortButtons: false,
   sortField: '',
+  order: 'ASC',
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -93,8 +98,15 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       };
 
     case SET_SORT_FIELD:
+      if (state.sortField === action.sortField) {
+        return {
+          ...state,
+          order: state.order === 'ASC' ? 'DESC' : 'ASC',
+        };
+      }
       return {
         ...state,
+        order: 'ASC',
         sortField: action.sortField,
       };
 
