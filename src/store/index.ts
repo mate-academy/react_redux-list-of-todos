@@ -47,7 +47,7 @@ export const getSortedTodos = (state: RootState) => {
         .sort((a, b) => a.title.localeCompare(b.title));
     case 'status':
       return [...state.todos]
-        .sort((a, b) => +a.completed - +b.completed);
+        .sort((a, b) => Number(a.completed) - Number(b.completed));
     default: return [...state.todos];
   }
 };
