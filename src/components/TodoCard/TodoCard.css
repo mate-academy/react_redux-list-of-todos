@@ -19,6 +19,9 @@
 }
 
 .todo__item-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 36px;
   margin: 0 0 12px;
 }
@@ -35,4 +38,10 @@
   margin: 0 0 12px;
   font-size: 18px;
   font-style: italic;
+}
+
+.todo__item--btn-delete {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
