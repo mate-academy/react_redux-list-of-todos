@@ -1,27 +1,27 @@
 import React, { MouseEvent } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSortField } from '../store';
+import { setSortField, setReverse } from '../store';
 
 const buttonsSort = ['id', 'title', 'completed', 'name'];
 
-const ButtonsSort: React.FC = () => {
+const SortButtons: React.FC = () => {
   const dispatch = useDispatch();
-
   const hendleOnClick = (e: MouseEvent<HTMLButtonElement>) => {
     const { name } = (e.target as HTMLButtonElement);
 
     dispatch(setSortField(name));
+    dispatch(setReverse());
   };
 
   return (
     <tr>
       {buttonsSort.map(item => (
-        <th>
+        <th key={item}>
           <button
             type="button"
             name={item}
             className="btnSort"
-            onClick={e => hendleOnClick(e)}
+            onClick={hendleOnClick}
           >
             By
             {' '}
@@ -33,4 +33,4 @@ const ButtonsSort: React.FC = () => {
   );
 };
 
-export default ButtonsSort;
+export default SortButtons;

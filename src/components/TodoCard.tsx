@@ -13,8 +13,10 @@ const TodoCard: React.FC<Props> = ({
 }) => {
   return (
     <tr className={
-      classNames({ 'has-background-success': !completed },
-        { 'has-background-info': completed })
+      classNames(
+        { 'has-background-success': !completed },
+        { 'has-background-info': completed },
+      )
     }
     >
       <th>{id}</th>

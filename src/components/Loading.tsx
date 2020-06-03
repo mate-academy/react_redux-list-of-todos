@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames/bind';
 
 type Props = {
-  loaded: boolean;
+  isLoaded: boolean;
 };
 
-const Loading: React.FC<Props> = ({ loaded }) => (
-  <div className={classNames({ 'lds-roller': !loaded }, { 'has-background-success': loaded })}>
+const Loading: React.FC<Props> = ({ isLoaded }) => (
+  <div className={classNames({ 'lds-roller': !isLoaded }, { 'has-background-success': isLoaded })}>
     <div />
     <div />
     <div />

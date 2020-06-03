@@ -4,7 +4,7 @@ import { getPrepareTodos } from './components/helpers/api';
 import './App.scss';
 import TodoList from './components/TodoList';
 import Loading from './components/Loading';
-import ButtonsSort from './components/ButtonsSort';
+import SortButtons from './components/SortButtons';
 
 import {
   startLoading,
@@ -24,17 +24,17 @@ const App = () => {
   const hasError = useSelector(getError);
   const isLoading = useSelector(getIsLoading);
   const todos = useSelector(getVisibleTodos);
-  const loaded = useSelector(getFinishLoading);
-  const [isToggle, setIsToggle] = useState(false);
+  const isLoaded = useSelector(getFinishLoading);
+  const [isVisible, setIsVisible] = useState(false);
 
   const loadTodos = () => {
-    setIsToggle(!isToggle);
+    setIsVisible(!isVisible);
     dispatch(startLoading());
 
     getPrepareTodos()
-      .then(todosFromServe => {
+      .then(todosFromServer => {
         dispatch(finishLoading());
-        dispatch(handleSuccess(todosFromServe));
+        dispatch(handleSuccess(todosFromServer));
       })
       .catch(() => {
         dispatch(handleError());
@@ -45,7 +45,7 @@ const App = () => {
     <div className="container">
       <h1 className="title is-1">Redux list of todos</h1>
 
-      {(!isToggle && !hasError) && (
+      {(!isVisible && !hasError) && (
         <button
           type="button"
           className="button is-primary is-medium"
@@ -56,7 +56,7 @@ const App = () => {
       )}
 
       {isLoading && (
-        <Loading loaded={loaded} />
+        <Loading isLoaded={isLoaded} />
       )}
 
       {hasError && (
@@ -71,11 +71,11 @@ const App = () => {
           </button>
         </>
       )}
-      {loaded && (
+      {isLoaded && (
         <div className="bd-snippet-preview ">
           <table className="table is-striped is-hoverable">
             <thead className="has-background-grey-lighter">
-              <ButtonsSort />
+              <SortButtons />
             </thead>
             <tfoot className="has-background-grey-lighter" />
             <tbody>
