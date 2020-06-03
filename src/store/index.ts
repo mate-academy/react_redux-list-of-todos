@@ -24,8 +24,6 @@ const initialState: RootState = {
   loading: false,
   isLoaded: false,
   buttonText: 'Click to load',
-  users: [],
-  todos: [],
   sortField: 'title',
   withUserTodos: [],
 };

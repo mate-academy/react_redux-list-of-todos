@@ -2,8 +2,6 @@
 export type RootState = {
   loading: boolean;
   buttonText: string;
-  todos: Todo[];
-  users: User[];
   sortField: string;
   withUserTodos: WithUserTodo[];
   isLoaded: boolean;
