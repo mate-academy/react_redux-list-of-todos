@@ -1,27 +1,66 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import Todos from './components/Todos';
+import { connect, useSelector } from 'react-redux';
+import { getIsLoaded } from './store'
+import { WithUserTodo, RootState } from './types';
+import { getWithUserTodos } from './api';
+import { SET_WITH_USER_TODOS, SET_IS_LOADED, SET_BUTTON_TEXT } from './store/index';
 
-import { isLoading, getMessage } from './store';
+const App = ({
+  buttonText,
+  setWithUserTodos,
+  setButtonText,
+  setIsLoaded
+}: {
+  setWithUserTodos: (withUserTodos: WithUserTodo[]) => void;
+  setIsLoaded: (isLoaded: boolean) => void;
+  setButtonText: (buttonText: string) => void;
+  buttonText: string;
+}) => {
 
-
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const handleButtonClick = () => {
+    setButtonText('Data is loaded now...')
+    getWithUserTodos().then(withUserTodos => {
+      setWithUserTodos(withUserTodos);
+      setIsLoaded(true);
+    });
+  }
 
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      {useSelector(getIsLoaded)
+        ? <Todos />
+        : (
+          <button
+            onClick={handleButtonClick}
+          >
+            {buttonText}
+          </button>
+        )}
     </div>
   );
 };
 
-export default App;
+const mapState = (state: RootState) => ({
+  isLoaded: state.isLoaded,
+  buttonText: state.buttonText,
+})
+
+const mapDispatch = (dispatch: any) => ({
+  setWithUserTodos: (withUserTodos: WithUserTodo[]) => dispatch({
+    type: SET_WITH_USER_TODOS,
+    withUserTodos
+  }),
+  setIsLoaded: (isLoaded: boolean) => dispatch({
+    type: SET_IS_LOADED,
+    isLoaded
+  }),
+  setButtonText: (buttonText: string) => dispatch({
+    type: SET_BUTTON_TEXT,
+    buttonText
+  }),
+})
+
+export default connect(mapState, mapDispatch)(App);
