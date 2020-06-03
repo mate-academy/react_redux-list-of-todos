@@ -1,0 +1,5 @@
+export const START_LOADING = 'START_LOADING';
+export const HANLDE_SUCCESS = 'HANDLE_SUCCESS';
+export const HANDLE_ERROR = 'HANDLE_ERRROR';
+export const HANDLE_SORT = 'HANDLE_SORT';
+export const HANDLE_REMOVE = 'HANDLE_REMOVE';

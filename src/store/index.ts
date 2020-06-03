@@ -1,40 +1,69 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import {
+  START_LOADING,
+  HANLDE_SUCCESS,
+  HANDLE_ERROR,
+  HANDLE_REMOVE,
+  HANDLE_SORT,
+} from './actionTypes';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+// import sortReducer from './sort';
+// import loadingReducer from './loading';
+// import removeReducer from './remove';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+export const startLoadingData = () => ({ type: START_LOADING });
+export const handleSuccessLoading = (todos: PreparedTodos) => ({ type: HANLDE_SUCCESS, todos });
+export const handleErrorLoading = () => ({ type: HANDLE_ERROR });
+export const handleSort = (sortType: string) => ({ type: HANDLE_SORT, sortType });
+export const handleRemoveTodo = (taskId: number) => ({ type: HANDLE_REMOVE, taskId });
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
-
-// Initial state
 export type RootState = {
-  loading: boolean;
-  message: string;
+  isLoading: boolean;
+  hasError: boolean;
+  todos: PreparedTodos[];
+  sortType: string;
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  isLoading: false,
+  hasError: false,
+  todos: [],
+  sortType: '',
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        isLoading: true,
+        hasError: false,
+      };
+    case HANLDE_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        hasError: false,
+        todos: action.todos,
+      };
+    case HANDLE_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        hasError: true,
+      };
+
+    case HANDLE_REMOVE:
+      return {
+        ...state,
+        todos: state.todos.filter(task => task.id !== action.taskId),
+      };
+
+    case HANDLE_SORT:
+      return {
+        ...state,
+        sortType: action.sortType,
       };
 
     default:
@@ -42,10 +71,15 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
+// const rootReducer = combineReducers({
+//   isLoading: loadingReducer,
+//   sortType: sortReducer,
+//   hasError: loadingReducer,
+//   todos: loadingReducer,
+// });
+
 const store = createStore(
-  rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  rootReducer, composeWithDevTools(),
 );
 
 export default store;
