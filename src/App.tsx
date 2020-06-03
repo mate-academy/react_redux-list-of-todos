@@ -9,17 +9,17 @@ import {
   finishLoading,
   setTodos,
   handleError,
-  hasError,
-  isLoading,
-  listOfTodos,
+  getHasError,
+  getIsLoading,
+  getListOfTodos,
 } from './store';
 import TodoList from './components/TodoList/TodoList';
 
 const App = () => {
   const dispatch = useDispatch();
-  const loading = useSelector(isLoading);
-  const errorMessage = useSelector(hasError);
-  const todos = useSelector(listOfTodos);
+  const loading = useSelector(getIsLoading);
+  const errorMessage = useSelector(getHasError);
+  const todos = useSelector(getListOfTodos);
 
   const getData = () => {
     dispatch(startLoading());

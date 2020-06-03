@@ -27,16 +27,16 @@ export const setTodos = (todos: Todo[]) => ({ type: SET_TODOS, todos });
 export const handleError = (errorMessage: string) => ({ type: HANDLE_ERROR, errorMessage });
 export const deleteTodo = (id: number) => ({ type: DELETE_TODO, id });
 export const setStatus = (id: number) => ({ type: SET_STATUS, id });
-export const sortBy = (field: string) => ({ type: SORT_BY, field });
+export const handleSortBy = (field: string) => ({ type: SORT_BY, field });
 
-export const isLoading = (state: RootState) => state.isLoading;
-export const hasError = (state: RootState) => state.errorMessage;
-export const listOfTodos = (state: RootState) => state.todos;
+export const getIsLoading = (state: RootState) => state.getIsLoading;
+export const getHasError = (state: RootState) => state.errorMessage;
+export const getListOfTodos = (state: RootState) => state.todos;
 export const getOrder = (state: RootState) => state.order;
 export const getSortBy = (state: RootState) => state.sortBy;
 
 export type RootState = {
-  isLoading: boolean;
+  getIsLoading: boolean;
   errorMessage: string;
   sortBy: string;
   order: string;
@@ -44,7 +44,7 @@ export type RootState = {
 };
 
 const initialState: RootState = {
-  isLoading: false,
+  getIsLoading: false,
   errorMessage: '',
   sortBy: SORT_BY_OPTIONS.title,
   order: ORDER.asc,

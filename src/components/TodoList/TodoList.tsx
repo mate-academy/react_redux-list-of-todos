@@ -4,7 +4,7 @@ import './TodoList.scss';
 
 import TodoCard from '../TodoCard/TodoCard';
 import {
-  sortBy,
+  handleSortBy,
   getSortBy,
   getOrder,
 } from '../../store';
@@ -56,7 +56,7 @@ const TodoList: React.FC<Props> = ({ todos }) => {
         <button
           type="button"
           className="button__inner"
-          onClick={() => dispatch(sortBy(SORT_BY_OPTIONS.title))}
+          onClick={() => dispatch(handleSortBy(SORT_BY_OPTIONS.title))}
         >
           Title
           {activeFilter === SORT_BY_OPTIONS.title && (
@@ -66,7 +66,7 @@ const TodoList: React.FC<Props> = ({ todos }) => {
         <button
           type="button"
           className="button__inner"
-          onClick={() => dispatch(sortBy(SORT_BY_OPTIONS.completed))}
+          onClick={() => dispatch(handleSortBy(SORT_BY_OPTIONS.completed))}
         >
           Status
           {activeFilter === SORT_BY_OPTIONS.completed && (
@@ -76,7 +76,7 @@ const TodoList: React.FC<Props> = ({ todos }) => {
         <button
           type="button"
           className="button__inner"
-          onClick={() => dispatch(sortBy(SORT_BY_OPTIONS.userName))}
+          onClick={() => dispatch(handleSortBy(SORT_BY_OPTIONS.userName))}
         >
           User name
           {activeFilter === SORT_BY_OPTIONS.userName && (
