@@ -1,40 +1,106 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { createSelector } from 'reselect';
 
 // Action types - is just a constant. MUST have a unique value.
 const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
+const SORT_TODOS = 'SORT_TODOS';
+const REMOVED_TODO = 'REMOVED_TODO';
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+export const finishLoading = (message: string, todos: Todo[]) => ({
+  type: FINISH_LOADING,
+  message,
+  todos,
+});
+
+export const removedTodo = (todos: Todos[]) => ({
+  type: REMOVED_TODO,
+  todos,
+});
+
+export const setSortField = (field: string) => ({
+  type: SORT_TODOS,
+  field,
+});
+
 
 // Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const getTodos = (state: RootState) => state.todos;
+export const sortBy = (state: RootState) => state.sortField;
+export const setUnvisibleButton = (state: RootState) => state.visibleButton;
+
+export const getVisibleTodos = createSelector(
+  getTodos,
+  sortBy,
+
+  (todos: Todos[], sortField: string) => {
+    let callback: (a: Todos, b: Todos) => number;
+
+    switch (sortField) {
+      case 'title':
+        callback = (a, b) => a.title.localeCompare(b.title);
+        break;
+      case 'userName':
+        callback = (a, b) => a.user.name.localeCompare(b.user.name);
+        break;
+      case 'status':
+        callback = (a, b) => +a.completed - +b.completed;
+        break;
+      default: callback = () => 0;
+    }
+
+    const visibleTodos = [...todos].sort(callback);
+
+    return visibleTodos;
+  },
+);
 
 // Initial state
 export type RootState = {
+  todos: Todos[];
   loading: boolean;
-  message: string;
+  sortField: string;
+  visibleButton: boolean;
 };
 
 const initialState: RootState = {
+  todos: [],
   loading: false,
-  message: '',
+  sortField: '',
+  visibleButton: true,
 };
 
 // rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case START_LOADING:
-      return { ...state, loading: true };
+      return {
+        ...state,
+        loading: true,
+        visibleButton: false,
+      };
 
     case FINISH_LOADING:
       return {
         ...state,
         loading: false,
-        message: action.message,
+        todos: action.todos,
+      };
+
+    case REMOVED_TODO:
+      return {
+        ...state,
+        todos: action.todos,
+      };
+
+    case SORT_TODOS:
+      return {
+        ...state,
+        sortField: action.field,
       };
 
     default:

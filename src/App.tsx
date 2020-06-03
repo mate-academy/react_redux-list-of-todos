@@ -1,25 +1,42 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { TodoList } from './components/TodoLIst';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
 
-import { isLoading, getMessage } from './store';
+import {
+  isLoading,
+  startLoading,
+  finishLoading,
+  setUnvisibleButton,
+} from './store';
+import { getDataFromServer } from './api';
 
 
 const App = () => {
+  const dispatch = useDispatch();
   const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const isButtonHidden = useSelector(setUnvisibleButton);
+
+  const downloadData = () => {
+    dispatch(startLoading());
+
+    getDataFromServer()
+      .then((todos) => dispatch(finishLoading('Load Success', todos)));
+  };
 
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      {isButtonHidden && (
+        <button
+          className="button"
+          type="button"
+          onClick={downloadData}>
+          Load
+        </button>
+      )}
+      {loading ? 'Loading...' : !isButtonHidden && <TodoList />}
     </div>
   );
 };

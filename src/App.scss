@@ -1,0 +1,23 @@
+
+
+.item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  border: 1px solid lightskyblue;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 5px;
+}
+
+.button {
+  height: 50px;
+  background: lightskyblue;
+  border-radius: 10px;
+  border: 1px solid lightskyblue;
+  outline: none;
+  cursor: pointer;
+  margin: 10px;
+}
