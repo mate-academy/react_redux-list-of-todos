@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
 const SORT_FIELD = 'SORT_FIELD';
-const ERROR_LOADING = 'ERROR_LOADING';
+const LOADING_ERROR = 'LOADING_ERROR';
 
 export const SORT_BY_TITLE = 'byTitle';
 export const SORT_BY_NAME = 'byName';
@@ -23,7 +23,7 @@ type SortLoading = Action<typeof SORT_FIELD> & {
 type DeleteTodo = Action<typeof DELETE_TODO> & {
   id: number;
 };
-type ErrorLoading = Action<typeof ERROR_LOADING> & {
+type ErrorLoading = Action<typeof LOADING_ERROR> & {
   message: string;
 };
 
@@ -46,12 +46,12 @@ export const deleteTodo = (id: number): DeleteTodo => ({
 });
 
 export const errorLoading = (message: string): ErrorLoading => ({
-  type: ERROR_LOADING,
+  type: LOADING_ERROR,
   message,
 });
 
 // Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
+export const getIsLoading = (state: RootState) => state.loading;
 export const getMessage = (state: RootState) => state.message;
 export const getTodos = (state: RootState) => state.todos;
 export const getSortField = (state: RootState) => state.sortField;
@@ -95,7 +95,7 @@ export const getVisibleTodos = (state: RootState) => {
       }
 
       break;
-    case ERROR_LOADING:
+    case LOADING_ERROR:
       throw new TypeError('ERROR_LOADING');
       break;
     default: return visibleTodos;
