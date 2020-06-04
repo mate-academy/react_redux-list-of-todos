@@ -1,37 +1,54 @@
 import React from 'react';
-import { useDispatch, connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './App.scss';
 
 import { getTodos, getUsers } from './api';
-import { getSortedTodos, setTodos } from './store';
-
-
-const App = ({
-  loading,
-  message,
-  loaded,
-  startLoading,
-  finishLoading,
-  setLoaded,
-  sortedTodos,
+import {
+  getSortedTodos,
+  setTodos,
   setSortField,
   killTodo,
-}: any) => {
+  setLoaded,
+  finishLoading,
+  startLoading,
+  getMessage,
+  getState,
+  getStateTodos,
+  getLoading,
+  getLoaded,
+} from './store';
+
+
+const App = () => {
   const dispatch = useDispatch();
+  const message = useSelector(getMessage);
+  const sortedTodos = getSortedTodos(useSelector(getState));
+  const todosFromState = useSelector(getStateTodos);
+  const loading = useSelector(getLoading);
+  const loaded = useSelector(getLoaded);
+
+  let todoCache: any = [];
 
   const loadTodosFromServer = async () => {
-    startLoading();
+    dispatch(startLoading());
+
     try {
       const todos = await getTodos();
       const users = await getUsers();
 
       dispatch(setTodos({ todos, users }));
-      finishLoading();
-      setLoaded();
+      dispatch(finishLoading(message));
+      dispatch(setLoaded());
     } catch (error) {
-      finishLoading();
+      dispatch(finishLoading(message));
     }
   };
+
+  if (sortedTodos !== undefined && sortedTodos.length >= 1) {
+    todoCache = [...sortedTodos];
+  } else {
+    todoCache = [...todosFromState];
+  }
 
   return (
     <div className="App">
@@ -51,7 +68,7 @@ const App = ({
           <>
             <button
               type="button"
-              onClick={() => setSortField('title')}
+              onClick={() => dispatch(setSortField('title'))}
               className="btn btn-primary"
             >
               sortBytitle
@@ -59,7 +76,7 @@ const App = ({
 
             <button
               type="button"
-              onClick={() => setSortField('name')}
+              onClick={() => dispatch(setSortField('name'))}
               className="btn btn-primary"
             >
               sortByname
@@ -67,7 +84,7 @@ const App = ({
 
             <button
               type="button"
-              onClick={() => setSortField('completed')}
+              onClick={() => dispatch(setSortField('completed'))}
               className="btn btn-primary"
             >
               sortByCompleted
@@ -88,7 +105,7 @@ const App = ({
 
       {loaded && (
         <ul>
-          {sortedTodos.map((item: any) => (
+          {todoCache.map((item: any) => (
             <div
               className={item.completed
                 ? 'card text-white bg-success mb-3'
@@ -97,7 +114,7 @@ const App = ({
             >
               <div className="card-header">
                 {item.user.name}
-                <button type="button" onClick={() => killTodo(item.id)}>X</button>
+                <button type="button" onClick={() => dispatch(killTodo(item.id))}>X</button>
               </div>
               <div className="card-body">
                 <h5 className="card-title">{item.title}</h5>
@@ -111,25 +128,5 @@ const App = ({
   );
 };
 
-const mapStateToProps = (state: any) => ({
-  loading: state.loading,
-  message: state.message,
-  sortedTodos: getSortedTodos(state),
-  loaded: state.loaded,
-  sortField: state.sortField,
-});
 
-const mapDispatchToProps = (dispatch: any) => ({
-  setSortField: (sortField: string) => dispatch({ type: 'SORT_BY', sortField }),
-  startLoading: () => dispatch(
-    { type: 'START_LOADING' },
-  ),
-  finishLoading: (message: string) => dispatch({
-    type: 'FINISH_LOADING',
-    message,
-  }),
-  setLoaded: () => dispatch({ type: 'IS_LOADED' }),
-  killTodo: (id: number) => dispatch({ type: 'KILL', id }),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

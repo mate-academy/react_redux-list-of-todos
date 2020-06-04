@@ -5,6 +5,7 @@ import { Todo, User } from '../interface';
 export const getSortedTodos: any = ({ todos, sortField }: any) => {
   const sortedTodos = [...todos];
 
+
   switch (sortField) {
     case 'name':
       sortedTodos.sort((a: any, b: any): any => a.user[sortField].localeCompare(b.user[sortField]));
@@ -36,11 +37,28 @@ const IS_LOADED = 'IS_LOADED';
 const SORT_BY = 'SORT_BY';
 const KILL = 'KILL';
 
+// ActionCreators
 export const setTodos = ({ users, todos }: any) => ({
   type: SET_TODOS,
   users,
   todos,
 });
+export const finishLoading = (message: string) => ({
+  type: FINISH_LOADING,
+  message,
+});
+export const setSortField = (sortField: string) => ({ type: SORT_BY, sortField });
+export const killTodo = (id: number) => ({ type: KILL, id });
+export const setLoaded = () => ({ type: IS_LOADED });
+export const startLoading = () => ({ type: 'START_LOADING' });
+
+// Selectors
+export const getMessage = (state: RootState) => state.message;
+export const getStateTodos = (state: RootState) => state.todos;
+export const getState = (state: RootState) => state;
+export const getLoading = (state: RootState) => state.loading;
+export const getLoaded = (state: RootState) => state.loaded;
+
 
 export type RootState = {
   loading: boolean;
