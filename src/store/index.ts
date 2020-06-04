@@ -11,7 +11,7 @@ const DELETE_TODO = 'DELETE_TODO';
 export const startLoading = () => ({ type: START_LOADING });
 export const finishLoading = (todos: Todos[]) => ({ type: FINISH_LOADING, todos });
 export const setSortType = (sortType: string) => ({type: SET_SORT_TYPE, sortType});
-export const deleteTodo = (todos: Todos[]) => ({type: DELETE_TODO, todos});
+export const deleteTodo = (value: number) => ({type: DELETE_TODO, value});
 
 
 // Selectors - a function receiving Redux state and returning some data from it
@@ -56,7 +56,7 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     case DELETE_TODO:
       return {
         ...state,
-        todos: action.todos,
+        todos: state.todos.filter(todo => todo.id !== action.value)
       }
 
     default:

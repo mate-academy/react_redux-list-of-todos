@@ -6,7 +6,14 @@ import { getTodosFromServer, Todos } from './api/api';
 import './App.scss';
 import TodoList from './components/TodoList';
 
-import { isLoading, startLoading, finishLoading, getTodos, setSortType, getSortType } from './store';
+import {
+  isLoading,
+  startLoading,
+  finishLoading,
+  getTodos,
+  setSortType,
+  getSortType
+} from './store';
 
 const getVisibleTodos = (todos: Todos[], sortType: string) => {
   switch (sortType) {
@@ -98,10 +105,3 @@ const App = () => {
 };
 
 export default App;
-
-/*
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />*/

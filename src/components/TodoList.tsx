@@ -14,7 +14,7 @@ const TodoList: React.FC<Props> = ({ todoList }) => {
   const dispatch = useDispatch();
 
   const deleteSelectedTodo = (id: number) => {
-    dispatch(deleteTodo(todoList.filter(todo => todo.id !== id)))
+    dispatch(deleteTodo(id))
   }
 
   return (
