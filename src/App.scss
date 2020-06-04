@@ -1,0 +1,18 @@
+body {
+  background-color: #1b1c1d;
+}
+
+.main.ui.segment {
+  padding: 20px 80px;
+  text-align: center;
+  background-color: #1b1c1d;
+  color: rgba(255,255,255,0.9);
+}
+
+.ui.table .table__button {
+  cursor: pointer;
+}
+
+.ui.table .table__button:hover {
+  background-color: #721c8e;
+}
