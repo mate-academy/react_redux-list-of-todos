@@ -1,25 +1,88 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import { TodoList } from './TodoList';
+import { getPreparedTodos } from './api';
+import { BY_TITLE, BY_NAME, BY_STATUS } from './store/constants';
+import {
+  startLoading,
+  finishLoading,
+  getVisibleTodos,
+  getIsLoaded,
+  getIsLoading,
+  setSortField,
+  setTodos,
+  handleError,
+  getError,
+} from './store';
 
-import { isLoading, getMessage } from './store';
+
+const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector(getVisibleTodos);
+  const isLoaded = useSelector(getIsLoaded);
+  const isLoading = useSelector(getIsLoading);
+  const errorMessage = useSelector(getError);
 
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const loadedTodos = () => {
+    dispatch(startLoading());
+    getPreparedTodos()
+      .then((todosFromServer) => {
+        dispatch(setTodos(todosFromServer));
+        dispatch(finishLoading());
+      })
+      .catch((e) => {
+        dispatch(handleError(e.message));
+      });
+  };
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <div className="container">
+      <h1>Dynamic list of TODOs</h1>
+      {!isLoaded
+        ? (
+          <>
+            <button
+              type="button"
+              className="button"
+              onClick={loadedTodos}
+            >
+              {isLoading ? 'Loading...' : 'Click to Load'}
+            </button>
+            {errorMessage && <p className="error">{errorMessage}</p>}
+          </>
+        )
+        : (
+          <>
+            <div className="button__container">
+              <button
+                className="button"
+                type="button"
+                onClick={() => dispatch(setSortField(BY_TITLE))}
+              >
+                Sort By Title
+              </button>
+              <button
+                className="button"
+                type="button"
+                onClick={() => dispatch(setSortField(BY_NAME))}
+              >
+                Sort By Name
+              </button>
+              <button
+                className="button"
+                type="button"
+                onClick={() => dispatch(setSortField(BY_STATUS))}
+              >
+                Sort By Status
+              </button>
+            </div>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+            <TodoList todos={todos} />
+
+          </>
+        )}
     </div>
   );
 };

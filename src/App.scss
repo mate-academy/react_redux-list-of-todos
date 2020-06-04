@@ -1,0 +1,58 @@
+
+.container {
+  text-align: center;
+}
+
+.todo__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 250px);
+  grid-gap: 50px;
+  justify-content: center;
+
+}
+
+.button__container {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.button {
+  height: 50px;
+  width: 120px;
+  font-size: 20px;
+  background-color: rgb(241, 241, 211);
+  margin-right: 20px;
+  transition: all 0.3s;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: rgb(190, 190, 160);
+
+}
+
+.button__delete {
+  background-color: rgb(190, 76, 76);
+
+}
+
+.user {
+  text-align: start;
+  margin-top: 20px;
+  padding-bottom: 20px;
+
+}
+
+.user__completed-true {
+  background-color: rgb(107, 194, 194);
+  padding: 0 20px;
+}
+
+.user__completed-false {
+  background-color: rgb(182, 126, 165);
+  padding: 0 20px;
+}
+
+.error {
+  color: red;
+}
