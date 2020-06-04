@@ -1,25 +1,90 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  startLoading, finishLoading, setSortField, getVisibleTodos, getMessage, getIsLoading, errorLoading,
+} from './store';
+import * as constants from './store';
 
-import { isLoading, getMessage } from './store';
-
+import { getUsers, getTodos } from './helpers/api';
+import ListOfTodos from './components/ListOfTodos';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+  const isLoading = useSelector(getIsLoading);
+  const readinessMessage = useSelector(getMessage) || 'Ready!';
+  const todos = useSelector(getVisibleTodos);
+
+  const getTodosFromServer = async () => {
+    const [todosFromServer, usersFromServer] = await Promise.all(
+      [getTodos(), getUsers()],
+    );
+
+    const preparedTodos = todosFromServer.map((todo: Todo) => ({
+      ...todo,
+      user: usersFromServer.find((user: User) => user.id === todo.userId),
+    }));
+
+    return preparedTodos;
+  };
+
+  const loadedData = () => {
+    dispatch(startLoading());
+
+    getTodosFromServer()
+      .then((data) => dispatch(finishLoading('Data uploaded successfully!', data)))
+      .catch(() => dispatch(errorLoading('Loading error')));
+  };
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <div className="main">
+      <h1>Redux list of TODOs</h1>
+      <h2>
+        {isLoading ? <div className="spinner" role="status" /> : readinessMessage}
+      </h2>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      <div>
+        {todos.length === 0
+          ? (
+            <button
+              className="button"
+              type="button"
+              onClick={loadedData}
+            >
+              Load All ToDos
+            </button>
+          ) : (
+            <>
+              <div className="buttons">
+                <button
+                  type="button"
+                  className="button"
+                  onClick={() => dispatch(setSortField(constants.SORT_BY_TITLE))}
+                >
+                  Sort by title
+                </button>
+
+                <button
+                  type="button"
+                  className="button"
+                  onClick={() => dispatch(setSortField(constants.SORT_BY_COMPLETED))}
+                >
+                  Sort by completed
+                </button>
+
+                <button
+                  type="button"
+                  className="button"
+                  onClick={() => dispatch(setSortField(constants.SORT_BY_NAME))}
+                >
+                  Sort by user
+                </button>
+              </div>
+
+              <ListOfTodos todos={todos} />
+            </>
+          )}
+      </div>
     </div>
   );
 };

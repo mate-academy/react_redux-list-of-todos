@@ -1,0 +1,19 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  padding: 5px;
+  margin: 10px;
+  border-radius: 5px;
+  background-color: yellow;
+  border: 3px solid blue;
+}
