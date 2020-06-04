@@ -39,13 +39,15 @@ const connector = connect(mapState, mapDispatch);
  */
 type Props = ConnectedProps<typeof connector> & {
   title: string; // a regular prop passed like <Start title="Start loading" />
+  handleLoadClick: () => void;
 };
 
-const Start: React.FC<Props> = ({ load, loading, title }) => {
+const Start: React.FC<Props> = ({ handleLoadClick, loading, title }) => {
   return (
     <button
       type="button"
-      onClick={load}
+      className="btn btn-success"
+      onClick={handleLoadClick}
       disabled={loading}
     >
       {title}
