@@ -14,7 +14,6 @@ import {
 } from './store';
 
 const App = () => {
-  // const message = useSelector(getMessage) || 'Ready!';
   const dispatch = useDispatch();
   const todos = useSelector(getTodos);
   const isLoading = useSelector(getloading);
