@@ -4,21 +4,48 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import {
   getTodos,
-  setDelete,
+  setDeleteItem,
+  getSort,
 } from '../store';
 
 
 export const TodoList = () => {
-  const todosTodoList = useSelector(getTodos);
   const dispath = useDispatch();
+  const todosTodoList = useSelector(getTodos);
+  const sortFromRedux = useSelector(getSort);
+
 
   const deleteTodo = (index: number) => {
-    dispath(setDelete(index));
+    dispath(setDeleteItem(index));
   };
+
+  const sort = (todos: CompletedTodo[], sortType: string) => {
+    switch (sortType) {
+      case 'title':
+        return [...todos].sort((a, b) => {
+          return a.title.localeCompare(b.title);
+        });
+
+      case 'completed':
+        return [...todos].sort((a, b) => {
+          return +a.completed - +b.completed;
+        });
+
+      case 'user':
+        return [...todos].sort((a, b) => {
+          return a.user.name.localeCompare(b.user.name);
+        });
+
+      default:
+        return todos;
+    }
+  };
+
+  const SortTodos = sort(todosTodoList, sortFromRedux);
 
   return (
     <div>
-      {todosTodoList.map(({
+      {SortTodos.map(({
         completed, user, title, id,
       }) => (
         <div

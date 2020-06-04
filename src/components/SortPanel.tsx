@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getTodos, setTodos } from '../store';
+import { useDispatch } from 'react-redux';
+import { setSortField } from '../store';
 
 const buttons = [
   { name: 'Sort by Name', sortType: 'title' },
@@ -13,42 +13,8 @@ const activeBtn = 'title';
 
 export const SortPanel = () => {
   const dispatch = useDispatch();
-  const todos = useSelector(getTodos);
   const sortChange = (sortType: string) => {
-    switch (sortType) {
-      case 'title':
-        dispatch(
-          setTodos(
-            [...todos].sort((a, b) => {
-              return a.title.localeCompare(b.title);
-            }),
-          ),
-        );
-
-        return;
-      case 'completed':
-        dispatch(
-          setTodos(
-            [...todos].sort((a, b) => {
-              return +a.completed - +b.completed;
-            }),
-          ),
-        );
-
-        return;
-      case 'user':
-        dispatch(
-          setTodos(
-            [...todos].sort((a, b) => {
-              return a.user.name.localeCompare(b.user.name);
-            }),
-          ),
-        );
-
-        return;
-      default:
-        dispatch(setTodos(todos));
-    }
+    dispatch(setSortField(sortType));
   };
 
   return (

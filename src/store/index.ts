@@ -6,7 +6,7 @@ const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
 const TODOS = 'TODOS';
 const VISIBLE_CONTENT = 'VISIBLE_CONTENT';
-const DELETE_TODO = 'DELETE_TODO';
+const DELETE_TODO_ITEM = 'DELETE_TODO_ITEM';
 const SORT_FIELD = 'SORT_FIELD';
 
 // Action creators - a function returning an action object
@@ -14,7 +14,7 @@ export const startLoading = () => ({ type: START_LOADING });
 export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
 export const setTodos = (todos: Todo[] = []) => ({ type: TODOS, todos });
 export const setVisibleContent = () => ({ type: VISIBLE_CONTENT });
-export const setDelete = (index: number) => ({ type: DELETE_TODO, index });
+export const setDeleteItem = (index: number) => ({ type: DELETE_TODO_ITEM, index });
 export const setSortField = (sort: string) => ({ type: SORT_FIELD, sort });
 
 
@@ -23,6 +23,7 @@ export const isLoading = (state: RootState) => state.loading;
 export const getMessage = (state: RootState) => state.message;
 export const getTodos = (state: RootState) => state.todos;
 export const getVisibleContent = (state: RootState) => state.visible;
+export const getSort = (state: RootState) => state.sort;
 
 
 // Initial state
@@ -32,6 +33,7 @@ export type RootState = {
   message: string;
   todos: CompletedTodo[];
   error: string;
+  sort: string;
 };
 
 const initialState: RootState = {
@@ -40,6 +42,7 @@ const initialState: RootState = {
   message: '',
   todos: [],
   error: '',
+  sort: '',
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -64,10 +67,15 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         ...state,
         visible: true,
       };
-    case DELETE_TODO:
+    case DELETE_TODO_ITEM:
       return {
         ...state,
         todos: [...state.todos].filter(todo => todo.id !== action.index),
+      };
+    case SORT_FIELD:
+      return {
+        ...state,
+        sort: action.sort,
       };
     default:
       return state;
