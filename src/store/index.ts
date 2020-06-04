@@ -83,7 +83,7 @@ const rootReducer = (state = initialState, action: AnyAction): RootState => {
         ...state,
         isLoading: true,
         isLoaded: false,
-        errorMessage:'',
+        errorMessage: '',
       };
 
     case SET_TODOS:

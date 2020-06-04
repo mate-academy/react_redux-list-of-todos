@@ -34,7 +34,7 @@ const App: React.FC = () => {
       })
       .catch((e) => {
         dispatch(handleError(e.message));
-      })
+      });
   };
 
   return (
@@ -50,7 +50,7 @@ const App: React.FC = () => {
             >
               {isLoading ? 'Loading...' : 'Click to Load'}
             </button>
-            {errorMessage && <p>{errorMessage}</p>}
+            {errorMessage && <p className="error">{errorMessage}</p>}
           </>
         )
         : (
