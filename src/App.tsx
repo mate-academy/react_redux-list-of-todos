@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import './App.scss';
 import { TodoList } from './TodoList';
 import { getPreparedTodos } from './api';
-import { BY_TITLE, BY_NAME, BY_STATUS } from './store/Constants';
+import { BY_TITLE, BY_NAME, BY_STATUS } from './store/constants';
 import {
   startLoading,
   finishLoading,

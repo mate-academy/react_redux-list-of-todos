@@ -1,6 +1,6 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { BY_TITLE, BY_NAME, BY_STATUS } from './Constants';
+import { BY_TITLE, BY_NAME, BY_STATUS } from './constants';
 
 const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
