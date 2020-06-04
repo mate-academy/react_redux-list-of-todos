@@ -6,6 +6,7 @@ const START_LOADING = 'START_LOADING';
 const SET_LOADED = 'SET_LOADED';
 const SORT_BY = 'SORT_BY';
 const DELETE_TODO = 'DELETE_TODO';
+const SET_IS_REVERSED = 'SET_IS_REVERSED';
 
 // Action creators - a function returning an action object
 export const setTodos = (todos: Todo[]) => {
@@ -29,6 +30,13 @@ export const deleteTodo = (id: number) => {
   };
 };
 
+export const setIsReversed = (isReversed: boolean) => {
+  return {
+    type: SET_IS_REVERSED,
+    isReversed
+  };
+};
+
 export const startLoading = () => ({ type: START_LOADING });
 export const setIsLoaded = () => ({ type: SET_LOADED });
 
@@ -37,6 +45,39 @@ export const getTodos = (state: RootState) => state.todos;
 export const getLoading = (state: RootState) => state.loading;
 export const getLoaded = (state: RootState) => state.loaded;
 export const getSortBy = (state: RootState) => state.sortBy;
+export const getIsReversed = (state: RootState) => state.isReversed;
+export const getSortedTodos = ({ todos, sortBy, isReversed }: RootState) => {
+  const sortedTodos = [...todos];
+
+  switch (sortBy) {
+    case 'title':
+      sortedTodos.sort((a, b) => (
+        a.title.localeCompare(b.title)
+      ));
+      break;
+
+    case 'completed':
+      sortedTodos.sort((a, b) => (
+        Number(b.completed) - Number(a.completed)
+      ));
+      break
+
+    case 'name':
+      sortedTodos.sort((a, b) => (
+        a.user.name.localeCompare(b.user.name)
+      ));
+      break;
+
+    default:
+      break;
+  }
+
+  if (isReversed) {
+    sortedTodos.reverse();
+  }
+
+  return sortedTodos;
+};
 
 // Initial state
 const initialState: RootState = {
@@ -44,6 +85,7 @@ const initialState: RootState = {
   loading: false,
   loaded: false,
   sortBy: '',
+  isReversed: false,
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -72,6 +114,12 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         sortBy: action.sortBy,
+      };
+
+    case SET_IS_REVERSED:
+      return {
+        ...state,
+        isReversed: action.isReversed,
       };
 
     case DELETE_TODO:
