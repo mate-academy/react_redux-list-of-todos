@@ -1,0 +1,63 @@
+.App {
+  text-align: center;
+  font-size: 20px;
+  margin: 0 auto;
+}
+
+.todo_item {
+  position: relative;
+  list-style: none;
+  background-color: rgba(255, 0, 0, 0.28);
+  border: 1px solid red;
+  color: red;
+  border-radius: 20px;
+  height: 110px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.todo_item-done {
+  border: 1px solid green;
+  background-color: rgba(0, 255, 0, 0.28);
+  color: green;
+}
+
+.todo_list {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: start;
+}
+
+.todo_user-text,
+.todo_title-text,
+.todo_status {
+  font-weight: bold;
+}
+
+.buttonload {
+  background-color: #4caf50;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+.button {
+  padding: 5px 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.delete-button {
+  position: absolute;
+  right: 0;
+  bottom: 5px;
+  padding: 0 10px;
+}
+
+.left {
+  margin-left: 50px;
+}
