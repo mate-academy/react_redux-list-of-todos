@@ -5,15 +5,35 @@ import { getData } from './api/api';
 import './App.scss';
 
 import {
+  getOrder,
   getSortedTodos,
   setDeleteItem,
+  setOrder,
   setSortField,
   setTodos,
+  getSortField,
 } from './store';
 
 const App = () => {
   const dispatch = useDispatch();
   const visibleTodos = useSelector(getSortedTodos);
+  const order = useSelector(getOrder);
+  const sortField = useSelector(getSortField);
+
+  const handleSort = (sortBy: string) => {
+    if (order === '' || order === 'DES') {
+      dispatch(setOrder('ASC'));
+    } else if (order === 'ASC') {
+      dispatch(setOrder('DES'));
+    }
+
+    if (sortField !== sortBy) {
+      dispatch(setOrder('ASC'));
+    }
+
+    dispatch(setSortField(sortBy));
+  };
+
 
   return (
     <div className="App">
@@ -24,22 +44,22 @@ const App = () => {
             <thead>
               <tr>
                 <th>
-                  <button type="button" onClick={() => dispatch(setSortField('id'))}>
+                  <button type="button" onClick={() => handleSort('id')}>
                     Sort by id
                   </button>
                 </th>
                 <th>
-                  <button type="button" onClick={() => dispatch(setSortField('username'))}>
+                  <button type="button" onClick={() => handleSort('username')}>
                     Sort by name
                   </button>
                 </th>
                 <th>
-                  <button type="button" onClick={() => dispatch(setSortField('title'))}>
+                  <button type="button" onClick={() => handleSort('title')}>
                     Sort by title
                   </button>
                 </th>
                 <th>
-                  <button type="button" onClick={() => dispatch(setSortField('status'))}>
+                  <button type="button" onClick={() => handleSort('status')}>
                     Sort by status
                   </button>
                 </th>
