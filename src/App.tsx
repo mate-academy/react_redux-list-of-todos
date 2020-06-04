@@ -3,14 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import './App.scss';
 import { TodoList } from './TodoList';
 import { getPreparedTodos } from './api';
+import { BY_TITLE, BY_NAME, BY_STATUS } from './store/Constants';
 import {
-  BY_TITLE, BY_NAME, BY_STATUS,
   startLoading,
   finishLoading,
   getVisibleTodos,
   getIsLoaded,
   getIsLoading,
   setSortField,
+  setTodos,
+  handleError,
+  getError,
 } from './store';
 
 
@@ -19,13 +22,18 @@ const App: React.FC = () => {
   const todos = useSelector(getVisibleTodos);
   const isLoaded = useSelector(getIsLoaded);
   const isLoading = useSelector(getIsLoading);
+  const errorMessage = useSelector(getError);
 
 
   const loadedTodos = () => {
     dispatch(startLoading());
-    getPreparedTodos().then((todosFromServer) => {
-      dispatch(finishLoading(todosFromServer));
-    });
+    getPreparedTodos()
+      .then((todosFromServer) => {
+        dispatch(setTodos(todosFromServer));
+        dispatch(finishLoading());
+      })
+      .catch();
+    dispatch(handleError('Error, try again later'));
   };
 
   return (
@@ -33,18 +41,21 @@ const App: React.FC = () => {
       <h1>Dynamic list of TODOs</h1>
       {!isLoaded
         ? (
-          <button
-            type="button"
-            className="button"
-            onClick={loadedTodos}
-          >
-            {isLoading ? 'Loading...' : 'Click to Load'}
-          </button>
+          <>
+            <button
+              type="button"
+              className="button"
+              onClick={loadedTodos}
+            >
+              {isLoading ? 'Loading...' : 'Click to Load'}
+            </button>
+            {errorMessage && <p>{errorMessage}</p>}
+
+          </>
         )
         : (
           <>
             <div className="button__container">
-
               <button
                 className="button"
                 type="button"
@@ -67,7 +78,9 @@ const App: React.FC = () => {
                 Sort By Status
               </button>
             </div>
+
             <TodoList todos={todos} />
+
           </>
         )}
     </div>

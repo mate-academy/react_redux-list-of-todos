@@ -1,20 +1,24 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { BY_TITLE, BY_NAME, BY_STATUS } from './Constants';
 
 const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
-
-export const BY_TITLE = 'BY_TITLE';
-export const BY_NAME = 'BY_NAME';
-export const BY_STATUS = 'BY_STATUS';
+const SET_TODOS = 'SET_TODOS';
+const HANDLE_ERROR = 'HANDLE_ERROR';
 
 const SORT_BY = 'SORT_BY';
 const DELETE_TODO = 'DELETE';
 
 export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (todos: PreparedTodo[]) => ({
-  type: FINISH_LOADING,
+export const finishLoading = () => ({ type: FINISH_LOADING });
+export const setTodos = (todos: PreparedTodo[]) => ({
+  type: SET_TODOS,
   todos,
+});
+export const handleError = (errorMessage: string) => ({
+  type: HANDLE_ERROR,
+  errorMessage,
 });
 export const setSortField = (sortField: string) => ({
   type: SORT_BY,
@@ -30,6 +34,7 @@ export const getTodos = (state: RootState) => state.todos;
 export const getIsLoading = (state: RootState) => state.isLoading;
 export const getIsLoaded = (state: RootState) => state.isLoaded;
 export const getSortField = (state: RootState) => state.sortField;
+export const getError = (state: RootState) => state.errorMessage;
 
 export const getVisibleTodos = (state: RootState) => {
   const visibleTodos = [...state.todos];
@@ -60,6 +65,7 @@ export type RootState = {
   sortField: string;
   isLoaded: boolean;
   isLoading: boolean;
+  errorMessage: string;
 };
 
 const initialState: RootState = {
@@ -67,6 +73,7 @@ const initialState: RootState = {
   sortField: '',
   isLoaded: false,
   isLoading: false,
+  errorMessage: '',
 };
 
 const rootReducer = (state = initialState, action: AnyAction): RootState => {
@@ -76,14 +83,31 @@ const rootReducer = (state = initialState, action: AnyAction): RootState => {
         ...state,
         isLoading: true,
         isLoaded: false,
+        errorMessage: '',
+      };
+
+    case SET_TODOS:
+      return {
+        ...state,
+        todos: [...action.todos],
+        isLoading: false,
+
+      };
+    case HANDLE_ERROR:
+      return {
+        ...state,
+        errorMessage: action.errorMessage,
+        isLoading: false,
+        isLoaded: false,
+
       };
 
     case FINISH_LOADING:
       return {
         ...state,
-        todos: [...action.todos],
-        isLoaded: true,
         isLoading: false,
+        isLoaded: true,
+
       };
 
     case SORT_BY:
