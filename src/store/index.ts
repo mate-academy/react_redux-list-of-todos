@@ -1,51 +1,118 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { createSelector } from 'reselect';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+const SET_SORT_FIELD = 'SET_SORT_FIELD';
+const SET_TODOS = 'SET_TODOS';
+const SET_ORDER = 'SET_ORDER';
+const DELETE_ITEM = 'DELETE_ITEM';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+export const setSortField = (sortField: string) => ({
+  type: SET_SORT_FIELD,
+  sortField,
+});
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const setDeleteItem = (deleteItem: number) => ({
+  type: DELETE_ITEM,
+  deleteItem,
+});
 
-// Initial state
+export const setTodos = (todos: Todo[]) => ({
+  type: SET_TODOS,
+  todos,
+});
+
+export const setOrder = (order: '' | 'ASC' | 'DES') => ({
+  type: SET_ORDER,
+  order,
+});
+
+export const getSortField = (state: RootState) => state.sortField;
+export const getTodos = (state: RootState) => state.todos;
+export const getOrder = (state: RootState) => state.order;
+
+export const getSortedTodos = createSelector(
+  [
+    getTodos,
+    getSortField,
+    getOrder,
+  ],
+  (todos: Todo[], sortField: string, order: string) => {
+    const visibleTodos = [...todos];
+    console.log(order);
+    switch (sortField) {
+      case 'id':
+        visibleTodos.sort((a, b) => a.id - b.id);
+        break;
+      case 'title':
+        visibleTodos.sort((a, b) => a[sortField].localeCompare(b[sortField]));
+        break;
+      case 'status':
+        visibleTodos.sort((a, b) => +a.completed - +b.completed);
+        break;
+      case 'username':
+        visibleTodos.sort((a: Todo, b: Todo) => {
+          if (a.user && b.user) {
+            return a.user.username.localeCompare(b.user.username);
+          }
+
+          return 0;
+        });
+
+        break;
+      default: break;
+    }
+
+    if (order === 'DES') {
+      visibleTodos.reverse();
+    }
+
+    return visibleTodos;
+  },
+);
+
 export type RootState = {
-  loading: boolean;
-  message: string;
+  todos: Todo[];
+  sortField: string;
+  order: '' | 'ASC' | 'DES';
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  todos: [],
+  sortField: 'id',
+  order: '',
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
+    case SET_SORT_FIELD:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        sortField: action.sortField,
       };
-
+    case SET_TODOS:
+      return {
+        ...state,
+        todos: action.todos,
+      };
+    case SET_ORDER:
+      return {
+        ...state,
+        order: action.order,
+      };
+    case DELETE_ITEM:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.deleteItem),
+      };
     default:
       return state;
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;
