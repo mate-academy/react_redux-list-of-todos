@@ -1,25 +1,67 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getData } from './api/api';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
 
-import { isLoading, getMessage } from './store';
-
+import {
+  getSortedTodos,
+  setDeleteItem,
+  setSortField,
+  setTodos,
+} from './store';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+  const visibleTodos = useSelector(getSortedTodos);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      {!visibleTodos.length ? (<button type="button" onClick={() => getData().then(data => dispatch(setTodos(data)))}>Load</button>) : (
+        <>
+          <h1>Redux list of todos</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <button type="button" onClick={() => dispatch(setSortField('id'))}>
+                    Sort by id
+                  </button>
+                </th>
+                <th>
+                  <button type="button" onClick={() => dispatch(setSortField('username'))}>
+                    Sort by name
+                  </button>
+                </th>
+                <th>
+                  <button type="button" onClick={() => dispatch(setSortField('title'))}>
+                    Sort by title
+                  </button>
+                </th>
+                <th>
+                  <button type="button" onClick={() => dispatch(setSortField('status'))}>
+                    Sort by status
+                  </button>
+                </th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {visibleTodos.map(todo => (
+                <tr key={todo.id}>
+                  <td>{todo.id}</td>
+                  <td>{todo.user?.username}</td>
+                  <td>{todo.title}</td>
+                  <td>{todo.completed ? 'Completed' : 'Active'}</td>
+                  <td>
+                    <button type="button" onClick={() => dispatch(setDeleteItem(todo.id))}>X</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 };
