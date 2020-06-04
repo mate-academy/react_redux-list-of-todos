@@ -32,8 +32,9 @@ const App: React.FC = () => {
         dispatch(setTodos(todosFromServer));
         dispatch(finishLoading());
       })
-      .catch();
-    dispatch(handleError('Error, try again later'));
+      .catch((e) => {
+        dispatch(handleError(e.message));
+      })
   };
 
   return (
@@ -50,7 +51,6 @@ const App: React.FC = () => {
               {isLoading ? 'Loading...' : 'Click to Load'}
             </button>
             {errorMessage && <p>{errorMessage}</p>}
-
           </>
         )
         : (

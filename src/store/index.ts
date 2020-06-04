@@ -83,23 +83,21 @@ const rootReducer = (state = initialState, action: AnyAction): RootState => {
         ...state,
         isLoading: true,
         isLoaded: false,
-        errorMessage: '',
+        errorMessage:'',
       };
 
     case SET_TODOS:
       return {
         ...state,
         todos: [...action.todos],
-        isLoading: false,
-
       };
+
     case HANDLE_ERROR:
       return {
         ...state,
         errorMessage: action.errorMessage,
         isLoading: false,
         isLoaded: false,
-
       };
 
     case FINISH_LOADING:
@@ -107,7 +105,6 @@ const rootReducer = (state = initialState, action: AnyAction): RootState => {
         ...state,
         isLoading: false,
         isLoaded: true,
-
       };
 
     case SORT_BY:
