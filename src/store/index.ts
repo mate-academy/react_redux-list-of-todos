@@ -7,6 +7,7 @@ const SET_LOADED = 'SET_LOADED';
 const SORT_BY = 'SORT_BY';
 const DELETE_TODO = 'DELETE_TODO';
 const SET_IS_REVERSED = 'SET_IS_REVERSED';
+const SET_ERROR = 'SET_ERROR';
 
 // Action creators - a function returning an action object
 export const setTodos = (todos: Todo[]) => {
@@ -37,6 +38,13 @@ export const setIsReversed = (isReversed: boolean) => {
   };
 };
 
+export const setError = (error: string) => {
+  return {
+    type: SET_ERROR,
+    error
+  };
+};
+
 export const startLoading = () => ({ type: START_LOADING });
 export const setIsLoaded = () => ({ type: SET_LOADED });
 
@@ -45,6 +53,7 @@ export const getTodos = (state: RootState) => state.todos;
 export const getLoading = (state: RootState) => state.loading;
 export const getLoaded = (state: RootState) => state.loaded;
 export const getSortBy = (state: RootState) => state.sortBy;
+export const getError = (state: RootState) => state.error;
 export const getIsReversed = (state: RootState) => state.isReversed;
 export const getSortedTodos = ({ todos, sortBy, isReversed }: RootState) => {
   const sortedTodos = [...todos];
@@ -86,6 +95,7 @@ const initialState: RootState = {
   loaded: false,
   sortBy: '',
   isReversed: false,
+  error: ''
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -108,6 +118,12 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         ...state,
         loading: false,
         loaded: true,
+      };
+
+    case SET_ERROR:
+      return {
+        ...state,
+        error: action.error,
       };
 
     case SORT_BY:

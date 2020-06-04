@@ -6,6 +6,7 @@ type RootState = {
   loaded: boolean;
   sortBy: string;
   isReversed: boolean;
+  error: string;
 };
 
 interface User {

@@ -1,24 +1,26 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPreparedTodos } from '../helpers/api';
 import {
-  setTodos, getLoading, setIsLoaded, startLoading,
+  setTodos, getLoading, setIsLoaded, startLoading, setError,
 } from '../store';
 
-export const Loader = () => {
+export const LoadButton = () => {
   const dispatch = useDispatch();
   const loading = useSelector(getLoading);
 
-  const loadTodos = useCallback(() => {
+  const loadTodos = async () => {
     dispatch(startLoading());
-
-    setTimeout(async () => {
+    try {
       const fetchedTodos = await getPreparedTodos();
 
       dispatch(setTodos(fetchedTodos));
       dispatch(setIsLoaded());
-    }, 1000);
-  }, [dispatch]);
+      } catch (error) {
+        dispatch(setError(`Something went wrong: ${error}`));
+      }
+    dispatch(setIsLoaded());
+  };
 
   return (
     <button
