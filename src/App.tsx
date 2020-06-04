@@ -7,9 +7,11 @@ import {
   startLoading,
   finishLoading,
   setLoaded,
+  setError,
   initTodos,
   getLoading,
   getLoaded,
+  getError,
   getTodos,
   // getQuery,
 } from './store';
@@ -32,6 +34,7 @@ const App = () => {
   const todos = useSelector(getTodos);
   const loading = useSelector(getLoading);
   const loaded = useSelector(getLoaded);
+  const error = useSelector(getError);
   // const query = useSelector(getQuery);
 
   const loadData = () => {
@@ -42,25 +45,29 @@ const App = () => {
         dispatch(initTodos(todosFromServer));
         dispatch(setLoaded());
       })
+      .catch(err => {
+        dispatch(setError(`Something went wrong: ${err.message}`));
+      })
       .finally(() => {
         dispatch(finishLoading());
       });
   };
 
   return (
-    <Segment inverted className="main">
-      <Header as="h1" color="purple" content="Redux list of todos" />
+    <Segment inverted className="App Application">
+      <Header as="h1" color="orange" content="Redux list of todos" />
       {loaded ? (
         <TodoList list={todos} />
       ) : (
         <Button
-          content={loading ? 'Loading...' : 'Load TodoList'}
-          color="purple"
+          content="Load Todo"
+          loading={loading}
+          color="orange"
           size="big"
           onClick={loadData}
         />
       )}
-      {/* <Header as="h2" color="yellow">{isError}</Header> */}
+      <Header as="h2" color="yellow">{error}</Header>
     </Segment>
   );
 };

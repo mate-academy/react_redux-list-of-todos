@@ -5,6 +5,8 @@ type PropsUser = {
   user?: User;
 };
 
-const User: React.FC<PropsUser> = ({ user }) => <Table.Cell>{user?.name || ''}</Table.Cell>;
+const User: React.FC<PropsUser> = ({ user }) => (
+  <Table.Cell>{user?.name || ''}</Table.Cell>
+);
 
 export default User;

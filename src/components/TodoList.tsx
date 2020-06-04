@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Table } from 'semantic-ui-react';
 import TodoItem from './TodoItem';
 
@@ -7,6 +7,7 @@ interface SortButton extends Ikey {
   user: string;
   title: string;
   completed: string;
+  delete: string;
 }
 
 const headers: SortButton = {
@@ -14,15 +15,16 @@ const headers: SortButton = {
   user: 'Person',
   title: 'Description',
   completed: 'Completed',
+  delete: 'Delete todo',
 };
 
 declare type MyCallback = (myArgument: string) => (a: Todo, b: Todo) => number;
 
-type PropsTodoList = {
+type Props = {
   list: Todo[];
 };
 
-const TodoList: React.FC<PropsTodoList> = ({ list }) => {
+const TodoList: React.FC<Props> = ({ list }) => {
   const [todos, sortTodos] = useState(list);
   const [active, setActive] = useState('id');
   const [isSorted, setSorted] = useState(true);
@@ -54,17 +56,25 @@ const TodoList: React.FC<PropsTodoList> = ({ list }) => {
   };
 
   return (
-    <Table celled className="ui purple inverted" selectable>
+    <Table celled className="ui orange inverted TodoList" selectable>
       <Table.Header>
         <Table.Row>
           {Object.keys(headers).map(header => (
-            <Table.HeaderCell
-              className="table__button"
-              key={header}
-              onClick={() => sortList(header)}
-            >
-              {headers[header]}
-            </Table.HeaderCell>
+            <Fragment key={header}>
+              {header !== 'delete'
+                ? (
+                  <Table.HeaderCell
+                    className="TodoList-HeaderCell"
+                    onClick={() => sortList(header)}
+                    content={headers[header]}
+                  />
+                ) : (
+                  <Table.HeaderCell
+                    className="TodoList-HeaderCell TodoList-HeaderCell_delete"
+                    content={headers[header]}
+                  />
+                )}
+            </Fragment>
           ))}
         </Table.Row>
       </Table.Header>
