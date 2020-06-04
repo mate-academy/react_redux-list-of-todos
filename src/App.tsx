@@ -1,25 +1,37 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
-
+import { useSelector } from 'react-redux';
+import { TodosList } from './components/TodosList';
+import { LoadButton } from './components/LoadButton';
+import { getLoaded, getError } from './store';
+import { SortButtons } from './components/SortButtons';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const loaded = useSelector(getLoaded);
+  const error = useSelector(getError);
+  console.log(error);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <div className="container">
+      <h1 className="row center-align">Dynamic list of TODOs</h1>
+      {(loaded && !error) ? (
+        <>
+          <div className="row center-align">
+            <SortButtons />
+          </div>
+          <div className="row">
+            <div className="col s6 offset-s3">
+              <TodosList />
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="row center-align">
+          <LoadButton />
+          <p>{error}</p>
+        </div>
+      )}
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
     </div>
   );
 };
