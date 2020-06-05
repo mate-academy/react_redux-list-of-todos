@@ -24,7 +24,6 @@ const getAppData = async (): Promise<Todo[]> => {
 
 const App = () => {
   const dispatch = useDispatch();
-  const todos = useSelector(selectors.getVisibleTodos);
   const loading = useSelector(selectors.getLoading);
   const loaded = useSelector(selectors.getLoaded);
   const error = useSelector(selectors.getError);
@@ -53,7 +52,7 @@ const App = () => {
       {loaded ? (
         <>
           <SearchTodo />
-          <TodoList list={todos} />
+          <TodoList />
         </>
       ) : (
         <Button

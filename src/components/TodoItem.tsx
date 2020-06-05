@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Icon, Table } from 'semantic-ui-react';
 import { useDispatch } from 'react-redux';
+import { Button, Icon, Table } from 'semantic-ui-react';
 import { deleteTodo } from '../store/todos';
 import User from './User';
 

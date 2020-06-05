@@ -41,3 +41,11 @@ interface Geo {
   lat: string;
   lng: string;
 }
+
+interface HeadersConfig extends Ikey {
+  id: string;
+  user: string;
+  title: string;
+  completed: string;
+  delete: string;
+}

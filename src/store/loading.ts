@@ -41,18 +41,18 @@ const initialState: LoadingState = {
 
 type LoadingAction = StartLoadingAction | SetLoadedAction | SetErrorAction | FinishLoadingAction;
 
-const reduce = (state = initialState, action: LoadingAction): LoadingState => {
+const reduce = (loadingState = initialState, action: LoadingAction): LoadingState => {
   switch (action.type) {
     case START_LOADING:
-      return { ...state, loading: true };
+      return { ...loadingState, loading: true };
     case SET_LOADED:
-      return { ...state, loaded: true };
+      return { ...loadingState, loaded: true };
     case SET_ERROR:
-      return { ...state, error: action.error };
+      return { ...loadingState, error: action.error };
     case FINISH_LOADING:
-      return { ...state, loading: false };
+      return { ...loadingState, loading: false };
     default:
-      return state;
+      return loadingState;
   }
 };
 

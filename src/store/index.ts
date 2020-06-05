@@ -5,12 +5,16 @@ import { createSelector } from 'reselect';
 import loadingReducer from './loading';
 import todosReducer from './todos';
 import queryReducer from './query';
+import sortReducer from './sort';
+import paginationReducer from './pagination';
+import { ASC, DESC } from '../constants/sortOrders';
 
 const rootReducer = combineReducers({
   loading: loadingReducer,
   todos: todosReducer,
   query: queryReducer,
-  // sort: sortReducer,
+  sort: sortReducer,
+  pagination: paginationReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -20,14 +24,23 @@ export const getLoaded = (state: RootState) => state.loading.loaded;
 export const getError = (state: RootState) => state.loading.error;
 export const getQuery = (state: RootState) => state.query;
 
-const getTodos = (state: RootState) => state.todos;
+export const getTodos = (state: RootState) => state.todos;
+export const getSortBy = (state: RootState) => state.sort.field;
+const getSortOrder = (state: RootState) => state.sort.order;
 
 export const getVisibleTodos = createSelector(
   getTodos,
   getQuery,
+  getSortBy,
+  getSortOrder,
 
-  (todos: Todo[], query: string) => {
-    /*let callback: (a: Todo, b: Todo) => number = () => 0;
+  (
+    todos: Todo[],
+    query: string,
+    sortField: keyof HeadersConfig,
+    sortOrder: typeof ASC | typeof DESC,
+  ) => {
+    let callback: (a: Todo, b: Todo) => number = () => 0;
 
     switch (typeof todos[0][sortField]) {
       case 'string':
@@ -38,15 +51,16 @@ export const getVisibleTodos = createSelector(
         break;
       default:
         callback = (a, b) => a[sortField] - b[sortField];
-    }*/
+    }
 
     const visibleTodos = todos
       .filter(todo => todo.title.includes(query))
-      // .sort(callback);
+      .sort(callback)
+      // .slice(0, 10);
 
-    // if (sortOrder === DESC) {
-    //   visiblePeople.reverse();
-    // }
+    if (sortOrder === DESC) {
+      visibleTodos.reverse();
+    }
 
     return visibleTodos;
   },
