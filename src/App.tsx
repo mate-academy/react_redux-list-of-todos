@@ -3,17 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Header, Segment } from 'semantic-ui-react';
 import * as api from './helpers/api';
 import './App.scss';
+import { initTodos } from './store/todos';
 import {
   startLoading,
   finishLoading,
   setLoaded,
   setError,
-  initTodos,
+} from './store/loading';
+import {
   getLoading,
   getLoaded,
   getError,
   getTodos,
-  // getQuery,
 } from './store';
 import TodoList from './components/TodoList';
 
@@ -21,7 +22,7 @@ const getAppData = async (): Promise<Todo[]> => {
   const todosFromServer = await api.getTodos();
   const users = await api.getUsers();
 
-  await new Promise(ok => setTimeout(ok, 2000));
+  await new Promise(ok => setTimeout(ok, 1000));
 
   return todosFromServer.map((todo: Todo) => ({
     ...todo,

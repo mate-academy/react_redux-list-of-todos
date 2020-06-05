@@ -1,6 +1,8 @@
 import React, { useState, Fragment } from 'react';
 import { Table } from 'semantic-ui-react';
 import TodoItem from './TodoItem';
+// import { useSelector } from 'react-redux';
+// import { getTodos } from '../store';
 
 interface SortButton extends Ikey {
   id: string;
@@ -25,6 +27,7 @@ type Props = {
 };
 
 const TodoList: React.FC<Props> = ({ list }) => {
+  // const todos = useSelector(getTodos);
   const [todos, sortTodos] = useState(list);
   const [active, setActive] = useState('id');
   const [isSorted, setSorted] = useState(true);
