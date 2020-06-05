@@ -3,10 +3,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 const SET_LOADING = 'SET_IS_LOADING';
 const SET_STATE = 'SET_STATE';
-const CHANGE_ALPHABETICALLY_NAME = 'SET_IS_ALPHABETICALLY_NAME';
-const CHANGE_ALPHABETICALLY_TITLE = 'SET_IS_ALPHABETICALLY_TITLE';
-const CHANGE_COMPLETED = 'SET_IS_COMPLETED';
 const DELETE = 'DELETE';
+const SORTED_TITLE = 'SORTED_TITLE';
+const SORTED_NAME = 'SORTED_NAME';
+const SORTED_COMPLETED = 'SORTED_COMPLETED';
 
 type LoadingAction = Action<typeof SET_LOADING> & {
   loadingStatus: boolean;
@@ -15,17 +15,20 @@ type SetStateAction = Action<typeof SET_STATE> & {
   todosList: TodoWithUser[];
   loadingStatus: boolean;
 };
-type AlphabeticallyNameAction = Action<typeof CHANGE_ALPHABETICALLY_NAME> & {
-  alphabeticallyNameStatus: boolean;
-};
-type AlphabeticallyTitleAction = Action<typeof CHANGE_ALPHABETICALLY_TITLE> & {
-  alphabeticallyTitleStatus: boolean;
-};
-type CompletedTodoAction = Action<typeof CHANGE_COMPLETED> & {
-  completedTodoStatus: boolean;
-};
 export type DeleteTodo = Action<typeof DELETE> & {
   idTodo: number;
+};
+type SortedName = Action<typeof SORTED_NAME> & {
+  sortValue: string;
+  isAlphabeticallyName: boolean;
+};
+type SortedTitle = Action<typeof SORTED_TITLE> & {
+  sortValue: string;
+  isAlphabeticallyTitle: boolean;
+};
+type SortedCompleted = Action<typeof SORTED_COMPLETED> & {
+  sortValue: string;
+  isCompleted: boolean;
 };
 
 export type InitialState = {
@@ -34,6 +37,7 @@ export type InitialState = {
   isAlphabeticallyName: boolean;
   isAlphabeticallyTitle: boolean;
   isCompletedTodo: boolean;
+  sortValue: string | null;
 };
 
 
@@ -43,6 +47,7 @@ const initialState: InitialState = {
   isAlphabeticallyName: false,
   isAlphabeticallyTitle: false,
   isCompletedTodo: false,
+  sortValue: null,
 };
 
 export const loading = (loadingStatus: boolean): LoadingAction => (
@@ -52,34 +57,39 @@ export const loading = (loadingStatus: boolean): LoadingAction => (
   }
 );
 
-export const setState = (todosList: TodoWithUser[], loadingStatus: boolean): SetStateAction => (
-  {
-    type: SET_STATE,
-    todosList,
-    loadingStatus,
-  }
-);
+export const setState
+  = (todosList: TodoWithUser[], loadingStatus: boolean): SetStateAction => (
+    {
+      type: SET_STATE,
+      todosList,
+      loadingStatus,
+    }
+  );
 
-export const alphabeticallyName = (alphabeticallyNameStatus: boolean): AlphabeticallyNameAction => (
-  {
-    type: CHANGE_ALPHABETICALLY_NAME,
-    alphabeticallyNameStatus,
-  }
-);
-
-export const alphabeticallyTitle = (alphabeticallyTitleStatus: boolean): AlphabeticallyTitleAction => (
-  {
-    type: CHANGE_ALPHABETICALLY_TITLE,
-    alphabeticallyTitleStatus,
-  }
-);
-
-export const completedTodo = (completedTodoStatus: boolean): CompletedTodoAction => (
-  {
-    type: CHANGE_COMPLETED,
-    completedTodoStatus,
-  }
-);
+export const sortedName
+  = (sortValue: string, isAlphabeticallyName: boolean): SortedName => (
+    {
+      type: SORTED_NAME,
+      sortValue,
+      isAlphabeticallyName,
+    }
+  );
+export const sortedTitle
+  = (sortValue: string, isAlphabeticallyTitle: boolean): SortedTitle => (
+    {
+      type: SORTED_TITLE,
+      sortValue,
+      isAlphabeticallyTitle,
+    }
+  );
+export const sortedCompleted
+  = (sortValue: string, isCompleted: boolean): SortedCompleted => (
+    {
+      type: SORTED_COMPLETED,
+      sortValue,
+      isCompleted,
+    }
+  );
 
 export const deleteTodo = (idTodo: number): DeleteTodo => (
   {
@@ -90,10 +100,10 @@ export const deleteTodo = (idTodo: number): DeleteTodo => (
 
 export type AllActions = LoadingAction
 | SetStateAction
-| AlphabeticallyNameAction
-| AlphabeticallyTitleAction
-| CompletedTodoAction
-| DeleteTodo;
+| DeleteTodo
+| SortedName
+| SortedTitle
+| SortedCompleted;
 
 const todoListReducer = (state = initialState, action: AllActions) => {
   switch (action.type) {
@@ -105,30 +115,58 @@ const todoListReducer = (state = initialState, action: AllActions) => {
       ...state,
       todosList: action.todosList,
       isLoading: action.loadingStatus,
-    };
-    case CHANGE_ALPHABETICALLY_NAME: return {
-      ...state,
-      isAlphabeticallyName: action.alphabeticallyNameStatus,
-      isAlphabeticallyTitle: false,
-      isCompletedTodo: false,
-    };
-    case CHANGE_ALPHABETICALLY_TITLE: return {
-      ...state,
-      isAlphabeticallyTitle: action.alphabeticallyTitleStatus,
-      isAlphabeticallyName: false,
-      isCompletedTodo: false,
-    };
-    case CHANGE_COMPLETED: return {
-      ...state,
-      isCompletedTodo: action.completedTodoStatus,
-      isAlphabeticallyTitle: false,
-      isAlphabeticallyName: false,
+      sortedTodos: action.todosList,
     };
     case DELETE: return {
       ...state,
       todosList: state.todosList.filter(todo => todo.id !== action.idTodo),
     };
+    case SORTED_NAME: return {
+      ...state,
+      sortValue: action.sortValue,
+      isAlphabeticallyName: !action.isAlphabeticallyName,
+      isAlphabeticallyTitle: false,
+      isCompletedTodo: false,
+    };
+    case SORTED_TITLE: return {
+      ...state,
+      sortValue: action.sortValue,
+      isAlphabeticallyTitle: !action.isAlphabeticallyTitle,
+      isAlphabeticallyName: false,
+      isCompletedTodo: false,
+    };
+    case SORTED_COMPLETED: return {
+      ...state,
+      sortValue: action.sortValue,
+      isCompletedTodo: !action.isCompleted,
+      isAlphabeticallyTitle: false,
+      isAlphabeticallyName: false,
+    };
     default: return state;
+  }
+};
+
+export const prepareTodos = (state: InitialState) => {
+  switch (state.sortValue) {
+    case SORTED_NAME:
+      if (!state.isAlphabeticallyName) {
+        return [...state.todosList].sort((a, b) => a.user.name.localeCompare(b.user.name));
+      }
+
+      return [...state.todosList].sort((a, b) => b.user.name.localeCompare(a.user.name));
+    case SORTED_TITLE:
+      if (!state.isAlphabeticallyTitle) {
+        return [...state.todosList].sort((a, b) => a.title.localeCompare(b.title));
+      }
+
+      return [...state.todosList].sort((a, b) => b.title.localeCompare(a.title));
+    case SORTED_COMPLETED:
+      if (!state.isCompletedTodo) {
+        return [...state.todosList].sort((a, b) => Number(a.completed) - Number(b.completed));
+      }
+
+      return [...state.todosList].sort((a, b) => Number(b.completed) - Number(a.completed));
+    default: return state.todosList;
   }
 };
 

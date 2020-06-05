@@ -2,19 +2,21 @@ import React, { Dispatch } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import TodosList from './TodosList';
 import './App.scss';
-import { todosFromServer } from './API';
+import { todosFromServer } from './api';
 import {
   AllActions,
-  alphabeticallyName, alphabeticallyTitle, completedTodo,
   InitialState,
   loading,
   setState,
   deleteTodo,
+  prepareTodos,
+  sortedName, sortedTitle, sortedCompleted,
 } from './store/store';
 
 const App = () => {
   const dispatch = useDispatch<Dispatch<AllActions>>();
   const todosList = useSelector((state: InitialState) => state.todosList);
+  const todos = useSelector(prepareTodos);
   const isLoading = useSelector((state: InitialState) => state.isLoading);
   const isAlphabeticallyName = useSelector((state: InitialState) => state.isAlphabeticallyName);
   const isAlphabeticallyTitle = useSelector((state: InitialState) => state.isAlphabeticallyTitle);
@@ -27,43 +29,6 @@ const App = () => {
     });
   };
 
-  let sortedTodos: TodoWithUser[] = [...todosList];
-  const sortedOfNames = () => {
-    if (!isAlphabeticallyName) {
-      sortedTodos = todosList.sort((a, b) => a.user.name.localeCompare(b.user.name));
-
-      return dispatch(alphabeticallyName(true));
-    }
-
-    sortedTodos = todosList.sort((a, b) => b.user.name.localeCompare(a.user.name));
-
-    return dispatch(alphabeticallyName(false));
-  };
-
-  const sortedOfTitle = () => {
-    if (!isAlphabeticallyTitle) {
-      sortedTodos = todosList.sort((a, b) => a.title.localeCompare(b.title));
-
-      return dispatch(alphabeticallyTitle(true));
-    }
-
-    sortedTodos = todosList.sort((a, b) => b.title.localeCompare(a.title));
-
-    return dispatch(alphabeticallyTitle(false));
-  };
-
-  const sortedOfCompleted = () => {
-    if (!isCompletedTodo) {
-      sortedTodos = todosList.sort((a, b) => Number(a.completed) - Number(b.completed));
-
-      return dispatch(completedTodo(true));
-    }
-
-    sortedTodos = todosList.sort((a, b) => Number(b.completed) - Number(a.completed));
-
-    return dispatch(completedTodo(false));
-  };
-
   return (
     <div className="app">
       <h1 className="app__header">Dynamic list of TODOs</h1>
@@ -71,21 +36,21 @@ const App = () => {
         <div className="app__button-filter">
           <button
             type="button"
-            onClick={sortedOfNames}
+            onClick={() => dispatch(sortedName('SORTED_NAME', isAlphabeticallyName))}
             className="app__button"
           >
             Filter by name
           </button>
           <button
             type="button"
-            onClick={sortedOfTitle}
+            onClick={() => dispatch(sortedTitle('SORTED_TITLE', isAlphabeticallyTitle))}
             className="app__button"
           >
             Filter by title
           </button>
           <button
             type="button"
-            onClick={sortedOfCompleted}
+            onClick={() => dispatch(sortedCompleted('SORTED_COMPLETED', isCompletedTodo))}
             className="app__button"
           >
             Filter by complete
@@ -93,7 +58,7 @@ const App = () => {
         </div>
       )}
       <TodosList
-        newTodos={sortedTodos}
+        newTodos={todos}
         deleteTodo={deleteTodo}
       />
       {todosList.length === 0
