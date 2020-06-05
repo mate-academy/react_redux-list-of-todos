@@ -8,11 +8,11 @@ type DeleteTodosAction = Action<typeof DELETE_TODO> & {
   todoId: number;
 };
 
-export const initTodos = (todos: Todo[]) => ({
+export const initTodos = (todos: Todo[]): InitTodosAction => ({
   type: INIT_TODOS,
   todos,
 });
-export const deleteTodo = (todoId: number) => ({
+export const deleteTodo = (todoId: number): DeleteTodosAction => ({
   type: DELETE_TODO,
   todoId,
 });

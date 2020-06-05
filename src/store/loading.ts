@@ -6,20 +6,26 @@ import {
   FINISH_LOADING,
 } from '../constants/actionTypes';
 
-type StartLoadingAction = Action<'START_LOADING'>;
-type FinishLoadingAction = Action<'FINISH_LOADING'>;
-type SetLoadedAction = Action<'SET_LOADED'>;
+type StartLoadingAction = Action<typeof START_LOADING>;
+type FinishLoadingAction = Action<typeof FINISH_LOADING>;
+type SetLoadedAction = Action<typeof SET_LOADED>;
 type SetErrorAction = Action<typeof SET_ERROR> & {
   error: string;
 };
 
-export const startLoading = () => ({ type: START_LOADING });
-export const setLoaded = () => ({ type: SET_LOADED });
-export const setError = (error = '') => ({
+export const startLoading = (): StartLoadingAction => ({
+  type: START_LOADING,
+});
+export const finishLoading = (): FinishLoadingAction => ({
+  type: FINISH_LOADING,
+});
+export const setLoaded = (): SetLoadedAction => ({
+  type: SET_LOADED,
+});
+export const setError = (error = ''): SetErrorAction => ({
   type: SET_ERROR,
   error,
 });
-export const finishLoading = () => ({ type: FINISH_LOADING });
 
 export type LoadingState = {
   loading: boolean;

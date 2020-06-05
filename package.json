@@ -13,6 +13,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/redux": "^3.6.0",
+    "@types/reselect": "^2.2.0",
     "@types/semantic-ui": "^2.2.7",
     "classnames": "^2.2.6",
     "node-sass": "^4.14.1",
@@ -23,6 +24,7 @@
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
+    "reselect": "^4.0.0",
     "semantic-ui-react": "^0.88.2",
     "typescript": "^3.7.5"
   },

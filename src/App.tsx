@@ -1,28 +1,20 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Header, Segment } from 'semantic-ui-react';
-import * as api from './helpers/api';
 import './App.scss';
+
+import * as api from './helpers/api';
+import * as selectors from './store';
+import * as loadingActions from './store/loading';
 import { initTodos } from './store/todos';
-import {
-  startLoading,
-  finishLoading,
-  setLoaded,
-  setError,
-} from './store/loading';
-import {
-  getLoading,
-  getLoaded,
-  getError,
-  getTodos,
-} from './store';
 import TodoList from './components/TodoList';
+import SearchTodo from './components/SearchTodo';
 
 const getAppData = async (): Promise<Todo[]> => {
   const todosFromServer = await api.getTodos();
   const users = await api.getUsers();
 
-  await new Promise(ok => setTimeout(ok, 1000));
+  // await new Promise(ok => setTimeout(ok, 1000));
 
   return todosFromServer.map((todo: Todo) => ({
     ...todo,
@@ -32,25 +24,26 @@ const getAppData = async (): Promise<Todo[]> => {
 
 const App = () => {
   const dispatch = useDispatch();
-  const todos = useSelector(getTodos);
-  const loading = useSelector(getLoading);
-  const loaded = useSelector(getLoaded);
-  const error = useSelector(getError);
-  // const query = useSelector(getQuery);
+  const todos = useSelector(selectors.getVisibleTodos);
+  const loading = useSelector(selectors.getLoading);
+  const loaded = useSelector(selectors.getLoaded);
+  const error = useSelector(selectors.getError);
 
   const loadData = () => {
-    dispatch(startLoading());
+    dispatch(loadingActions.startLoading());
 
     getAppData()
       .then(todosFromServer => {
         dispatch(initTodos(todosFromServer));
-        dispatch(setLoaded());
+        dispatch(loadingActions.setLoaded());
       })
       .catch(err => {
-        dispatch(setError(`Something went wrong: ${err.message}`));
+        dispatch(loadingActions.setError(
+          `Something went wrong: ${err.message}`,
+        ));
       })
       .finally(() => {
-        dispatch(finishLoading());
+        dispatch(loadingActions.finishLoading());
       });
   };
 
@@ -58,11 +51,16 @@ const App = () => {
     <Segment inverted className="App Application">
       <Header as="h1" color="orange" content="Redux list of todos" />
       {loaded ? (
-        <TodoList list={todos} />
+        <>
+          <SearchTodo />
+          <TodoList list={todos} />
+        </>
       ) : (
         <Button
+          className="App-LoadButton"
           content="Load Todo"
           loading={loading}
+          disabled={loading}
           color="orange"
           size="big"
           onClick={loadData}

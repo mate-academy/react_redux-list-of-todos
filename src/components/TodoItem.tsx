@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, Icon, Table } from 'semantic-ui-react';
+import { useDispatch } from 'react-redux';
+import { deleteTodo } from '../store/todos';
 import User from './User';
 
 type Props = {
@@ -8,6 +10,7 @@ type Props = {
 
 const TodoItem: React.FC<Props> = ({ todo }) => {
   const { id, user, completed, title } = todo;
+  const dispatch = useDispatch();
 
   return (
     <Table.Row
@@ -22,7 +25,7 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
       <Table.Cell>
         <Button
           className="TodoItem-Delete"
-          onClick={() => console.log(id)}
+          onClick={() => dispatch(deleteTodo(id))}
           color="red"
           icon
         >
