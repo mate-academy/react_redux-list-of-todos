@@ -1,11 +1,20 @@
 import { Action } from 'redux';
 import { SET_PAGE, SET_PER_PAGE } from '../constants/actionTypes';
 
-type SetPageAction = Action<typeof SET_PAGE>;
-type SetPerPageAction = Action<typeof SET_PER_PAGE>;
+type SetPageAction = Action<typeof SET_PAGE> & {
+  page: number;
+};
+type SetPerPageAction = Action<typeof SET_PER_PAGE> & {
+  perPage: number;
+};
 
-export const setPage = (): SetPageAction => ({
+export const setPage = (page: number): SetPageAction => ({
   type: SET_PAGE,
+  page,
+});
+export const setPerPage = (perPage: number): SetPerPageAction => ({
+  type: SET_PER_PAGE,
+  perPage,
 });
 
 type PaginationState = {
@@ -25,11 +34,16 @@ const reduce = (paginationState = initialState, action: PaginationAction): Pagin
     case SET_PAGE:
       return {
         ...paginationState,
+        page: action.page,
       };
+
     case SET_PER_PAGE:
       return {
         ...paginationState,
+        perPage: action.perPage,
+        page: 1,
       };
+
     default:
       return paginationState;
   }

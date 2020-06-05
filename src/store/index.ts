@@ -23,12 +23,14 @@ export const getLoading = (state: RootState) => state.loading.loading;
 export const getLoaded = (state: RootState) => state.loading.loaded;
 export const getError = (state: RootState) => state.loading.error;
 export const getQuery = (state: RootState) => state.query;
-
 export const getTodos = (state: RootState) => state.todos;
 export const getSortBy = (state: RootState) => state.sort.field;
 const getSortOrder = (state: RootState) => state.sort.order;
 
-export const getVisibleTodos = createSelector(
+export const getPage = (state: RootState) => state.pagination.page;
+export const getPerPage = (state: RootState) => state.pagination.perPage;
+
+export const getFilteredTodos = createSelector(
   getTodos,
   getQuery,
   getSortBy,
@@ -53,17 +55,32 @@ export const getVisibleTodos = createSelector(
         callback = (a, b) => a[sortField] - b[sortField];
     }
 
-    const visibleTodos = todos
+    const filteredTodos = todos
       .filter(todo => todo.title.includes(query))
-      .sort(callback)
-      // .slice(0, 10);
+      .sort(callback);
 
     if (sortOrder === DESC) {
-      visibleTodos.reverse();
+      filteredTodos.reverse();
     }
 
-    return visibleTodos;
+    return filteredTodos;
   },
+);
+
+export const getVisibleTodos = createSelector(
+  getFilteredTodos, getPage, getPerPage,
+
+  (todos: Todo[], page: number, perPage: number) => {
+    const start = (page - 1) * perPage;
+    const end = page * perPage;
+
+    return todos.slice(start, end);
+  },
+);
+
+export const getTotalPages = createSelector(
+  getFilteredTodos, getPerPage,
+  (todos: Todo[], perPage: number) => Math.ceil(todos.length / perPage),
 );
 
 const store = createStore(

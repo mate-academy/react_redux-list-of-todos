@@ -14,7 +14,7 @@ const getAppData = async (): Promise<Todo[]> => {
   const todosFromServer = await api.getTodos();
   const users = await api.getUsers();
 
-  // await new Promise(ok => setTimeout(ok, 1000));
+  await new Promise(ok => setTimeout(ok, 1000));
 
   return todosFromServer.map((todo: Todo) => ({
     ...todo,

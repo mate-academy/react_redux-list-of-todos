@@ -1,8 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon, Input } from 'semantic-ui-react';
-import { getQuery } from '../store';
 import { setQuery } from '../store/query';
+// import { setPage } from '../store/pagination';
+import * as selectors from '../store';
 
 const optionQuery = {
   maxLength: 50,
@@ -11,7 +12,7 @@ const optionQuery = {
 
 const SearchTodo = () => {
   const dispatch = useDispatch();
-  const query = useSelector(getQuery);
+  const query = useSelector(selectors.getQuery);
 
   return (
     <Input

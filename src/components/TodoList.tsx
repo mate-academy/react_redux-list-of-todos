@@ -15,7 +15,7 @@ const headersConfig: HeadersConfig = {
 };
 
 const TodoList = () => {
-  const todos = useSelector(selectors.getVisibleTodos);
+  const visibleTodos = useSelector(selectors.getVisibleTodos);
   const dispatch = useDispatch();
 
   return (
@@ -44,7 +44,7 @@ const TodoList = () => {
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {todos.map(todo => <TodoItem key={todo.id} todo={todo} />)}
+        {visibleTodos.map(todo => <TodoItem key={todo.id} todo={todo} />)}
       </Table.Body>
       <Table.Footer>
         <Table.Row className="TodoList-TableRow">
