@@ -2,7 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Icon, Input } from 'semantic-ui-react';
 import { setQuery } from '../store/query';
-// import { setPage } from '../store/pagination';
 import * as selectors from '../store';
 
 const optionQuery = {

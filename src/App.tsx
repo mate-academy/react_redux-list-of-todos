@@ -9,6 +9,7 @@ import * as loadingActions from './store/loading';
 import { initTodos } from './store/todos';
 import TodoList from './components/TodoList';
 import SearchTodo from './components/SearchTodo';
+import BackgroundAnimation from './components/common/BackgroundAnimation';
 
 const getAppData = async (): Promise<Todo[]> => {
   const todosFromServer = await api.getTodos();
@@ -47,26 +48,29 @@ const App = () => {
   };
 
   return (
-    <Segment inverted className="App Application">
-      <Header as="h1" color="orange" content="Redux list of todos" />
-      {loaded ? (
-        <>
-          <SearchTodo />
-          <TodoList />
-        </>
-      ) : (
-        <Button
-          className="App-LoadButton"
-          content="Load Todo"
-          loading={loading}
-          disabled={loading}
-          color="orange"
-          size="big"
-          onClick={loadData}
-        />
-      )}
-      <Header as="h2" color="yellow">{error}</Header>
-    </Segment>
+    <>
+      <Segment className="App Application">
+        <Header as="h1" color="orange" content="Redux list of todos" />
+        {loaded ? (
+          <>
+            <SearchTodo />
+            <TodoList />
+          </>
+        ) : (
+          <Button
+            className="App-LoadButton"
+            content="Load Todo"
+            loading={loading}
+            disabled={loading}
+            color="orange"
+            size="big"
+            onClick={loadData}
+          />
+        )}
+        <Header as="h2" color="yellow">{error}</Header>
+      </Segment>
+      <BackgroundAnimation />
+    </>
   );
 };
 
