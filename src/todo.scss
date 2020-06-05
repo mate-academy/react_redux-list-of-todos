@@ -1,0 +1,25 @@
+.todo__wrapper {
+  width: 50%;
+  border: 1px solid chocolate;
+  border-radius: 15px;
+  margin: 0 auto 20px;
+  padding: 10px;
+  text-align: start;
+}
+
+.todo__body {
+  color: purple;
+  font-style: italic;
+}
+
+.todo__user {
+  color: darkslateblue;
+}
+
+.todo__process {
+  color: red;
+}
+
+.todo__done {
+  color: green;
+}
