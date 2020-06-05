@@ -10,7 +10,9 @@ import {
   setState,
   deleteTodo,
   prepareTodos,
-  sortedName, sortedTitle, sortedCompleted,
+  setSortName,
+  setSortTitle,
+  setSortCompleted,
 } from './store/store';
 
 const App = () => {
@@ -18,8 +20,8 @@ const App = () => {
   const todosList = useSelector((state: InitialState) => state.todosList);
   const todos = useSelector(prepareTodos);
   const isLoading = useSelector((state: InitialState) => state.isLoading);
-  const isAlphabeticallyName = useSelector((state: InitialState) => state.isAlphabeticallyName);
-  const isAlphabeticallyTitle = useSelector((state: InitialState) => state.isAlphabeticallyTitle);
+  const isAlphabeticallyName = useSelector((state: InitialState) => state.isAlphabSortedName);
+  const isAlphabeticallyTitle = useSelector((state: InitialState) => state.isAlphabSortedTitle);
   const isCompletedTodo = useSelector((state: InitialState) => state.isCompletedTodo);
 
   const fetchData = (): void => {
@@ -36,21 +38,21 @@ const App = () => {
         <div className="app__button-filter">
           <button
             type="button"
-            onClick={() => dispatch(sortedName('SORTED_NAME', isAlphabeticallyName))}
+            onClick={() => dispatch(setSortName('SORTED_NAME', isAlphabeticallyName))}
             className="app__button"
           >
             Filter by name
           </button>
           <button
             type="button"
-            onClick={() => dispatch(sortedTitle('SORTED_TITLE', isAlphabeticallyTitle))}
+            onClick={() => dispatch(setSortTitle('SORTED_TITLE', isAlphabeticallyTitle))}
             className="app__button"
           >
             Filter by title
           </button>
           <button
             type="button"
-            onClick={() => dispatch(sortedCompleted('SORTED_COMPLETED', isCompletedTodo))}
+            onClick={() => dispatch(setSortCompleted('SORTED_COMPLETED', isCompletedTodo))}
             className="app__button"
           >
             Filter by complete

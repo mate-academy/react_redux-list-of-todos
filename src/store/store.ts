@@ -20,11 +20,11 @@ export type DeleteTodo = Action<typeof DELETE> & {
 };
 type SortedName = Action<typeof SORTED_NAME> & {
   sortValue: string;
-  isAlphabeticallyName: boolean;
+  isAlphabSortedName: boolean;
 };
 type SortedTitle = Action<typeof SORTED_TITLE> & {
   sortValue: string;
-  isAlphabeticallyTitle: boolean;
+  isAlphabSortedTitle: boolean;
 };
 type SortedCompleted = Action<typeof SORTED_COMPLETED> & {
   sortValue: string;
@@ -34,8 +34,8 @@ type SortedCompleted = Action<typeof SORTED_COMPLETED> & {
 export type InitialState = {
   todosList: TodoWithUser[];
   isLoading: boolean;
-  isAlphabeticallyName: boolean;
-  isAlphabeticallyTitle: boolean;
+  isAlphabSortedName: boolean;
+  isAlphabSortedTitle: boolean;
   isCompletedTodo: boolean;
   sortValue: string | null;
 };
@@ -44,8 +44,8 @@ export type InitialState = {
 const initialState: InitialState = {
   todosList: [],
   isLoading: false,
-  isAlphabeticallyName: false,
-  isAlphabeticallyTitle: false,
+  isAlphabSortedName: false,
+  isAlphabSortedTitle: false,
   isCompletedTodo: false,
   sortValue: null,
 };
@@ -57,39 +57,47 @@ export const loading = (loadingStatus: boolean): LoadingAction => (
   }
 );
 
-export const setState
-  = (todosList: TodoWithUser[], loadingStatus: boolean): SetStateAction => (
-    {
-      type: SET_STATE,
-      todosList,
-      loadingStatus,
-    }
-  );
+export const setState = (
+  todosList: TodoWithUser[],
+  loadingStatus: boolean,
+): SetStateAction => (
+  {
+    type: SET_STATE,
+    todosList,
+    loadingStatus,
+  }
+);
 
-export const sortedName
-  = (sortValue: string, isAlphabeticallyName: boolean): SortedName => (
-    {
-      type: SORTED_NAME,
-      sortValue,
-      isAlphabeticallyName,
-    }
-  );
-export const sortedTitle
-  = (sortValue: string, isAlphabeticallyTitle: boolean): SortedTitle => (
-    {
-      type: SORTED_TITLE,
-      sortValue,
-      isAlphabeticallyTitle,
-    }
-  );
-export const sortedCompleted
-  = (sortValue: string, isCompleted: boolean): SortedCompleted => (
-    {
-      type: SORTED_COMPLETED,
-      sortValue,
-      isCompleted,
-    }
-  );
+export const setSortName = (
+  sortValue: string,
+  isAlphabSortedName: boolean,
+): SortedName => (
+  {
+    type: SORTED_NAME,
+    sortValue,
+    isAlphabSortedName,
+  }
+);
+export const setSortTitle = (
+  sortValue: string,
+  isAlphabSortedTitle: boolean,
+): SortedTitle => (
+  {
+    type: SORTED_TITLE,
+    sortValue,
+    isAlphabSortedTitle,
+  }
+);
+export const setSortCompleted = (
+  sortValue: string,
+  isCompleted: boolean,
+): SortedCompleted => (
+  {
+    type: SORTED_COMPLETED,
+    sortValue,
+    isCompleted,
+  }
+);
 
 export const deleteTodo = (idTodo: number): DeleteTodo => (
   {
@@ -101,8 +109,8 @@ export const deleteTodo = (idTodo: number): DeleteTodo => (
 export type AllActions = LoadingAction
 | SetStateAction
 | DeleteTodo
-| SortedName
 | SortedTitle
+| SortedName
 | SortedCompleted;
 
 const todoListReducer = (state = initialState, action: AllActions) => {
@@ -124,48 +132,54 @@ const todoListReducer = (state = initialState, action: AllActions) => {
     case SORTED_NAME: return {
       ...state,
       sortValue: action.sortValue,
-      isAlphabeticallyName: !action.isAlphabeticallyName,
-      isAlphabeticallyTitle: false,
+      isAlphabSortedName: !action.isAlphabSortedName,
+      isAlphabSortedTitle: false,
       isCompletedTodo: false,
     };
     case SORTED_TITLE: return {
       ...state,
       sortValue: action.sortValue,
-      isAlphabeticallyTitle: !action.isAlphabeticallyTitle,
-      isAlphabeticallyName: false,
+      isAlphabSortedTitle: !action.isAlphabSortedTitle,
+      isAlphabSortedName: false,
       isCompletedTodo: false,
     };
     case SORTED_COMPLETED: return {
       ...state,
       sortValue: action.sortValue,
       isCompletedTodo: !action.isCompleted,
-      isAlphabeticallyTitle: false,
-      isAlphabeticallyName: false,
+      isAlphabSortedTitle: false,
+      isAlphabSortedName: false,
     };
     default: return state;
   }
 };
 
-export const prepareTodos = (state: InitialState) => {
+export const prepareTodos = (state: InitialState): TodoWithUser[] => {
   switch (state.sortValue) {
     case SORTED_NAME:
-      if (!state.isAlphabeticallyName) {
-        return [...state.todosList].sort((a, b) => a.user.name.localeCompare(b.user.name));
+      if (!state.isAlphabSortedName) {
+        return [...state.todosList]
+          .sort((a, b) => a.user.name.localeCompare(b.user.name));
       }
 
-      return [...state.todosList].sort((a, b) => b.user.name.localeCompare(a.user.name));
+      return [...state.todosList]
+        .sort((a, b) => b.user.name.localeCompare(a.user.name));
     case SORTED_TITLE:
-      if (!state.isAlphabeticallyTitle) {
-        return [...state.todosList].sort((a, b) => a.title.localeCompare(b.title));
+      if (!state.isAlphabSortedTitle) {
+        return [...state.todosList]
+          .sort((a, b) => a.title.localeCompare(b.title));
       }
 
-      return [...state.todosList].sort((a, b) => b.title.localeCompare(a.title));
+      return [...state.todosList]
+        .sort((a, b) => b.title.localeCompare(a.title));
     case SORTED_COMPLETED:
       if (!state.isCompletedTodo) {
-        return [...state.todosList].sort((a, b) => Number(a.completed) - Number(b.completed));
+        return [...state.todosList]
+          .sort((a, b) => Number(a.completed) - Number(b.completed));
       }
 
-      return [...state.todosList].sort((a, b) => Number(b.completed) - Number(a.completed));
+      return [...state.todosList]
+        .sort((a, b) => Number(b.completed) - Number(a.completed));
     default: return state.todosList;
   }
 };
