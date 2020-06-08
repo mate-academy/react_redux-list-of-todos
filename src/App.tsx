@@ -1,25 +1,68 @@
+
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import * as api from './helpers/api';
+import Button from './components/Button';
+import TodoList from './components/TodoList';
+import SortButtons from './components/SortButtons';
 
-import { isLoading, getMessage } from './store';
+import {
+  initTodos,
+  startLoading,
+  finishLoading,
+  getLoading,
+  getTodos,
+} from './store';
 
+const getAppData = async (): Promise<Todo[]> => {
+  const todosFromServer = await api.getTodos();
+  const users = await api.getUsers();
+
+  return todosFromServer.map(todo => ({
+    ...todo,
+    user: users.find(user => user.id === todo.userId) || null,
+  }));
+};
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+  const todos = useSelector(getTodos);
+  const loading = useSelector(getLoading);
+
+  const initData = () => {
+    dispatch(startLoading());
+
+    getAppData()
+      .then(todosFromServer => {
+        dispatch(initTodos(todosFromServer));
+      })
+      .finally(() => {
+        dispatch(finishLoading());
+      });
+  };
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <h1 className="header">
+        Redux list of todos
+      </h1>
+      {todos.length === 0
+      && (
+        <Button
+          text={loading ? 'Loading...' : 'Init data'}
+          disabled={loading}
+          onClick={initData}
+        />
+      )}
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      {todos.length > 0 && (
+        <>
+          <SortButtons />
+          <TodoList />
+        </>
+      )}
     </div>
   );
 };
