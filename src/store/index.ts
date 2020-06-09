@@ -80,7 +80,7 @@ export const getVisibleTodos = createSelector(
 
 export const getTotalPages = createSelector(
   getFilteredTodos, getPerPage,
-  (todos: Todo[], perPage: number) => Math.ceil(todos.length / perPage),
+  (todos: Todo[], perPage: number) => Math.ceil(todos.length / perPage) || 1,
 );
 
 const store = createStore(
