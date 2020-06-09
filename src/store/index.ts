@@ -1,51 +1,95 @@
-import { createStore, AnyAction } from 'redux';
+import { combineReducers, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { createSelector } from 'reselect';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+import loadingReducer from './loading';
+import todosReducer from './todos';
+import queryReducer from './query';
+import sortReducer from './sort';
+import paginationReducer from './pagination';
+import { ASC, DESC } from '../constants/sortOrders';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+const rootReducer = combineReducers({
+  loading: loadingReducer,
+  todos: todosReducer,
+  query: queryReducer,
+  sort: sortReducer,
+  pagination: paginationReducer,
+});
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export type RootState = ReturnType<typeof rootReducer>;
 
-// Initial state
-export type RootState = {
-  loading: boolean;
-  message: string;
-};
+export const getLoading = (state: RootState) => state.loading.loading;
+export const getLoaded = (state: RootState) => state.loading.loaded;
+export const getError = (state: RootState) => state.loading.error;
+export const getQuery = (state: RootState) => state.query;
+export const getTodos = (state: RootState) => state.todos;
+export const getSortBy = (state: RootState) => state.sort.field;
+const getSortOrder = (state: RootState) => state.sort.order;
 
-const initialState: RootState = {
-  loading: false,
-  message: '',
-};
+export const getPage = (state: RootState) => state.pagination.page;
+export const getPerPage = (state: RootState) => state.pagination.perPage;
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
-  switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
+export const getFilteredTodos = createSelector(
+  getTodos,
+  getQuery,
+  getSortBy,
+  getSortOrder,
 
-    case FINISH_LOADING:
-      return {
-        ...state,
-        loading: false,
-        message: action.message,
-      };
+  (
+    todos: Todo[],
+    query: string,
+    sortField: keyof HeadersConfig,
+    sortOrder: typeof ASC | typeof DESC,
+  ) => {
+    let callback: (a: Todo, b: Todo) => number = () => 0;
 
-    default:
-      return state;
-  }
-};
+    switch (typeof todos[0][sortField]) {
+      case 'string':
+        callback = (a, b) => a[sortField].localeCompare(b[sortField]);
+        break;
+      case 'object':
+        callback = (a, b) => a[sortField].name.localeCompare(b[sortField].name);
+        break;
+      default:
+        callback = (a, b) => a[sortField] - b[sortField];
+    }
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
+    const filteredTodos = todos
+      .filter(todo => todo.title.includes(query))
+      .sort(callback);
+
+    if (sortOrder === DESC) {
+      filteredTodos.reverse();
+    }
+
+    return filteredTodos;
+  },
+);
+
+export const getVisibleTodos = createSelector(
+  getFilteredTodos, getPage, getPerPage,
+
+  (todos: Todo[], page: number, perPage: number) => {
+    const start = (page - 1) * perPage;
+    const end = page * perPage;
+
+    return todos.slice(start, end);
+  },
+);
+
+export const getTotalPages = createSelector(
+  getFilteredTodos, getPerPage,
+  (todos: Todo[], perPage: number) => Math.ceil(todos.length / perPage) || 1,
+);
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
+
+store.subscribe(() => {
+  localStorage.setItem('todos', JSON.stringify(store.getState()));
+});
 
 export default store;

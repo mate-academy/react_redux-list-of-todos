@@ -1,0 +1,41 @@
+body {
+  background-color: #1b1c1d;
+}
+
+.Application.App {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px 0;
+  text-align: center;
+  background-color: transparent;
+  color: rgba(255,255,255,0.9);
+
+  .App-LoadButton,
+  .SearchTodo {
+    width: 60%;
+    margin: 0 auto;
+  }
+
+  .TodoList {
+    &-HeaderCell {
+      cursor: pointer;
+      text-align: center;
+      &_delete {
+        cursor: no-drop;
+      }
+    }
+
+    &-HeaderCell:hover {
+      background-color: #f2711c;
+    }
+  }
+
+  .TodoItem {
+    &-Delete {
+      width: 100%;
+    }
+  }
+
+}
