@@ -9,17 +9,17 @@ const SortButtons = () => {
     <p className="button_container">
       <button
         className="button btn btn-outline-info"
-        onClick={() => dispatch(setSortType('title'))}
-        type="button"
-      >
-        Sort by title
-      </button>
-      <button
-        className="button btn btn-outline-info"
         onClick={() => dispatch(setSortType('id'))}
         type="button"
       >
         Sort by id
+      </button>
+      <button
+        className="button btn btn-outline-info"
+        onClick={() => dispatch(setSortType('title'))}
+        type="button"
+      >
+        Sort by title
       </button>
       <button
         className="button btn btn-outline-info"
