@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import './App.scss';
 import * as api from './helpers/api';
-import Button from './components/Button';
 import TodoList from './components/TodoList';
 import SortButtons from './components/SortButtons';
 
@@ -50,11 +49,14 @@ const App = () => {
       </h1>
       {todos.length === 0
       && (
-        <Button
-          text={loading ? 'Loading...' : 'Init data'}
+        <button
+          type="button"
           disabled={loading}
           onClick={initData}
-        />
+          className="button_load btn btn-secondary"
+        >
+          {loading ? 'Loading...' : 'Init data'}
+        </button>
       )}
 
       {todos.length > 0 && (

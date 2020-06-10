@@ -9,28 +9,21 @@ const TodoList = () => {
   const todos = useSelector(getTodos);
 
   return (
-    <ul className="list-group">
+    <table className="table">
       {todos.map(todo => (
-        <li
-          className="list-group-item d-flex justify-content-between align-items-center"
-          key={todo.id}
-        >
-          <span className="badge badge-primary badge-pill">{todo.id}</span>
-          {todo.title}
-          <span className="users">{todo.user?.name}</span>
-          <input
-            type="checkbox"
-            defaultChecked={todo.completed}
-          />
+        <tr key={todo.id}>
+          <th>{todo.id}</th>
+          <th>{todo.title}</th>
+          <th>{todo.user?.name}</th>
           <Button
             text="delete"
             onClick={() => {
               dispatch(deleteTodo(todo.id));
             }}
           />
-        </li>
+        </tr>
       ))}
-    </ul>
+    </table>
   );
 };
 

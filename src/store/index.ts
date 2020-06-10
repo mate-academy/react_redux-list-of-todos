@@ -23,10 +23,6 @@ export const deleteTodo = (todoId: number) => ({
 });
 
 const sortTodos = (todos: Todo[], sortType: string, sortOrder: string) => {
-  if (sortOrder === '') {
-    return todos;
-  }
-
   switch (sortType) {
     case 'title':
       return [...todos].sort((a, b) => (sortOrder === 'asc' ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)));
@@ -45,7 +41,7 @@ const sortTodos = (todos: Todo[], sortType: string, sortOrder: string) => {
 
 // Selectors
 export const getLoading = (state: RootState) => state.loading;
-export const getTodos = (state: RootState) => sortTodos(state.todos, state.sortBy, state.sortIn);
+export const getTodos = (state: RootState) => sortTodos(state.todos, state.sortBy, state.sortOrder);
 export const getSortType = (state: RootState) => state.sortBy;
 
 // Initial state
@@ -53,25 +49,25 @@ export type RootState = {
   loading: boolean;
   todos: Todo[];
   sortBy: string;
-  sortIn: string;
+  sortOrder: string;
 };
 
 const initialState: RootState = {
   loading: false,
   todos: [],
   sortBy: '',
-  sortIn: '',
+  sortOrder: '',
 };
 
 const rootReducer = (state = initialState, action: AnyAction): RootState => {
-  const orders = ['desc', 'asc', ''];
+  const orders = ['desc', 'asc'];
 
   switch (action.type) {
     case SET_SORT_TYPE:
       return {
         ...state,
         sortBy: action.sortType,
-        sortIn: action.sortType === state.sortBy ? orders[((orders.indexOf(state.sortIn) + 1) % orders.length)] : 'desc',
+        sortOrder: action.sortType === state.sortBy ? orders[((orders.indexOf(state.sortOrder) + 1) % orders.length)] : 'desc',
       };
     case DELETE_TODO:
       return {
