@@ -9,6 +9,7 @@ const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 const SORT_BY = 'SORT_BY';
 const SET_SORTED_TODOS = 'SET_SORTED_TODOS';
 const CHANGE_REVERSE = 'CHANGE_REVERSE';
+const DELETE_TODO = 'DELETE_TODO';
 
 // Action creators - a function returning an action object
 export const loadTodos = ((todos: Todo[]) => ({ type: LOAD_TODOS, todos }));
@@ -18,6 +19,7 @@ export const setErrorMessage = (message = '') => ({ type: SET_ERROR_MESSAGE, mes
 export const setSortBy = (sortBy = '') => ({ type: SORT_BY, sortBy });
 export const setSortedTodos = (visibleTodos: Todo[]) => ({ type: SET_SORTED_TODOS, visibleTodos });
 export const changeReverse = () => ({ type: CHANGE_REVERSE });
+export const deleteTodo = (id: number) => ({ type: DELETE_TODO, id });
 
 // Selectors - a function receiving Redux state and returning some data from it
 export const getLoadedTodos = (state: RootState) => state.todos;
@@ -77,6 +79,11 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         reverseOrder: !state.reverseOrder,
+      };
+    case DELETE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.id),
       };
     default:
       return state;
