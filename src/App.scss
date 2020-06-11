@@ -1,0 +1,26 @@
+.app {
+  margin: 50px;
+}
+
+.cards__list {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.mt5 {
+  margin-top: 5px;
+}
+
+.btn-sort {
+  width: 150px;
+  margin: 5px;
+  outline: none;
+}
+
+.item {
+  width: 400px;
+  height: 175px;
+  margin: 15px;
+}
