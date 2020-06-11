@@ -5,13 +5,15 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 const LOAD_TODOS = 'LOAD_TODOS';
 const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
+const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 const SORT_BY = 'SORT_BY';
 const SET_SORTED_TODOS = 'SET_SORTED_TODOS';
 
 // Action creators - a function returning an action object
 export const loadTodos = ((todos: Todo[]) => ({ type: LOAD_TODOS, todos }));
 export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = '') => ({ type: FINISH_LOADING, message });
+export const finishLoading = () => ({ type: FINISH_LOADING });
+export const setErrorMessage = (message = '') => ({ type: SET_ERROR_MESSAGE, message });
 export const setSortBy = (sortBy = '') => ({ type: SORT_BY, sortBy });
 export const setSortedTodos = (visibleTodos: Todo[]) => ({ type: SET_SORTED_TODOS, visibleTodos });
 
@@ -51,20 +53,21 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       };
     case START_LOADING:
       return { ...state, loading: true };
-
     case FINISH_LOADING:
       return {
         ...state,
         loading: false,
+      };
+    case SET_ERROR_MESSAGE:
+      return {
+        ...state,
         message: action.message,
       };
-
     case SORT_BY:
       return {
         ...state,
         sortBy: action.sortBy,
       };
-
     default:
       return state;
   }

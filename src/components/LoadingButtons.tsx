@@ -16,7 +16,8 @@ const LoadingButtons = () => {
 
       dispatch(actionCreator.loadTodos(todosWithUsers));
     } catch (error) {
-      dispatch(actionCreator.finishLoading('Errors happens, try to reload')); // dispatch some error message
+      dispatch(actionCreator.finishLoading());
+      dispatch(actionCreator.setErrorMessage('Errors happens, try to reload')); // dispatch some error message
     }
 
     dispatch(actionCreator.finishLoading()); // dispatch isLoading to false
