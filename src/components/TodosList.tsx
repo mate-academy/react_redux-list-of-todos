@@ -6,25 +6,37 @@ import { TodoItem } from './TodoItem';
 const TodoList = () => {
   const loadedTodos = useSelector(selector.getLoadedTodos);
   const sortBy = useSelector(selector.getSortBy);
+  const reverse = useSelector(selector.getSortOrder);
 
   const getVisibleTodos = (sortType: string, todos: Todo[]) => {
+    let sortedTodos = [];
+
     switch (sortType) {
       case 'title':
-        return [...todos].sort((a, b) => a.title.localeCompare(b.title));
+        sortedTodos = [...todos].sort((a, b) => a.title.localeCompare(b.title));
+        break;
 
       case 'id':
-        return [...todos].sort((a, b) => a.id - b.id);
+        sortedTodos = [...todos].sort((a, b) => a.id - b.id);
+        break;
 
       case 'user':
-        return [...todos].sort((a, b) => {
+        sortedTodos = [...todos].sort((a, b) => {
           return a.user && b.user
             ? a.user?.name.localeCompare(b.user.name)
             : 0;
         });
+        break;
 
       default:
         return [...todos];
     }
+
+    if (reverse) {
+      sortedTodos.reverse();
+    }
+
+    return sortedTodos;
   };
 
   const visibleTodos = getVisibleTodos(sortBy, loadedTodos);

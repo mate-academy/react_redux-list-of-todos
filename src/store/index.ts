@@ -8,6 +8,7 @@ const FINISH_LOADING = 'FINISH_LOADING';
 const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE';
 const SORT_BY = 'SORT_BY';
 const SET_SORTED_TODOS = 'SET_SORTED_TODOS';
+const CHANGE_REVERSE = 'CHANGE_REVERSE';
 
 // Action creators - a function returning an action object
 export const loadTodos = ((todos: Todo[]) => ({ type: LOAD_TODOS, todos }));
@@ -16,12 +17,14 @@ export const finishLoading = () => ({ type: FINISH_LOADING });
 export const setErrorMessage = (message = '') => ({ type: SET_ERROR_MESSAGE, message });
 export const setSortBy = (sortBy = '') => ({ type: SORT_BY, sortBy });
 export const setSortedTodos = (visibleTodos: Todo[]) => ({ type: SET_SORTED_TODOS, visibleTodos });
+export const changeReverse = () => ({ type: CHANGE_REVERSE });
 
 // Selectors - a function receiving Redux state and returning some data from it
 export const getLoadedTodos = (state: RootState) => state.todos;
 export const isLoading = (state: RootState) => state.loading;
 export const getMessage = (state: RootState) => state.message;
 export const getSortBy = (state: RootState) => state.sortBy;
+export const getSortOrder = (state: RootState) => state.reverseOrder;
 
 // Initial state
 export type RootState = {
@@ -29,6 +32,7 @@ export type RootState = {
   loading: boolean;
   message: string;
   sortBy: string;
+  reverseOrder: boolean;
 };
 
 const initialState: RootState = {
@@ -36,6 +40,7 @@ const initialState: RootState = {
   loading: false,
   message: '',
   sortBy: '',
+  reverseOrder: false,
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -67,6 +72,11 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         sortBy: action.sortBy,
+      };
+    case CHANGE_REVERSE:
+      return {
+        ...state,
+        reverseOrder: !state.reverseOrder,
       };
     default:
       return state;

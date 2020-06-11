@@ -24,3 +24,18 @@
   height: 175px;
   margin: 15px;
 }
+
+.posrel {
+  position: relative;
+}
+
+.removeBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 25%;
+  background-color: #D92027;
+  border: 1px solid black;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
