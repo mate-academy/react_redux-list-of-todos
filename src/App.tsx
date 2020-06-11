@@ -1,25 +1,20 @@
+/* eslint-disable import/no-duplicates */
 import React from 'react';
-import { useSelector } from 'react-redux';
-
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
 
-import { isLoading, getMessage } from './store';
-
+import TodoList from './components/TodosList';
+import LoadingButtons from './components/LoadingButtons';
+import SortButtons from './components/SortButtons';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
-
   return (
-    <div className="App">
+    <div className="app">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <LoadingButtons />
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      <SortButtons />
+
+      <TodoList />
     </div>
   );
 };

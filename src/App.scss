@@ -1,0 +1,42 @@
+.app {
+  margin: 50px;
+}
+
+.cards__list {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.mt5 {
+  margin-top: 5px;
+}
+
+.btn-sort {
+  width: 150px;
+  margin: 5px;
+  outline: none;
+}
+
+.item {
+  width: 400px;
+  height: 175px;
+  margin: 15px;
+}
+
+.posrel {
+  position: relative;
+}
+
+.removeBtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 25%;
+  background-color: #D92027;
+  border: 1px solid white;
+  color: white;
+  position: absolute;
+  right: 20px;
+  top: 12px;
+}
