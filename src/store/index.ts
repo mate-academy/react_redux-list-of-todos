@@ -1,51 +1,62 @@
-import { createStore, AnyAction } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+import queryReducer from './query';
+import loadingReducer from './loading';
+import todosReducer from './todos';
+import sortReducer from './sort';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+// Selectors
+export const getLoading = (state: RootState) => state.loading;
+export const getTodos = (state: RootState) => state.todos;
+export const getQuery = (state: RootState) => state.query;
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+type TodoComparator = (a: Todo, b: Todo) => number;
 
-// Initial state
-export type RootState = {
-  loading: boolean;
-  message: string;
-};
+export const getVisibleTodos = (state: RootState) => {
+  let compare: TodoComparator = () => 0;
 
-const initialState: RootState = {
-  loading: false,
-  message: '',
-};
-
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
-  switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
-      return {
-        ...state,
-        loading: false,
-        message: action.message,
-      };
-
+  switch (state.sort.field) {
+    case 'title':
+      compare = (a: Todo, b: Todo) => a.title.localeCompare(b.title);
+      break;
+    case 'id':
+      compare = (a: Todo, b: Todo) => a.id - b.id;
+      break;
+    case 'completed':
+      compare = (a: Todo, b: Todo) => +a.completed - +b.completed;
+      break;
+    case 'user':
+      compare = (a: Todo, b: Todo) => ((a.user && b.user)
+        ? a.user.name.localeCompare(b.user.name)
+        : 0);
+      break;
     default:
-      return state;
   }
+
+  const visibleTodos = state.todos.filter(todo => todo.title.includes(state.query))
+    .sort(compare);
+
+  if (state.sort.order === 'DESC') {
+    visibleTodos.reverse();
+  }
+
+  return visibleTodos;
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
+const rootReducer = combineReducers({
+  loading: loadingReducer,
+  todos: todosReducer,
+  query: queryReducer,
+  sort: sortReducer,
+
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;

@@ -1,0 +1,97 @@
+body {
+  background-color: #e8e3a6;
+}
+
+.App {
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  margin: 0 10px;
+  height: 50px;
+  width: 100px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.load-btn {
+  display: block;
+  margin: 0 auto;
+  background-color: #40818e;
+}
+
+.sort-title-btn {
+  margin-left: 50px;
+  background-color: #85944c;
+}
+
+.sort-user-btn {
+  background-color: #27496d;
+}
+
+.sort-status-btn {
+  background-color: #d1c558;
+
+}
+
+.reset-btn {
+  background-color: #e06a44;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+
+}
+
+.card {
+  border: 1px solid black;
+  border-radius: 20px;
+  background-color: #ffecc7;
+  margin: 5px;
+  width: 300px;
+  text-align: center;
+}
+
+.card__number {
+  border: 1px solid black;
+  background-color: #fdd998;
+  border-radius: 50%;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.todo__done {
+  color: green;
+}
+
+.todo__notDone {
+  color: red;
+}
+
+.user__name {
+  font-size: 20px;
+}
+
+.input {
+  background-color: #e8e3a6;
+  height: 40px;
+  width: 250px;
+  border: 1px solid black;
+  border-radius: 20px;
+  cursor: pointer;
+  outline: none;
+  padding-left: 10px;
+  margin-left: 50px;
+}
+
+.input:focus {
+  background-color: #d1c558;
+}
