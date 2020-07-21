@@ -10,7 +10,7 @@ export interface Todo {
 export interface TodoWithUser {
   completed: boolean;
   title: string;
-  user: string | undefined;
+  user: string;
   id: number;
 }
 
