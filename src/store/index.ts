@@ -2,6 +2,7 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { TodoWithUser } from '../interfaces';
+import { sortBy } from './sortBy';
 
 const ACTIONS = {
   START_LOADING: 'START_LOADING',
@@ -30,7 +31,7 @@ const initialState: RootState = {
   loading: false,
   todos: [],
   visibleTodos: [],
-  order: false,
+  order: true,
 };
 
 const rootReducer = (state = initialState, action: AnyAction) => {
@@ -40,30 +41,11 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     case ACTIONS.SET_TODOS:
       return { ...state, todos: action.todos, visibleTodos: action.todos };
     case ACTIONS.SET_VISIBLE_TODOS:
-      switch (action.field) {
-        case 'title':
-          return {
-            ...state,
-            visibleTodos: [...state.todos].sort((a, b) => a.title.localeCompare(b.title)),
-          };
-
-        case 'user':
-          return {
-            ...state,
-            visibleTodos: [...state.todos].sort((a, b) => a.user.localeCompare(b.user)),
-          };
-
-        case 'completed':
-          return {
-            ...state,
-            visibleTodos: [...state.todos].sort((a, b) => {
-              return (a.completed > b.completed) ? 1 : -1;
-            }),
-          };
-        default:
-          return state;
-      }
-
+      return {
+        ...state,
+        visibleTodos: sortBy(action.field, state.todos, state.order),
+        order: !state.order,
+      };
     default:
       return state;
   }

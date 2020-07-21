@@ -17,9 +17,7 @@ const mapDispatch = {
 
 const connector = connect(mapState, mapDispatch);
 
-type Props = ConnectedProps<typeof connector> & {
-  title?: string;
-};
+type Props = ConnectedProps<typeof connector> & {};
 
 const TodoList: React.FC<Props> = ({ todosList, setVisible }) => {
   return (
