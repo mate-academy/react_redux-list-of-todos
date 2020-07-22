@@ -10,7 +10,6 @@ import { isLoading, getTodos } from './store';
 const App = () => {
   const loading = useSelector(isLoading);
   const todoList = useSelector(getTodos);
-  console.log(todoList, "here")
 
   return (
     <div className="App">
