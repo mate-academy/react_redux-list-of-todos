@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { TodoWithUser } from '../interfaces';
@@ -11,8 +10,8 @@ const ACTIONS = {
   SET_ORDER: 'SET_ORDER',
 };
 
-export const setVisibleTodos = (field: string) => ({ type: ACTIONS.SET_VISIBLE_TODOS, field });
-export const setTodos = (todos: TodoWithUser[]) => ({ type: ACTIONS.SET_TODOS, todos });
+export const setVisibleTodos = (field: string) => ({ type: ACTIONS.SET_VISIBLE_TODOS, payload: field });
+export const setTodos = (todos: TodoWithUser[]) => ({ type: ACTIONS.SET_TODOS, payload: todos });
 export const startLoading = () => ({ type: ACTIONS.START_LOADING });
 export const setOrder = () => ({ type: ACTIONS.SET_ORDER });
 
@@ -37,13 +36,20 @@ const initialState: RootState = {
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case ACTIONS.START_LOADING:
-      return { ...state, loading: !state.loading };
+      return {
+        ...state,
+        loading: !state.loading,
+      };
     case ACTIONS.SET_TODOS:
-      return { ...state, todos: action.todos, visibleTodos: action.todos };
+      return {
+        ...state,
+        todos: action.payload,
+        visibleTodos: action.payload,
+      };
     case ACTIONS.SET_VISIBLE_TODOS:
       return {
         ...state,
-        visibleTodos: sortBy(action.field, state.todos, state.order),
+        visibleTodos: sortBy(action.payload, state.todos, state.order),
         order: !state.order,
       };
     default:

@@ -10,16 +10,13 @@ import { isLoading, getTodos } from './store';
 const App = () => {
   const loading = useSelector(isLoading);
   const todoList = useSelector(getTodos);
+  console.log(todoList, "here")
 
   return (
     <div className="App">
       <h2>{loading && 'Loading...'}</h2>
-      {
-        (!todoList.length && loading === false) && <Start />
-      }
-      {
-        todoList.length !== 0 && <TodoList />
-      }
+      {(!todoList.length && loading === false) && <Start />}
+      {todoList.length !== 0 && <TodoList />}
 
     </div>
   );

@@ -1,57 +1,43 @@
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect } from 'react-redux';
 
 import {
   RootState, startLoading, setTodos, getTodos,
 } from '../store';
-import { getData, URLTodos, URLUsers } from '../Api';
+import { getData, TODOS_URL, USERS_URL } from '../Api';
 import { User, Todo, TodoWithUser } from '../interfaces';
 
-const mapState = (state: RootState) => {
-  return {
-    todosList: getTodos(state),
-  };
+type Props = {
+  isLoading: () => (void);
+  initTodos: (todos: TodoWithUser[]) => (void);
 };
 
-const mapDispatch = {
-  load: startLoading,
-  initTodos: setTodos,
-};
-
-const connector = connect(mapState, mapDispatch);
-
-type Props = ConnectedProps<typeof connector> & {
-  title?: string;
-};
-
-const Start: React.FC<Props> = ({ load, initTodos }) => {
+const Start: React.FC<Props> = ({ isLoading, initTodos }) => {
   const getTodoList = async () => {
-    load();
-    const todos = await getData<Todo>(URLTodos);
-    const users = await getData<User>(URLUsers);
+    isLoading();
+    const todos = await getData<Todo>(TODOS_URL);
+    const users = await getData<User>(USERS_URL);
 
     function findUserById(id: number) {
       const person = users.find(user => user.id === id);
 
-      return (person) ? person.name : '';
+      return person ? person.name : '';
     }
 
-    const list: TodoWithUser[] = todos.map(todo => {
-      return {
-        id: todo.id,
-        title: todo.title,
-        completed: todo.completed,
-        user: findUserById(todo.userId),
-      };
-    });
+    const list: TodoWithUser[] = todos.map(todo => ({
+      id: todo.id,
+      title: todo.title,
+      completed: todo.completed,
+      user: findUserById(todo.userId),
+    }));
 
-    load();
+    isLoading();
     initTodos(list);
   };
 
   return (
     <button
-      className="btn btn-dark ml shadow p-3 mb-5  rounded"
+      className="btn btn-dark ml shadow p-3 mb-5 rounded"
       type="button"
       onClick={getTodoList}
     >
@@ -59,5 +45,17 @@ const Start: React.FC<Props> = ({ load, initTodos }) => {
     </button>
   );
 };
+
+const mapState = (state: RootState) => ({
+  todosList: getTodos(state),
+}
+);
+
+const mapDispatch = {
+  isLoading: startLoading,
+  initTodos: setTodos,
+};
+
+const connector = connect(mapState, mapDispatch);
 
 export default connector(Start);
