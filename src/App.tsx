@@ -3,23 +3,20 @@ import { useSelector } from 'react-redux';
 
 import './App.scss';
 import Start from './components/Start';
-import { Finish } from './components/Finish';
+import TodoList from './components/TodoList';
 
-import { isLoading, getMessage } from './store';
-
+import { isLoading, getTodos } from './store';
 
 const App = () => {
   const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const todoList = useSelector(getTodos);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <h2>{loading && 'Loading...'}</h2>
+      {(!todoList.length && loading === false) && <Start />}
+      {todoList.length !== 0 && <TodoList />}
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
     </div>
   );
 };

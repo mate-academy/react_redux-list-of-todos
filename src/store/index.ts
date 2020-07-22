@@ -1,51 +1,65 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { TodoWithUser } from '../interfaces';
+import { sortBy } from './sortBy';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+const ACTIONS = {
+  START_LOADING: 'START_LOADING',
+  SET_TODOS: 'SET_TODOS',
+  SET_VISIBLE_TODOS: 'SET_VISIBLE_TODOS',
+  SET_ORDER: 'SET_ORDER',
+};
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+export const setVisibleTodos = (field: string) => ({ type: ACTIONS.SET_VISIBLE_TODOS, payload: field });
+export const setTodos = (todos: TodoWithUser[]) => ({ type: ACTIONS.SET_TODOS, payload: todos });
+export const startLoading = () => ({ type: ACTIONS.START_LOADING });
+export const setOrder = () => ({ type: ACTIONS.SET_ORDER });
 
-// Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const getTodos = (state: RootState) => state.todos;
+export const getVisibleTodos = (state: RootState) => state.visibleTodos;
 
-// Initial state
 export type RootState = {
   loading: boolean;
-  message: string;
+  todos: TodoWithUser[];
+  visibleTodos: TodoWithUser[];
+  order: boolean;
 };
 
 const initialState: RootState = {
   loading: false,
-  message: '',
+  todos: [],
+  visibleTodos: [],
+  order: true,
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
+    case ACTIONS.START_LOADING:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        loading: !state.loading,
       };
-
+    case ACTIONS.SET_TODOS:
+      return {
+        ...state,
+        todos: action.payload,
+        visibleTodos: action.payload,
+      };
+    case ACTIONS.SET_VISIBLE_TODOS:
+      return {
+        ...state,
+        visibleTodos: sortBy(action.payload, state.todos, state.order),
+        order: !state.order,
+      };
     default:
       return state;
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;
