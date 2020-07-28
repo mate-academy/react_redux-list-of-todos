@@ -1,0 +1,23 @@
+
+.App {
+  text-align: center;
+  font-size: 20px;
+}
+
+.list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.list__item {
+  margin: 5px;
+  text-align: left;
+}
+
+.list__item-title {
+  margin: 10px;
+}
+
+.list__item-user {
+  font-weight: bold;
+}
