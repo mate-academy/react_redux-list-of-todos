@@ -1,25 +1,72 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import {
+  dataLoading,
+  dataSortTitle,
+  dataSortCompleted,
+  dataSortName,
+  startLoading,
+  finishLoading,
+  getLoaded,
+  isLoading as dataIsLoading,
+} from './store';
+import TodoList from './components/TodoList';
+import { loadTodosWithUsers } from './components/api';
 
-import { isLoading, getMessage } from './store';
+const App: React.FC = () => {
+  const isLoaded = useSelector(getLoaded);
+  const isLoading = useSelector(dataIsLoading);
 
+  const dispatch = useDispatch();
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const handleButtonClick = async () => {
+    dispatch(startLoading());
+
+    await loadTodosWithUsers().then(data => {
+      dispatch(dataLoading(data));
+    });
+
+    dispatch(finishLoading());
+  };
+
+  const sortByTitle = () => {
+    dispatch(dataSortTitle());
+  };
+
+  const sortByCompleted = () => {
+    dispatch(dataSortCompleted());
+  };
+
+  const sortByName = () => {
+    dispatch(dataSortName());
+  };
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      <h1>Static list of todos</h1>
+      {!isLoaded ? (
+        <>
+          <button
+            type="button"
+            onClick={handleButtonClick}
+            disabled={isLoading}
+          >
+            {isLoading ? 'loading...' : 'Load'}
+          </button>
+        </>
+      ) : (
+        <>
+          <div className="controls">
+            <button type="button" className="controls__button" onClick={sortByTitle}>Sort by Title</button>
+            <button type="button" onClick={sortByCompleted}>Sort by Completed</button>
+            <button type="button" onClick={sortByName}>Sort by Name</button>
+          </div>
+          <div className="content">
+            <TodoList />
+          </div>
+        </>
+      )}
     </div>
   );
 };
