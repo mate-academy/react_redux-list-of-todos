@@ -26,8 +26,7 @@ export const Start: React.FC<Props> = ({ title }) => {
 
     const todosWithUser: Todo[] = todos.map((todo: Todo) => {
       const todoCopy = { ...todo };
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const neededUser: User = users.find(user => user.id === todo.userId)!;
+      const neededUser: User | undefined = users.find(user => user.id === todo.userId);
 
       todoCopy.userName = neededUser ? neededUser.name : '';
 
