@@ -10,9 +10,9 @@ import { getData } from '../api/getData';
 const API_TODOS = 'https://mate.academy/students-api/todos';
 const API_USERS = 'https://mate.academy/students-api/users';
 
-type Props = {
+interface Props {
   title: string;
-};
+}
 
 export const Start: React.FC<Props> = ({ title }) => {
   const dispatch = useDispatch(); // it is a link to `store.dispatch` method
@@ -26,9 +26,9 @@ export const Start: React.FC<Props> = ({ title }) => {
 
     const todosWithUser: Todo[] = todos.map((todo: Todo) => {
       const todoCopy = { ...todo };
-      const neededUser: User | undefined = users.find(user => user.id === todo.userId);
+      const neededUser: User = users.find(user => user.id === todo.userId) as User;
 
-      todoCopy.userName = neededUser ? neededUser.name : '';
+      todoCopy.userName = neededUser.name;
 
       return todoCopy;
     });

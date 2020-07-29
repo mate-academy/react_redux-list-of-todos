@@ -17,7 +17,7 @@ export const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : ''}</h2>
+      { loading && <h2>Loading...</h2> }
       {
         todos.length > 0
           ? (

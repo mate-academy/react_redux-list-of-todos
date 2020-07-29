@@ -2,6 +2,23 @@ import React, { Dispatch } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState, setSortField } from '../store';
 
+interface SetSortFieldInterface {
+  type: string;
+  sortField: string;
+}
+
+const mapState = (state: RootState) => ({
+  sortField: state.sortField,
+});
+
+const mapDispatch = (dispatch: Dispatch<SetSortFieldInterface>) => ({
+  handleClick: (sortField: string) => dispatch(setSortField(sortField)),
+});
+
+const connector = connect(mapState, mapDispatch);
+
+type Props = ConnectedProps<typeof connector>;
+
 const Sort: React.FC<Props> = ({ handleClick }) => {
   return (
     <div>
@@ -27,22 +44,5 @@ const Sort: React.FC<Props> = ({ handleClick }) => {
     </div>
   );
 };
-
-interface SetSortFieldInterface {
-  type: string;
-  sortField: string;
-}
-
-const mapState = (state: RootState) => ({
-  sortField: state.sortField,
-});
-
-const mapDispatch = (dispatch: Dispatch<SetSortFieldInterface>) => ({
-  handleClick: (sortField: string) => dispatch(setSortField(sortField)),
-});
-
-const connector = connect(mapState, mapDispatch);
-
-type Props = ConnectedProps<typeof connector>;
 
 export default connector(Sort);
