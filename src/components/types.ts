@@ -45,7 +45,6 @@ export interface PreparedTodo {
 
 export interface Props {
   preparedTodos: PreparedTodo[];
-  // deleteItem: (id: number) => void;
 }
 
 export interface UserProps {
