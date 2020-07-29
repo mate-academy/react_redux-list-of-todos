@@ -7,9 +7,7 @@ interface Props {
   todo: PreparedTodo;
 }
 
-export const Todo:
-React.FC<Props> = ({ todo, deleteItem }) => (
-
+export const Todo: React.FC<Props> = ({ todo, deleteItem }) => (
   <tr>
     <td>
       <input
