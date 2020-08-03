@@ -15,7 +15,7 @@ import {
 const mapState = (state: RootState) => {
   return {
     todos: getTodos(state),
-    loading: isLoading(state), // we use a selector `isLoading` defined in the store
+    loading: isLoading(state),
   };
 };
 

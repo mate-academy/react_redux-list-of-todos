@@ -2,6 +2,7 @@ import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { TodosWithUser } from '../../interfaces';
 import TodoItem from '../TodoItem/TodoItem';
+import './TodoList.css';
 
 import {
   RootState,
@@ -41,7 +42,7 @@ const TodoList: React.FC<Props> = ({ todos, filterType }) => {
   return (
     <ul className="list">
       {filtredList.map(task => (
-        <li key={task.id} className="listItem">
+        <li key={task.id} className="list-item">
           <TodoItem todo={task} />
         </li>
       ))}
