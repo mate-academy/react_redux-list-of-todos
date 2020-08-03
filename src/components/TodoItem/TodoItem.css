@@ -1,0 +1,23 @@
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.done,
+.undone {
+  width: 50px;
+  height: 50px;
+}
+
+.done {
+  background-color: green;
+}
+
+.undone {
+  background-color: red;
+}
+
+.task {
+  font-weight: bold;
+}
