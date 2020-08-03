@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import './App.css';
 
 import { TodoList } from './components/TodoList/TodoList';
 
