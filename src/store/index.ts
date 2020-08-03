@@ -1,40 +1,45 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { TodosWithUser } from '../interfaces';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+const TOGGLE_LOADING = 'TOGGLE_LOADING';
+const GET_TODOS = 'GET_TODOS';
+const SET_FILTER = 'SET_FILTER';
+const DELETE_TODO = 'DELETE_TODO';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+export const toggleLoading = () => ({ type: TOGGLE_LOADING });
+export const getNewTodos = (todos: TodosWithUser[]) => ({ type: GET_TODOS, todos });
+export const setFilter = (filterType: string) => ({ type: SET_FILTER, filterType });
+export const deleteTodo = (todoId: number) => ({ type: DELETE_TODO, todoId });
 
-// Selectors - a function receiving Redux state and returning some data from it
+export const getTodos = (state: RootState) => state.todos;
 export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const getFilter = (state: RootState) => state.filterType;
 
-// Initial state
 export type RootState = {
+  todos: TodosWithUser[];
   loading: boolean;
-  message: string;
+  filterType: string;
 };
 
 const initialState: RootState = {
+  todos: [],
   loading: false,
-  message: '',
+  filterType: '',
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
+    case TOGGLE_LOADING:
+      return { ...state, loading: !state.loading };
+    case GET_TODOS:
+      return { ...state, todos: action.todos };
+    case SET_FILTER:
+      return { ...state, filterType: action.filterType };
+    case DELETE_TODO:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        todos: [...state.todos].filter(todo => todo.id !== action.todoId),
       };
 
     default:
@@ -42,10 +47,9 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;
