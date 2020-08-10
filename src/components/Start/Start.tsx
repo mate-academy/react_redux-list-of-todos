@@ -31,7 +31,7 @@ const Start: React.FC<Props> = ({ loaderToggler, todosSetter }) => {
 
   return (
     <button
-      className="btn btn-dark"
+      className="btn btn-outline-dark"
       type="button"
       onClick={getAllTodos}
     >
