@@ -1,0 +1,14 @@
+.todos__list {
+  list-style: none;
+}
+
+.todos__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
