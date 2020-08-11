@@ -1,40 +1,54 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { Todo } from '../interfaces';
+import { sortBy } from './sort';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+const actions = {
+  TOGGLE_LOADING: 'TOGGLE_LOADING',
+  SET_TODOS: 'SET_TODOS',
+  SORT: 'SORT',
+  REMOVE_TODO: 'REMOVE_TODO',
+};
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+export const toggleLoading = () => ({ type: actions.TOGGLE_LOADING });
+export const setTodos = (todos: Todo[]) => ({ type: actions.SET_TODOS, todos });
+export const sortTodos = (sortType: string) => ({ type: actions.SORT, sortType });
+export const removeTodo = (todoId: number) => ({ type: actions.REMOVE_TODO, todoId });
 
-// Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const getTodos = (state: RootState) => state.todos;
 
-// Initial state
 export type RootState = {
   loading: boolean;
-  message: string;
+  todos: Todo[];
+  order: boolean;
 };
 
 const initialState: RootState = {
   loading: false,
-  message: '',
+  todos: [],
+  order: false,
 };
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
+const reducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
+    case actions.TOGGLE_LOADING:
+      return { ...state, loading: !state.loading };
 
-    case FINISH_LOADING:
+    case actions.SET_TODOS:
+      return { ...state, todos: action.todos };
+
+    case actions.SORT:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        todos: sortBy(action.sortType, state.todos, state.order),
+        order: !state.order,
+      };
+
+    case actions.REMOVE_TODO:
+      return {
+        ...state,
+        todos: [...state.todos].filter(todo => todo.id !== action.todoId),
       };
 
     default:
@@ -42,10 +56,9 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
-  rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  reducer,
+  composeWithDevTools(),
 );
 
 export default store;

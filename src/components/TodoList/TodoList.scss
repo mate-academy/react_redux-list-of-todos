@@ -1,0 +1,52 @@
+.todos__list {
+  padding: 0;
+  margin: 0 auto;
+
+  width: 900px;
+
+  list-style: none;
+}
+
+.todos__item {
+  display: flex;
+  align-items: center;
+}
+
+.todos__status {
+  width: 100px;
+}
+
+.todos__title {
+  width: 450px;
+
+  text-align: start;
+}
+
+.todos__user {
+  width: 300px;
+}
+
+.todos__button {
+  margin-right: 30px;
+}
+
+.todos__remove {
+  font-size: 24px;
+  font-weight: 500;
+
+  color: #dc3545;
+  background-color: #fff;
+  border: none;
+
+  cursor: pointer;
+
+  &:hover {
+    transition: transform 0.3s;
+    transform: rotate(-90deg);
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}
