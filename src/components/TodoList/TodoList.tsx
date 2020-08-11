@@ -16,9 +16,27 @@ const TodoList: React.FC<Props> = ({ todos, sortBy, todoRemover }) => (
   <>
     <p className="todos__sort">Sort by:</p>
     <div className="buttons">
-      <button type="button" className="todos__button btn btn-primary" onClick={() => sortBy('completed')}>Completed</button>
-      <button type="button" className="todos__button btn btn-primary" onClick={() => sortBy('title')}>A-Z</button>
-      <button type="button" className="todos__button btn btn-primary" onClick={() => sortBy('user')}>User</button>
+      <button
+        type="button"
+        className="todos__button btn btn-primary"
+        onClick={() => sortBy('completed')}
+      >
+        Completed
+      </button>
+      <button
+        type="button"
+        className="todos__button btn btn-primary"
+        onClick={() => sortBy('title')}
+      >
+        A-Z
+      </button>
+      <button
+        type="button"
+        className="todos__button btn btn-primary"
+        onClick={() => sortBy('user')}
+      >
+        User
+      </button>
     </div>
     <hr />
     <ul className="todos__list">

@@ -21,7 +21,7 @@ const Start: React.FC<Props> = ({ loaderToggler, todosSetter }) => {
     const todosWithUsers: Todo[] = todos.map(todo => (
       {
         ...todo,
-        user: users.find(user => user.id === todo.userId),
+        user: users.find(user => user.id === todo.userId) as User,
       }
     ));
 
