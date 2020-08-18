@@ -1,0 +1,16 @@
+.title {
+  width: 500px;
+}
+
+.todo__status {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.todo__status-true {
+  color: green;
+}
+
+.todo__status-false {
+  color: red;
+}
