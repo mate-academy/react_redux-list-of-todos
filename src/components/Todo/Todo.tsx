@@ -12,7 +12,6 @@ export const Todo: React.FC<TodoProps> = ({ todo }) => {
   const dispatch = useDispatch();
 
   const onDelete = (id: Number) => {
-    console.log(id);
     dispatch(deleteTodo(id));
   };
 

@@ -1,14 +1,15 @@
-const TODOS_URL = 'https://mate.academy/students-api/todos';
-const USERS_URL = 'https://mate.academy/students-api/users';
+const getUrl = (endpoint: string) => (`https://mate.academy/students-api/${endpoint}`);
 
 export const getPreparedTodos = async (): Promise<Todo[]> => {
-  const fetchedTodos = await fetch(TODOS_URL).then(response => response.json());
-  const fetchedUsers = await fetch(USERS_URL).then(response => response.json());
-  const todos = fetchedTodos.data;
-  const users = fetchedUsers.data;
+  const fetchedTodos = await fetch(getUrl('todos'));
+  const fetchedUsers = await fetch(getUrl('users'));
+  const jsonTodos = await fetchedTodos.json();
+  const jsonUsers = await fetchedUsers.json();
+  const todos = jsonTodos.data;
+  const users = jsonUsers.data;
 
-  return (todos.map((todo: Todo) => ({
+  return todos.map((todo: Todo) => ({
     ...todo,
     user: users.find((user: User) => user.id === todo.userId),
-  })));
+  }));
 };

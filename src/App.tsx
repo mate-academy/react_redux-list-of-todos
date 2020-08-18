@@ -8,7 +8,8 @@ import {
   setTodos,
   setLoadingStatus,
   selectTodos,
-  getLoadingStatus } from './store'
+  getLoadingStatus,
+} from './store'
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const App: FC = () => {
         {todos.length}
       </p>
 
-      { todos.length === 0
+      {todos.length === 0
         ? (
           <button
             type="button"

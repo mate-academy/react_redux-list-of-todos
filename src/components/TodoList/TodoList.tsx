@@ -6,7 +6,8 @@ import { Todo } from '../Todo/Todo';
 import {
   todosSortUser,
   todosSortTitle,
-  todosSortCompleted } from '../../store';
+  todosSortCompleted
+} from '../../store';
 
 type TodoListProps = {
   todos: Todo[];
