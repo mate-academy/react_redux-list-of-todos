@@ -3,6 +3,7 @@ import { connect, ConnectedProps } from 'react-redux';
 
 import { RootState, isLoading, startLoading } from '../store';
 
+
 /**
  * mapState - is a function receiving full Redux state as the first argument
  * and returning an object with extra props that will be added to a component
@@ -43,6 +44,7 @@ type Props = ConnectedProps<typeof connector> & {
 
 const Start: React.FC<Props> = ({ load, loading, title }) => {
   return (
+    <div>
     <button
       type="button"
       onClick={load}
@@ -50,6 +52,7 @@ const Start: React.FC<Props> = ({ load, loading, title }) => {
     >
       {title}
     </button>
+    </div>
   );
 };
 
