@@ -7,7 +7,6 @@ import { Finish } from './components/Finish';
 
 import { isLoading, getMessage } from './store';
 
-
 const App = () => {
   const loading = useSelector(isLoading);
   const message = useSelector(getMessage) || 'Ready!';
