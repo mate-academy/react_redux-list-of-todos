@@ -5,14 +5,15 @@ import classNames from 'classnames';
 import { Todos } from '../interfaces';
 import {
   checkOnCompletedTodos,
-  chooseUserId,
   setSort,
   randomize,
   removeTodo,
   sortByInput,
   getInputChange,
   getSort,
+  fetchUser,
 } from '../../store';
+import { userFromServer } from '../api/api';
 
 type TodoListProps = {
   todos: Todos[];
@@ -20,6 +21,7 @@ type TodoListProps = {
 
 export const TodoList: React.FC<TodoListProps> = ({todos}) => {
   const dispatch = useDispatch();
+  
 
   const selectOfTodos = [`COMPLETED`, `NOT_COMPLETED`];
   const filterTitle = useSelector(getInputChange);
@@ -113,7 +115,7 @@ export const TodoList: React.FC<TodoListProps> = ({todos}) => {
                       button
                     "
                   type="button"
-                  onClick={() => dispatch(chooseUserId(todo.userId))}
+                  onClick={() => dispatch(fetchUser(userFromServer, todo.userId))}
                 >
                   User&nbsp;
                   {todo.userId}

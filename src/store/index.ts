@@ -1,23 +1,25 @@
-import { createStore, AnyAction } from 'redux';
+import { createStore, AnyAction, applyMiddleware } from 'redux';
+
+import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { Todos, User } from '../components/interfaces';
 
 // Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
-const SORT_TODOS = 'SORT_TODOS';
-const SET_TODOS = 'SET_TODOS'
-const SET_USER = 'SET_USER'
+export const START_LOADING = 'START_LOADING';
+export const FINISH_LOADING = 'FINISH_LOADING';
+export const SORT_TODOS = 'SORT_TODOS';
+export const SET_TODOS = 'SET_TODOS';
+export const SET_USER = 'SET_USER';
 
 export const RANDOMIZE = 'RANDOMIZE';
-export const ALL = 'ALL'
-export const COMPLETED = 'COMPLETED'
-export const NOT_COMPLETED = 'NOT_COMPLETED'
-export const REMOVE = 'REMOVE'
+export const ALL = 'ALL';
+export const COMPLETED = 'COMPLETED';
+export const NOT_COMPLETED = 'NOT_COMPLETED';
+export const REMOVE = 'REMOVE';
 
 export const CHOOSE_USER_ID = 'CHOOSE_USER_ID';
 export const CHECK_ON_COMPLETED_TODOS = 'CHECK_ON_COMPLETED_TODOS';
-export const INPUT_CHANGE = 'INPUT_CHANGE'
+export const INPUT_CHANGE = 'INPUT_CHANGE';
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: START_LOADING });
@@ -75,9 +77,27 @@ const initialState: RootState = {
 };
 
 
+export const fetchTodo = (dataFromServer: any ) => {
+  return (dispatch: Function) => { 
+    dataFromServer()
+      .then((data: Todos[]) => {
+        dispatch(setTodos(data));
+      })
+  }
+}
+
+export const fetchUser = (dataFromServer: any, paramsOfData: number) => {
+  return (dispatch: Function) => { 
+    dataFromServer(paramsOfData)
+      .then((data: User) => {
+        dispatch(setUser(data));
+        dispatch(chooseUserId(paramsOfData));
+      })
+  }
+}
+
 export const getSortTodos = (state: RootState) => {
-    return [...state.todos].filter(
-      (todo) => {
+  return [...state.todos].filter((todo) => {
     switch (state.sort) {
       case ALL:
         return todo;
@@ -91,9 +111,9 @@ export const getSortTodos = (state: RootState) => {
       default:
         return todo;
     }
-    }).filter(todo =>todo.title !== null && todo.title.toLowerCase()
+  }).filter(todo =>todo.title !== null && todo.title.toLowerCase()
   .includes(state.inputChange.toLowerCase()));
-  };
+};
 
 // rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
@@ -175,7 +195,7 @@ const rootReducer = (state = initialState, action: AnyAction) => {
 // The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(applyMiddleware(thunk)), // allows you to use http://extension.remotedev.io/
 );
 
 export default store;

@@ -8,8 +8,10 @@ import {
   startLoading,
   finishLoading,
   getIsLoaded,
-  setTodos,
+  fetchTodo,
   getSortTodos,
+  getUser,
+  setUserId,
 } from './store';
 
 import { TodoList } from './components/TodoList/TodoList';
@@ -20,11 +22,12 @@ const App = () => {
 
   const todos = useSelector(getSortTodos);
   const isLoaded = useSelector(getIsLoaded);
+  const user = useSelector(getUser);
+  const selectedUserId = useSelector(setUserId);
 
-  const fetchTodos = async() => {
-    const result = await todosFromServer();
+  const loadTodos = () => {
     dispatch(startLoading());
-    dispatch(setTodos(result));
+    dispatch(fetchTodo(todosFromServer));
     dispatch(finishLoading());
   };
 
@@ -36,7 +39,7 @@ const App = () => {
             <button
               type="button"
               className="App.beautiful.button"
-              onClick={fetchTodos}
+              onClick={loadTodos}
             >
               {'START LOADING!'}
             </button>
@@ -52,8 +55,12 @@ const App = () => {
 
             <div className="App__content">
               <div className="App__content-container">
+              {user !== null && selectedUserId > 0 ? (
                 <CurrentUser
-                  />
+                  user = {user}
+                />
+              )
+                : 'No user selected'}
               </div>
            </div>
           </>

@@ -1,30 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './CurrentUser.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import { chooseUserId, getUser,
-  setUser, setUserId } from '../../store';
- import { userFromServer } from '../api/api';
+import { useDispatch } from 'react-redux';
+import { chooseUserId } from '../../store';
+import { User } from '../interfaces';
 
+type CurrentUserProps = {
+  user: User;
+};
 
-export const CurrentUser = () => {
+export const CurrentUser: React.FC<CurrentUserProps> = ({ user }) => {
   const dispatch = useDispatch();
-  const user = useSelector(getUser);
-  const selectedUserId = useSelector(setUserId);
-
-  useEffect(() => {
-      const fetchUser = async() => {
-        const result = await userFromServer(selectedUserId);
-        dispatch(setUser(result));
-      };
-
-      fetchUser();
-  }, [selectedUserId]);
 
   return (
     <div className="CurrentUser">
-      {user !== null && selectedUserId
-        ? (
-          <>
             <h2 className="CurrentUser__title">
               <span>
                 {`Selected user:${user.id}`}
@@ -41,9 +29,6 @@ export const CurrentUser = () => {
             >
               Clear user details!
             </button>
-          </>
-        )
-        : 'No user selected'}
     </div>
   );
 };
