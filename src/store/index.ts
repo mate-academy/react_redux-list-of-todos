@@ -3,6 +3,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import { TodoInterface, UserInterface } from '../components/interfaces';
 
+export const STATUS = {
+  all: 'all',
+  active: 'active',
+  complited: 'complited',
+};
+
 // Action types - is just a constant. MUST have a unique value.
 const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
@@ -10,6 +16,9 @@ const SET_TODOS = 'SET_TODOS';
 const SET_USER = 'SET_USER';
 const CLEAR_SELECTED_USER = 'CLEAR_SELECTED_USER';
 const CHANGE_TODO_STATUS = 'CHANGE_TODO_STATUS';
+const SORT_STATUS = 'SORT_STATUS';
+const FILTER_INPUT = 'FILTER_INPUT';
+const RANDOMIZE_TODOS = 'RANDOMIZE_TODOS';
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: START_LOADING });
@@ -18,14 +27,17 @@ export const setTodos = (todos: TodoInterface[]) => ({ type: SET_TODOS, todos })
 export const setUser = (user: UserInterface[]) => ({ type: SET_USER, user });
 export const clearSelectedUser = () => ({ type: CLEAR_SELECTED_USER });
 export const changeTodoStatus = (todoId: number) => ({ type: CHANGE_TODO_STATUS, todoId });
+export const sortStatus = (status: string) => ({ type: SORT_STATUS, status });
+export const filterInput = (input: string) => ({ type: FILTER_INPUT, input });
+export const randomizeTodos = () => ({ type: RANDOMIZE_TODOS });
 
 // Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
 export const getMessage = (state: RootState) => state.message;
-
 export const allTodos = (state: RootState) => state.todos;
 export const currentUser = (state: RootState) => state.user;
-
+export const todoStatus = (state: RootState) => state.status;
+export const getInput = (state: RootState) => state.input;
 
 // Initial state
 export type RootState = {
@@ -33,6 +45,8 @@ export type RootState = {
   message: string;
   todos: TodoInterface[],
   user: UserInterface | null,
+  status: string,
+  input: string,
 };
 
 const initialState: RootState = {
@@ -40,6 +54,8 @@ const initialState: RootState = {
   message: '',
   todos: [],
   user: null,
+  status: '',
+  input: '',
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -59,14 +75,25 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     
     case CHANGE_TODO_STATUS:
       return { ...state,
-        todos: state.todos.map((todo: TodoInterface) => todo.id !== action.todoId
+        todos: [...state.todos].map((todo: TodoInterface) => todo.id !== action.todoId
           ? todo
           : {
             ...todo,
             completed: !todo.completed,
           }
         )
-      }
+      };
+
+    case SORT_STATUS:
+      return { ...state, status: action.status };
+
+    case FILTER_INPUT:
+      return { ...state, input: action.input };
+
+    case RANDOMIZE_TODOS:
+      return { ...state,
+        todos: [...state.todos].sort(() => Math.random() - 0.5),
+      };
 
     case FINISH_LOADING:
       return {
@@ -96,6 +123,22 @@ export const loadUser = (getUser: any, userId: number) => {
         dispatch(setUser(user.data))
       })
   }
+};
+
+export const sortedTodos = (state: RootState) => {
+  return [...state.todos]
+    .filter(todo => todo.title)
+    .filter(todo => {
+      switch (state.status) {
+        case STATUS.active:
+          return !todo.completed;
+        case STATUS.complited:
+          return todo.completed;
+        default:
+          return todo;
+      }
+    })
+    .filter(todo => todo.title.toLowerCase().includes(state.input.toLowerCase()))
 };
 
 // The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`

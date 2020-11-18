@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const Todo = ({ todo }: Props) => {
-  const { id, userId, title, completed } = todo
+  const { id, userId, title, completed } = todo;
   const dispatch = useDispatch();
 
   const getUser = (userId: number) => {

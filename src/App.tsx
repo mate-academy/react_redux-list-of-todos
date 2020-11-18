@@ -7,14 +7,14 @@ import { Finish } from './components/Finish';
 import { TodoList } from './components/TodoList/';
 import { CurrentUser } from './components/CurrentUser/';
 
-import { isLoading, getMessage, loadTodos, allTodos, currentUser } from './store';
+import { isLoading, getMessage, loadTodos, sortedTodos, currentUser } from './store';
 import { todosFromServer } from './api/api';
 
 const App = () => {
   const loading = useSelector(isLoading);
   const message = useSelector(getMessage) || 'Ready!';
 
-  const todos = useSelector(allTodos);
+  const todos = useSelector(sortedTodos);
   const user = useSelector(currentUser);
 
   const dispatch = useDispatch();
