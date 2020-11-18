@@ -19,6 +19,7 @@ const CHANGE_TODO_STATUS = 'CHANGE_TODO_STATUS';
 const SORT_STATUS = 'SORT_STATUS';
 const FILTER_INPUT = 'FILTER_INPUT';
 const RANDOMIZE_TODOS = 'RANDOMIZE_TODOS';
+const REMOVE_TODO = 'REMOVE_TODO';
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: START_LOADING });
@@ -30,6 +31,7 @@ export const changeTodoStatus = (todoId: number) => ({ type: CHANGE_TODO_STATUS,
 export const sortStatus = (status: string) => ({ type: SORT_STATUS, status });
 export const filterInput = (input: string) => ({ type: FILTER_INPUT, input });
 export const randomizeTodos = () => ({ type: RANDOMIZE_TODOS });
+export const removeTodo = (todoId: number) => ({ type: REMOVE_TODO, todoId });
 
 // Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
@@ -93,6 +95,11 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     case RANDOMIZE_TODOS:
       return { ...state,
         todos: [...state.todos].sort(() => Math.random() - 0.5),
+      };
+
+    case REMOVE_TODO:
+      return { ...state,
+        todos: [...state.todos].filter(todo => todo.id !== action.todoId),
       };
 
     case FINISH_LOADING:

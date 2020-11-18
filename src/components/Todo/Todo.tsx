@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './Todo.scss';
-import { loadUser, currentUser, changeTodoStatus } from '../../store';
+import { loadUser, currentUser, changeTodoStatus, removeTodo } from '../../store';
 import { TodoInterface } from '../../components/interfaces';
 import { userFromServer } from '../../api/api';
 import classNames from 'classnames';
@@ -14,11 +14,19 @@ export const Todo = ({ todo }: Props) => {
   const { id, userId, title, completed } = todo;
   const dispatch = useDispatch();
 
-  const getUser = (userId: number) => {
-    dispatch(loadUser(userFromServer, userId));
-  }
-
   const user = useSelector(currentUser);
+
+  const changeStatus = () => {
+    dispatch(changeTodoStatus(id));
+  };
+
+  const loadUserInfo = () => {
+    dispatch(loadUser(userFromServer, userId));
+  };
+
+  const setRemoveTodo = () => {
+    dispatch(removeTodo(id));
+  };
 
   return (
     <>
@@ -27,26 +35,36 @@ export const Todo = ({ todo }: Props) => {
           type="checkbox"
           checked={completed}
           readOnly
-          onChange={() => dispatch(changeTodoStatus(id))}
+          onChange={changeStatus}
         />
         <p>{title}</p>
       </label>
 
-      <button
-        className={classNames(
-          'button',
-          'TodoList__user-button',
-          {
-            'TodoList__user-button--selected': user
-              ? user.id === userId
-              : false,
-          },
-        )}
-        type="button"
-        onClick={() => getUser(userId)}
-      >
-        {`User #${userId}`}
-      </button>
+      <div className="TodoList_buttons">
+        <button
+          className={classNames(
+            'button',
+            'TodoList__user-button',
+            {
+              'TodoList__user-button--selected': user
+                ? user.id === userId
+                : false,
+            },
+          )}
+          type="button"
+          onClick={loadUserInfo}
+        >
+          {`User #${userId}`}
+        </button>
+
+        <button
+          className="button"
+          type="button"
+          onClick={setRemoveTodo}
+        >
+          Remove
+        </button>
+      </div>
     </>
   )
 }

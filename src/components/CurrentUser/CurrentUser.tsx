@@ -14,6 +14,10 @@ import { clearSelectedUser } from '../../store';
   const { id, name, email, phone } = user;
   const dispatch = useDispatch();
 
+  const clearUser = () => {
+    dispatch(clearSelectedUser());
+  };
+
   return (
     <div className="CurrentUser">
       <h2 className="CurrentUser__title">
@@ -27,7 +31,7 @@ import { clearSelectedUser } from '../../store';
       <button
         className="CurrentUser__clear button"
         type="submit"
-        onClick={() => dispatch(clearSelectedUser())}
+        onClick={clearUser}
       >
         Clear
       </button>

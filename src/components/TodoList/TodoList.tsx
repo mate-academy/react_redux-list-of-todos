@@ -16,6 +16,18 @@ export const TodoList = ({ todos }: Props) => {
   const status = useSelector(todoStatus);
   const search = useSelector(getInput);
 
+  const getFilterInput = (event: any) => {
+    dispatch(filterInput(event.target.value));
+  };
+  
+  const getSortStatus = (event: any) => {
+    dispatch(sortStatus(event.target.value));
+  };
+  
+  const getRandomizeTodos = () => {
+    dispatch(randomizeTodos());
+  };
+
   return (
     <div className="TodoList">
       <h2>Todos:</h2>
@@ -27,7 +39,7 @@ export const TodoList = ({ todos }: Props) => {
             type="text"
             id="search"
             value={search}
-            onChange={event => dispatch(filterInput(event.target.value))}
+            onChange={getFilterInput}
           />
         </label>
 
@@ -37,7 +49,7 @@ export const TodoList = ({ todos }: Props) => {
             name="complite"
             id="complite"
             value={status}
-            onChange={event => dispatch(sortStatus(event.target.value))}
+            onChange={getSortStatus}
           >
             <option value={STATUS.all}>{STATUS.all}</option>
             <option value={STATUS.active}>{STATUS.active}</option>
@@ -48,7 +60,7 @@ export const TodoList = ({ todos }: Props) => {
         <button
           className="button"
           type="submit"
-          onClick={() => dispatch(randomizeTodos())}
+          onClick={getRandomizeTodos}
         >
           Randomize
         </button>
