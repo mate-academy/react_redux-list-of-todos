@@ -3,16 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import './TodoList.scss';
 import classNames from 'classnames';
 import { Todos } from '../interfaces';
-import {
-  checkOnCompletedTodos,
-  setSort,
-  randomize,
-  removeTodo,
-  sortByInput,
-  getInputChange,
-  getSort,
-  fetchUser,
-} from '../../store';
+import { getInputChange, getSort, fetchUser } from '../../store';
+import { sortByInput } from '../../store/inputChange';
+import { randomize, checkOnCompletedTodos, removeTodo } from '../../store/setTodos';
+import { setSort } from '../../store/sortTodos';
 import { userFromServer } from '../api/api';
 
 type TodoListProps = {
@@ -21,8 +15,6 @@ type TodoListProps = {
 
 export const TodoList: React.FC<TodoListProps> = ({todos}) => {
   const dispatch = useDispatch();
-  
-
   const selectOfTodos = [`COMPLETED`, `NOT_COMPLETED`];
   const filterTitle = useSelector(getInputChange);
   const selectSort = useSelector(getSort);
@@ -31,9 +23,9 @@ export const TodoList: React.FC<TodoListProps> = ({todos}) => {
     <div className="TodoList">
       <h2>Todos:</h2>
       <div className="App__input">
-        <label className="filterByTitle">
+        <label className="TodoList__label">
           <input
-            className="filterByTitle"
+            className="TodoList__filterByTitle"
             type="text"
             name="filterTitle"
             placeholder="put name of todo"
@@ -45,7 +37,6 @@ export const TodoList: React.FC<TodoListProps> = ({todos}) => {
 
       </div>
       <div className="App__select">
-
         <label htmlFor="complite">
           Filter todos by select methods
         </label>
@@ -68,17 +59,17 @@ export const TodoList: React.FC<TodoListProps> = ({todos}) => {
         </select>
       </div>
       <div className="button__container">
-              <button
-                className="button"
-                type="button"
-                onClick={() => dispatch(randomize())}
-              >
-                Randomize
-              </button>
-            </div>
+        <button
+          className="button"
+          type="button"
+          onClick={() => dispatch(randomize())}
+        >
+          Randomize
+        </button>
+      </div>
 
       <ul>
-        { todos.map(todo => (
+        {todos.map(todo => (
           <li
             key={todo.id}
             className={classNames(
@@ -90,6 +81,7 @@ export const TodoList: React.FC<TodoListProps> = ({todos}) => {
           >
             <label>
               <input
+                className="TodoList__input"
                 type="checkbox"
                 checked={todo.completed}
                 onChange={() => dispatch(checkOnCompletedTodos(todo.id))}
@@ -123,12 +115,12 @@ export const TodoList: React.FC<TodoListProps> = ({todos}) => {
               )
             }
             <button
-              className="beautiful.button"
-                type="button"
-                onClick={() => dispatch(removeTodo(todo.id))}
-              >
-                Remove
-              </button>
+              className="TodoList__beautiful-button"
+              type="button"
+              onClick={() => dispatch(removeTodo(todo.id))}
+            >
+              Remove
+            </button>
           </li>
         ))}
       </ul>

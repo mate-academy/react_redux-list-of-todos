@@ -3,7 +3,7 @@ export interface Todos {
   id: number;
   title: string;
   completed: boolean;
-}
+};
 
 export interface User {
   id: number;
@@ -14,4 +14,4 @@ export interface User {
   phone: string;
   website: string;
   company: string;
-}
+};
