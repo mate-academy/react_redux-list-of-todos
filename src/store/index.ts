@@ -1,23 +1,26 @@
 import { createStore, AnyAction, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import { TodoInterface } from '../components/interfaces';
+import { TodoInterface, UserInterface } from '../components/interfaces';
 
 // Action types - is just a constant. MUST have a unique value.
 const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
 const SET_TODOS = 'SET_TODOS';
+const SET_USER = 'SET_USER';
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: START_LOADING });
 export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
 export const setTodos = (todos: TodoInterface[]) => ({ type: SET_TODOS, todos })
+export const setUser = (user: UserInterface[]) => ({ type: SET_USER, user })
 
 // Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
 export const getMessage = (state: RootState) => state.message;
 
 export const allTodos = (state: RootState) => state.todos;
+export const currentUser = (state: RootState) => state.user;
 
 
 // Initial state
@@ -25,12 +28,14 @@ export type RootState = {
   loading: boolean;
   message: string;
   todos: TodoInterface[],
+  user: UserInterface | null,
 };
 
 const initialState: RootState = {
   loading: false,
   message: '',
   todos: [],
+  user: null,
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -41,6 +46,9 @@ const rootReducer = (state = initialState, action: AnyAction) => {
 
     case SET_TODOS:
       return { ...state, todos: [...action.todos] };
+
+    case SET_USER:
+      return { ...state, user: action.user };
 
     case FINISH_LOADING:
       return {
@@ -59,6 +67,15 @@ export const loadTodos = (getTodos: any) => {
     getTodos()
       .then((todos: any) => {
         dispatch(setTodos(todos.data))
+      })
+  }
+};
+
+export const loadUser = (getUser: any, userId: number) => {
+  return (dispatch: any) => {
+    getUser(userId)
+      .then((user: any) => {
+        dispatch(setUser(user.data))
       })
   }
 }

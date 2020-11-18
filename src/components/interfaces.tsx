@@ -4,3 +4,10 @@ export interface TodoInterface {
   title: string;
   completed: boolean;
 }
+
+export interface UserInterface {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+}

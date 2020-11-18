@@ -2,9 +2,13 @@ import React from 'react';
 import './TodoList.scss';
 import classNames from 'classnames';
 import { TodoInterface } from '../../components/interfaces';
-import { Todo } from '../Todo/Todo';
+import { Todo } from '../Todo/';
 
-export const TodoList = ({ todos }: any) => (
+interface Props {
+  todos: TodoInterface[];
+}
+
+export const TodoList = ({ todos }: Props) => (
   <div className="TodoList">
     <h2>Todos:</h2>
 
