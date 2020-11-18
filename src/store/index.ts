@@ -8,12 +8,14 @@ const START_LOADING = 'START_LOADING';
 const FINISH_LOADING = 'FINISH_LOADING';
 const SET_TODOS = 'SET_TODOS';
 const SET_USER = 'SET_USER';
+const CLEAR_SELECTED_USER = 'CLEAR_SELECTED_USER';
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: START_LOADING });
 export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
 export const setTodos = (todos: TodoInterface[]) => ({ type: SET_TODOS, todos })
 export const setUser = (user: UserInterface[]) => ({ type: SET_USER, user })
+export const clearSelectedUser = () => ({ type: CLEAR_SELECTED_USER })
 
 // Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
@@ -49,6 +51,9 @@ const rootReducer = (state = initialState, action: AnyAction) => {
 
     case SET_USER:
       return { ...state, user: action.user };
+    
+    case CLEAR_SELECTED_USER:
+      return { ...state, user: null };
 
     case FINISH_LOADING:
       return {

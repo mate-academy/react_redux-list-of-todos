@@ -1,9 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import './Todo.scss';
-import { loadUser } from '../../store';
+import { loadUser, currentUser } from '../../store';
 import { TodoInterface } from '../../components/interfaces';
 import { userFromServer } from '../../api/api';
+import classNames from 'classnames';
 
 interface Props {
   todo: TodoInterface;
@@ -13,8 +14,10 @@ export const Todo = ({ todo }: Props) => {
   const dispatch = useDispatch();
 
   const getUser = (userId: number) => {
-    dispatch(loadUser(userFromServer, userId))
+    dispatch(loadUser(userFromServer, userId));
   }
+
+  const user = useSelector(currentUser);
 
   return (
     <>
@@ -28,7 +31,15 @@ export const Todo = ({ todo }: Props) => {
       </label>
 
       <button
-        className="button TodoList__user-button"
+        className={classNames(
+          'button',
+          'TodoList__user-button',
+          {
+            'TodoList__user-button--selected': user
+              ? user.id === todo.userId
+              : false,
+          },
+        )}
         type="button"
         onClick={() => getUser(todo.userId)}
       >

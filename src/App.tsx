@@ -20,7 +20,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   const getTodos = () => {
-    dispatch(loadTodos(todosFromServer))
+    dispatch(loadTodos(todosFromServer));
   };
 
   return (
