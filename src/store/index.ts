@@ -1,51 +1,79 @@
-import { createStore, AnyAction } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+import { Todos, User } from '../components/interfaces';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+import loadingReducer from './loadingPage';
+import sortReducer from './sortTodos';
+import todosReducer, { setTodos } from './setTodos';
+import userReducer, { setUser } from './setUser';
+import userIdReducer, { chooseUserId } from './chooseUserId';
+import inputChangeReducer from './inputChange';
 
-// Selectors - a function receiving Redux state and returning some data from it
+const rootReducer = combineReducers({
+  loading: loadingReducer,
+  sort: sortReducer,
+  todos: todosReducer,
+  user: userReducer,
+  userId: userIdReducer,
+  inputChange: inputChangeReducer,
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+
 export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const getSort = (state: RootState) => state.sort;
+export const getTodos = (state: RootState) => state.todos;
+export const getUser = (state: RootState) => state.user;
+export const setUserId = (state: RootState) => state.userId;
+export const getInputChange = (state: RootState) => state.inputChange;
 
-// Initial state
-export type RootState = {
-  loading: boolean;
-  message: string;
-};
+const ALL = 'ALL';
+const COMPLETED = 'COMPLETED';
+const NOT_COMPLETED = 'NOT_COMPLETED';
 
-const initialState: RootState = {
-  loading: false,
-  message: '',
-};
-
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
-  switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
-      return {
-        ...state,
-        loading: false,
-        message: action.message,
-      };
-
-    default:
-      return state;
+export const fetchTodo = (dataFromServer: any ) => {
+  return (dispatch: Function) => { 
+    dataFromServer()
+      .then((data: Todos[]) => {
+        dispatch(setTodos(data));
+      })
   }
+}
+
+export const fetchUser = (dataFromServer: any, paramsOfData: number) => {
+  return (dispatch: Function) => { 
+    dataFromServer(paramsOfData)
+      .then((data: User) => {
+        dispatch(setUser(data));
+        dispatch(chooseUserId(paramsOfData));
+      })
+  }
+}
+
+export const getSortTodos = (state: RootState) => {
+  return [...state.todos].filter((todo) => {
+    switch (state.sort) {
+      case ALL:
+        return todo;
+
+      case COMPLETED:
+        return todo.completed;
+
+      case NOT_COMPLETED:
+        return !todo.completed;
+    
+      default:
+        return todo;
+    }
+  }).filter(todo =>todo.title !== null && todo.title.toLowerCase()
+  .includes(state.inputChange.toLowerCase()));
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(applyMiddleware(thunk)),
 );
 
 export default store;
