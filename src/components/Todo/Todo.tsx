@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './Todo.scss';
-import { loadUser, currentUser } from '../../store';
+import { loadUser, currentUser, changeTodoStatus } from '../../store';
 import { TodoInterface } from '../../components/interfaces';
 import { userFromServer } from '../../api/api';
 import classNames from 'classnames';
@@ -11,6 +11,7 @@ interface Props {
 }
 
 export const Todo = ({ todo }: Props) => {
+  const { id, userId, title, completed } = todo
   const dispatch = useDispatch();
 
   const getUser = (userId: number) => {
@@ -24,10 +25,11 @@ export const Todo = ({ todo }: Props) => {
       <label>
         <input
           type="checkbox"
-          checked={todo.completed}
+          checked={completed}
           readOnly
+          onChange={() => dispatch(changeTodoStatus(id))}
         />
-        <p>{todo.title}</p>
+        <p>{title}</p>
       </label>
 
       <button
@@ -36,14 +38,14 @@ export const Todo = ({ todo }: Props) => {
           'TodoList__user-button',
           {
             'TodoList__user-button--selected': user
-              ? user.id === todo.userId
+              ? user.id === userId
               : false,
           },
         )}
         type="button"
-        onClick={() => getUser(todo.userId)}
+        onClick={() => getUser(userId)}
       >
-        {`User #${todo.userId}`}
+        {`User #${userId}`}
       </button>
     </>
   )

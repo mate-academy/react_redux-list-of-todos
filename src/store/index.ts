@@ -9,13 +9,15 @@ const FINISH_LOADING = 'FINISH_LOADING';
 const SET_TODOS = 'SET_TODOS';
 const SET_USER = 'SET_USER';
 const CLEAR_SELECTED_USER = 'CLEAR_SELECTED_USER';
+const CHANGE_TODO_STATUS = 'CHANGE_TODO_STATUS';
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: START_LOADING });
 export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
-export const setTodos = (todos: TodoInterface[]) => ({ type: SET_TODOS, todos })
-export const setUser = (user: UserInterface[]) => ({ type: SET_USER, user })
-export const clearSelectedUser = () => ({ type: CLEAR_SELECTED_USER })
+export const setTodos = (todos: TodoInterface[]) => ({ type: SET_TODOS, todos });
+export const setUser = (user: UserInterface[]) => ({ type: SET_USER, user });
+export const clearSelectedUser = () => ({ type: CLEAR_SELECTED_USER });
+export const changeTodoStatus = (todoId: number) => ({ type: CHANGE_TODO_STATUS, todoId });
 
 // Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
@@ -54,6 +56,17 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     
     case CLEAR_SELECTED_USER:
       return { ...state, user: null };
+    
+    case CHANGE_TODO_STATUS:
+      return { ...state,
+        todos: state.todos.map((todo: TodoInterface) => todo.id !== action.todoId
+          ? todo
+          : {
+            ...todo,
+            completed: !todo.completed,
+          }
+        )
+      }
 
     case FINISH_LOADING:
       return {
@@ -83,7 +96,7 @@ export const loadUser = (getUser: any, userId: number) => {
         dispatch(setUser(user.data))
       })
   }
-}
+};
 
 // The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
