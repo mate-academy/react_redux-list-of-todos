@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './TodoList.scss';
-import classNames from 'classnames';
-import { TodoInterface } from '../../components/interfaces';
+import cn from 'classnames';
+import { TodoInterface } from '../../typedefs';
 import { Todo } from '../Todo/';
 import { sortStatus, STATUS, todoStatus, getInput, filterInput, randomizeTodos } from '../../store';
 
@@ -16,11 +16,12 @@ export const TodoList = ({ todos }: Props) => {
   const status = useSelector(todoStatus);
   const search = useSelector(getInput);
 
-  const getFilterInput = (event: any) => {
+  const getFilterInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event)
     dispatch(filterInput(event.target.value));
   };
   
-  const getSortStatus = (event: any) => {
+  const getSortStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(sortStatus(event.target.value));
   };
   
@@ -43,11 +44,11 @@ export const TodoList = ({ todos }: Props) => {
           />
         </label>
 
-        <label htmlFor="complite">
+        <label htmlFor="complete">
           Complite
           <select
-            name="complite"
-            id="complite"
+            name="complete"
+            id="complete"
             value={status}
             onChange={getSortStatus}
           >
@@ -68,9 +69,9 @@ export const TodoList = ({ todos }: Props) => {
 
       <div className="TodoList__list-container">
         <ul className="TodoList__list">
-          {todos.map((todo: TodoInterface) => (
+          {todos.map((todo) => (
             <li
-              className={classNames(
+              className={cn(
                 'TodoList__item',
                 {
                   'TodoList__item--checked': todo.completed,

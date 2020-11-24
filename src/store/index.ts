@@ -1,7 +1,7 @@
 import { createStore, AnyAction, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import { TodoInterface, UserInterface } from '../components/interfaces';
+import { TodoInterface, UserInterface } from '../typedefs';
 
 export const STATUS = {
   all: 'all',
@@ -10,6 +10,7 @@ export const STATUS = {
 };
 
 // Action types - is just a constant. MUST have a unique value.
+const START_LOAD = 'START_LOAD';
 const SET_TODOS = 'SET_TODOS';
 const SET_USER = 'SET_USER';
 const CLEAR_SELECTED_USER = 'CLEAR_SELECTED_USER';
@@ -20,6 +21,7 @@ const RANDOMIZE_TODOS = 'RANDOMIZE_TODOS';
 const REMOVE_TODO = 'REMOVE_TODO';
 
 // Action creators - a function returning an action object
+export const startLoad = (start: boolean) => ({ type: START_LOAD, start });
 export const setTodos = (todos: TodoInterface[]) => ({ type: SET_TODOS, todos });
 export const setUser = (user: UserInterface[]) => ({ type: SET_USER, user });
 export const clearSelectedUser = () => ({ type: CLEAR_SELECTED_USER });
@@ -33,6 +35,7 @@ export const removeTodo = (todoId: number) => ({ type: REMOVE_TODO, todoId });
 export const currentUser = (state: RootState) => state.user;
 export const todoStatus = (state: RootState) => state.status;
 export const getInput = (state: RootState) => state.input;
+export const startState = (state: RootState) => state.start;
 
 // Initial state
 export type RootState = {
@@ -40,6 +43,7 @@ export type RootState = {
   user: UserInterface | null,
   status: string,
   input: string,
+  start: boolean,
 };
 
 const initialState: RootState = {
@@ -47,11 +51,15 @@ const initialState: RootState = {
   user: null,
   status: '',
   input: '',
+  start: false,
 };
 
 // rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
+    case START_LOAD:
+      return { ...state, start: action.start };
+
     case SET_TODOS:
       return { ...state, todos: [...action.todos] };
 
@@ -93,17 +101,18 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-export const loadTodos = (getTodos: any) => {
-  return (dispatch: any) => {
+export const loadTodos = (getTodos: Function) => {
+  return (dispatch: Function) => {
     getTodos()
       .then((todos: any) => {
+        console.log(todos)
         dispatch(setTodos(todos.data))
       })
   }
 };
 
-export const loadUser = (getUser: any, userId: number) => {
-  return (dispatch: any) => {
+export const loadUser = (getUser: Function, userId: number) => {
+  return (dispatch: Function) => {
     getUser(userId)
       .then((user: any) => {
         dispatch(setUser(user.data))
@@ -111,9 +120,17 @@ export const loadUser = (getUser: any, userId: number) => {
   }
 };
 
+const searchTitle  = (todoTitle: string, input: string) => {
+  if (todoTitle.toLowerCase().includes(input.toLowerCase())) {
+    return true;
+  }
+
+  return false;
+}
+
 export const sortedTodos = (state: RootState) => {
   return [...state.todos]
-    .filter(todo => todo.title)
+    .filter(todo => todo.title && searchTitle(todo.title, state.input))
     .filter(todo => {
       switch (state.status) {
         case STATUS.active:
@@ -124,7 +141,6 @@ export const sortedTodos = (state: RootState) => {
           return todo;
       }
     })
-    .filter(todo => todo.title.toLowerCase().includes(state.input.toLowerCase()))
 };
 
 // The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`

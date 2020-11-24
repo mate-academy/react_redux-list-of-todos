@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useDispatch } from 'react-redux';
 
 import './CurrentUser.scss';
 import { clearSelectedUser } from '../../store';
-// import { UserInterface } from '../../components/interfaces';
+import { UserInterface } from '../../typedefs';
 
-// interface Props {
-//   user: UserInterface;
-// }
+interface Props {
+  user: UserInterface;
+}
 
-// export const CurrentUser = ({ user }: Props) => {
-  export const CurrentUser = ({ user }: any) => {
+export const CurrentUser: FC<Props> = ({ user }) => {
   const { id, name, email, phone } = user;
   const dispatch = useDispatch();
 

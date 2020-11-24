@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import './Todo.scss';
 import { loadUser, currentUser, changeTodoStatus, removeTodo } from '../../store';
-import { TodoInterface } from '../../components/interfaces';
+import { TodoInterface } from '../../typedefs';
 import { userFromServer } from '../../api/api';
-import classNames from 'classnames';
+import cn from 'classnames';
 
 interface Props {
   todo: TodoInterface;
 }
 
-export const Todo = ({ todo }: Props) => {
+export const Todo: FC<Props> = ({ todo }) => {
   const { id, userId, title, completed } = todo;
   const dispatch = useDispatch();
 
@@ -42,7 +42,7 @@ export const Todo = ({ todo }: Props) => {
 
       <div className="TodoList_buttons">
         <button
-          className={classNames(
+          className={cn(
             'button',
             'TodoList__user-button',
             {
