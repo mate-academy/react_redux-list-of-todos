@@ -1,73 +1,59 @@
-import { createStore, AnyAction, applyMiddleware, Dispatch } from "redux";
+import { createStore, AnyAction, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { request } from "../api/api";
+import * as types from "./types";
 import thunk from "redux-thunk";
+import { User } from "../Interfaces";
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = "START_LOADING";
-const FINISH_LOADING = "FINISH_LOADING";
-const GET_TODOS = "GET_TODOS";
-
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = "No message") => ({
-  type: FINISH_LOADING,
-  message,
-});
-export const getTodos = (todos: any[]) => ({
-  type: GET_TODOS,
-  todos,
-});
-export const fetchTodos = () => (dispatch: Dispatch) => {
-  request("todos").then((res) => dispatch(getTodos(res.data)));
-};
-
-// Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const getTodosSelector = (state: RootState) => state.todos;
+export const getUserId = (state: RootState) => state.userId;
+export const getTodoId = (state: RootState) => state.todoId;
+export const getUser = (state: RootState) => state.user;
 
-// Initial state
 export type RootState = {
   loading: boolean;
-  message: string;
   todos: any[];
+  userId: number;
+  todoId: number;
+  user: null | User;
 };
 
 const initialState: RootState = {
   loading: false,
-  message: "",
   todos: [],
+  userId: 2,
+  todoId: 2,
+  user: null,
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
+    case types.START_LOADING:
       return { ...state, loading: true };
 
-    case FINISH_LOADING:
-      return {
-        ...state,
-        loading: false,
-        message: action.message,
-      };
+    case types.FINISH_LOADING:
+      return { ...state, loading: false };
 
-    case GET_TODOS:
-      console.log("todos");
-      return {
-        ...state,
-        todos: action.todos,
-      };
+    case types.GET_TODOS:
+      return { ...state, todos: action.todos };
+
+    case types.GET_USER:
+      return { ...state, user: action.user };
+
+    case types.UPDATE_USER_ID:
+      return { ...state, userId: action.id };
+
+    case types.UPDATE_TODO_ID:
+      return { ...state, todoId: action.id };
 
     default:
       return state;
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk)) // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 export default store;
