@@ -2,7 +2,7 @@ import React from "react";
 import cn from "classnames";
 import { useSelector, useDispatch } from "react-redux";
 import { getTodoId } from "../../store";
-import { updateUserID, updateTodoId } from "../../store/actions";
+import { updateUserID, updateTodoId, clear } from "../../store/actions";
 
 interface Todo {
   id: number;
@@ -14,6 +14,7 @@ interface Todo {
 export const Todo: React.FC<{ todo: Todo }> = ({ todo }) => {
   const { id, title, userId, completed } = todo;
   const activeTodo = useSelector(getTodoId);
+
   const dispatch = useDispatch();
 
   return (
@@ -36,6 +37,11 @@ export const Todo: React.FC<{ todo: Todo }> = ({ todo }) => {
         )}
         type="button"
         onClick={() => {
+          if (id === activeTodo) {
+            dispatch(clear());
+            return;
+          }
+
           dispatch(updateTodoId(id));
           dispatch(updateUserID(userId));
         }}

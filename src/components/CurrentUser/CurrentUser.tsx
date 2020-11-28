@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import "./CurrentUser.scss";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserId, getUser } from "../../store";
+import { getUserId, getUser, getErrors, getUserLoading } from "../../store";
 import { User } from "../../Interfaces";
-import { fetchUser } from "../../store/actions";
-
-const error = false;
+import { fetchUser, clear } from "../../store/actions";
 
 export const CurrentUser = () => {
   const activeUserId = useSelector(getUserId);
   const user = useSelector(getUser);
+  const errors = useSelector(getErrors);
+  const loading = useSelector(getUserLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export const CurrentUser = () => {
   }, [activeUserId]);
 
   const renderUser = (user: User) => {
-    return error ? (
+    return errors.user ? (
       "Such user does not exist"
     ) : (
       <>
@@ -32,7 +32,11 @@ export const CurrentUser = () => {
         <h3 className="CurrentUser__name">{user.name}</h3>
         <p className="CurrentUser__email">{user.email}</p>
         <p className="CurrentUser__phone">{user.phone}</p>
-        <button type="button" className="clear-btn">
+        <button
+          type="button"
+          className="clear-btn"
+          onClick={() => dispatch(clear())}
+        >
           Clear
         </button>
       </>
@@ -41,7 +45,11 @@ export const CurrentUser = () => {
 
   return (
     <div className="CurrentUser">
-      {user ? renderUser(user) : <div className="loading">Loading...</div>}
+      {!loading && user ? (
+        renderUser(user)
+      ) : (
+        <div className="loading">Loading...</div>
+      )}
     </div>
   );
 };
