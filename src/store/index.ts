@@ -1,51 +1,68 @@
-import { createStore, AnyAction } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore, AnyAction, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import * as types from "./types";
+import thunk from "redux-thunk";
+import { User } from "../Interfaces";
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+export const getTodosSelector = (state: RootState) => state.todos;
+export const getUserId = (state: RootState) => state.userId;
+export const getTodoId = (state: RootState) => state.todoId;
+export const getUser = (state: RootState) => state.user;
+export const getErrors = (state: RootState) => state.errors;
+export const getUserLoading = (state: RootState) => state.userLoading;
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
-
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
-
-// Initial state
 export type RootState = {
-  loading: boolean;
-  message: string;
+  todos: any[];
+  userId: number;
+  todoId: number;
+  user: null | User;
+  errors: { [key: string]: any };
+  userLoading: boolean;
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  todos: [],
+  userId: 0,
+  todoId: 0,
+  user: null,
+  errors: {},
+  userLoading: false,
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
+    case types.SET_TODOS:
+      return { ...state, todos: action.todos };
 
-    case FINISH_LOADING:
-      return {
-        ...state,
-        loading: false,
-        message: action.message,
-      };
+    case types.SET_USER:
+      return { ...state, user: action.user };
+
+    case types.SET_USER_ERROR:
+      return { ...state, errors: { ...state.errors, user: "User not found" } };
+
+    case types.UPDATE_USER_ID:
+      return { ...state, userId: action.id };
+
+    case types.UPDATE_TODO_ID:
+      return { ...state, todoId: action.id };
+
+    case types.CLEAR:
+      return { ...state, todoId: 0, userId: 0, user: {} };
+
+    case types.RESET_ERRORS:
+      return { ...state, errors: {} };
+
+    case types.USER_LOADING:
+      return { ...state, userLoading: action.bool };
 
     default:
       return state;
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 export default store;
