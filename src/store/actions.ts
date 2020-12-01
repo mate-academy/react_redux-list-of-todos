@@ -3,12 +3,12 @@ import { request } from "../api/api";
 import { User } from "../Interfaces";
 
 import {
-  GET_TODOS,
+  SET_TODOS,
   UPDATE_USER_ID,
   UPDATE_TODO_ID,
-  GET_USER,
+  SET_USER,
   CLEAR,
-  GET_USER_ERROR,
+  SET_USER_ERROR,
   RESET_ERRORS,
   USER_LOADING,
 } from "./types";
@@ -16,7 +16,7 @@ import {
 // Action creators - a function returning an action object
 
 export const getTodos = (todos: any[]) => ({
-  type: GET_TODOS,
+  type: SET_TODOS,
   todos,
 });
 
@@ -35,7 +35,7 @@ export const updateTodoId = (id: number) => ({
 });
 
 export const getUserError = () => ({
-  type: GET_USER_ERROR,
+  type: SET_USER_ERROR,
 });
 
 export const updateUserLoading = (bool: boolean) => ({
@@ -44,7 +44,7 @@ export const updateUserLoading = (bool: boolean) => ({
 });
 
 export const getUser = (user: User | {}) => ({
-  type: GET_USER,
+  type: SET_USER,
   user,
 });
 

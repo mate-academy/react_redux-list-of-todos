@@ -19,9 +19,11 @@ export const Todo: React.FC<{ todo: Todo }> = ({ todo }) => {
 
   return (
     <li
-      className={`TodoList__item ${
-        completed ? "TodoList__item--checked" : "TodoList__item--unchecked"
-      }`}
+      className={cn(
+        "TodoList__item ",
+        { "TodoList__item--checked": completed },
+        { "TodoList__item--unchecked": !completed }
+      )}
       key={id}
     >
       <label>

@@ -31,13 +31,13 @@ const initialState: RootState = {
 
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case types.GET_TODOS:
+    case types.SET_TODOS:
       return { ...state, todos: action.todos };
 
-    case types.GET_USER:
+    case types.SET_USER:
       return { ...state, user: action.user };
 
-    case types.GET_USER_ERROR:
+    case types.SET_USER_ERROR:
       return { ...state, errors: { ...state.errors, user: "User not found" } };
 
     case types.UPDATE_USER_ID:

@@ -3,3 +3,9 @@ export interface User {
   email: string;
   phone: string;
 }
+
+export enum Options {
+  all = "all",
+  active = "active",
+  completed = "completed",
+}

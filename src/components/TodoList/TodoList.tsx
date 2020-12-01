@@ -2,12 +2,11 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getTodosSelector } from "../../store";
 import { fetchTodos } from "../../store/actions";
+import { Options } from "../../Interfaces";
 
 import { Todo } from "../Todo/Todo";
 
 import "./TodoList.scss";
-
-const options = ["all", "active", "completed"];
 
 export const TodoList = React.memo(() => {
   const todos = useSelector(getTodosSelector);
@@ -17,10 +16,9 @@ export const TodoList = React.memo(() => {
 
   useEffect(() => {
     dispatch(fetchTodos());
-    // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
-  const filtredList = () => {
+  const list = useMemo(() => {
     if (todos) {
       let todoCopy = [...todos];
 
@@ -38,9 +36,7 @@ export const TodoList = React.memo(() => {
     }
 
     return [];
-  };
-
-  const list = useMemo(() => filtredList(), [todos, selected, search]);
+  }, [todos, selected, search]);
 
   return (
     <div className="TodoList">
@@ -58,7 +54,7 @@ export const TodoList = React.memo(() => {
         value={selected}
         onChange={(e) => setSelected(e.target.value)}
       >
-        {options.map((option) => (
+        {Object.values(Options).map((option) => (
           <option key={option}>{option}</option>
         ))}
       </select>
