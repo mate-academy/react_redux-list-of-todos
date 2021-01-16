@@ -1,0 +1,80 @@
+.CurrentUser {
+  &__title {
+    font-size: 1rem;
+    color: white;
+
+    span {
+      background-color: #4d457b;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  }
+
+  &__name {
+    margin: 30px 0 10px;
+    font-size: 1.5rem;
+  }
+
+  &__email,
+  &__phone {
+    color: #c4bdd9;
+    text-align: center;
+    margin: 5px;
+  }
+
+  &__clear {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 15px;
+    color: black;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 50%;
+    &:hover {
+      background-color: #07f;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.center {
+  text-align: center;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #dfc;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #dfc transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
