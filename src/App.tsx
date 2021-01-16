@@ -1,25 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
-
+import { currentTodos, updateTodo, updateUserId, selectedUserId, todosFromServer } from './store';
+import { TodoList } from './components/TodoList';
+import { CurrentUser } from './components/CurrentUser';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const currentTodo = useSelector(currentTodos);
+  const selectedUserIds = useSelector(selectedUserId);
+
+  useEffect(() => {
+    todosFromServer();
+  }, []);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      <div className="App__sidebar">
+        <TodoList
+          currentTodos={currentTodo}
+          updateUserId={updateUserId}
+          updateTodos={updateTodo}
+        />
+      </div>
+
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserIds ? (
+            <CurrentUser
+              userId={selectedUserIds}
+              updateUserId={updateUserId}
+            />
+          ) : 'No user selected'}
+        </div>
+      </div>
+
     </div>
   );
 };
