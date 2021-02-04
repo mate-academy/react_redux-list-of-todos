@@ -5,54 +5,69 @@ import { InitialTodosStateT, TODOSTYPE } from '../api/interface';
 export const FETCH_TODOS_PENDING = 'FETCH_TODOS_PENDING';
 export const FETCH_TODOS_SUCCESS = 'FETCH_TODOS_SUCCESS';
 export const FETCH_TODOS_ERROR = 'FETCH_TODOS_ERROR';
-export const SELECTED_USER = 'SELECTED_USER';
-export const CLEAR_SELECTED_USER = 'CLEAR_SELECTED_USER';
-export const REMOVE_SELECTED_TODO = 'REMOVE_SELECTED_TODO';
+export const UPDATE_SELECTED_TODO = 'REMOVE_SELECTED_TODO';
+export const ALL_TODOS = 'All_TODOS';
+export const COMPLETED_TODOS = 'COMPLETED_TODOS';
+export const ACTIVE_TODOS = 'ACTIVE_TODOS';
+export const FILTERING = 'FILTERING';
 
 const initialState: InitialTodosStateT = {
   pending: false,
   todos: [],
   error: null,
-  selectedUserId: 0,
   selectedTodoId: 0,
+  filteringType: ALL_TODOS,
+  query: '',
 };
 
-export function fetchTodosPending() {
+export function allTodosAction() {
+  return {
+    type: ALL_TODOS,
+  };
+}
+
+export function completedTodosAction() {
+  return {
+    type: COMPLETED_TODOS,
+  };
+}
+
+export function activeTodosAction() {
+  return {
+    type: ACTIVE_TODOS,
+  };
+}
+
+export function filterTodos(query: string) {
+  return {
+    type: FILTERING,
+    query,
+  };
+}
+
+export function setPending() {
   return {
     type: FETCH_TODOS_PENDING,
   };
 }
 
-export function fetchTodosSuccess(todos: TODOSTYPE[]) {
+export function setTodos(todos: TODOSTYPE[]) {
   return {
     type: FETCH_TODOS_SUCCESS,
-    todos,
+    todos: todos.filter(todo => todo.title),
   };
 }
 
-export function fetchTodosError(error: string) {
+export function setTodosError(error: string) {
   return {
     type: FETCH_TODOS_ERROR,
     error,
   };
 }
 
-export function selectedUser(userId: number) {
+export function updateTodo(todo: TODOSTYPE) {
   return {
-    type: SELECTED_USER,
-    userId,
-  };
-}
-
-export function clearSelectedUser() {
-  return {
-    type: CLEAR_SELECTED_USER,
-  };
-}
-
-export function removeSelectedTodo(todo: TODOSTYPE) {
-  return {
-    type: REMOVE_SELECTED_TODO,
+    type: UPDATE_SELECTED_TODO,
     todo,
   };
 }
@@ -76,17 +91,7 @@ export function todosReducer(state = initialState, action: AnyAction) {
         pending: false,
         error: action.error,
       };
-    case SELECTED_USER:
-      return {
-        ...state,
-        selectedUserId: action.userId,
-      };
-    case CLEAR_SELECTED_USER:
-      return {
-        ...state,
-        selectedUserId: 0,
-      };
-    case REMOVE_SELECTED_TODO:
+    case UPDATE_SELECTED_TODO:
       return {
         ...state,
         todos: state.todos.map(
@@ -96,6 +101,18 @@ export function todosReducer(state = initialState, action: AnyAction) {
             } : todo),
         ),
       };
+    case ALL_TODOS:
+    case ACTIVE_TODOS:
+    case COMPLETED_TODOS:
+      return {
+        ...state,
+        filteringType: action.type,
+      };
+    case FILTERING:
+      return {
+        ...state,
+        query: action.query,
+      };
     default:
       return state;
   }
@@ -104,4 +121,5 @@ export function todosReducer(state = initialState, action: AnyAction) {
 export const getTodos = (state: InitialTodosStateT): TODOSTYPE[] => state.todos;
 export const getTodosPending = (state: InitialTodosStateT): boolean => state.pending;
 export const getTodosError = (state: InitialTodosStateT): string | null => state.error;
-export const getUserId = (state: InitialTodosStateT): number => state.selectedUserId;
+export const getFilteringType = (state: InitialTodosStateT): string => state.filteringType;
+export const getQueryFiltering = (state: InitialTodosStateT): string => state.query;

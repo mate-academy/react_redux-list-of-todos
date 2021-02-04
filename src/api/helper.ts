@@ -1,24 +1,24 @@
 import {
   ACTIVE_TODOS, COMPLETED_TODOS,
-} from '../store/navMenuTodo';
-import { NavType, TODOSTYPE } from './interface';
+} from '../store/todosList';
+import { InitialTodosStateT, TODOSTYPE } from './interface';
 
-export function getFilteringTodosList(todos: TODOSTYPE[], action: NavType) {
-  const lowQuery = action.query.toLowerCase();
-  let updateList: TODOSTYPE[] = [...todos];
+export function getFilteringTodosList(state: InitialTodosStateT) {
+  const lowQuery = state.query.toLowerCase();
+  let updateList: TODOSTYPE[] = [...state.todos];
 
-  switch (action.filteringType) {
+  switch (state.filteringType) {
     case ACTIVE_TODOS:
-      updateList = todos.filter(todo => todo.completed === false);
+      updateList = state.todos.filter(todo => !todo.completed);
       break;
     case COMPLETED_TODOS:
-      updateList = todos.filter(todo => todo.completed === true);
+      updateList = state.todos.filter(todo => todo.completed);
       break;
     default:
       break;
   }
 
-  if (action.query) {
+  if (state.query) {
     return updateList.filter(
       todo => todo.title && todo.title.toLowerCase().includes(lowQuery),
     );

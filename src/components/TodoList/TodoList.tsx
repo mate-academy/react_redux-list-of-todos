@@ -4,13 +4,13 @@ import {
 } from 'react-redux';
 import { getFilteringTodosList } from '../../api/helper';
 import { RooTStateT, TODOSTYPE } from '../../api/interface';
-import { selectedUser } from '../../store/todosList';
+import { selectedUser } from '../../store/currentUser';
 import { NavMenuTodo } from '../NavMenuTodo/NavMenuTodo';
-import { RemoveTodo } from '../RemoveTodo';
+import { UpdateTodo } from '../UpdateTodo';
 import './TodoList.scss';
 
 const mapStateToProps = (state: RooTStateT) => ({
-  todos: getFilteringTodosList(state.todosState.todos, state.navMenuState),
+  todos: getFilteringTodosList(state.todosState),
 });
 
 const connector = connect(
@@ -46,11 +46,11 @@ const TodoList: React.FC<Props> = ({
 
         <div className="TodoList__list-container">
           <ul className="TodoList__list">
-            {updateList.map((todo: TODOSTYPE) => (
+            {updateList.map(todo => (
               <li className="TodoList__item TodoList__item--unchecked" key={todo.id}>
                 {todoId === todo.id
                   ? (
-                    <RemoveTodo
+                    <UpdateTodo
                       todo={todo}
                       setTodoId={setTodoId}
                       setUpdateList={setUpdateList}
@@ -70,10 +70,10 @@ const TodoList: React.FC<Props> = ({
                       <div>
                         <button
                           className="
-                          TodoList__user-button
-                          TodoList__user-button--remove
-                          button
-                        "
+                            TodoList__user-button
+                            TodoList__user-button--remove
+                            button
+                          "
                           type="button"
                           onClick={() => {
                             setTodoId(todo.id);
@@ -84,10 +84,10 @@ const TodoList: React.FC<Props> = ({
 
                         <button
                           className="
-                          TodoList__user-button
-                          TodoList__user-button--selected
-                          button
-                        "
+                            TodoList__user-button
+                            TodoList__user-button--selected
+                            button
+                          "
                           type="button"
                           onClick={() => handleClickUser(todo.userId)}
                         >

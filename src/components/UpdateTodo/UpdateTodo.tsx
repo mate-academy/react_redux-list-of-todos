@@ -1,33 +1,35 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { TODOSTYPE } from '../../api/interface';
-import { removeSelectedTodo } from '../../store/todosList';
-import './RemoveTodo.scss';
+import { updateTodo } from '../../store/todosList';
+import './UpdateTodo.scss';
 
-type RemoveType = {
+type UpdateType = {
   todo: TODOSTYPE;
   setTodoId: Function;
   setUpdateList: Function;
 };
 
-export const RemoveTodo: React.FC<RemoveType> = ({ todo, setTodoId, setUpdateList }) => {
+export const UpdateTodo: React.FC<UpdateType> = ({ todo, setTodoId, setUpdateList }) => {
   const [changedTodo, setChangedTodo] = useState<TODOSTYPE>(todo);
   const dispatch = useDispatch();
 
   const handleChangedTodo = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value) {
+    const { value } = event.target;
+
+    if (value) {
       setChangedTodo({
         ...changedTodo,
-        title: event.target.value,
+        title: value,
       });
     }
   };
 
   const handleSaveChangedTodo = () => {
-    dispatch(removeSelectedTodo(changedTodo));
+    dispatch(updateTodo(changedTodo));
     setUpdateList(
       (prevList: TODOSTYPE[]) => prevList.map(
-        (item: TODOSTYPE) => (item.id === changedTodo.id ? changedTodo : item),
+        item => (item.id === changedTodo.id ? changedTodo : item),
       ),
     );
     setTodoId(0);
@@ -40,7 +42,7 @@ export const RemoveTodo: React.FC<RemoveType> = ({ todo, setTodoId, setUpdateLis
           id="title"
           type="text"
           value={changedTodo.title}
-          className="remove-todo-title"
+          className="update-todo-title"
           onChange={handleChangedTodo}
         />
       </label>
@@ -49,7 +51,7 @@ export const RemoveTodo: React.FC<RemoveType> = ({ todo, setTodoId, setUpdateLis
         <button
           className="
                 TodoList__user-button
-                TodoList__user-button--remove
+                TodoList__user-button--update
                 button
               "
           type="button"

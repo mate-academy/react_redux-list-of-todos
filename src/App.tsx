@@ -1,38 +1,38 @@
 import React, { useEffect } from 'react';
 
 import './App.scss';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
 import TodoList from './components/TodoList/TodoList';
 import CurrentUser from './components/CurrentUser/CurrentUser';
 
 import { fetchTodos } from './api/api';
 import { Loader } from './components/Loader';
 import {
-  getTodosListPending, getTodosListError, getTodosListUserId, getCurrentUserPending,
+  getTodosListPending,
+  getTodosListError,
+  getCurrentUserPending,
+  getCurrentUserId,
 } from './store';
-import { RooTStateT } from './api/interface';
-
-const mapStateToProps = (state: RooTStateT) => ({
-  pendingTodos: getTodosListPending(state),
-  error: getTodosListError(state),
-  userId: getTodosListUserId(state),
-  pendingUser: getCurrentUserPending(state),
-});
 
 const mapDispatchToProps = {
   getTodos: fetchTodos,
 };
 
 const connector = connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 );
 
 type Props = ConnectedProps<typeof connector>;
 
 const App: React.FC<Props> = ({
-  pendingTodos, error, userId, pendingUser, getTodos,
+  getTodos,
 }) => {
+  const pendingTodos = useSelector(getTodosListPending);
+  const pendingUser = useSelector(getCurrentUserPending);
+  const error = useSelector(getTodosListError);
+  const userId = useSelector(getCurrentUserId);
+
   useEffect(() => {
     getTodos();
   }, [getTodos]);

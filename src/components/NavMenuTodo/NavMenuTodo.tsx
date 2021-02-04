@@ -9,11 +9,11 @@ import {
   ALL_TODOS,
   completedTodosAction,
   COMPLETED_TODOS,
-  filteringTodosAction,
-} from '../../store/navMenuTodo';
+  filterTodos,
+} from '../../store/todosList';
 import './NavMenuTodo.scss';
 import { getNavMenuTypeFiltering } from '../../store';
-import { clearSelectedUser } from '../../store/todosList';
+import { clearSelectedUser } from '../../store/currentUser';
 import { TODOSTYPE } from '../../api/interface';
 
 type NavMenuTodo = {
@@ -23,17 +23,11 @@ type NavMenuTodo = {
 
 export const NavMenuTodo: React.FC<NavMenuTodo> = ({ todosList, setTodosList }) => {
   const dispatch = useDispatch();
-  const navMenyType = useSelector(getNavMenuTypeFiltering);
+  const navMenuType = useSelector(getNavMenuTypeFiltering);
 
   const sortingTodoList = useCallback(() => {
     const sortList = [...todosList].sort(
-      (todo1: TODOSTYPE, todo2: TODOSTYPE) => {
-        if (todo1.title && todo2.title) {
-          return todo1.title.localeCompare(todo2.title);
-        }
-
-        return 0;
-      },
+      (todo1: TODOSTYPE, todo2: TODOSTYPE) => todo1.title.localeCompare(todo2.title),
     );
 
     setTodosList(sortList);
@@ -59,7 +53,7 @@ export const NavMenuTodo: React.FC<NavMenuTodo> = ({ todosList, setTodosList }) 
         type="text"
         placeholder="Tittle...."
         onChange={(event) => {
-          dispatch(filteringTodosAction(event.target.value));
+          dispatch(filterTodos(event.target.value));
         }}
       />
       <div>
@@ -67,7 +61,7 @@ export const NavMenuTodo: React.FC<NavMenuTodo> = ({ todosList, setTodosList }) 
           <li>
             <a
               href="#/all"
-              className={classNames({ selected: navMenyType === ALL_TODOS })}
+              className={classNames({ selected: navMenuType === ALL_TODOS })}
               onClick={() => {
                 dispatch(allTodosAction());
               }}
@@ -78,7 +72,7 @@ export const NavMenuTodo: React.FC<NavMenuTodo> = ({ todosList, setTodosList }) 
           <li>
             <a
               href="#/active"
-              className={classNames({ selected: navMenyType === ACTIVE_TODOS })}
+              className={classNames({ selected: navMenuType === ACTIVE_TODOS })}
               onClick={() => {
                 dispatch(activeTodosAction());
               }}
@@ -89,7 +83,7 @@ export const NavMenuTodo: React.FC<NavMenuTodo> = ({ todosList, setTodosList }) 
           <li>
             <a
               href="#/completed"
-              className={classNames({ selected: navMenyType === COMPLETED_TODOS })}
+              className={classNames({ selected: navMenuType === COMPLETED_TODOS })}
               onClick={() => {
                 dispatch(completedTodosAction());
               }}

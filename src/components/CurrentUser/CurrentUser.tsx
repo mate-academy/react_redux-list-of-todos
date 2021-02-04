@@ -1,41 +1,33 @@
 import React, { useEffect } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useSelector } from 'react-redux';
 import { fetchUser } from '../../api/api';
-import { RooTStateT } from '../../api/interface';
 import {
   getCurrentUser,
   getCurrentUserError,
-  getCurrentUserPending,
-  getTodosListUserId,
+  getCurrentUserId,
 } from '../../store';
 import './CurrentUser.scss';
-
-const mapStateToProps = (state: RooTStateT) => ({
-  userId: getTodosListUserId(state),
-  pending: getCurrentUserPending(state),
-  error: getCurrentUserError(state),
-  user: getCurrentUser(state),
-});
 
 const mapDispatchToProps = {
   getUserFromServer: fetchUser,
 };
 
 const connector = connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps,
 );
 
 type PropsUser = ConnectedProps<typeof connector>;
 
 const CurrentUser: React.FC<PropsUser> = ({
-  userId,
-  error,
-  user,
   getUserFromServer,
 }) => {
+  const userId = useSelector(getCurrentUserId);
+  const error = useSelector(getCurrentUserError);
+  const user = useSelector(getCurrentUser);
+
   useEffect(() => {
-    if (userId !== 0) {
+    if (userId) {
       getUserFromServer(userId);
     }
   }, [userId, getUserFromServer]);

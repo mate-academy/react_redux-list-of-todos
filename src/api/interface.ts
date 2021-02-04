@@ -1,6 +1,7 @@
 export type InitialUserStateT = {
   pending: boolean;
   user: USERTYPE;
+  selectedUserId: number;
   error: null | string;
 };
 
@@ -8,8 +9,9 @@ export type InitialTodosStateT = {
   pending: boolean;
   todos: TODOSTYPE[];
   error: null | string;
-  selectedUserId: number;
   selectedTodoId: number;
+  query: string;
+  filteringType: string;
 };
 
 export interface TODOSTYPE {
@@ -26,13 +28,7 @@ export interface USERTYPE {
   phone: string;
 }
 
-export interface NavType {
-  query: string;
-  filteringType: string;
-}
-
 export interface RooTStateT {
   todosState: InitialTodosStateT;
   userState: InitialUserStateT;
-  navMenuState: NavType;
 }
