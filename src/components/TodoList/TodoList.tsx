@@ -71,7 +71,7 @@ const TodoList: React.FC<Props> = ({
                         <button
                           className="
                             TodoList__user-button
-                            TodoList__user-button--remove
+                            TodoList__user-button--update
                             button
                           "
                           type="button"
@@ -79,7 +79,7 @@ const TodoList: React.FC<Props> = ({
                             setTodoId(todo.id);
                           }}
                         >
-                          Remove
+                          Update
                         </button>
 
                         <button
