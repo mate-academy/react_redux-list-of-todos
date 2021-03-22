@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
 import { ErrorWarningProps } from '../typesDef';
 
-export const ErrorWarning: FC<ErrorWarningProps> = ({ data, solution }) => {
+export const ErrorWarning: FC<ErrorWarningProps> = ({
+  data, solution
+}) => {
 
   return (
     <div

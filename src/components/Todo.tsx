@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUserInfo, setIsUserSelected, stateTodos, setTodos } from '../store';
 import { TodoProps} from '../typesDef';
-
 import cn from 'classnames';
 
 export const Todo: FC<TodoProps> = ({ todo }) => {

@@ -28,11 +28,9 @@ export type USER = {
   updatedAt?: string,
 }
 
-
 export type TodoProps = {
   todo: TODO,
 }
-
 export type ErrorWarningProps = {
   data: string;
   solution: string,

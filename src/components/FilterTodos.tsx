@@ -50,7 +50,9 @@ export const FilterTodos = () => {
           <select
             className="custom-select"
             id="inputGroupSelect01"
-            onChange={(event) => dispatch(changeSelector(event.target.value))}
+            onChange={(event) => (
+              dispatch(changeSelector(event.target.value))
+            )}
           >
             <option value={ALL}>All</option>
             <option value={ACTIVE}>Active</option>
