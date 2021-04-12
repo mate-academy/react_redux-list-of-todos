@@ -1,25 +1,47 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
-
+import { Filters } from './components/Filters';
+import { UserInfo } from './components/UserInfo';
+import { TodoList } from './components/TodoList';
+import { ErrorOnLoad } from './components/ErrorOnLoad';
+import { NoUserSelected } from './components/NoUserSelected';
+import {
+  getTodosfromServer, isErrorTodo, setQuery, isErrorUser,
+} from './store';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+  const isTodosLoadError = useSelector(isErrorTodo);
+  const isUserLoadError = useSelector(isErrorUser);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const queryFromURL = searchParams.get('query') || '';
+
+  const fetchTodos = () => {
+    return dispatch(getTodosfromServer());
+  };
+
+  useEffect(() => {
+    dispatch(setQuery(queryFromURL));
+    fetchTodos();
+  }, []);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      <div className="App__sidebar">
+        <h1>Redux list of todos</h1>
+        {isUserLoadError === false
+          ? (<UserInfo />)
+          : <NoUserSelected />}
+        <Filters />
+        { isTodosLoadError === false
+          ? <TodoList />
+          : <ErrorOnLoad /> }
+      </div>
     </div>
   );
 };
