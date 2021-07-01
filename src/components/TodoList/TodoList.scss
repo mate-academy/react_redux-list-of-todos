@@ -1,0 +1,49 @@
+.TodoList {
+  width: 100%;
+
+  &__button-wrapper {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 5px;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+  }
+
+  &__item--checked {
+    background-color: #cde4e4;
+    color: #459595;
+  }
+
+  &__item--unchecked {
+    background-color: #ffe0db;
+    color: #ff3626;
+  }
+}
+
+.sorting-input {
+  box-sizing: content-box;
+  margin-right: 10px;
+  padding: 5px 10px;
+  width: 200px;
+  height: 25px;
+  border: 1px solid black;
+}
+
+.randomize-active {
+  background-color: #ff342691;
+}
+
+.randomize-inactive {
+  background-color: #76ff2691;
+}
