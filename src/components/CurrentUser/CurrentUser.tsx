@@ -45,8 +45,8 @@ export const CurrentUser: FC = () => {
       <div className="CurrentUser">
         <h2 className="CurrentUser__title">
           <span>
-            Selected user:
-            {user.id}
+            Selected user with ID
+            {` ${user.id}`}
           </span>
         </h2>
   
