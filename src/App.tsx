@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import './App.scss';
 
-import { getTodosFromServer, isErrorUser } from './store'; // isLoading
+import { getTodosFromServer, isUserSelected, startLoading } from './store';
 
 import { TodoList } from './components/TodoList';
 import { Filters } from './components/Filters';
@@ -11,19 +11,17 @@ import { CurrentUser } from './components/CurrentUser';
 
 
 const App = () => {
-  // const loading = useSelector(isLoading);
-  // const message = useSelector(getMessage) || 'Ready!';
 
   const dispatch = useDispatch();
 
-  const isUserLoadError: boolean = useSelector(isErrorUser);
+  const userSelected: boolean = useSelector(isUserSelected);
 
   const fetchTodos = () => {
+    dispatch(startLoading(true));
     return dispatch(getTodosFromServer());
   };
 
   useEffect(() => {
-    console.log('useEffect App', isUserLoadError);
     fetchTodos();
   }, []);
 
@@ -36,10 +34,10 @@ const App = () => {
       <div className="App__columns">        
         <TodoList />
 
-        {isUserLoadError === false ? (
+        {userSelected ? (
           <CurrentUser />
         ) : 
-          <p className="warning pl-30">No user selected</p>}
+          <p className="info pl-30">No user selected</p>}
       </div>
     </div>
   );

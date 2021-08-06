@@ -1,71 +1,69 @@
 import React, { useEffect, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-// import PropTypes from 'prop-types';
-import { User } from '../../types'; // User, RootState
+import { User } from '../../types';
 
 import {
   getUserId,
+  isUserError,
+  setUserSelected,
   getUserFromServer,
   getUserInfo,
   setUser
 } from '../../store';
 import './CurrentUser.scss';
 
-// export const CurrentUser: FC<PropState> = ({ userId }) => {
-  export const CurrentUser: FC = () => {
+export const CurrentUser: FC = () => {
 
-  // const id = userId;
   const dispatch = useDispatch();
 
   const user: User = useSelector(getUserInfo);
   const userId: number = useSelector(getUserId);
+  const isUserLoadError: boolean = useSelector(isUserError);
 
   const fetchUserData = () => {
-    console.log('getUserFromServer', userId);
     return dispatch(getUserFromServer(userId));
   };
 
   useEffect(() => {
-    // console.log('useEffect CurrentUser', userId);
-    console.log('useEffect 3');
     if (userId && userId > 0) {
       fetchUserData();
-      console.log('useEffect 3', user);
     }
   }, [userId]);
 
   const clearUser = () => {
     dispatch(setUser({}));
+    dispatch(setUserSelected(false));
   }
 
-  return (
-    <div className="CurrentUser">
-      <h2 className="CurrentUser__title">
-        <span>
-          Selected user:
-          {user.id}
-        </span>
-      </h2>
-
-      <h3 className="CurrentUser__name">{user.name}</h3>
-      <p className="CurrentUser__email">{user.email}</p>
-      <p className="CurrentUser__phone">{user.phone}</p>
-
-      <div className="CurrentUser__buttons">
-        <button
-          type="button"
-          className="button"
-          onClick={clearUser}
-        >
-          Clear user
-        </button>
+  if (isUserLoadError || user === null) {
+    return (
+      <p className="warning pl-30">Loading user data has failed.</p>
+    )
+  } else {
+    return (
+      <div className="CurrentUser">
+        <h2 className="CurrentUser__title">
+          <span>
+            Selected user:
+            {user.id}
+          </span>
+        </h2>
+  
+        <h3 className="CurrentUser__name">{user.name}</h3>
+        <p className="CurrentUser__email">{user.email}</p>
+        <p className="CurrentUser__phone">{user.phone}</p>
+  
+        <div className="CurrentUser__buttons">
+          <button
+            type="button"
+            className="button"
+            onClick={clearUser}
+          >
+            Clear user
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
-
-//onClick={/*user.clearUser*/}
-// CurrentUser.propTypes = {
-//   userId: PropTypes.number.isRequired,
-// };

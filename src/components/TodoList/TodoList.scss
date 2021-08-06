@@ -1,6 +1,11 @@
 @import '../../styles/config/mixins';
 
 .TodoList {
+  padding-right: 15px;
+  max-height: 350px;
+  overflow: auto;
+  @include scrollbar(8px, #6f6897, #d6d6d6);
+
   &__user-button--selected {
     background-color: #4d457b;
   }
@@ -40,6 +45,7 @@
 
   @media screen and (min-width: 768px) {
     min-width: 410px;
+    max-height: calc(100vh - 210px);
   }
 
   @media screen and (min-width: 991px) {
@@ -48,12 +54,5 @@
     &__list label {
       margin-right: 20px;
     }
-  }
-
-  @media screen and (max-width: 991px) {
-    padding-right: 15px;
-    max-height: 350px;
-    overflow: auto;
-    @include scrollbar(8px, #6f6897, #d6d6d6);
   }
 }

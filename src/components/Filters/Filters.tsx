@@ -24,7 +24,6 @@ export const Filters = () => {
         value={searchQuery}
         placeholder="filter todos"
         onChange={(e) => {
-          console.log(e.target.value);
           dispatch(setSearchQuery(e.target.value));
         }}
       />
@@ -33,7 +32,6 @@ export const Filters = () => {
         name="filterStatus"
         value={filterStatus}
         onChange={(e) => {
-          console.log(e.target.value);
           dispatch(setFilterStatus(e.target.value));
         }}
       >

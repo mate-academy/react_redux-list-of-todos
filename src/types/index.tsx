@@ -26,15 +26,11 @@ export type RootState = {
   todos: Todo []|[];
   user: User | Record<string|number, never>;
   userId: number;
-  isErrorTodo: boolean;
-  isErrorUser: boolean,
-  errorText: string,
-  userErrorText: string,
+  isErrorSelected: boolean,
+  isUserError: boolean,
   searchQuery: string,
   filterStatus: string;
-  // todosStatusChanged: boolean;
   loading: boolean;
-  message: string;
 };
 
 export interface Filter {
