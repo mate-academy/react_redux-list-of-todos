@@ -34,7 +34,7 @@ export const setFilterStatus = (filterStatus: string) => ({ type: SET_FILTER_STA
 // Selectors - a function receiving Redux state and returning some data from it
 export const isLoading = (state: RootState) => state.loading;
 export const isUserError = (state: RootState) => state.isUserError;
-export const isUserSelected = (state: RootState) => state.isErrorSelected;
+export const isUserSelected = (state: RootState) => state.isUserSelected;
 export const getListOfTodos = (state: RootState) => state.todos;
 export const getTodoStatus = (state: RootState) => state.todos;
 export const getUserId = (state: RootState) => state.userId;
@@ -103,7 +103,7 @@ const initialState: RootState = {
   todos: [],
   user: {},
   userId: 0,
-  isErrorSelected: false,
+  isUserSelected: false,
   isUserError: false,
   searchQuery: '',
   filterStatus: '',
@@ -160,11 +160,10 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     case SET_USER_SELECTED:
       return {
         ...state,
-        isErrorSelected: action.value,
+        isUserSelected: action.value,
       };
 
     case SET_USER_ERROR:
-      console.log(action.value);
       return {
         ...state,
         isUserError: action.value,

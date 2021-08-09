@@ -36,7 +36,7 @@ export const CurrentUser: FC = () => {
     dispatch(setUserSelected(false));
   }
 
-  if (isUserLoadError || user === null) {
+  if (isUserLoadError) {
     return (
       <p className="warning pl-30">Loading user data has failed.</p>
     )
