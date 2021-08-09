@@ -36,7 +36,7 @@ export const CurrentUser: FC = () => {
     dispatch(setUserSelected(false));
   }
 
-  if (isUserLoadError) {
+  if (!user || isUserLoadError) {
     return (
       <p className="warning pl-30">Loading user data has failed.</p>
     )
@@ -50,9 +50,15 @@ export const CurrentUser: FC = () => {
           </span>
         </h2>
   
-        <h3 className="CurrentUser__name">{user.name}</h3>
-        <p className="CurrentUser__email">{user.email}</p>
-        <p className="CurrentUser__phone">{user.phone}</p>
+        {(user.name && user.email) ? (
+          <>
+            <h3 className="CurrentUser__name">{user.name}</h3>
+            <p className="CurrentUser__email">{user.email}</p>
+            <p className="CurrentUser__phone">{user.phone}</p>
+          </>
+        ) : (
+          <p className="info pl-30">This user has not enough details.</p>
+        )}
   
         <div className="CurrentUser__buttons">
           <button
