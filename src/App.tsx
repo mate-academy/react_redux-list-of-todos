@@ -1,25 +1,44 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
 
-import { isLoading, getMessage } from './store';
+import { getTodosFromServer, isUserSelected, setLoading } from './store';
+
+import { TodoList } from './components/TodoList';
+import { Filters } from './components/Filters';
+import { CurrentUser } from './components/CurrentUser';
 
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+
+  const dispatch = useDispatch();
+
+  const userSelected: boolean = useSelector(isUserSelected);
+
+  const fetchTodos = () => {
+    dispatch(setLoading(true));
+    return dispatch(getTodosFromServer());
+  };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      <Filters />
+
+      <div className="App__columns">        
+        <TodoList />
+
+        {userSelected ? (
+          <CurrentUser />
+        ) : 
+          <p className="info pl-30">No user selected</p>}
+      </div>
     </div>
   );
 };

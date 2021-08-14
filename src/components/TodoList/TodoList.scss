@@ -1,0 +1,58 @@
+@import '../../styles/config/mixins';
+
+.TodoList {
+  padding-right: 15px;
+  max-height: 350px;
+  overflow: auto;
+  @include scrollbar(8px, #6f6897, #d6d6d6);
+
+  &__user-button--selected {
+    background-color: #4d457b;
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 5px;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+    }
+    label {
+      margin-right: 10px;
+    }
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+  }
+
+  &__item--checked {
+    background-color: #cde4e4;
+    color: #459595;
+  }
+
+  &__item--unchecked {
+    background-color: #ffe0db;
+    color: #ff3626;
+  }
+
+  @media screen and (min-width: 768px) {
+    min-width: 410px;
+    max-height: calc(100vh - 210px);
+  }
+
+  @media screen and (min-width: 991px) {
+    min-width: 620px;
+
+    &__list label {
+      margin-right: 20px;
+    }
+  }
+}

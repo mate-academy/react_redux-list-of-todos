@@ -1,0 +1,54 @@
+// MIXINS
+
+// Generalize input styles
+@mixin input-styles($styles, $cl, $states: ()) {
+  $elems: 'input', 'select', 'textarea';
+  $list: ();
+  @each $elem in $elems {
+    $list: append($list, unquote('#{$elem}:#{$cl}'), comma);
+    @each $state in $states {
+      $list: append($list, unquote('#{$elem}:#{$cl}:#{$state}'), comma);
+    }
+  }
+  #{$list} {
+    @extend #{$styles};
+  }
+}
+
+// Placeholders
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+  &::-moz-input-placeholder {
+    @content;
+  }
+  &::-ms-input-placeholder {
+    @content;
+  }
+  &::placeholder {
+    @content;
+  }
+}
+
+@mixin scrollbar($track-width, $bg-thumb, $bg-track: rgba(0,0,0,.25)) {
+  // For Google Chrome
+  &::-webkit-scrollbar {
+    width: $track-width;
+    background: $bg-track;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $bg-thumb;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $bg-track;
+  }
+
+  // For Internet Explorer
+  & {
+    scrollbar-face-color: $bg-thumb;
+    scrollbar-track-color: $bg-track;
+  }
+}

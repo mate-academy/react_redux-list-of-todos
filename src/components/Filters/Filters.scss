@@ -1,0 +1,35 @@
+
+@import '../../styles/config/mixins';
+
+.TodoList__list-filters {
+  margin-bottom: 15px;
+  padding: 15px 0;
+
+  input, select, .button {
+    margin-right: 15px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 10px;
+    border: 1px solid #e9e6f2;
+    &:focus, &:focus-visible {
+      outline: none;
+    }
+  }
+  input {
+    padding: 7px 12px;
+    color: #4d457b;
+    @include placeholder {
+      font-family: 'Roboto', sans-serif;
+      color: #4d457b;
+    }
+  }
+  select {
+    padding: 5px 8px;
+    color: #4d457b;
+    background-color: transparent;
+  }
+  .button {
+    padding: 7px 12px;
+    color: #fff;
+  }
+}
