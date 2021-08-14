@@ -67,9 +67,7 @@ export const TodoList = () => {
         <div className="TodoList__container">
           <ul className="TodoList__list">
             {sortedTodos.map((todo: Todo) => (
-              <li
-                key={todo.id}
-              >
+              <li key={todo.id}>
                 <label>
                   <input
                     type="checkbox"
