@@ -12,7 +12,6 @@ export type Todos = {
 };
 
 export interface User {
-  id?: number,
   name?: string,
   username?: string,
   email?: string,
@@ -23,8 +22,8 @@ export interface User {
 }
 
 export type RootState = {
-  todos: Todo []|[];
-  user: User | Record<string|number, never>;
+  todos: Todo[];
+  user: User | null;
   userId: number;
   isUserSelected: boolean,
   isUserError: boolean,

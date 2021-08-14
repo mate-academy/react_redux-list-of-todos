@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import './App.scss';
 
-import { getTodosFromServer, isUserSelected, startLoading } from './store';
+import { getTodosFromServer, isUserSelected } from './store';
+import { setLoading } from './store/loadingReducer';
 
 import { TodoList } from './components/TodoList';
 import { Filters } from './components/Filters';
@@ -17,7 +18,7 @@ const App = () => {
   const userSelected: boolean = useSelector(isUserSelected);
 
   const fetchTodos = () => {
-    dispatch(startLoading(true));
+    dispatch(setLoading(true));
     return dispatch(getTodosFromServer());
   };
 

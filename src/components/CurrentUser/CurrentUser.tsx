@@ -5,7 +5,6 @@ import { User } from '../../types';
 
 import {
   getUserId,
-  isUserError,
   setUserSelected,
   getUserFromServer,
   getUserInfo,
@@ -17,9 +16,8 @@ export const CurrentUser: FC = () => {
 
   const dispatch = useDispatch();
 
-  const user: User = useSelector(getUserInfo);
+  const user: User | null = useSelector(getUserInfo);
   const userId: number = useSelector(getUserId);
-  const isUserLoadError: boolean = useSelector(isUserError);
 
   const fetchUserData = () => {
     return dispatch(getUserFromServer(userId));
@@ -32,11 +30,11 @@ export const CurrentUser: FC = () => {
   }, [userId]);
 
   const clearUser = () => {
-    dispatch(setUser({}));
+    dispatch(setUser(null));
     dispatch(setUserSelected(false));
   }
 
-  if (!user || isUserLoadError) {
+  if (!user) {
     return (
       <p className="warning pl-30">Loading user data has failed.</p>
     )
@@ -45,8 +43,7 @@ export const CurrentUser: FC = () => {
       <div className="CurrentUser">
         <h2 className="CurrentUser__title">
           <span>
-            Selected user with ID
-            {` ${user.id}`}
+            {`Selected user with ID ${userId}`}
           </span>
         </h2>
   
