@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Todo } from '../../types';
 
 import {
-  isLoading,
   getListOfTodos,
   setTodosChangedStatus,
   updateTodoStatus,
@@ -12,6 +11,7 @@ import {
   getSearchQuery,
   getFilterStatus
 } from '../../store';
+import { isLoading } from '../../store/loading';
 
 import { filters } from '../../helpers';
 
@@ -45,9 +45,17 @@ export const TodoList = () => {
     }
   }
 
-  const filteredTodos = todos
-    .filter(filterByQuery)
-    .filter(filterByStatus);
+  const filteredTodos = useMemo(() => {
+    if (!searchQuery.length) {
+      return todos;
+    }
+
+    return todos.filter(filterByQuery);
+  }, [todos, searchQuery]);
+
+  const sortedTodos = useMemo(() => {
+    return filteredTodos.filter(filterByStatus);
+  }, [filteredTodos, filterStatus]);
 
   return (
     <div className="TodoList">
@@ -58,7 +66,7 @@ export const TodoList = () => {
       ) : (
         <div className="TodoList__container">
           <ul className="TodoList__list">
-            {filteredTodos.map((todo: Todo) => (
+            {sortedTodos.map((todo: Todo) => (
               <li
                 key={todo.id}
               >

@@ -1,12 +1,10 @@
-import { createStore, combineReducers, AnyAction, Dispatch, applyMiddleware } from 'redux';
+import { createStore, AnyAction, Dispatch, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { getTodos, getUser, updateTodo } from '../api';
 import { Todo, RootState, User } from '../types';
-
-import { loadingReducer } from './loadingReducer';
-import { setLoading } from './loadingReducer';
+import { SET_LOADING } from './loading';
 
 // Action types - is just a constant. MUST have a unique value.
 const GET_TODOS = 'GET_TODOS';
@@ -20,6 +18,7 @@ const SET_TODOS_CHANGED_STATUS = 'SET_TODOS_CHANGED_STATUS';
 const UPDATE_TODO_ITEM = 'UPDATE_TODO_ITEM';
 
 // Action creators - a function returning an action object
+export const setLoading = (loading: boolean) => ({ type: SET_LOADING, value: loading });
 export const setTodos = (todos: Todo[]) => ({ type: GET_TODOS, value: todos });
 export const setTodosChangedStatus = (status: boolean) => ({ type: SET_TODOS_CHANGED_STATUS, value: status });
 export const updateTodoStatus = (id: number) => ({ type: UPDATE_TODO_ITEM, value: id });
@@ -31,7 +30,6 @@ export const setSearchQuery = (searchQuery: string) => ({ type: SET_SEARCH_QUERY
 export const setFilterStatus = (filterStatus: string) => ({ type: SET_FILTER_STATUS, value: filterStatus });
 
 // Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
 export const isUserError = (state: RootState) => state.isUserError;
 export const isUserSelected = (state: RootState) => state.isUserSelected;
 export const getListOfTodos = (state: RootState) => state.todos;
@@ -43,7 +41,7 @@ export const getFilterStatus = (state: RootState) => state.filterStatus;
 
 export const getTodosFromServer = () => {
   return (dispatch: Dispatch) => {
-    console.log('loading', store.getState().loading);
+
     getTodos()
       .then(todos => {
         dispatch(setTodos(todos.data));
@@ -53,7 +51,6 @@ export const getTodosFromServer = () => {
       })
       .finally(() => {
         dispatch(setLoading(false));
-        console.log('loading', store.getState().loading);
       });
   };
 };
@@ -134,11 +131,11 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         todos: updateTodoItem(state.todos, action.value),
       };
 
-    // case SET_LOADING:
-    //   return {
-    //     ...state,
-    //     loading: action.value
-    //   };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: action.value
+      };
     
     case SET_USERID:
       return {
@@ -180,14 +177,10 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return state;
   }
 };
-const reducers = combineReducers({
-  loading: loadingReducer,
-  rootReducer: rootReducer,
-});
 
 // The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
-  reducers,
+  rootReducer,
   composeWithDevTools(applyMiddleware(thunk)),
 );
 

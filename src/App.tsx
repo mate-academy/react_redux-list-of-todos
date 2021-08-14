@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import './App.scss';
 
-import { getTodosFromServer, isUserSelected } from './store';
-import { setLoading } from './store/loadingReducer';
+import { getTodosFromServer, isUserSelected, setLoading } from './store';
 
 import { TodoList } from './components/TodoList';
 import { Filters } from './components/Filters';

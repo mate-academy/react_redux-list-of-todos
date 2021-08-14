@@ -32,6 +32,4 @@ export type RootState = {
   loading: boolean;
 };
 
-export interface Filter {
-  [key: string]: string;
-}
+export type Filter = Record<string, string>;
