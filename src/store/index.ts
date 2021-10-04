@@ -1,40 +1,137 @@
-import { createStore, AnyAction } from 'redux';
+import { createStore, AnyAction, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+import { getTodos, getUser } from '../api/api';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+const ADD_TODOS = 'ADD_TODOS';
+const SET_FILTER_QUERY = 'SET_FILTER_QUERY';
+const TYPE_TODOS = 'TYPE_TODOS';
+const SELECTED_USER_ID = 'SELECTED_USER_ID';
+const ACTIVE_TODO_ID = 'ACTIVE_TODO_ID';
+const COMPLETED_TODO = 'COMPLETED_TODO';
+const DELETE_TODO = 'DELETE_TODO';
+const SHOW_DETAILS_USER = 'SHOW_DETAILS_USER';
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const setTodos = () => (dispatch: any) => {
+  getTodos()
+    .then(todos => {
+      dispatch({
+        type: ADD_TODOS,
+        payload: todos,
+      });
+    });
+};
 
-// Initial state
-export type RootState = {
-  loading: boolean;
-  message: string;
+export const setFilterQuery = (value: string) => ({
+  type: SET_FILTER_QUERY,
+  payload: value,
+});
+
+export const setTypeTodos = (type: string) => ({
+  type: TYPE_TODOS,
+  payload: type,
+});
+
+export const setUserId = (value: number) => ({
+  type: SELECTED_USER_ID,
+  payload: value,
+});
+
+export const setActiveTodoId = (value: number) => ({
+  type: ACTIVE_TODO_ID,
+  payload: value,
+});
+
+export const setCompletedTodo = (value: boolean, id: number) => ({
+  type: COMPLETED_TODO,
+  payload: {
+    value,
+    id,
+  },
+});
+
+export const deleteTodo = (id: number) => ({
+  type: DELETE_TODO,
+  payload: id,
+});
+
+export const setUserDetails = (userId: number) => (dispatch: any) => {
+  getUser(userId)
+    .then(user => {
+      dispatch({
+        type: SHOW_DETAILS_USER,
+        payload: user,
+      });
+    });
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  todos: [],
+  selectedUserId: 0,
+  activeTodoId: 0,
+  filterQuery: '',
+  typeOfTodos: 'all',
+  user: null,
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
+    case ADD_TODOS:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        todos: action.payload,
+      };
+
+    case SET_FILTER_QUERY:
+      return {
+        ...state,
+        filterQuery: action.payload,
+      };
+
+    case TYPE_TODOS:
+      return {
+        ...state,
+        typeOfTodos: action.payload,
+      };
+
+    case SELECTED_USER_ID:
+      return {
+        ...state,
+        selectedUserId: action.payload,
+      };
+
+    case ACTIVE_TODO_ID:
+      return {
+        ...state,
+        activeTodoId: action.payload,
+      };
+
+    case COMPLETED_TODO:
+      return {
+        ...state,
+        todos: state.todos.map(todo => {
+          if (todo.id === action.payload.id) {
+            return {
+              ...todo,
+              completed: action.payload.value,
+            };
+          }
+
+          return todo;
+        }),
+      };
+
+    case DELETE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter(({ id }) => id !== action.payload),
+      };
+
+    case SHOW_DETAILS_USER:
+      return {
+        ...state,
+        user: action.payload,
       };
 
     default:
@@ -42,10 +139,9 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(applyMiddleware(thunk)),
 );
 
 export default store;
