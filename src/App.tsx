@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -8,6 +8,8 @@ import {
   setUserId,
   setActiveTodoId,
   setCompletedTodo,
+  changeTheOrderOfTodos,
+  filterTodos,
 } from './store';
 
 import { TodoList } from './components/TodoList';
@@ -18,16 +20,11 @@ import './App.scss';
 const App: React.FC = () => {
   const dispatch = useDispatch();
   const {
-    todos,
+    visualizedTodos,
     typeOfTodos,
     filterQuery,
     selectedUserId,
   } = useSelector((state: RootState) => state);
-  const [visualizedTodos, setVisualizedTodos] = useState<Todo[]>([]);
-
-  useEffect(() => {
-    setVisualizedTodos(todos);
-  }, [todos]);
 
   useEffect(() => {
     dispatch(setTodos());
@@ -55,32 +52,11 @@ const App: React.FC = () => {
   const handleShuffleTodos = (event: React.MouseEvent) => {
     event.preventDefault();
 
-    setVisualizedTodos([...visualizedTodos]
-      .sort(() => Math.random() - 0.5));
+    dispatch(changeTheOrderOfTodos());
   };
 
   useEffect(() => {
-    let newTodos;
-
-    switch (typeOfTodos) {
-      case 'active':
-        newTodos = todos.filter(({ completed }) => !completed);
-        break;
-
-      case 'completed':
-        newTodos = todos.filter(({ completed }) => completed);
-        break;
-
-      default:
-        newTodos = todos;
-        break;
-    }
-
-    const lowerQuery = filterQuery.toLowerCase();
-
-    setVisualizedTodos(newTodos
-      .filter(({ title }) => title?.toLowerCase()
-        .includes(lowerQuery)));
+    dispatch(filterTodos({ typeOfTodos, filterQuery }));
   }, [typeOfTodos, filterQuery]);
 
   return (

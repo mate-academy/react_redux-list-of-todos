@@ -12,6 +12,8 @@ const ACTIVE_TODO_ID = 'ACTIVE_TODO_ID';
 const COMPLETED_TODO = 'COMPLETED_TODO';
 const DELETE_TODO = 'DELETE_TODO';
 const SHOW_DETAILS_USER = 'SHOW_DETAILS_USER';
+const CHANGE_THE_ORDER_OF_TODOS = 'CHANGE_THE_ORDER_OF_TODOS';
+const FILTER_TODOS = 'FILTER_TODOS';
 
 export const setTodos = () => (dispatch: any) => {
   getTodos()
@@ -66,8 +68,16 @@ export const setUserDetails = (userId: number) => (dispatch: any) => {
     });
 };
 
+export const changeTheOrderOfTodos = () => ({ type: CHANGE_THE_ORDER_OF_TODOS });
+
+export const filterTodos = (filter: Filter) => ({
+  type: FILTER_TODOS,
+  payload: filter,
+});
+
 const initialState: RootState = {
-  todos: [],
+  startTodos: [],
+  visualizedTodos: [],
   selectedUserId: 0,
   activeTodoId: 0,
   filterQuery: '',
@@ -80,7 +90,8 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     case ADD_TODOS:
       return {
         ...state,
-        todos: action.payload,
+        startTodos: action.payload,
+        visualizedTodos: action.payload,
       };
 
     case SET_FILTER_QUERY:
@@ -107,25 +118,39 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         activeTodoId: action.payload,
       };
 
-    case COMPLETED_TODO:
+    case COMPLETED_TODO: {
+      const isCompleted = state.typeOfTodos === 'completed';
+
+      const completedTodos = state.visualizedTodos.map(todo => {
+        if (todo.id === action.payload.id) {
+          return {
+            ...todo,
+            completed: action.payload.value,
+          };
+        }
+
+        return todo;
+      });
+
+      if (state.typeOfTodos === 'all') {
+        return {
+          ...state,
+          visualizedTodos: completedTodos,
+        };
+      }
+
       return {
         ...state,
-        todos: state.todos.map(todo => {
-          if (todo.id === action.payload.id) {
-            return {
-              ...todo,
-              completed: action.payload.value,
-            };
-          }
-
-          return todo;
-        }),
+        visualizedTodos: completedTodos
+          .filter(({ completed }) => completed === isCompleted),
       };
+    }
 
     case DELETE_TODO:
       return {
         ...state,
-        todos: state.todos.filter(({ id }) => id !== action.payload),
+        startTodos: state.startTodos.filter(({ id }) => id !== action.payload),
+        visualizedTodos: state.visualizedTodos.filter(({ id }) => id !== action.payload),
       };
 
     case SHOW_DETAILS_USER:
@@ -133,6 +158,34 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         ...state,
         user: action.payload,
       };
+
+    case CHANGE_THE_ORDER_OF_TODOS:
+      return {
+        ...state,
+        visualizedTodos: [...state.visualizedTodos]
+          .sort(() => Math.random() - 0.5),
+      };
+
+    case FILTER_TODOS: {
+      const filteredTodos = state.startTodos
+        .filter(({ title }) => title.toLowerCase()
+          .includes(action.payload.filterQuery.toLowerCase()));
+
+      const isCompleted = action.payload.typeOfTodos === 'completed';
+
+      if (action.payload.typeOfTodos === 'all') {
+        return {
+          ...state,
+          visualizedTodos: filteredTodos,
+        };
+      }
+
+      return {
+        ...state,
+        visualizedTodos: filteredTodos
+          .filter(({ completed }) => completed === isCompleted),
+      };
+    }
 
     default:
       return state;

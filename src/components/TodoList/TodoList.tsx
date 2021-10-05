@@ -97,7 +97,7 @@ export const TodoList: React.FC<Props> = ({
                 </p>
               </label>
 
-              <div>
+              <div className="button_box">
                 <button
                   className={cn(
                     { 'TodoList__user-button': activeTodoId !== id },
@@ -111,7 +111,10 @@ export const TodoList: React.FC<Props> = ({
                   {userId}
                 </button>
                 <DeleteIcon
-                  style={{ cursor: 'pointer' }}
+                  style={{
+                    cursor: 'pointer',
+                    marginLeft: '10px',
+                  }}
                   onClick={() => handleDeleteTodo(id)}
                 />
               </div>

@@ -22,10 +22,16 @@ type User = {
 };
 
 type RootState = {
-  todos: Todo[],
+  startTodos: Todo[],
+  visualizedTodos: Todo[],
   selectedUserId: number,
   activeTodoId: number,
   filterQuery: string,
   typeOfTodos: string,
   user: null | User,
 };
+
+type Filter = {
+  typeOfTodos: string,
+  filterQuery: string,
+}
