@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import className from 'classnames';
 import {
-  todosFetchData, addInput, addSelect, chooseUserId,
+  todosFetchData, addInput, addSelect, chooseUserId, deleteTodo,
 } from '../../store/todos/actionTodos';
 
 export const TodoList: React.FC<{}> = () => {
@@ -65,36 +65,21 @@ export const TodoList: React.FC<{}> = () => {
                 >
                   {`User#${userId}`}
                 </button>
+
+                <button
+                  className="TodoList__user-button button"
+                  type="button"
+                  onClick={() => {
+                    dispatch(deleteTodo(id));
+                  }}
+                >
+                  Delete
+                </button>
               </li>
             );
           })}
         </ul>
       </div>
     </div>
-
-  // <div className="TodoList">
-  //   <h2>Todos:</h2>
-  //   <input
-  //     type="text"
-  //     value={input}
-  //     onChange={event => dispatch(addInput(event.target.value))}
-  //   />
-  //   <select
-  //     value={select}
-  //     onChange={event => dispatch(addSelect(event.target.value))}
-  //   >
-  //     <option value="all">All</option>
-  //     <option value="active">Active</option>
-  //     <option value="completed">Completed</option>
-
-  //   </select>
-  //   {todosToRender.length > 0 && (
-  //     todosToRender.map((item: Todo) => {
-  //       return (
-  //         <div key={item.id}>{item.title}</div>
-  //       );
-  //     })
-  //   )}
-  // </div>
   );
 };

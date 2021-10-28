@@ -16,7 +16,7 @@ const App: React.FC = () => {
 
       <div className="App__content">
         <div className="App__content-container">
-          {userId ? (<CurrentUser />) : (<h3>choose</h3>)}
+          {userId ? (<CurrentUser />) : (<h3>Choose a User!</h3>)}
         </div>
       </div>
     </div>

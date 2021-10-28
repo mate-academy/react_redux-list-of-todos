@@ -7,9 +7,6 @@ export const CurrentUser = React.memo(() => {
   const { user } = useSelector((state: Initial) => state.reducerTodos);
   const dispatch = useDispatch();
 
-  // eslint-disable-next-line no-console
-  console.log('current');
-
   return (
     <>
       { user ? (
@@ -27,11 +24,10 @@ export const CurrentUser = React.memo(() => {
             onClick={() => dispatch(holdUser())}
           >
             Hide User
-
           </button>
         </div>
       ) : (
-        <h3>404</h3>
+        <h3>404 Not Found</h3>
       )}
     </>
   );

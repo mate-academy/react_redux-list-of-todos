@@ -55,6 +55,12 @@ export function reducerTodos(state = initialState, action: any) {
         ...state,
         userId: action.userId,
       };
+    case 'deleteTodo':
+      return {
+        ...state,
+        todos: state.todos.filter((todo: Todo) => todo.id !== action.userId),
+        todosToRender: state.todos.filter((todo: Todo) => todo.id !== action.userId),
+      };
     default:
       return state;
   }

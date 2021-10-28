@@ -21,6 +21,13 @@ export function userFetchDataFailed() {
   };
 }
 
+export function deleteTodo(userId: number) {
+  return {
+    type: 'deleteTodo',
+    userId,
+  };
+}
+
 export function todosFetchData(userId?: number) {
   let url = 'todos';
 
