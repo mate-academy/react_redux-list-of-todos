@@ -1,12 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './App.scss';
 import Start from './components/Start';
 import { Finish } from './components/Finish';
 
 import { isLoading, getMessage } from './store';
-
 
 const App = () => {
   const loading = useSelector(isLoading);
