@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles/general.scss';
 
 import './App.scss';
 import { useSelector } from 'react-redux';
