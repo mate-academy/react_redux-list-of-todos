@@ -4,17 +4,15 @@ import axios from 'axios';
 import { IUser } from '../../models/IUser';
 
 type UserState = {
-  user: IUser | null;
+  user: IUser;
   isLoading: boolean;
   error: string;
-  notFound: boolean;
 };
 
 const initialState: UserState = {
-  user: null,
+  user: {} as IUser,
   isLoading: false,
   error: '',
-  notFound: false,
 };
 
 export const getUserById = createAsyncThunk(
