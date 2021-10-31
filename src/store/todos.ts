@@ -76,7 +76,8 @@ const todosReducer = (state = initialState, actions: AnyAction) => {
       return {
         ...state,
         filterSettings: SHOW_ALL,
-        visibleTodos: [...state.todos],
+        visibleTodos: state.todos
+          .filter(todo => todo.title.toLowerCase().includes(actions.payload.toLowerCase())),
       };
     case DELETE_TODO:
       return {
