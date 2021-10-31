@@ -29,7 +29,7 @@ type Todos = {
 const initialState: Todos = {
   todos: [],
   visibleTodos: [],
-  filterSettings: 'all',
+  filterSettings: todosTypeActions.SHOW_ALL,
 };
 
 export const actionCreator = {
