@@ -8,15 +8,8 @@ import './CurrentUser.scss';
 type CurrentUserProps = {};
 
 export const CurrentUser: FC<CurrentUserProps> = () => {
-  const {
-    user: {
-      user,
-      error,
-      isLoading,
-    }, selectedUserId: {
-      selectedUserId,
-    },
-  } = useAppSelector(state => state);
+  const { user, error, isLoading } = useAppSelector(state => state.user);
+  const { selectedUserId } = useAppSelector(state => state.selectedUserId);
 
   const dispatch = useAppDispatch();
 
@@ -37,7 +30,7 @@ export const CurrentUser: FC<CurrentUserProps> = () => {
   return (
     <div className="CurrentUser">
       {
-        selectedUserId ? (
+        user ? (
           <>
             <h2 className="CurrentUser__title"><span>{`Selected user: ${user.id}`}</span></h2>
             <h3 className="CurrentUser__name">{user.name}</h3>
@@ -53,7 +46,7 @@ export const CurrentUser: FC<CurrentUserProps> = () => {
           </>
         ) : (
           <h2 className="CurrentUser__title">
-            <span>Please, select a user</span>
+            <span>Select user</span>
           </h2>
         )
       }
