@@ -11,17 +11,13 @@ import './TodoList.scss';
 type TodoListProps = {};
 
 const TodoList: FC<TodoListProps> = () => {
+  const { todos, error, isLoading } = useAppSelector(state => state.todo);
+  const { selectedUserId } = useAppSelector(state => state.selectedUserId);
+
+  const dispatch = useAppDispatch();
+
   const [filterQuery, setFilterQuery] = useState('');
   const [filterBy, setFilterBy] = useState<string>('all');
-  const dispatch = useAppDispatch();
-  const {
-    todo: {
-      todos, isLoading, error,
-    },
-    selectedUserId: {
-      selectedUserId,
-    },
-  } = useAppSelector(state => state);
 
   const handleUserSelect = useCallback((userId: number) => {
     dispatch(selectUser(userId));
