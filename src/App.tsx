@@ -14,7 +14,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
+      <h1>TEST PR</h1>
       <h2>{loading ? 'Loading...' : message}</h2>
 
       <Start title="Start loading" />
