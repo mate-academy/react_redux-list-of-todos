@@ -1,0 +1,43 @@
+.CurrentUser {
+  &__title {
+    font-size: 1rem;
+    color: white;
+
+    span {
+      background-color: #4d457b;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  }
+
+  &__name {
+    margin: 30px 0 10px;
+    font-size: 1.5rem;
+  }
+
+  &__email,
+  &__phone {
+    color: #c4bdd9;
+    text-align: center;
+    margin: 5px;
+  }
+
+  &__clear {
+    display: block;
+    margin: 20px auto 0;
+  }
+
+  &__button {
+    display: block;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 0 auto;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: #4d457b;
+    border: 0;
+    color: white;
+    transition: background-color 0.12s;
+    font-size: inherit;
+  }
+}
