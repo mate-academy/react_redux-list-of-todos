@@ -102,10 +102,8 @@ class TodoList extends React.Component<Props, State> {
                     readOnly
                     id="title"
                   />
+                  <p>{todo.title}</p>
                 </label>
-                <p>
-                  {todo.title}
-                </p>
 
                 <button
                   type="button"
