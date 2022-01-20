@@ -1,25 +1,45 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { TodoList } from './components/TodoList/TodoList';
+import { CurrentUser } from './components/CurrentUser/CurrentUser';
+import { Form } from './components/Form/Form';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
-
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams() || '';
+  const filterQuery = searchParams.get('filter') || '';
+  const userQuery = searchParams.get('userId') || '';
+  const sortQuery = searchParams.get('sortBy') || '';
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <h1
+        className="App__title"
+      >
+        Redux list of todos
+      </h1>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      <Form
+        searchParams={searchParams}
+        navigate={navigate}
+        sortQuery={sortQuery}
+        filterQuery={filterQuery}
+      />
+
+      <div className="main">
+        <TodoList
+          filterQuery={filterQuery}
+          sortQuery={sortQuery}
+        />
+        {userQuery ? (
+          <CurrentUser
+            userQuery={userQuery}
+            searchParams={searchParams}
+          />
+        ) : (
+          <div className="user">Please choose user</div>
+        )}
+      </div>
     </div>
   );
 };
