@@ -1,0 +1,42 @@
+.todo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px;
+  border-bottom: 1px solid #000;
+
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  &__status {
+    min-width: 20px;
+    margin-right: 15px;
+    height: 1.4em;
+    cursor: pointer;
+  }
+
+  &__text {
+    flex-grow: 7;
+  }
+
+  &__userId {
+    min-width: 30px;
+    height: 20px;
+    padding: 0 5px;
+    border: 1px solid #000;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: rgb(70, 189, 46);
+    }
+  }
+}
+
+.active {
+  background-color: rgb(70, 189, 46);
+}

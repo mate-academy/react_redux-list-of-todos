@@ -1,0 +1,11 @@
+.form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 30px;
+  height: 30px;
+
+  &_select {
+    margin-left: 5px;
+  }
+}
