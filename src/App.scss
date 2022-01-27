@@ -1,0 +1,44 @@
+%stretch-panel {
+  flex-grow: 1;
+  margin: 10px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: white;
+}
+
+button {
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  background-color: #b8b3d2;
+  border: 0;
+  color: white;
+  transition: background-color 0.12s;
+  font-size: inherit;
+}
+
+.App {
+  display: flex;
+  background-color: #e9e6f2;
+  color: #0f37d8;
+  font-family: "Roboto", sans-serif;
+
+  &__sidebar {
+    @extend %stretch-panel;
+
+    flex-basis: 60%;
+  }
+
+  &__content {
+    @extend %stretch-panel;
+
+    flex-basis: 30%;
+    position: relative;
+  }
+
+  &__content-container {
+    position: sticky;
+    top: 20px;
+  }
+}
