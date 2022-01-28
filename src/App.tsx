@@ -1,26 +1,39 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+// import React from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import { fetchTodos } from './asyncActions/todos';
+import TodoList from './components/TodoList/TodoList';
+import User from './components/User/User';
 
-import { isLoading, getMessage } from './store';
+import 'bulma/css/bulma.min.css';
 
+const AppWrapper = styled.div`
+width: 100%;
+min-height: 100vh;
+padding: 2rem;
+background: #ff9063;
+`;
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, []);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
-    </div>
+    <AppWrapper>
+      <div className="App">
+        <h1 className="title">Redux list of todos</h1>
+        <div className="app__content">
+          <TodoList />
+          <User />
+        </div>
+      </div>
+    </AppWrapper>
   );
 };
 
