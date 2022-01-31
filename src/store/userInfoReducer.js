@@ -2,7 +2,7 @@ const defaultState = {
   user: null,
 };
 
-const SHOW_USER_INFO = 'SHOW_USER_INFO';
+export const SHOW_USER_INFO = 'SHOW_USER_INFO';
 
 export const userInfoReducer = (state = defaultState, action) => {
   switch (action.type) {
@@ -15,5 +15,3 @@ export const userInfoReducer = (state = defaultState, action) => {
       return state;
   }
 };
-
-export const userInfoAction = (payload) => ({ type: SHOW_USER_INFO, payload });

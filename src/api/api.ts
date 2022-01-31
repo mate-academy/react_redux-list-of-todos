@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { RootStateOrAny } from 'react-redux';
-import { addTodosAction } from '../store/todosReducer';
-import { userInfoAction } from '../store/userInfoReducer';
+import { addTodosAction, userInfoAction } from '../store/actions';
 
 export const fetchTodos = () => {
   return (dispatch: RootStateOrAny) => {

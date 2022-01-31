@@ -3,13 +3,13 @@ const defaultState = {
   visibleTodos: [],
 };
 
-const ADD_TODOS = 'ADD_TODOS';
+export const ADD_TODOS = 'ADD_TODOS';
 
-const SHOW_ALL_TODOS = 'SHOW_ALL_TODOS';
-const ONLY_ACTIVE_TODOS = 'ONLY_ACTIVE_TODOS';
-const ONLY_COMPLETED_TODOS = 'ONLY_COMPLETED_TODOS';
+export const SHOW_ALL_TODOS = 'SHOW_ALL_TODOS';
+export const ONLY_ACTIVE_TODOS = 'ONLY_ACTIVE_TODOS';
+export const ONLY_COMPLETED_TODOS = 'ONLY_COMPLETED_TODOS';
 
-const FILTER_TODOS_BY = 'FILTER_TODOS_BY';
+export const FILTER_TODOS_BY = 'FILTER_TODOS_BY';
 
 export const todosReducer = (state = defaultState, action) => {
   switch (action.type) {
@@ -44,11 +44,3 @@ export const todosReducer = (state = defaultState, action) => {
       return state;
   }
 };
-
-export const addTodosAction = (payload) => ({ type: ADD_TODOS, payload });
-
-export const showAllTodosActions = () => ({ type: SHOW_ALL_TODOS });
-export const onlyActiveTodosActions = () => ({ type: ONLY_ACTIVE_TODOS });
-export const onlyCompletedTodosActions = () => ({ type: ONLY_COMPLETED_TODOS });
-
-export const filterTodosByActions = (payload) => ({ type: FILTER_TODOS_BY, payload });

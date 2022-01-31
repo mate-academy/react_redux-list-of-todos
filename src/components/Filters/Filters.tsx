@@ -5,7 +5,7 @@ import {
   onlyActiveTodosActions,
   onlyCompletedTodosActions,
   showAllTodosActions,
-} from '../../store/todosReducer';
+} from '../../store/actions';
 
 export const Filters:React.FC = () => {
   const dispatch = useDispatch();

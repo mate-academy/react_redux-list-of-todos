@@ -20,7 +20,7 @@ export const TodoList: React.FC = () => {
           {todos.map(todo => (
             <li
               key={todo.id}
-              className={classNames('TodoList__item', { 'TodoList__item--unchecked': !todo.completed }, { 'TodoList__item--checked': todo.completed })}
+              className={classNames('TodoList__item', { 'TodoList__item--checked': todo.completed })}
             >
               <label htmlFor="#">
                 <input
