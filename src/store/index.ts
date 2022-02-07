@@ -4,12 +4,10 @@ import thunk from 'redux-thunk';
 import { Todo } from '../types/Todo';
 import { User } from '../types/User';
 
-const LOAD_TODOS = 'LOAD_TODOS';
-const SET_USER_ID = 'SET_USER_ID';
-const LOAD_SELECTED_USER = 'LOAD_SELECTED_USER';
-const SET_IS_USER_VALID = 'SET_IS_USER_VALID';
-const SET_FILTER_TITLE = 'SET_FILTER_TITLE';
-const SET_FILTER_STATUS = 'SET_FILTER_STATUS';
+type Action = {
+  type: string,
+  value: any,
+};
 
 export type State = {
   selectedUserId: 0,
@@ -19,6 +17,13 @@ export type State = {
   filterByTitle: string,
   filterByStatus: string,
 };
+
+const LOAD_TODOS = 'LOAD_TODOS';
+const SET_USER_ID = 'SET_USER_ID';
+const LOAD_SELECTED_USER = 'LOAD_SELECTED_USER';
+const SET_IS_USER_VALID = 'SET_IS_USER_VALID';
+const SET_FILTER_TITLE = 'SET_FILTER_TITLE';
+const SET_FILTER_STATUS = 'SET_FILTER_STATUS';
 
 const defaultState: State = {
   todos: [],
@@ -34,40 +39,40 @@ const defaultState: State = {
   filterByStatus: '',
 };
 
-const reducer = (state = defaultState, action: any): State => {
+const reducer = (state = defaultState, action: Action): State => {
   switch (action.type) {
     case LOAD_TODOS:
       return {
         ...state,
-        todos: [...action.payLoad],
+        todos: [...action.value],
       };
 
     case SET_USER_ID:
-      return { ...state, selectedUserId: action.payLoad };
+      return { ...state, selectedUserId: action.value };
 
     case LOAD_SELECTED_USER:
-      return { ...state, selectedUser: { ...action.payLoad } };
+      return { ...state, selectedUser: { ...action.value } };
 
     case SET_IS_USER_VALID:
-      return { ...state, isUserValid: action.payLoad };
+      return { ...state, isUserValid: action.value };
 
     case SET_FILTER_TITLE:
-      return { ...state, filterByTitle: action.payLoad };
+      return { ...state, filterByTitle: action.value };
 
     case SET_FILTER_STATUS:
-      return { ...state, filterByStatus: action.payLoad };
+      return { ...state, filterByStatus: action.value };
 
     default:
       return { ...state };
   }
 };
 
-export const loadSelectedUserAction = (payLoad: User) => ({ type: LOAD_SELECTED_USER, payLoad });
-export const selectUserIdAction = (payLoad: number) => ({ type: SET_USER_ID, payLoad });
-export const loadTodosAction = (payLoad: Todo[]) => ({ type: LOAD_TODOS, payLoad });
-export const isUserValidAction = (payLoad: boolean) => ({ type: SET_IS_USER_VALID, payLoad });
-export const filterByStatusAction = (payLoad: string) => ({ type: SET_FILTER_STATUS, payLoad });
-export const filterByTitleAction = (payLoad: string) => ({ type: SET_FILTER_TITLE, payLoad });
+export const loadSelectedUserAction = (value: User) => ({ type: LOAD_SELECTED_USER, value });
+export const selectUserIdAction = (value: number) => ({ type: SET_USER_ID, value });
+export const loadTodosAction = (value: Todo[]) => ({ type: LOAD_TODOS, value });
+export const isUserValidAction = (value: boolean) => ({ type: SET_IS_USER_VALID, value });
+export const filterByStatusAction = (value: string) => ({ type: SET_FILTER_STATUS, value });
+export const filterByTitleAction = (value: string) => ({ type: SET_FILTER_TITLE, value });
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 

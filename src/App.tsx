@@ -10,9 +10,13 @@ import { Todo } from './types/Todo';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
+
   const todos = useSelector((state: State) => state.todos);
+
   const filterByStatus = useSelector((state: State) => state.filterByStatus);
+
   const filterByTitle = useSelector((state: State) => state.filterByTitle);
+
   const selectedUserId = useSelector((state: State) => state.selectedUserId);
 
   useEffect(() => {
