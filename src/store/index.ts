@@ -1,51 +1,79 @@
-import { createStore, AnyAction } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+import { Todo } from '../types/Todo';
+import { User } from '../types/User';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
-
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
-
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
-
-// Initial state
-export type RootState = {
-  loading: boolean;
-  message: string;
+type Action = {
+  type: string,
+  value: any,
 };
 
-const initialState: RootState = {
-  loading: false,
-  message: '',
+export type State = {
+  selectedUserId: 0,
+  todos: Todo[],
+  selectedUser: User,
+  isUserValid: boolean,
+  filterByTitle: string,
+  filterByStatus: string,
 };
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
+const LOAD_TODOS = 'LOAD_TODOS';
+const SET_USER_ID = 'SET_USER_ID';
+const LOAD_SELECTED_USER = 'LOAD_SELECTED_USER';
+const SET_IS_USER_VALID = 'SET_IS_USER_VALID';
+const SET_FILTER_TITLE = 'SET_FILTER_TITLE';
+const SET_FILTER_STATUS = 'SET_FILTER_STATUS';
+
+const defaultState: State = {
+  todos: [],
+  selectedUserId: 0,
+  selectedUser: {
+    id: 0,
+    name: '',
+    email: '',
+    phone: '',
+  },
+  isUserValid: true,
+  filterByTitle: '',
+  filterByStatus: '',
+};
+
+const reducer = (state = defaultState, action: Action): State => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
+    case LOAD_TODOS:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        todos: [...action.value],
       };
 
+    case SET_USER_ID:
+      return { ...state, selectedUserId: action.value };
+
+    case LOAD_SELECTED_USER:
+      return { ...state, selectedUser: { ...action.value } };
+
+    case SET_IS_USER_VALID:
+      return { ...state, isUserValid: action.value };
+
+    case SET_FILTER_TITLE:
+      return { ...state, filterByTitle: action.value };
+
+    case SET_FILTER_STATUS:
+      return { ...state, filterByStatus: action.value };
+
     default:
-      return state;
+      return { ...state };
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
-);
+export const loadSelectedUserAction = (value: User) => ({ type: LOAD_SELECTED_USER, value });
+export const selectUserIdAction = (value: number) => ({ type: SET_USER_ID, value });
+export const loadTodosAction = (value: Todo[]) => ({ type: LOAD_TODOS, value });
+export const isUserValidAction = (value: boolean) => ({ type: SET_IS_USER_VALID, value });
+export const filterByStatusAction = (value: string) => ({ type: SET_FILTER_STATUS, value });
+export const filterByTitleAction = (value: string) => ({ type: SET_FILTER_TITLE, value });
+
+const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;
