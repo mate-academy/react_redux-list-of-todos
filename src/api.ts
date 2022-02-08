@@ -17,3 +17,9 @@ export function getUser(userId: number) {
       .then(json => dispatch(loadSelectedUserAction(json)));
   };
 }
+
+export function deleteTodo(todoId: number) {
+  return fetch(`${API_URL}/${todoId}`, {
+    method: 'DELETE',
+  });
+}

@@ -4,6 +4,7 @@ import './TodoList.scss';
 import { useDispatch } from 'react-redux';
 import { loadTodosAction, selectUserIdAction } from '../../store';
 import { Todo } from '../../types/Todo';
+import { deleteTodo, getAllTodos } from '../../api';
 
 type Props = {
   todos: Todo[],
@@ -28,6 +29,11 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
     dispatch(loadTodosAction(todoCopy));
   };
 
+  const removeTodo = async (id: number) => {
+    await deleteTodo(id);
+    dispatch(getAllTodos());
+  };
+
   return (
     <div className="TodoList">
       <h2>Todos:</h2>
@@ -42,6 +48,17 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                 'TodoList__item--checked': todo.completed,
               })}
             >
+              <button
+                onClick={() => removeTodo(todo.id)}
+                type="button"
+                className="
+                  TodoList__user-button
+                  TodoList__user-button--selected
+                  button
+                "
+              >
+                Remove
+              </button>
               <label htmlFor={`${todo.id}`}>
                 <input
                   type="checkbox"
