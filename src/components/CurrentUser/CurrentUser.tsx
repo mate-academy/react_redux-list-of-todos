@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import classNames from 'classnames';
 import { getUser } from '../../Api/Api';
 import './CurrentUser.scss';
 
@@ -34,33 +33,51 @@ export const CurrentUser = () => {
     dispatch({ type: 'SET_SELECTED_USER_ID', payload: 0 });
   };
 
-  const {
-    id,
-    email,
-    name,
-    phone,
-  } = user;
+  const userLoader = () => {
+    const {
+      id, name, email, phone,
+    } = user;
+
+    if (id !== selectedUserId) {
+      return (
+        <div className="CurrentUser">
+          <h2 className="CurrentUser__title">
+            <span>
+              The data is loading
+            </span>
+          </h2>
+        </div>
+      );
+    }
+
+    return (
+      <div className="CurrentUser">
+        <h2 className="CurrentUser__title">
+          <span>
+            Selected user:
+            {' '}
+            {id}
+          </span>
+        </h2>
+
+        <h3 className="CurrentUser__name">{name}</h3>
+        <p className="CurrentUser__email">{email}</p>
+        <p className="CurrentUser__phone">{phone}</p>
+
+        <button
+          className="CurrentUser__clear"
+          type="button"
+          onClick={clearHandler}
+        >
+          Clear
+        </button>
+      </div>
+    );
+  };
 
   return (
-    <div className="CurrentUser">
-      <h2 className="CurrentUser__title">
-        <span>
-          Selected user:
-          {id}
-        </span>
-      </h2>
-
-      <h3 className="CurrentUser__name">{name}</h3>
-      <p className="CurrentUser__email">{email}</p>
-      <p className="CurrentUser__phone">{phone}</p>
-
-      <button
-        className="CurrentUser__clear"
-        type="button"
-        onClick={clearHandler}
-      >
-        Clear
-      </button>
-    </div>
+    <>
+      {userLoader()}
+    </>
   );
 };

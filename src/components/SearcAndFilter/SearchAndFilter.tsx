@@ -1,11 +1,12 @@
 import { useDispatch } from 'react-redux';
+import _ from 'lodash';
 
 export const SearchAndFilter = () => {
   const dispatch = useDispatch();
 
-  const searchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const searchInput = _.debounce((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: 'SET_SEARCH_TITLE', payload: event.target.value });
-  };
+  }, 1000);
 
   const filterSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch({ type: 'SET_FILTER_PARAMETER', payload: event.target.value });
