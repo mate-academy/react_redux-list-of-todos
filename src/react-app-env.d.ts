@@ -27,4 +27,5 @@ interface RootState {
   filterParameter: string;
   searchTitle: string;
   userError: string;
+  user: User;
 }

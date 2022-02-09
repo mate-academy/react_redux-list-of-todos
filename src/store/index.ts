@@ -3,6 +3,10 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 // Action types - is just a constant. MUST have a unique value.
 const LOAD_TODOS = 'LOAD_TODOS';
+const LOAD_USER = 'LOAD_USER';
+const SET_SELECTED_USER_ID = 'SET_SELECTED_USER_ID';
+const SET_SEARCH_TITLE = 'SET_SEARCH_TITLE';
+const SET_FILTER_PARAMETER = 'SET_FILTER_PARAMETER';
 
 // Action creators - a function returning an action object
 // export const startLoading = () => ({ type: START_LOADING });
@@ -14,9 +18,19 @@ export const getState = (state: RootState) => state.todos;
 const initialState: RootState = {
   selectedUserId: 0,
   todos: [],
-  filterParameter: '',
+  filterParameter: 'All',
   searchTitle: '',
   userError: '',
+  user: {
+    id: 0,
+    createdAt: '',
+    updatedAt: '',
+    name: '',
+    username: '',
+    email: '',
+    phone: '',
+    website: '',
+  },
 };
 
 // rootReducer - this function is called after dispatching an action
@@ -28,12 +42,29 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         todos: action.payload,
       };
 
-      // case FINISH_LOADING:
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     message: action.message,
-      //   };
+    case LOAD_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
+
+    case SET_SELECTED_USER_ID:
+      return {
+        ...state,
+        selectedUserId: action.payload,
+      };
+
+    case SET_SEARCH_TITLE:
+      return {
+        ...state,
+        searchTitle: action.payload,
+      };
+
+    case SET_FILTER_PARAMETER:
+      return {
+        ...state,
+        filterParameter: action.payload,
+      };
 
     default:
       return state;

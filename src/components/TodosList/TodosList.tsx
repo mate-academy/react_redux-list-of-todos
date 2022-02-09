@@ -16,33 +16,34 @@ export const TodosList = () => {
   }, []);
 
   const todos = useSelector((state: RootState) => state.todos);
+  const searchTitle = useSelector((state: RootState) => state.searchTitle);
+  const filterParameter = useSelector((state: RootState) => state.filterParameter);
+
+  const visibleTodos = todos.filter(todo => {
+    switch (filterParameter) {
+      case 'Active':
+        return todo.title.includes(searchTitle) && !todo.completed;
+
+      case 'Completed':
+        return todo.title.includes(searchTitle) && todo.completed;
+
+      default:
+        return todo.title.includes(searchTitle);
+    }
+  });
+
+  const changeUser = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { id } = event.currentTarget.dataset;
+
+    dispatch({ type: 'SET_SELECTED_USER_ID', payload: id });
+  };
 
   return (
     <div className="TodoList">
       <h2>Todos:</h2>
 
-      <label htmlFor="searchInput">
-        Filter todos by title:
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Input title"
-          // onChange={searchInput}
-        />
-      </label>
-
-      <select
-        id="selectTodos"
-        placeholder="Input title"
-        // onChange={filterSelect}
-      >
-        <option value="All">Show all</option>
-        <option value="Active">Show active</option>
-        <option value="Completed">Show completed</option>
-      </select>
-
       <div className="TodoList__list-container">
-        {todos.map(todo => (
+        {visibleTodos.map(todo => (
           <li
             key={todo.id}
             className={classNames('TodoList__item', {
@@ -61,7 +62,7 @@ export const TodosList = () => {
             </label>
 
             <button
-              // onClick={changeUser}
+              onClick={changeUser}
               // className={classNames('TodoList__user-button', 'button', {
               //   'TodoList__user-button--selected': selectedUserId === todo.userId,
               // })}
