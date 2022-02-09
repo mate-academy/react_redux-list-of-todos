@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { getTodos } from '../../Api/Api';
@@ -33,12 +33,14 @@ export const TodosList = () => {
     }
   });
 
-  const changeUser = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const userSetter = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { id } = event.currentTarget.dataset;
 
     dispatch({ type: 'SET_USER_ERROR', payload: '' });
     dispatch({ type: 'SET_SELECTED_USER_ID', payload: Number(id) });
   };
+
+  const changeUser = useMemo(() => userSetter, [selectedUserId]);
 
   const handleStatusChange = (event: React.ChangeEvent) => {
     const todoCopy = [...todos];

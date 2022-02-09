@@ -65,7 +65,7 @@ export const CurrentUser = () => {
         <p className="CurrentUser__phone">{phone}</p>
 
         <button
-          className="CurrentUser__clear"
+          className="CurrentUser__clear button"
           type="button"
           onClick={clearHandler}
         >
