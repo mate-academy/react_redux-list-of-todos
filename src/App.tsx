@@ -1,25 +1,42 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
-
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
-
+import './styles/general.scss';
+import CurrentUser from './components/CurrentUser';
+import TodosList from './components/TodosList';
+import SearchAndFilter from './components/SearcAndFilter';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const selectedUserId = useSelector((state: RootState) => state.selectedUserId);
+  const userError = useSelector((state: RootState) => state.userError);
+
+  const getUserMessage = () => {
+    if (userError !== '') {
+      return (
+        <div className="App__content-container">
+          {userError}
+        </div>
+      );
+    }
+
+    return (
+      <div className="App__content-container">
+        {selectedUserId ? (
+          <CurrentUser />
+        ) : 'Please select a user'}
+      </div>
+    );
+  };
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      <div className="App__sidebar">
+        <h1>Redux list of todos</h1>
+        <SearchAndFilter />
+        <TodosList />
+      </div>
+      <div className="App__content">
+        {getUserMessage()}
+      </div>
     </div>
   );
 };
