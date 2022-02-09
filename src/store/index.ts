@@ -7,13 +7,8 @@ const LOAD_USER = 'LOAD_USER';
 const SET_SELECTED_USER_ID = 'SET_SELECTED_USER_ID';
 const SET_SEARCH_TITLE = 'SET_SEARCH_TITLE';
 const SET_FILTER_PARAMETER = 'SET_FILTER_PARAMETER';
-
-// Action creators - a function returning an action object
-// export const startLoading = () => ({ type: START_LOADING });
-// export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
-
-// Selectors - a function receiving Redux state and returning some data from it
-export const getState = (state: RootState) => state.todos;
+const TOGGLE_TODO_STATUS = 'TOGGLE_TODO_STATUS';
+const SET_USER_ERROR = 'SET_USER_ERROR';
 
 const initialState: RootState = {
   selectedUserId: 0,
@@ -66,16 +61,22 @@ const rootReducer = (state = initialState, action: AnyAction) => {
         filterParameter: action.payload,
       };
 
+    case TOGGLE_TODO_STATUS:
+      return {
+        ...state,
+        todos: action.payload,
+      };
+
+    case SET_USER_ERROR:
+      return {
+        ...state,
+        userError: action.payload,
+      };
+
     default:
       return state;
   }
 };
-
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
-// const store = createStore(
-//   rootReducer,
-//   composeWithDevTools(), // allows you to use http://extension.remotedev.io/
-// );
 
 const store = createStore(rootReducer, composeWithDevTools());
 

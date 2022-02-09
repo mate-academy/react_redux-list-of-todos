@@ -12,9 +12,21 @@ export const CurrentUser = () => {
 
   useEffect(() => {
     (async () => {
-      const userFromServer = await getUser(selectedUserId);
+      let userFromServer;
+      let serverError = false;
 
-      dispatch({ type: 'LOAD_USER', payload: userFromServer });
+      try {
+        userFromServer = await getUser(selectedUserId);
+      } catch (error) {
+        const str = 'An error has ocurred while getting data from server, please contact our support team';
+
+        serverError = true;
+        dispatch({ type: 'SET_USER_ERROR', payload: str });
+      }
+
+      if (!serverError) {
+        dispatch({ type: 'LOAD_USER', payload: userFromServer });
+      }
     })();
   }, [selectedUserId]);
 

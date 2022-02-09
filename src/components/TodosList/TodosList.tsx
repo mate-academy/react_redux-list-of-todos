@@ -18,6 +18,7 @@ export const TodosList = () => {
   const todos = useSelector((state: RootState) => state.todos);
   const searchTitle = useSelector((state: RootState) => state.searchTitle);
   const filterParameter = useSelector((state: RootState) => state.filterParameter);
+  const selectedUserId = useSelector((state: RootState) => state.selectedUserId);
 
   const visibleTodos = todos.filter(todo => {
     switch (filterParameter) {
@@ -35,7 +36,16 @@ export const TodosList = () => {
   const changeUser = (event: React.MouseEvent<HTMLButtonElement>) => {
     const { id } = event.currentTarget.dataset;
 
-    dispatch({ type: 'SET_SELECTED_USER_ID', payload: id });
+    dispatch({ type: 'SET_USER_ERROR', payload: '' });
+    dispatch({ type: 'SET_SELECTED_USER_ID', payload: Number(id) });
+  };
+
+  const handleStatusChange = (event: React.ChangeEvent) => {
+    const todoCopy = [...todos];
+    const changedTodoIndex = todoCopy.findIndex(todo => `user-button-${todo.id}` === event.target.id);
+
+    todoCopy[changedTodoIndex].completed = !todoCopy[changedTodoIndex].completed;
+    dispatch({ type: 'TOGGLE_TODO_STATUS', payload: todoCopy });
   };
 
   return (
@@ -51,21 +61,21 @@ export const TodosList = () => {
               'TodoList__item--checked': todo.completed,
             })}
           >
-            <label htmlFor={todo.title}>
+            <label htmlFor={`user-button-${todo.id}`}>
               <input
                 type="checkbox"
                 checked={todo.completed}
-                // onChange={handleStatusChange}
-                id={todo.title}
+                onChange={handleStatusChange}
+                id={`user-button-${todo.id}`}
               />
               <p>{todo.title}</p>
             </label>
 
             <button
               onClick={changeUser}
-              // className={classNames('TodoList__user-button', 'button', {
-              //   'TodoList__user-button--selected': selectedUserId === todo.userId,
-              // })}
+              className={classNames('TodoList__user-button', 'button', {
+                'TodoList__user-button--selected': selectedUserId === todo.userId,
+              })}
               type="button"
               data-id={todo.userId}
             >

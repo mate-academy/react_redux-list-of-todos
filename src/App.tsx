@@ -7,6 +7,25 @@ import SearchAndFilter from './components/SearcAndFilter';
 
 const App = () => {
   const selectedUserId = useSelector((state: RootState) => state.selectedUserId);
+  const userError = useSelector((state: RootState) => state.userError);
+
+  const getUserMessage = () => {
+    if (userError !== '') {
+      return (
+        <div className="App__content-container">
+          {userError}
+        </div>
+      );
+    }
+
+    return (
+      <div className="App__content-container">
+        {selectedUserId ? (
+          <CurrentUser />
+        ) : 'Please select a user'}
+      </div>
+    );
+  };
 
   return (
     <div className="App">
@@ -16,7 +35,7 @@ const App = () => {
         <TodosList />
       </div>
       <div className="App__content">
-        {selectedUserId !== 0 ? <CurrentUser /> : <div>Please select a user</div>}
+        {getUserMessage()}
       </div>
     </div>
   );
