@@ -1,0 +1,19 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 24px;
+
+  &__top-line {
+    position: sticky;
+    top: 16px;
+    display: flex;
+    width: 600px;
+    gap: 16px;
+  }
+
+  &__content {
+    display: flex;
+    gap: 16px;
+  }
+}
