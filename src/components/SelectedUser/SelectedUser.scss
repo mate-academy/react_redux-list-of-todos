@@ -1,0 +1,28 @@
+.message.is-info {
+  position: sticky;
+  top: 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.message-header {
+  width: 100%;
+  height: 60px;
+}
+
+.message-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.notification.is-danger {
+  position: sticky;
+  top: 16px;
+  height: 200px;
+  width: 400px;
+}
