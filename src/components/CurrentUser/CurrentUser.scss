@@ -26,4 +26,11 @@
     display: block;
     margin: 20px auto 0;
   }
+
+  &__error-message {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    color: red;
+  }
 }

@@ -34,7 +34,7 @@ const App: React.FC = () => {
           </progress>
           {selectedUserId ? (
             <CurrentUser />
-          ) : 'No user selected'}
+          ) : <span className="App__content-notification">No user selected</span>}
         </div>
       </div>
     </div>

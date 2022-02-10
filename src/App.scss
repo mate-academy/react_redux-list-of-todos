@@ -95,6 +95,12 @@ input[type="checkbox"]:checked + p:before {
     position: sticky;
     top: 20px;
   }
+
+  &__content-notification {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+  }
 }
 
 progress {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './CurrentUser.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -14,12 +14,19 @@ export const CurrentUser: React.FC = () => {
   const dispatch = useDispatch();
   const selectedUserId = useSelector(getSelectedUserId);
   const user = useSelector(getUser);
+  const [hasLoadingError, setHasLoadingError] = useState(false);
 
   const loadUser = async () => {
-    const currentUser = await getUserFromServer(selectedUserId);
+    try {
+      const currentUser = await getUserFromServer(selectedUserId);
 
-    dispatch(setUser(currentUser));
-    dispatch(invertUserLoaderVisibility());
+      dispatch(setUser(currentUser));
+      dispatch(invertUserLoaderVisibility());
+      setHasLoadingError(false);
+    } catch {
+      setHasLoadingError(true);
+      dispatch(invertUserLoaderVisibility());
+    }
   };
 
   useEffect(() => {
@@ -36,9 +43,13 @@ export const CurrentUser: React.FC = () => {
 
   return (
     <>
-      <h2 className="CurrentUser__title">
-        <span>{`Selected user: ${selectedUserId}`}</span>
-      </h2>
+      {hasLoadingError ? (
+        <span className="CurrentUser__error-message">An error occurred while loading user</span>
+      ) : (
+        <h2 className="CurrentUser__title">
+          <span>{`Selected user: ${selectedUserId}`}</span>
+        </h2>
+      )}
       {user && (
         <div className="CurrentUser">
           <h3 className="CurrentUser__name">{user.name}</h3>

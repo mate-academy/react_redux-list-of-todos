@@ -13,6 +13,10 @@
     background-color: #4d457b;
   }
 
+  &__button-wrapper {
+    width: 180px;
+  }
+
   &__list {
     list-style: none;
     padding-left: 5px;
@@ -20,6 +24,7 @@
 
   &__item {
     display: flex;
+    min-width: 790px;
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
