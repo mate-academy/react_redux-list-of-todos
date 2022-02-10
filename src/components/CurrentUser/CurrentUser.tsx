@@ -1,7 +1,8 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { getUserSelector } from '../../store/selectors';
 
-export const CurrentUser = () => {
+export const CurrentUser: React.FC = () => {
   const user = useSelector(getUserSelector);
 
   if (!user) {
