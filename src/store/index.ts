@@ -1,40 +1,70 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+const SET_TODOS = 'SET_TODOS';
+const SET_USER_ID = 'SET_USER_ID';
+const INVERT_USER_LOADER_VISIBILITY = 'SET_USER_LOADER_VISIBILITY';
+const SET_USER = 'SET_USER';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({ type: FINISH_LOADING, message });
+export const setTodos = (todosFromServer: Todo[]) => (
+  { type: SET_TODOS, payload: todosFromServer }
+);
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const setSelectedUserId = (userId: number) => (
+  { type: SET_USER_ID, payload: userId }
+);
 
-// Initial state
+export const invertUserLoaderVisibility = () => (
+  { type: INVERT_USER_LOADER_VISIBILITY }
+);
+
+export const setUser = (user: User | null) => (
+  { type: SET_USER, payload: user }
+);
+
+export const getTodos = (state: RootState) => state.todos;
+export const getSelectedUserId = (state: RootState) => state.selectedUserId;
+export const getIsUserLoading = (state: RootState) => state.isUserLoading;
+export const getUser = (state: RootState) => state.user;
+
 export type RootState = {
-  loading: boolean;
-  message: string;
+  selectedUserId: number;
+  todos: Todo[];
+  isUserLoading: boolean;
+  user: User | null;
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  selectedUserId: 0,
+  todos: [],
+  isUserLoading: false,
+  user: null,
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
+    case SET_TODOS:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        todos: action.payload,
+      };
+
+    case SET_USER_ID:
+      return {
+        ...state,
+        selectedUserId: action.payload,
+      };
+
+    case INVERT_USER_LOADER_VISIBILITY:
+      return {
+        ...state,
+        isUserLoading: !state.isUserLoading,
+      };
+
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload,
       };
 
     default:
@@ -42,10 +72,9 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;
