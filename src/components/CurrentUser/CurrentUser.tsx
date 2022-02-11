@@ -16,9 +16,6 @@ export const CurrentUser: React.FC = () => {
     return <div>No user selected</div>;
   }
 
-  // eslint-disable-next-line no-console
-  console.log(user);
-
   return (
     <div className="CurrentUser">
       <h2 className="CurrentUser__title"><span>{`Selected user: ${user.id}`}</span></h2>

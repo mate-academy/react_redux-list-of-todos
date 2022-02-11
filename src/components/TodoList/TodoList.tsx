@@ -91,9 +91,6 @@ export const TodoList: React.FC = () => {
 
   const preparedTodos = getPreparedTodos();
 
-  // eslint-disable-next-line no-console
-  console.log('render list');
-
   return (
     <div className="TodoList">
       <h2>Todos:</h2>
