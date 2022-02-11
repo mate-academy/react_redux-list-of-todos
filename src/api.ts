@@ -11,3 +11,9 @@ export async function getUser(userId: number): Promise<User> {
 
   return user.json();
 }
+
+export function deleteTodo(todoId: number) {
+  return fetch(`${url}/todos/${todoId}`, {
+    method: 'DELETE',
+  });
+}

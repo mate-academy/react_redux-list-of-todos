@@ -2,7 +2,7 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTodos, getUser } from '../../api';
+import { deleteTodo, getTodos, getUser } from '../../api';
 import { loadTodosActions, loadUserActions } from '../../store/actions';
 import { getTodosSelector, getUserIdSelector } from '../../store/selectors';
 import './TodoList.scss';
@@ -44,7 +44,7 @@ export const TodoList: React.FC = () => {
     };
 
     loadTodos();
-  }, []);
+  }, [todos]);
 
   return (
     <div className="TodoList">
@@ -105,6 +105,14 @@ export const TodoList: React.FC = () => {
                 onClick={() => selectedUserId !== todo.userId && handleSelectUser(todo.userId)}
               >
                 {`User #${todo.userId}`}
+              </button>
+
+              <button
+                className="TodoList__user-button button"
+                type="button"
+                onClick={() => deleteTodo(todo.id)}
+              >
+                Delete
               </button>
             </li>
           ))}
