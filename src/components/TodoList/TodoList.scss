@@ -2,11 +2,12 @@
   width: 100%;
 
   &__user-button {
-    width: 100px;
+    width: 90px;
   }
 
   &__delete-button {
     margin-right: 10px;
+    width: 90px;
   }
 
   &__user-button--selected {
@@ -14,7 +15,7 @@
   }
 
   &__button-wrapper {
-    width: 180px;
+    display: flex;
   }
 
   &__list {
@@ -24,7 +25,6 @@
 
   &__item {
     display: flex;
-    min-width: 790px;
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
