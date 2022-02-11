@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { isLoading, finishLoading } from '../store';
+import { isLoading, finishLoading } from '../store/index+';
 
 type Props = {
   title: string;
