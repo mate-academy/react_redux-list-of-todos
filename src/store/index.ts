@@ -1,9 +1,11 @@
 import { createStore } from 'redux';
-import { LOAD_TODOS, LOAD_USER } from './actions';
+import { LOAD_TODOS, LOAD_USER, SET_STATUS } from './actions';
 
 const initialState: State = {
   todos: [],
   user: null,
+  status: 'all',
+  query: '',
 };
 
 const reducer = (state = initialState, action: Action) => {
@@ -18,6 +20,12 @@ const reducer = (state = initialState, action: Action) => {
       return {
         ...state,
         user: action.payload,
+      };
+
+    case SET_STATUS:
+      return {
+        ...state,
+        status: action.payload,
       };
 
     default:

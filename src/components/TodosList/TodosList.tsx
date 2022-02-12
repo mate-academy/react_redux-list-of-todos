@@ -1,20 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
-import { getTodos, getUser, removeTodo } from '../../api/api';
-import { loadTodosAction, loadUserAction } from '../../store/actions';
-import { getTodosSelector, getUserIdSelector } from '../../store/selectors';
 import './TodoList.scss';
+import { getUser, removeTodo, getFilteredTodosByStatus } from '../../api/api';
+import { loadTodosAction, loadUserAction, setStatusAction } from '../../store/actions';
+import { getTodosSelector, getUserIdSelector, getTodoStatusSelector } from '../../store/selectors';
 
 export const TodoList: React.FC = () => {
+  const [query, setQuery] = useState('');
+
   const dispatch = useDispatch();
 
   const todos = useSelector(getTodosSelector);
   const selectedUserId = useSelector(getUserIdSelector);
+  const statusTodo = useSelector(getTodoStatusSelector);
 
   useEffect(() => {
     const loadTodosFromServer = async () => {
-      const todosFromServer = await getTodos();
+      const todosFromServer = await getFilteredTodosByStatus(statusTodo);
 
       dispatch(loadTodosAction(todosFromServer));
     };
@@ -22,11 +25,25 @@ export const TodoList: React.FC = () => {
     loadTodosFromServer();
   }, [todos]);
 
-  const handleClick = async (userId: number) => {
+  const handleUserInfo = async (userId: number) => {
     const userFromServer = await getUser(userId);
 
     dispatch(loadUserAction(userFromServer));
   };
+
+  const handleChangeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setStatusAction(event.target.value));
+  };
+
+  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const filterTodos = (todosToFilter: Todo[]) => (
+    todosToFilter.filter(todo => todo.title.includes(query.toLowerCase()))
+  );
+
+  const todosToShow = filterTodos(todos);
 
   return (
     <div className="TodoList">
@@ -38,23 +55,27 @@ export const TodoList: React.FC = () => {
           className="input is-info"
           placeholder="Enter todo title"
           type="text"
+          value={query}
+          onChange={handleChangeQuery}
         />
 
         <p>Select todo status</p>
         <div className="select is-info">
           <select
             name="todoStatus"
+            value={statusTodo}
+            onChange={handleChangeStatus}
           >
             <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value="false">Active</option>
+            <option value="true">Completed</option>
           </select>
         </div>
       </form>
 
       <div className="TodoList__list-container">
         <ul className="TodoList__list">
-          {todos.map(todo => (
+          {todosToShow.map(todo => (
             <li
               key={todo.id}
               className={cn(
@@ -83,7 +104,7 @@ export const TodoList: React.FC = () => {
                     { 'TodoList__user-button--selected': selectedUserId === todo.userId },
                   )}
                   type="button"
-                  onClick={() => handleClick(todo.userId)}
+                  onClick={() => handleUserInfo(todo.userId)}
                 >
                   {`User #${todo.userId}`}
                 </button>

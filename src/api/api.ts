@@ -18,8 +18,12 @@ export const removeTodo = async (todoId: number) => {
   });
 };
 
-export const getFilteredTodosByStatus = async (completed: boolean): Promise<Todo[]> => {
-  const response = await fetch(`${API_URL}/todos?completed=${completed}`);
+export const getFilteredTodosByStatus = async (statusTodo: string): Promise<Todo[]> => {
+  if (statusTodo === 'true' || statusTodo === 'false') {
+    const response = await fetch(`${API_URL}/todos?completed=${statusTodo}`);
 
-  return response.json();
+    return response.json();
+  }
+
+  return getTodos();
 };

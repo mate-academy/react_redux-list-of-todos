@@ -18,6 +18,8 @@ type User = {
 type State = {
   todos: Todo[],
   user: User | null,
+  status: string,
+  query: string,
 };
 
 type Action = {
