@@ -15,10 +15,21 @@ export const TodoList: React.FC = () => {
   const todos = useSelector(getTodosSelector);
   const selectedUserId = useSelector(getUserIdSelector);
 
+  const loadTodos = async () => {
+    const todosFromServer = await getTodos();
+
+    dispatch(loadTodosActions(todosFromServer));
+  };
+
   const handleSelectUser = async (userId: number) => {
     const userFromServer = await getUser(userId);
 
     dispatch(loadUserActions(userFromServer));
+  };
+
+  const handleDeleteTodo = async (todoId: number) => {
+    await deleteTodo(todoId);
+    loadTodos();
   };
 
   const filteredTodos = todos.filter(todo => todo.title.includes(inputValue));
@@ -37,14 +48,8 @@ export const TodoList: React.FC = () => {
   });
 
   useEffect(() => {
-    const loadTodos = async () => {
-      const todosFromServer = await getTodos();
-
-      dispatch(loadTodosActions(todosFromServer));
-    };
-
     loadTodos();
-  }, [todos]);
+  }, []);
 
   return (
     <div className="TodoList">
@@ -110,7 +115,7 @@ export const TodoList: React.FC = () => {
               <button
                 className="TodoList__user-button button"
                 type="button"
-                onClick={() => deleteTodo(todo.id)}
+                onClick={() => handleDeleteTodo(todo.id)}
               >
                 Delete
               </button>
