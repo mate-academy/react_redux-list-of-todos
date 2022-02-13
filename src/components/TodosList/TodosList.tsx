@@ -10,6 +10,7 @@ import {
   getInputValue, getSelectValue, getTodosSelector, getUserSelector,
 } from '../../store/selectors';
 import { getUser } from '../../api/user';
+import { Todo } from '../../react-app-env';
 
 export const TodosList: React.FC = () => {
   const dispatch = useDispatch();
@@ -39,35 +40,37 @@ export const TodosList: React.FC = () => {
     dispatch(setSelectValue(event.target.value));
   };
 
-  const filterTodos = () => {
+  const filterTodos = (): Todo[] => {
+    let filteredTodos;
+
     switch (selectValue) {
       case 'active':
-        dispatch(loadTodosAction(todos.filter(todo => !todo.completed)));
+        filteredTodos = todos.filter(todo => !todo.completed);
         break;
 
       case 'completed':
-        dispatch(loadTodosAction(todos.filter(todo => todo.completed)));
+        filteredTodos = todos.filter(todo => todo.completed);
         break;
 
       default:
-        dispatch(loadTodosAction(todos));
+        filteredTodos = [...todos];
     }
 
-    if (selectValue.length > 0) {
-      dispatch(loadTodosAction(todos.filter(todo => (
-        todo.title.toLowerCase().includes(inputValue.toLocaleLowerCase())
-      ))));
-    }
+    return filteredTodos.filter(todo => (
+      todo.title.toLowerCase().includes(inputValue.toLocaleLowerCase())
+    ));
   };
+
+  const filteredTodos = filterTodos();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setInputValue(event.target.value));
     filterTodos();
   };
 
-  // const deleteTodo = (todoId: number) => {
-  //   dispatch(loadTodosAction(todos));
-  // };
+  const deleteTodo = (todoId: number) => {
+    dispatch(loadTodosAction(todos.filter(todo => todo.id !== todoId)));
+  };
 
   return (
     <div className="TodoList">
@@ -92,7 +95,7 @@ export const TodosList: React.FC = () => {
       <h2>Todos:</h2>
       <div className="TodoList__list-container">
         <ul className="TodoList__list">
-          {todos.map(todo => (
+          {filteredTodos.map(todo => (
             <li
               key={todo.id}
               className={classNames('TodoList__item', {
@@ -112,9 +115,9 @@ export const TodosList: React.FC = () => {
                 <button
                   className="button"
                   type="button"
-                  // onClick={(event) => {
-                  //   deleteTodo();
-                  // }}
+                  onClick={() => {
+                    deleteTodo(todo.id);
+                  }}
                 >
                   Remove
                 </button>
