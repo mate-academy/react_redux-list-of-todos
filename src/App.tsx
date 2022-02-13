@@ -1,25 +1,19 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+/* eslint-disable no-console */
+import { useTypedSelector } from './hooks/useTypedSelector';
+import 'bulma/css/bulma.min.css';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
-
+import { User } from './components/User';
+import { TodoList } from './components/TodoList';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const { userId }: State = useTypedSelector(state => state);
 
   return (
     <div className="App">
       <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
+      <TodoList />
+      {userId !== 0 && <User />}
     </div>
   );
 };
