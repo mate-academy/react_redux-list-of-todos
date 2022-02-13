@@ -4,7 +4,6 @@ import {
   INPUT_VALUE,
   LOAD_TODOS,
   LOAD_USER,
-  SELECTED_USER_ID,
   SELECT_VALUE,
 } from './actions';
 
@@ -13,7 +12,6 @@ const initialState: State = {
   user: null,
   inputValue: '',
   selectValue: '',
-  selectedUserId: 0,
 };
 
 const reducer = (state = initialState, action: Action) => {
@@ -37,11 +35,6 @@ const reducer = (state = initialState, action: Action) => {
       return {
         ...state,
         selectValue: action.payload,
-      };
-    case SELECTED_USER_ID:
-      return {
-        ...state,
-        selectedUserId: action.payload,
       };
 
     default:

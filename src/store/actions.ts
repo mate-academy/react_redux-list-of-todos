@@ -4,7 +4,6 @@ export const LOAD_TODOS = 'LOAD_TODOS';
 export const LOAD_USER = 'LOAD_USER';
 export const INPUT_VALUE = 'Input_Value';
 export const SELECT_VALUE = 'SELECT_VALUE';
-export const SELECTED_USER_ID = 'SELECTED_USER_ID';
 
 export const loadTodosAction = (payload: Todo[]) => ({
   type: LOAD_TODOS,
@@ -23,10 +22,5 @@ export const setInputValue = (payload: string) => ({
 
 export const setSelectValue = (payload: string) => ({
   type: SELECT_VALUE,
-  payload,
-});
-
-export const setSelectedUserId = (payload: number) => ({
-  type: SELECTED_USER_ID,
   payload,
 });

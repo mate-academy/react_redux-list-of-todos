@@ -4,13 +4,12 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTodos } from '../../api/todos';
 import {
-  loadTodosAction, loadUserAction, setInputValue, setSelectedUserId, setSelectValue,
+  loadTodosAction, loadUserAction, setInputValue, setSelectValue,
 } from '../../store/actions';
 import {
-  getInputValue, getSelectedUserId, getSelectValue, getTodosSelector,
+  getInputValue, getSelectValue, getTodosSelector, getUserSelector,
 } from '../../store/selectors';
 import { getUser } from '../../api/user';
-import { Todo } from '../../react-app-env';
 
 export const TodosList: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,13 +17,12 @@ export const TodosList: React.FC = () => {
   const todos = useSelector(getTodosSelector);
   const inputValue = useSelector(getInputValue);
   const selectValue = useSelector(getSelectValue);
-  const selectedUserId = useSelector(getSelectedUserId);
+  const user = useSelector(getUserSelector);
 
   const handelSelectUser = async (userId: number) => {
     const userFromServer = await getUser(userId);
 
     dispatch(loadUserAction(userFromServer));
-    dispatch(setSelectedUserId(userFromServer.id));
   };
 
   useEffect(() => {
@@ -41,31 +39,35 @@ export const TodosList: React.FC = () => {
     dispatch(setSelectValue(event.target.value));
   };
 
-  const filterTodos = (todosFoFiler: Todo[]): Todo[] => {
-    let filteredTodos;
-
+  const filterTodos = () => {
     switch (selectValue) {
       case 'active':
-        filteredTodos = todosFoFiler.filter(todo => !todo.completed);
+        dispatch(loadTodosAction(todos.filter(todo => !todo.completed)));
         break;
 
       case 'completed':
-        filteredTodos = todosFoFiler.filter(todo => todo.completed);
+        dispatch(loadTodosAction(todos.filter(todo => todo.completed)));
         break;
 
       default:
-        filteredTodos = [...todosFoFiler];
+        dispatch(loadTodosAction(todos));
     }
 
-    return filteredTodos.filter(todo => (
-      todo.title.toLowerCase().includes(inputValue.toLocaleLowerCase())
-    ));
+    if (selectValue.length > 0) {
+      dispatch(loadTodosAction(todos.filter(todo => (
+        todo.title.toLowerCase().includes(inputValue.toLocaleLowerCase())
+      ))));
+    }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setInputValue(event.target.value));
-    filterTodos(todos);
+    filterTodos();
   };
+
+  // const deleteTodo = (todoId: number) => {
+  //   dispatch(loadTodosAction(todos));
+  // };
 
   return (
     <div className="TodoList">
@@ -90,7 +92,7 @@ export const TodosList: React.FC = () => {
       <h2>Todos:</h2>
       <div className="TodoList__list-container">
         <ul className="TodoList__list">
-          {filterTodos(todos).map(todo => (
+          {todos.map(todo => (
             <li
               key={todo.id}
               className={classNames('TodoList__item', {
@@ -106,17 +108,28 @@ export const TodosList: React.FC = () => {
                 />
                 <p>{todo.title}</p>
               </label>
-              <button
-                className={classNames(
-                  'TodoList__user-button',
-                  'button',
-                  { 'TodoList__user-button--selected': selectedUserId === todo.userId },
-                )}
-                type="button"
-                onClick={() => handelSelectUser(todo.userId)}
-              >
-                {`User #${todo.userId}`}
-              </button>
+              <div>
+                <button
+                  className="button"
+                  type="button"
+                  // onClick={(event) => {
+                  //   deleteTodo();
+                  // }}
+                >
+                  Remove
+                </button>
+                <button
+                  className={classNames(
+                    'TodoList__user-button',
+                    'button',
+                    { 'TodoList__user-button--selected': user?.id === todo.userId },
+                  )}
+                  type="button"
+                  onClick={() => handelSelectUser(todo.userId)}
+                >
+                  {`User #${todo.userId}`}
+                </button>
+              </div>
             </li>
           ))}
         </ul>

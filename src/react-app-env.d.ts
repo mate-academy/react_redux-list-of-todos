@@ -13,7 +13,6 @@ export type State = {
   user: User | null,
   inputValue: string,
   selectValue: string,
-  selectedUserId: number,
 };
 
 export type Action = {

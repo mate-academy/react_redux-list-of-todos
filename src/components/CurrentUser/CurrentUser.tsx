@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUserAction, setSelectedUserId } from '../../store/actions';
+import { loadUserAction } from '../../store/actions';
 import { getUserSelector } from '../../store/selectors';
 
 export const CurrentUser: React.FC = () => {
@@ -10,7 +10,6 @@ export const CurrentUser: React.FC = () => {
 
   const Clear = () => {
     dispatch(loadUserAction(null));
-    dispatch(setSelectedUserId(0));
   };
 
   if (!user) {
