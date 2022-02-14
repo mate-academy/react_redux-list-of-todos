@@ -22,10 +22,14 @@ export const TodoList: React.FC = () => {
     dispatch(loadTodosAction(randomOrder));
   };
 
-  const handleClick = async (userId: number) => {
-    const userFromServer = await getUser(userId);
+  const handleSelectUser = async (userId: number) => {
+    try {
+      const userFromServer = await getUser(userId);
 
-    dispatch(loadUserAction(userFromServer));
+      dispatch(loadUserAction(userFromServer));
+    } catch (error) {
+      dispatch(loadUserAction(null));
+    }
   };
 
   const handleDeleteTodo = async (id: number) => {
@@ -138,7 +142,7 @@ export const TodoList: React.FC = () => {
                   button
                 "
                 type="button"
-                onClick={() => handleClick(todo.userId)}
+                onClick={() => handleSelectUser(todo.userId)}
               >
                 {todo.userId}
               </button>
