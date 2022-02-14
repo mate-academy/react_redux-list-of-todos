@@ -1,0 +1,17 @@
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 80px 0 56px;
+  font-family: inherit;
+  color: inherit;
+
+
+  &__message {
+    font-family: inherit;
+    color: inherit;
+    font-size: 24px;
+  }
+}
+

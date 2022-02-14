@@ -1,0 +1,18 @@
+.TodoListForm {
+  &__input {
+    width: 48%;
+  }
+
+  &__select {
+    width: 28%;
+  }
+
+  &__control-panel {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.mb-3, .input-group {
+  display: block;
+}
