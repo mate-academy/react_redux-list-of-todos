@@ -15,9 +15,9 @@ const App = () => {
 
       <div className="App__content">
         <div className="App__content-container">
-          {user ? (
-            <CurrentUser />
-          ) : 'No user selected'}
+          {user
+            ? <CurrentUser />
+            : 'No user selected'}
         </div>
       </div>
     </div>

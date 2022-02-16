@@ -1,8 +1,27 @@
 .TodoList {
   width: 100%;
 
+  &__buttons-container {
+    display: flex;
+  }
+
+  &__user-button {
+    margin-right: 4px;
+    width: 100px;
+  }
+
   &__user-button--selected {
     background-color: #4d457b;
+  }
+
+  &__delete-button {
+    width: 100px;
+  }
+
+  &__title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 15px;
   }
 
   &__list {

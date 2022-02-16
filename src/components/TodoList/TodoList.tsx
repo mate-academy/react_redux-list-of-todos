@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteTodo, getTodos, getUser } from '../../api';
 import { loadTodosActions, loadUserActions } from '../../store/actions';
@@ -32,7 +32,9 @@ export const TodoList: React.FC = () => {
     loadTodos();
   };
 
-  const filteredTodos = todos.filter(todo => todo.title.includes(inputValue));
+  const filteredTodos = useMemo(() => {
+    return todos.filter(todo => todo.title.includes(inputValue));
+  }, [inputValue, todos]);
 
   const visibleTodos = filteredTodos.filter(todo => {
     switch (filterBy) {
@@ -53,7 +55,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <div className="TodoList">
-      <h2>Todos:</h2>
+      <h2 className="TodoList__title">Todos:</h2>
       <div className="field">
         <label className="label">Filter by title</label>
         <div className="control">
@@ -77,7 +79,7 @@ export const TodoList: React.FC = () => {
         </select>
       </div>
 
-      <div className="TodoList__list-container">
+      <div className="TodoList__list-container pt-2">
         <ul className="TodoList__list">
           {visibleTodos.map(todo => (
             <li
@@ -100,25 +102,27 @@ export const TodoList: React.FC = () => {
                 <p>{todo.title}</p>
               </label>
 
-              <button
-                className={classNames(
-                  'TodoList__user-button',
-                  'button',
-                  { 'TodoList__user-button--selected': selectedUserId === todo.userId },
-                )}
-                type="button"
-                onClick={() => selectedUserId !== todo.userId && handleSelectUser(todo.userId)}
-              >
-                {`User #${todo.userId}`}
-              </button>
+              <div className="TodoList__buttons-container">
+                <button
+                  className={classNames(
+                    'TodoList__user-button',
+                    'button',
+                    { 'TodoList__user-button--selected': selectedUserId === todo.userId },
+                  )}
+                  type="button"
+                  onClick={() => selectedUserId !== todo.userId && handleSelectUser(todo.userId)}
+                >
+                  {`User #${todo.userId}`}
+                </button>
 
-              <button
-                className="TodoList__user-button button"
-                type="button"
-                onClick={() => handleDeleteTodo(todo.id)}
-              >
-                Delete
-              </button>
+                <button
+                  className="TodoList__delete-button button"
+                  type="button"
+                  onClick={() => handleDeleteTodo(todo.id)}
+                >
+                  Delete
+                </button>
+              </div>
             </li>
           ))}
         </ul>
