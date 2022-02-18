@@ -21,9 +21,11 @@ export const TodosList: React.FC = () => {
   const user = useSelector(getUserSelector);
 
   const handelSelectUser = async (userId: number) => {
-    const userFromServer = await getUser(userId);
+    if (userId !== user?.id) {
+      const userFromServer = await getUser(userId);
 
-    dispatch(loadUserAction(userFromServer));
+      dispatch(loadUserAction(userFromServer));
+    }
   };
 
   useEffect(() => {
@@ -103,7 +105,7 @@ export const TodosList: React.FC = () => {
                 'TodoList__item--checked': todo.completed,
               })}
             >
-              <label htmlFor="searchInput">
+              <label htmlFor="searchInpu  t">
                 <input
                   checked={todo.completed}
                   type="checkbox"

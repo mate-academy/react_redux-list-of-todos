@@ -8,7 +8,7 @@ export const CurrentUser: React.FC = () => {
 
   const user = useSelector(getUserSelector);
 
-  const Clear = () => {
+  const ClearUser = () => {
     dispatch(loadUserAction(null));
   };
 
@@ -32,9 +32,7 @@ export const CurrentUser: React.FC = () => {
       <br />
       <button
         type="button"
-        onClick={() => {
-          Clear();
-        }}
+        onClick={ClearUser}
       >
         Clear
       </button>

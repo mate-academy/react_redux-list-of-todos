@@ -2,7 +2,7 @@ import { Todo, User } from '../react-app-env';
 
 export const LOAD_TODOS = 'LOAD_TODOS';
 export const LOAD_USER = 'LOAD_USER';
-export const INPUT_VALUE = 'Input_Value';
+export const SET_INPUT_VALUE = 'SET_INPUT_VALUE';
 export const SELECT_VALUE = 'SELECT_VALUE';
 
 export const loadTodosAction = (payload: Todo[]) => ({
@@ -16,7 +16,7 @@ export const loadUserAction = (payload: User | null) => ({
 });
 
 export const setInputValue = (payload: string) => ({
-  type: INPUT_VALUE,
+  type: SET_INPUT_VALUE,
   payload,
 });
 

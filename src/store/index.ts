@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import { State, Action } from '../react-app-env';
 import {
-  INPUT_VALUE,
+  SET_INPUT_VALUE,
   LOAD_TODOS,
   LOAD_USER,
   SELECT_VALUE,
@@ -26,7 +26,7 @@ const reducer = (state = initialState, action: Action) => {
         ...state,
         user: action.payload,
       };
-    case INPUT_VALUE:
+    case SET_INPUT_VALUE:
       return {
         ...state,
         inputValue: action.payload,
