@@ -8,7 +8,6 @@ import { deleteTodo, getTodos } from '../../api/todos';
 
 import './TodosList.scss';
 import { Loader } from '../Loader';
-// import { Todo } from '../../react-app-env';
 
 export const TodosList: React.FC = () => {
   const [title, setTitle] = useState('');

@@ -10,11 +10,15 @@ export const CurrentUser: React.FC = () => {
 
   if (!user) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', fontSize: 50 }}>
+      <div className="user">
         No selected user
       </div>
     );
   }
+
+  const clearUser = () => {
+    dispatch(loadUserAction(null));
+  };
 
   return (
     <div className="CurrentUser">
@@ -30,7 +34,7 @@ export const CurrentUser: React.FC = () => {
       <button
         className="button CurrentUser__clear"
         type="button"
-        onClick={() => dispatch(loadUserAction(null))}
+        onClick={clearUser}
       >
         Clear
       </button>

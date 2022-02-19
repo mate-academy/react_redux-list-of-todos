@@ -9,7 +9,9 @@ export async function getTodos(): Promise<Todo[]> {
 }
 
 export async function deleteTodo(todoId: number): Promise<Todo[]> {
-  const res = await fetch(`${BASE_URL}/${todoId}`, { method: 'DELETE' });
+  const res = await fetch(`${BASE_URL}/${todoId}`, {
+    method: 'DELETE',
+  });
 
   return res.json();
 }
