@@ -1,27 +1,43 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import {
+  Routes, Route, NavLink,
+} from 'react-router-dom';
+import { TodosList } from './components/TodosList';
+import { CurrentUser } from './components/CurrentUser';
+import { HomePage } from './components/HomePage';
 
-import { isLoading, getMessage } from './store';
-
-
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
-
-  return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish title="Fail loading" message="An error occurred when loading data." />
-    </div>
-  );
-};
+const App: React.FC = () => (
+  <div className="App">
+    <header>
+      <nav>
+        <NavLink
+          to="/"
+          className={({ isActive }) => (isActive ? 'red' : 'blue')}
+        >
+          Home
+        </NavLink>
+        <NavLink
+          to="/todos"
+          className={({ isActive }) => (isActive ? 'red' : 'blue')}
+        >
+          Todos
+        </NavLink>
+        <NavLink
+          to="/user"
+          className={({ isActive }) => (isActive ? 'red' : 'blue')}
+        >
+          User
+        </NavLink>
+      </nav>
+    </header>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="todos" element={<TodosList />} />
+      <Route path="user/:userId" element={<CurrentUser />} />
+      <Route path="*" element={<div>Error</div>} />
+    </Routes>
+  </div>
+);
 
 export default App;
