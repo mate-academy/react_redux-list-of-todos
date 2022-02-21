@@ -3,14 +3,14 @@ import './styles/general.scss';
 import classNames from 'classnames';
 
 import { useSelector } from 'react-redux';
-import { getSelectedUserId, getIsUserLoading } from './store';
+import { getIsUserLoading, getUser } from './store/selectors';
 import { TodoList } from './components/TodoList';
 import { CurrentUser } from './components/CurrentUser';
 
 import './App.scss';
 
 const App: React.FC = () => {
-  const selectedUserId = useSelector(getSelectedUserId);
+  const user = useSelector(getUser);
   const isUserLoading = useSelector(getIsUserLoading);
 
   return (
@@ -32,7 +32,7 @@ const App: React.FC = () => {
           >
             10%
           </progress>
-          {selectedUserId ? (
+          {user ? (
             <CurrentUser />
           ) : <span className="App__content-notification">No user selected</span>}
         </div>

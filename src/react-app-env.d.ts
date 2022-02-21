@@ -14,3 +14,10 @@ interface User {
   email: string;
   phone: string;
 }
+
+type RootState = {
+  todos: Todo[];
+  isUserLoading: boolean;
+  user: User | null;
+  hasUserLoadingError: boolean;
+};

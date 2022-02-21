@@ -2,21 +2,28 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  setTodos,
   getTodos,
-  getSelectedUserId,
-  setSelectedUserId,
-  invertUserLoaderVisibility,
-} from '../../store';
+  getUser,
+  getHasUserLoadingError,
+} from '../../store/selectors';
+
+import {
+  setTodos,
+  setUser,
+  toggleUserLoaderVisibility,
+  toggleHasUserLoadingError,
+} from '../../store/actions';
+
 import './TodoList.scss';
-import { getTodos as getTodosFromServer } from '../../api/api';
+import { getTodos as getTodosFromServer, getUser as getUserFromServer } from '../../api/api';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const todos = useSelector(getTodos);
-  const selectedUserId = useSelector(getSelectedUserId);
+  const user = useSelector(getUser);
+  const hasUserLoadingError = useSelector(getHasUserLoadingError);
 
-  const [todosToShow, setTodosToShow] = useState('');
+  const [filterTodosBy, setFilterTodosBy] = useState('');
   const [preparedTodos, setPreparedTodos] = useState([] as Todo[]);
   const [title, setTitle] = useState('');
   const [titleToSearch, setTitleToSearch] = useState('');
@@ -41,7 +48,7 @@ export const TodoList: React.FC = () => {
       );
     }
 
-    switch (todosToShow) {
+    switch (filterTodosBy) {
       case 'active':
         setPreparedTodos(copiedTodos.filter(todo => !todo.completed));
         break;
@@ -57,7 +64,7 @@ export const TodoList: React.FC = () => {
 
   useEffect(() => {
     prepareTodos();
-  }, [todos, titleToSearch, todosToShow]);
+  }, [todos, titleToSearch, filterTodosBy]);
 
   const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -89,10 +96,28 @@ export const TodoList: React.FC = () => {
     dispatch(setTodos(copiedTodos));
   };
 
+  const loadUser = async (userId: number) => {
+    try {
+      const userFromServer = await getUserFromServer(userId);
+
+      dispatch(setUser(userFromServer));
+      dispatch(toggleUserLoaderVisibility());
+
+      if (hasUserLoadingError) {
+        dispatch(toggleHasUserLoadingError());
+      }
+    } catch {
+      dispatch(toggleUserLoaderVisibility());
+      if (!hasUserLoadingError) {
+        dispatch(toggleHasUserLoadingError());
+      }
+    }
+  };
+
   const selectUser = (userId: number) => {
-    dispatch(setSelectedUserId(userId));
-    if (userId !== selectedUserId && userId !== 0) {
-      dispatch(invertUserLoaderVisibility());
+    if (userId !== user?.id || hasUserLoadingError) {
+      dispatch(toggleUserLoaderVisibility());
+      loadUser(userId);
     }
   };
 
@@ -124,8 +149,8 @@ export const TodoList: React.FC = () => {
         <div className="select">
           <select
             name="todosToShow"
-            value={todosToShow}
-            onChange={event => setTodosToShow(event.target.value)}
+            value={filterTodosBy}
+            onChange={event => setFilterTodosBy(event.target.value)}
           >
             <option value="">Show all</option>
             <option value="active">Active</option>
@@ -197,7 +222,7 @@ export const TodoList: React.FC = () => {
                     className={classNames(
                       'TodoList__user-button',
                       'button',
-                      { 'TodoList__user-button--selected': selectedUserId === todo.userId },
+                      { 'TodoList__user-button--selected': user?.id === todo.userId },
                     )}
                     type="button"
                     value={todo.userId}
