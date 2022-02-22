@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getTodos } from '../../api/todos';
 import { loadTodosAction, loadUserAction } from '../../store/actions';
 import { getTodosSelector } from '../../store/selectors';
@@ -44,18 +45,18 @@ export const TodosList: React.FC = () => {
                 <p>{todo.title}</p>
               </label>
 
-              <button
+              <Link
+                to={`/user/${todo.userId}`}
                 className="
                   TodoList__user-button
                   TodoList__user-button--selected
                   button
                 "
-                type="button"
                 onClick={() => handleClick(todo.userId)}
               >
                 User&nbsp;#
                 {todo.userId}
-              </button>
+              </Link>
             </li>
           ))}
         </ul>

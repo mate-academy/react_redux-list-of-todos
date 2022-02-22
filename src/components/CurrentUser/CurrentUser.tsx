@@ -1,9 +1,28 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUserSelector } from '../../store/selectors';
+import { getUser } from '../../api/user';
+import { loadUserAction } from '../../store/actions';
 
 export const CurrentUser: React.FC = () => {
+  const dispatch = useDispatch();
   const user = useSelector(getUserSelector);
+  const params = useParams();
+
+  const loadUserFromServer = async () => {
+    if (params.userId) {
+      const userFromServer = await getUser(+params?.userId);
+
+      dispatch(loadUserAction(userFromServer));
+    }
+  };
+
+  useEffect(() => {
+    if (!user) {
+      loadUserFromServer();
+    }
+  }, []);
 
   if (!user) {
     return (
