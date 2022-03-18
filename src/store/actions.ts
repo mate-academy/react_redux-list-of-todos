@@ -1,6 +1,5 @@
 export const LOAD_TODOS = 'LOAD_TODOS';
 export const LOAD_USER = 'LOAD_USER';
-export const SET_USER = 'SET_USER';
 export const SET_TITLE_FILTER = 'SET_TITLE_FILTER';
 export const SET_STATUS_FILTER = 'SET_STATUS_FILTER';
 export const SET_ERROR = 'SET_ERROR';
@@ -10,13 +9,8 @@ export const loadTodosAction = (payload: Todo[]) => ({
   payload,
 });
 
-export const loadUserAction = (payload: User) => ({
+export const loadUserAction = (payload: User | null) => ({
   type: LOAD_USER,
-  payload,
-});
-
-export const setUserAction = (payload: number) => ({
-  type: SET_USER,
   payload,
 });
 

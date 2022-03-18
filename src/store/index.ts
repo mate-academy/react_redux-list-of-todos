@@ -5,12 +5,10 @@ import {
   SET_ERROR,
   SET_STATUS_FILTER,
   SET_TITLE_FILTER,
-  SET_USER,
 } from './actions';
 
 const initialState: State = {
   todos: [],
-  currentUserId: 0,
   titleFilter: '',
   statusFilter: 'all',
   user: null,
@@ -23,11 +21,6 @@ const reducer = (state = initialState, action: Action) => {
       return {
         ...state,
         todos: [...action.payload],
-      };
-    case SET_USER:
-      return {
-        ...state,
-        currentUserId: action.payload,
       };
     case SET_TITLE_FILTER:
       return {

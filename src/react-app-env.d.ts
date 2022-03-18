@@ -12,7 +12,6 @@ type Todo = {
 
 type State = {
   todos: Todo[],
-  currentUserId: number,
   titleFilter: string,
   statusFilter: string,
   user: User | null,

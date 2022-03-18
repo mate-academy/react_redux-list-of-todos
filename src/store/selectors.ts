@@ -1,5 +1,4 @@
 export const getTodosSelector = (state: State) => state.todos;
-export const getUserIdSelector = (state: State) => state.currentUserId;
 export const getTitleFilterSelector = (state: State) => state.titleFilter;
 export const getStatusFilterSelector = (state: State) => state.statusFilter;
 export const getUserSelector = (state: State) => state.user;

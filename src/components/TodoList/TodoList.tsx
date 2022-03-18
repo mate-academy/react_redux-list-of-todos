@@ -4,20 +4,26 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTodos } from '../../api/todos';
 import {
   loadTodosAction,
+  loadUserAction,
+  setErrorAction,
   setStatusFilterAction,
   setTitleFilterAction,
-  setUserAction,
 } from '../../store/actions';
-import { getTodosSelector, getTitleFilterSelector, getStatusFilterSelector } from '../../store/selectors';
+import {
+  getTodosSelector,
+  getTitleFilterSelector,
+  getStatusFilterSelector,
+} from '../../store/selectors';
 import './TodoList.scss';
+import { getUser } from '../../api/users';
 
 type Props = {
-  userId: number,
+  user: User | null,
 };
 
 export const TodoList: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
-  const { userId } = props;
+  const { user } = props;
   const todos = useSelector(getTodosSelector);
   const titleFilter = useSelector(getTitleFilterSelector);
   const statusFilter = useSelector(getStatusFilterSelector);
@@ -43,17 +49,27 @@ export const TodoList: React.FC<Props> = (props) => {
     loadTodosFromServer();
   }, [todos.length, titleFilter, statusFilter]);
 
+  const handleUserChange = useCallback((userId: number) => {
+    const loadUserFromServer = async () => {
+      try {
+        const userFromServer = await getUser(userId);
+
+        dispatch(loadUserAction(userFromServer));
+        dispatch(setErrorAction(false));
+      } catch {
+        dispatch(loadUserAction(null));
+        dispatch(setErrorAction(true));
+      }
+    };
+
+    loadUserFromServer();
+  }, [user]);
+
   const handleTitleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = event.target.value;
 
     dispatch(setTitleFilterAction(newTitle));
   }, [titleFilter]);
-
-  const handleUserChange = useCallback((buttonUserId: number) => {
-    const newUser = buttonUserId;
-
-    dispatch(setUserAction(newUser));
-  }, [userId]);
 
   const handleStatusChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     const newStatus = event.target.value;
@@ -95,8 +111,8 @@ export const TodoList: React.FC<Props> = (props) => {
                 className={
                   classNames(
                     'TodoList__user-button',
-                    { button: todo.userId !== userId },
-                    { 'TodoList__user-button--selected': todo.userId === userId },
+                    { button: todo.userId !== user?.id },
+                    { 'TodoList__user-button--selected': todo.userId === user?.id },
                   )
                 }
                 type="button"

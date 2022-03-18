@@ -1,37 +1,20 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from '../../api/users';
-import { loadUserAction, setErrorAction, setUserAction } from '../../store/actions';
-import { getErrorSelector, getUserSelector } from '../../store/selectors';
+import { loadUserAction } from '../../store/actions';
+import { getErrorSelector } from '../../store/selectors';
 
 type Props = {
-  userId: number,
+  user: User | null,
 };
 
 export const CurrentUser: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
-  const { userId } = props;
-  const user = useSelector(getUserSelector);
+  const { user } = props;
   const isError = useSelector(getErrorSelector);
 
-  useEffect(() => {
-    const loadUserFromServer = async () => {
-      try {
-        const userFromServer = await getUser(userId);
-
-        dispatch(loadUserAction(userFromServer));
-        dispatch(setErrorAction(false));
-      } catch {
-        dispatch(setErrorAction(true));
-      }
-    };
-
-    loadUserFromServer();
-  }, [userId]);
-
-  const handleClearUser = useCallback(() => {
-    dispatch(setUserAction(0));
-  }, [userId]);
+  const handleClearUser = async () => {
+    dispatch(loadUserAction(null));
+  };
 
   return (
     <>
