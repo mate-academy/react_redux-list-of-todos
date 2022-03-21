@@ -19,12 +19,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "sourceMap": true,
-    "declaration": true,
+    "declaration": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "experimentalDecorators": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
   },
   "include": [
     "src"
