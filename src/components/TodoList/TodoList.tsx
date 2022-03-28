@@ -90,7 +90,6 @@ export const TodoList: React.FC = () => {
             <option value={SortBy.default}>All</option>
             <option value={SortBy.true}>Completed</option>
             <option value={SortBy.false}>Active</option>
-
           </select>
         </label>
         <span>
@@ -113,9 +112,11 @@ export const TodoList: React.FC = () => {
           {filteredTodos.map(todo => (
             <li
               key={todo.id}
-              className={classNames('TodoList__item',
+              className={classNames(
+                'TodoList__item',
                 { 'TodoList__item--checked': todo.completed },
-                { 'TodoList__item--unchecked': !todo.completed })}
+                { 'TodoList__item--unchecked': !todo.completed },
+              )}
             >
               <label htmlFor="checkbox">
                 <input

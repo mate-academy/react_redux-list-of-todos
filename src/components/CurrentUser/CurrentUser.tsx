@@ -53,9 +53,7 @@ export const CurrentUser: React.FC = () => {
 
       <h2 className="CurrentUser__title">
         <span>
-          Selected user:
-          {' '}
-          {user.id}
+          {`Selected user: ${user.id}`}
         </span>
       </h2>
 
