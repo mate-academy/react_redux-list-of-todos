@@ -33,6 +33,7 @@ const reducer = (state = initialState, action: Action) => {
         ...state,
         inputValue: action.payload,
       };
+
     case SELECT_VALUE:
       return {
         ...state,

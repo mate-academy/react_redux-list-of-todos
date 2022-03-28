@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import './TodoList.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,9 +26,9 @@ export const TodosList: React.FC = () => {
   const selectValue = useSelector(getSelectValue);
 
   const handelSelectUser = async (userId: number) => {
-    const userFromServer = await getUser(userId);
-
     if (userId !== user?.id) {
+      const userFromServer = await getUser(userId);
+
       dispatch(loadUserAction(userFromServer));
     }
   };
@@ -54,7 +54,7 @@ export const TodosList: React.FC = () => {
     ));
   };
 
-  const filteredTodos = filterTodos();
+  const filteredTodos = useMemo(filterTodos, [inputValue, selectValue, todos]);
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setSelectValue(event.target.value));
@@ -78,7 +78,7 @@ export const TodosList: React.FC = () => {
   return (
     <div className="TodoList">
       <span>
-        Status:
+        <span className="has-text-link has-text-weight-bold">Status:</span>
         <select
           value={selectValue}
           onChange={(event) => {
@@ -90,7 +90,7 @@ export const TodosList: React.FC = () => {
           <option value="notCompleted">Not completed</option>
         </select>
         <br />
-        Find by name:
+        <span className="has-text-link has-text-weight-bold">Find by name:</span>
         <input
           type="text"
           value={inputValue}
