@@ -139,8 +139,7 @@ export const TodoList: React.FC = () => {
                   { 'TodoList__user-button--selected': todo.userId === selectedUserId })}
                 type="button"
               >
-                User&nbsp;#
-                {todo.userId}
+                {`User #${todo.userId}`}
               </button>
             </li>
           ))}
