@@ -54,13 +54,13 @@ const rootReducer = (state = initialState, action: AnyAction) => {
     case LOAD_TODOS:
       return {
         ...state,
-        todos: [...state.todos, ...action.payload],
+        todos: [...action.payload],
       };
 
     case DELETE_TODO:
       return {
         ...state,
-        todos: state.todos.filter((todo => todo.id !== action.payload)),
+        todos: state.todos.filter(todo => todo.id !== action.payload),
       };
 
     case SELECTED_USERID:
