@@ -1,43 +1,80 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { TodoStatus } from '../types/TodoStatus';
+import { Todo } from '../types/Todo';
 
 // Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+const SET_TODOS = 'SET_TODOS';
+const SET_TODO_TITLE = 'SET_TODO_TITLE';
+const SET_TODO_STATUS = 'SET_TODO_STATUS';
+const SET_HAS_LOADING_ERROR = 'SET_HAS_LOADING_ERROR';
 
 // Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({
-  type: FINISH_LOADING,
-  message,
-});
+export const actions = {
+  setTodos: (todos: Todo[]) => ({
+    type: SET_TODOS,
+    payload: todos,
+  }),
+  setTodoTitle: (title: string) => ({
+    type: SET_TODO_TITLE,
+    payload: title,
+  }),
+  setTodoStatus: (status: TodoStatus) => ({
+    type: SET_TODO_STATUS,
+    payload: status,
+  }),
+  setHasLoadingError: (hasError: boolean) => ({
+    type: SET_HAS_LOADING_ERROR,
+    payload: hasError,
+  }),
+};
 
 // Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const getTodos = (state: RootState) => state.todos;
+export const getTodoTitle = (state: RootState) => state.todoTitle;
+export const getTodoStatus = (state: RootState) => state.todoStatus;
+export const getHasLoadingError = (state: RootState) => state.hasLoadingError;
 
 // Initial state
 export type RootState = {
-  loading: boolean;
-  message: string;
+  todos: Todo[],
+  todoTitle: string,
+  todoStatus: TodoStatus,
+  hasLoadingError: boolean,
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  todos: [],
+  todoTitle: '',
+  todoStatus: TodoStatus.all,
+  hasLoadingError: false,
 };
 
 // rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
+    case SET_TODOS:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        todos: [...state.todos, ...action.payload],
+      };
+
+    case SET_TODO_TITLE:
+      return {
+        ...state,
+        todoTitle: action.payload,
+      };
+
+    case SET_TODO_STATUS:
+      return {
+        ...state,
+        todoStatus: action.payload,
+      };
+
+    case SET_HAS_LOADING_ERROR:
+      return {
+        ...state,
+        hasLoadingError: action.payload,
       };
 
     default:

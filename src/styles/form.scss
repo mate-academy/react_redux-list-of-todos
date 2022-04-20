@@ -1,0 +1,19 @@
+.form {
+  &__title-input {
+    width: 250px;
+    padding: 10px 5px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    border: 0;
+  }
+
+  &__status-selector {
+    padding: 10px 5px;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: inherit;
+    border: 0;
+  }
+}

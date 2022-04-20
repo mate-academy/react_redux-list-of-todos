@@ -1,28 +1,34 @@
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import './styles/general.scss';
+import './styles/form.scss';
 
-import { isLoading, getMessage } from './store';
+import { TodoList } from './components/TodoList';
+import { CurrentUser } from './components/CurrentUser';
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+export const App = () => {
+  const [selectedUserId, setSelectedUserId] = useState(0);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="App__sidebar">
+        <TodoList
+          selectedUserId={selectedUserId}
+          setSelectedUserId={setSelectedUserId}
+        />
+      </div>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <CurrentUser
+              selectedUserId={selectedUserId}
+              setSelectedUserId={setSelectedUserId}
+            />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
-
-export default App;
