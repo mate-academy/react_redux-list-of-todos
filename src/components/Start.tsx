@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
-
-import { RootState, isLoading, startLoading } from '../store';
+import { RootState } from '../store/types';
+import { startLoading } from '../store/actions';
+import { isLoading } from '../store/selectors';
 
 /**
  * mapState - is a function receiving full Redux state as the first argument
