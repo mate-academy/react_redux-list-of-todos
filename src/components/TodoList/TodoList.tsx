@@ -3,8 +3,9 @@ import {
   FC, useEffect, useMemo, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTodos } from '../../api/api';
+import { fetchTodos, removeTodo } from '../../api/api';
 import {
+  deleteTodo,
   getSelectedUserId, getTodos, loadTodos, setSelectedUserId,
 } from '../../store';
 import { SelectInput } from '../InputComponents/SelectInput';
@@ -31,6 +32,14 @@ export const TodoList: FC = () => {
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
+  };
+
+  const eraseTodo = (todoId: number) => {
+    removeTodo(todoId).then(id => {
+      if (id) {
+        dispatch(deleteTodo(todoId));
+      }
+    });
   };
 
   const options = [
@@ -97,19 +106,29 @@ export const TodoList: FC = () => {
                 <p>{todo.title}</p>
               </label>
 
-              <button
-                className={classNames(
-                  'TodoList__user-button',
-                  {
-                    'TodoList__user-button--selected':
-                      todo.userId === selectedUserId,
-                  },
-                )}
-                type="button"
-                onClick={() => dispatch(setSelectedUserId(todo.userId))}
-              >
-                {`User #${todo.userId}`}
-              </button>
+              <div>
+                <button
+                  className={classNames(
+                    'TodoList__user-button',
+                    {
+                      'TodoList__user-button--selected':
+                        todo.userId === selectedUserId,
+                    },
+                  )}
+                  type="button"
+                  onClick={() => dispatch(setSelectedUserId(todo.userId))}
+                >
+                  {`User #${todo.userId}`}
+                </button>
+
+                <button
+                  className="TodoList__user-button"
+                  type="button"
+                  onClick={() => eraseTodo(todo.id)}
+                >
+                  {`Delete #${todo.id}`}
+                </button>
+              </div>
             </li>
           ))}
         </ul>

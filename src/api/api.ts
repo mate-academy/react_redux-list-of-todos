@@ -1,26 +1,22 @@
 import { Todo } from '../types/todo';
 import { User } from '../types/user';
 
-export function fetchTodos(): Promise<Todo[]> {
-  return fetch('https://mate.academy/students-api/todos')
+const BASE_URL = 'https://mate.academy/students-api';
+
+const request = (url: string, options = {}) => {
+  return fetch(BASE_URL + url, options)
     .then(response => response.json())
-    .then(responce => {
-      if (responce.Error) {
-        throw new Error(`${responce.status} - ${responce.statusText}`);
+    .then(data => {
+      if (data.Error) {
+        throw new Error(`${data.status} - ${data.statusText}`);
       }
 
-      return responce;
-    });
-}
-
-export const fetchUser = (userId: number): Promise<User> => {
-  return fetch(`https://mate.academy/students-api/users/${userId}`)
-    .then(response => response.json())
-    .then(responce => {
-      if (responce.Error) {
-        throw new Error(`${responce.status} - ${responce.statusText}`);
-      }
-
-      return responce;
+      return data;
     });
 };
+
+export const fetchTodos = (): Promise<Todo[]> => request('/todos');
+export const fetchUser = (userId: number): Promise<User> => request(`/users/${userId}`);
+export const removeTodo = (todoId: number) => request(`/todos/${todoId}`, {
+  method: 'DELETE',
+});
