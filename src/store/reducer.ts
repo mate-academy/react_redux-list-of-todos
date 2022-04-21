@@ -7,6 +7,8 @@ import {
 
 const initialState: RootState = {
   todos: [],
+  selectedUserId: 0,
+  allUsers: [],
   loading: false,
   message: '',
 };
@@ -23,6 +25,17 @@ export const rootReducer: Reducer<RootState, Actions> = (
         todos: [...state.todos, ...action.payload],
       };
 
+    case ActionTypes.AddAllUsers:
+      return {
+        ...state,
+        users: [...state.allUsers, ...action.payload],
+      };
+
+    case ActionTypes.SelectedUserId:
+      return {
+        ...state,
+        selectedUserId: action.payload,
+      };
       // case ActionTypes.StartLoading:
       //   return { ...state, loading: true };
 

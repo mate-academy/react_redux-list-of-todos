@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { RootState } from './types';
 
 // Selectors - a function receiving Redux state and returning some data from it
@@ -6,12 +7,6 @@ export const getMessage = (state: RootState) => state.message;
 
 export const loadTodosSelector = (state: RootState): Todo[] => state.todos;
 
-// export const preparedTodosSelector = (state: RootState): Todo[] => {
-//   const todo = state.todos.find...
-//   const user = state.todos.user...
+export const getSelectedUserIdSelector = (state: RootState): number => state.selectedUserId;
 
-//   return {
-//     ...todo,
-//     user
-//   }
-// };
+export const loadAllUsersSelector = (state: RootState): User[] => state.allUsers;

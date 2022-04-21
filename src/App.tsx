@@ -1,32 +1,83 @@
 /* eslint-disable no-console */
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { loadTodosSelector } from './store/selectors';
+import 'bulma/css/bulma.min.css';
+import {
+  loadTodosSelector,
+  getSelectedUserIdSelector,
+} from './store/selectors';
 import './App.scss';
-import { loadTodos } from './store/actions';
+import { ACTIONS_CREATORS } from './store/actions/todos.actions';
+import { loadUsers } from './store/actions/users.actions';
+import { UserDetails } from './components/UserDetails/UserDetails';
+import { TodoList } from './components/TodoList/TodoList';
 
 const App = () => {
   const todos = useSelector(loadTodosSelector);
+  const selectedUserId = useSelector(getSelectedUserIdSelector);
+  // const users = useSelector(loadAllUsersSelector);
   const dispatch = useDispatch();
+  const { loadTodos } = ACTIONS_CREATORS;
 
   useEffect(() => {
     dispatch(loadTodos());
   }, []);
 
-  console.log(todos);
+  useEffect(() => {
+    dispatch(loadUsers());
+  }, []);
+
+  // const onClearUser = () {
+
+  // }
+
+  console.log('selectedTodo', { selectedUserId });
 
   return (
     <div className="App">
-      <ul className="TodoList">
-        {todos.map(({ title, id }) => (
-          <li key={id}>
-            <p>{title}</p>
-            <button type="button">Open</button>
-            <button type="button">Delete</button>
-          </li>
-        ))}
-      </ul>
+      <div className="App__sidebar">
+        <TodoList
+          todos={todos}
+        />
+      </div>
+
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <UserDetails
+              userId={selectedUserId}
+              // onClear={onClearUser}
+            />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
+    // <div className="App">
+    //   <ul className="TodoList">
+    //     {todos.map(({ title, id, userId }) => (
+    //       <li key={id}>
+    //         <p>{title}</p>
+    //         <button
+    //           type="button"
+    //           onClick={() => dispatch(setSelectedUserId(userId))}
+    //         >
+    //           Open
+    //         </button>
+    //         <button type="button">Delete</button>
+    //       </li>
+    //     ))}
+    //   </ul>
+
+  //   <div className="App__content">
+  //     <div className="App__content-container">
+  //       {selectedUserId ? (
+  //         <UserDetails
+  //           userId={selectedUserId}
+  //         />
+  //       ) : 'No user selected'}
+  //     </div>
+  //   </div>
+  // </div>
   );
 };
 
@@ -36,6 +87,8 @@ export default App;
  * import Start from './components/Start';
 import { Finish } from './components/Finish';
 import { isLoading, getMessage, loadingTodos } from './store/selectors';
+import { getUsers } from './data/api';
+import { UserDetails } from './components/UserDetails';
 
  *   const loading = useSelector(isLoading);
   const message = useSelector(getMessage) || 'Ready!';

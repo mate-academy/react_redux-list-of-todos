@@ -1,4 +1,3 @@
-// import { Todo } from '../react-app-env';
 import { getData } from './api';
 import { ENDPOINTS } from './api.constants';
 

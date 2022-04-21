@@ -1,0 +1,58 @@
+.UserDetails {
+  display: flex;
+  justify-content: center;
+
+  &__title {
+    font-size: 1rem;
+    color: white;
+
+    span {
+      background-color: #4d457b;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  }
+
+  &__name {
+    margin: 30px 0 10px;
+    font-size: 1.5rem;
+  }
+
+  &__email,
+  &__phone {
+    color: #c4bdd9;
+    text-align: center;
+    margin: 5px;
+  }
+
+  &__user-button {
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: #b8b3d2;
+    border: 0;
+    color: white;
+    transition: background-color 0.12s;
+    font-size: inherit;
+
+    &:hover {
+      background-color: #4d457b;
+      color: #fff;
+    }
+  }
+
+  &__user-button--selected {
+    background-color: #4d457b;
+
+    &:focus {
+      color: #8f8bff;
+    }
+  }
+
+
+  &__clear {
+    display: block;
+    margin: 20px auto 0;
+  }
+}

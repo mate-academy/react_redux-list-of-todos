@@ -1,20 +1,19 @@
-import { getTodos } from '../data/todos.api';
 import { ActionTypes } from './types';
 
-const addTodos = (payload: Todo[]) => ({
-  type: ActionTypes.AddTodos,
-  payload,
-});
+// const addTodos = (payload: Todo[]): AddTodosAction => ({
+//   type: ActionTypes.AddTodos,
+//   payload,
+// });
 
-export const loadTodos = () => async (
-  dispatch: (arg0: { type: string; payload: Todo[]; }) => void,
-) => {
-  const todos = await getTodos();
+// export const loadTodos = () => async (
+//   dispatch: (arg0: { type: string; payload: Todo[]; }) => void,
+// ) => {
+//   const todos = await getTodos();
 
-  const addTodoAction = addTodos(todos);
+//   const addTodoAction = addTodos(todos);
 
-  dispatch(addTodoAction);
-};
+//   dispatch(addTodoAction);
+// };
 
 // Action creators - a function returning an action object
 export const startLoading = () => ({ type: ActionTypes.StartLoading });
