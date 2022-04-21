@@ -30,7 +30,7 @@ export const TodoList: React.FC = () => {
           case 'active':
             return !todo.completed;
           case 'completed':
-            return !todo.completed;
+            return todo.completed;
           default:
             return true;
         }
