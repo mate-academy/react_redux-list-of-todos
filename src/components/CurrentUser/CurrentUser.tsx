@@ -10,8 +10,6 @@ export const CurrentUser: React.FC = () => {
   const selectedUser = useSelector(getUserSelector);
   const selectedId = useSelector(selectedUserIdSelector);
 
-  const clearUser = () => dispatch(selectUserIdAction(0));
-
   useEffect(() => {
     getUserById(selectedId)
       .then(data => dispatch(addUserAction(data)));
@@ -20,7 +18,7 @@ export const CurrentUser: React.FC = () => {
   return (
     <div className="CurrentUser">
       <h2 className="CurrentUser__title">
-        <span>Selected user:</span>
+        <span>{`Selected user: ${selectedId}`}</span>
       </h2>
 
       <h3 className="CurrentUser__name">{selectedUser?.name}</h3>
@@ -30,7 +28,7 @@ export const CurrentUser: React.FC = () => {
       <button
         type="button"
         className="TodoList__user-button button"
-        onClick={() => clearUser}
+        onClick={() => dispatch(selectUserIdAction(0))}
       >
         Clear
       </button>
