@@ -5,10 +5,10 @@ import 'bulma';
 
 import { TodoList } from './components/TodoList/TodoList';
 import { CurrentUser } from './components/CurrentUser';
-import { getSelectedUserId } from './store';
+import { selectedUserIdSelector } from './store';
 
 const App = () => {
-  const selectedUserId = useSelector(getSelectedUserId);
+  const selectedUserId = useSelector(selectedUserIdSelector);
 
   return (
     <div className="App">

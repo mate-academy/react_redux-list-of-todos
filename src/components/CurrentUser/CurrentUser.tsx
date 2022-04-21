@@ -1,19 +1,19 @@
 import React, { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../../api/api';
+import { fetchUserById } from '../../api/api';
 import {
-  getSelectedUserId, getUser, setSelectedUserId, setUser,
+  selectedUserIdSelector, userSelector, selectUserIdAction, userAction,
 } from '../../store';
 import './CurrentUser.scss';
 
 export const CurrentUser: React.FC = memo(() => {
   const dispatch = useDispatch();
-  const user = useSelector(getUser);
-  const selectedUserId = useSelector(getSelectedUserId);
+  const user = useSelector(userSelector);
+  const selectedUserId = useSelector(selectedUserIdSelector);
 
   useEffect(() => {
-    fetchUser(selectedUserId)
-      .then(person => dispatch(setUser(person)));
+    fetchUserById(selectedUserId)
+      .then(person => dispatch(userAction(person)));
   }, [selectedUserId]);
 
   return (
@@ -27,7 +27,7 @@ export const CurrentUser: React.FC = memo(() => {
       <button
         type="button"
         className="CurrentUser__clear"
-        onClick={() => dispatch(setSelectedUserId(0))}
+        onClick={() => dispatch(selectUserIdAction(0))}
       >
         Clear
       </button>

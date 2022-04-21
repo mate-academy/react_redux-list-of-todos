@@ -3,39 +3,36 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { Todo } from '../types/todo';
 import { User } from '../types/user';
 
-// Action types - is just a constant. MUST have a unique value.
 const LOAD_TODOS = 'LOAD_TODOS';
 const DELETE_TODO = 'DELETE_TODO';
 const SELECTED_USERID = 'SELECTED_USERID';
 const SETUSER = 'SETUSER';
 
-// Action creators - a function returning an action object
-export const loadTodos = (todos: Todo[]) => ({
+export const todosAction = (todos: Todo[]) => ({
   type: LOAD_TODOS,
   payload: todos,
 });
 
-export const deleteTodo = (todoId: number) => ({
+export const removeTodoAction = (todoId: number) => ({
   type: DELETE_TODO,
   payload: todoId,
 });
 
-export const setSelectedUserId = (id: number) => ({
+export const selectUserIdAction = (id: number) => ({
   type: SELECTED_USERID,
   payload: id,
 });
 
-export const setUser = (user: User) => ({
+export const userAction = (user: User) => ({
   type: SETUSER,
   payload: user,
 });
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const getTodos = (state: RootState) => state.todos;
-export const getSelectedUserId = (state: RootState) => state.selectedUserId;
-export const getUser = (state: RootState) => state.user;
+export const todosSelector = (state: RootState) => state.todos;
+export const selectedUserIdSelector
+  = (state: RootState) => state.selectedUserId;
+export const userSelector = (state: RootState) => state.user;
 
-// Initial state
 export type RootState = {
   todos: Todo[];
   selectedUserId: number;
@@ -48,7 +45,6 @@ const initialState: RootState = {
   user: null,
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case LOAD_TODOS:
@@ -80,10 +76,9 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;

@@ -3,8 +3,8 @@ import { User } from '../types/user';
 
 const BASE_URL = 'https://mate.academy/students-api';
 
-const request = (url: string, options = {}) => {
-  return fetch(BASE_URL + url, options)
+const request = (endpoint: string, options = {}) => {
+  return fetch(BASE_URL + endpoint, options)
     .then(response => response.json())
     .then(data => {
       if (data.Error) {
@@ -16,7 +16,7 @@ const request = (url: string, options = {}) => {
 };
 
 export const fetchTodos = (): Promise<Todo[]> => request('/todos');
-export const fetchUser = (userId: number): Promise<User> => request(`/users/${userId}`);
-export const removeTodo = (todoId: number) => request(`/todos/${todoId}`, {
+export const fetchUserById = (userId: number): Promise<User> => request(`/users/${userId}`);
+export const removeTodo = (todoId: number): Promise<number> => request(`/todos/${todoId}`, {
   method: 'DELETE',
 });

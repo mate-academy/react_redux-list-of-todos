@@ -5,8 +5,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTodos, removeTodo } from '../../api/api';
 import {
-  deleteTodo,
-  getSelectedUserId, getTodos, loadTodos, setSelectedUserId,
+  removeTodoAction, selectedUserIdSelector, todosSelector, todosAction,
+  selectUserIdAction,
 } from '../../store';
 import { SelectInput } from '../InputComponents/SelectInput';
 import { TextInput } from '../InputComponents/TextInput';
@@ -14,15 +14,15 @@ import './todoList.scss';
 
 export const TodoList: FC = () => {
   const dispatch = useDispatch();
-  const todos = useSelector(getTodos);
-  const selectedUserId = useSelector(getSelectedUserId);
+  const todos = useSelector(todosSelector);
+  const selectedUserId = useSelector(selectedUserIdSelector);
 
   const [title, setTitle] = useState('');
   const [selectedOption, setSelectedOption] = useState('all');
 
   useEffect(() => {
     fetchTodos().then(todosFromServer => {
-      dispatch(loadTodos(todosFromServer));
+      dispatch(todosAction(todosFromServer));
     });
   }, []);
 
@@ -37,7 +37,7 @@ export const TodoList: FC = () => {
   const eraseTodo = (todoId: number) => {
     removeTodo(todoId).then(id => {
       if (id) {
-        dispatch(deleteTodo(todoId));
+        dispatch(removeTodoAction(todoId));
       }
     });
   };
@@ -116,7 +116,7 @@ export const TodoList: FC = () => {
                     },
                   )}
                   type="button"
-                  onClick={() => dispatch(setSelectedUserId(todo.userId))}
+                  onClick={() => dispatch(selectUserIdAction(todo.userId))}
                 >
                   {`User #${todo.userId}`}
                 </button>
