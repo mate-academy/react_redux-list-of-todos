@@ -5,7 +5,7 @@ import 'bulma';
 
 import { TodoList } from './components/TodoList/TodoList';
 import { CurrentUser } from './components/CurrentUser';
-import { selectedUserIdSelector } from './store';
+import { selectedUserIdSelector } from './store/selectors';
 
 const App = () => {
   const selectedUserId = useSelector(selectedUserIdSelector);

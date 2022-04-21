@@ -1,9 +1,8 @@
 import React, { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserById } from '../../api/api';
-import {
-  selectedUserIdSelector, userSelector, selectUserIdAction, userAction,
-} from '../../store';
+import { selectUserIdAction, userAction } from '../../store/actions';
+import { selectedUserIdSelector, userSelector } from '../../store/selectors';
 import './CurrentUser.scss';
 
 export const CurrentUser: React.FC = memo(() => {

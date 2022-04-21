@@ -5,9 +5,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTodos, removeTodo } from '../../api/api';
 import {
-  removeTodoAction, selectedUserIdSelector, todosSelector, todosAction,
-  selectUserIdAction,
-} from '../../store';
+  removeTodoAction, selectUserIdAction, todosAction,
+} from '../../store/actions';
+import { selectedUserIdSelector, todosSelector } from '../../store/selectors';
 import { SelectInput } from '../InputComponents/SelectInput';
 import { TextInput } from '../InputComponents/TextInput';
 import './todoList.scss';
