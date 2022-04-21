@@ -30,7 +30,7 @@ export const CurrentUser: React.FC = () => {
       <button
         type="button"
         className="TodoList__user-button button"
-        onClick={clearUser}
+        onClick={() => clearUser}
       >
         Clear
       </button>
