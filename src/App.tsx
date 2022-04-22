@@ -1,26 +1,36 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import 'bulma/css/bulma.min.css';
 
+import { getSelectedUserIdSelector } from './store/selectors';
+import { ACTIONS_CREATORS } from './store/actions/todos.actions';
+import { UserDetails } from './components/UserDetails/UserDetails';
+import { TodoList } from './components/TodoList/TodoList';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const selectedUserId = useSelector(getSelectedUserIdSelector);
+
+  const dispatch = useDispatch();
+  const { loadTodos } = ACTIONS_CREATORS;
+
+  useEffect(() => {
+    dispatch(loadTodos());
+  }, []);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="App__sidebar">
+        <TodoList />
+      </div>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <UserDetails />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
