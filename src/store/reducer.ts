@@ -13,7 +13,6 @@ const initialState: RootState = {
   message: '',
 };
 
-// rootReducer - this function is called after dispatching an action
 export const rootReducer: Reducer<RootState, Actions> = (
   state = initialState,
   action,
@@ -42,21 +41,6 @@ export const rootReducer: Reducer<RootState, Actions> = (
         ...state,
         todos: state.todos.filter(todo => todo.id !== action.payload),
       };
-
-      // case ActionTypes.RemoveTodo:
-      //   return {
-      //     ...state,
-      //     todoId: action.payload,
-      //   };
-      // case ActionTypes.StartLoading:
-      //   return { ...state, loading: true };
-
-      // case ActionTypes.FinishLoading:
-      //   return {
-      //     ...state,
-      //     loading: false,
-      //     message: action.message,
-      //   };
 
     default:
       return state;

@@ -2,20 +2,21 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import 'bulma/css/bulma.min.css';
+
 import {
   loadTodosSelector,
   getSelectedUserIdSelector,
 } from './store/selectors';
-import './App.scss';
 import { ACTIONS_CREATORS } from './store/actions/todos.actions';
-import { loadUsers } from './store/actions/users.actions';
+// import { loadUsers } from './store/actions/users.actions';
 import { UserDetails } from './components/UserDetails/UserDetails';
 import { TodoList } from './components/TodoList/TodoList';
+import './App.scss';
 
 const App = () => {
   const todos = useSelector(loadTodosSelector);
   const selectedUserId = useSelector(getSelectedUserIdSelector);
-  // const users = useSelector(loadAllUsersSelector);
+
   const dispatch = useDispatch();
   const { loadTodos } = ACTIONS_CREATORS;
 
@@ -23,13 +24,9 @@ const App = () => {
     dispatch(loadTodos());
   }, []);
 
-  useEffect(() => {
-    dispatch(loadUsers());
-  }, []);
-
-  console.log('todos', todos);
-
-  console.log('selectedTodo', { selectedUserId });
+  // useEffect(() => {
+  //   dispatch(loadUsers());
+  // }, []);
 
   return (
     <div className="App">

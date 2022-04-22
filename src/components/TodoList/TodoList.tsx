@@ -2,9 +2,11 @@ import {
   FC, memo, useState, useMemo,
 } from 'react';
 import classNames from 'classnames';
-import './TodoList.scss';
-import { Todo } from '../Todo/Todo';
+
+import { TodoItem } from '../TodoItem/TodoItem';
 import Form from '../TodoForm/TodoForm';
+import { Todo } from '../../types/todo.type';
+import './TodoList.scss';
 
 type Props = {
   todos: Todo[];
@@ -57,27 +59,6 @@ export const TodoList: FC<Props> = memo(({ todos }) => {
           handleCategoryChange(event);
         }}
       />
-      {/* onChangeSelect, onChangeInput, titleValue, categoryValue */}
-      {/* <div className="control">
-        <input
-          className="input is-hovered"
-          type="text"
-          placeholder="Enter todo's name"
-          value={todoTitle}
-          onChange={event => handleTitleChange(event)}
-        />
-      </div>
-
-      <div className="select">
-        <select
-          value={selectCategory}
-          onChange={event => handleCategoryChange(event)}
-        >
-          <option>All</option>
-          <option>Active</option>
-          <option>Completed</option>
-        </select>
-      </div> */}
 
       <div className="TodoList__list-container">
         <ul className="TodoList__list">
@@ -89,7 +70,7 @@ export const TodoList: FC<Props> = memo(({ todos }) => {
                 'TodoList__item--unchecked': !todo.completed,
               })}
             >
-              <Todo todo={todo} />
+              <TodoItem todo={todo} />
             </li>
           ))}
         </ul>

@@ -2,15 +2,17 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { getSelectedUserIdSelector } from '../../store/selectors';
 import { ACTIONS_CREATORS } from '../../store/actions/todos.actions';
 import { removeTodo } from '../../data/todos.api';
+import { Todo } from '../../types/todo.type';
 
 type Props = {
-  todo: Todo
+  todo: Todo;
 };
 
-export const Todo: FC<Props> = ({ todo }) => {
+export const TodoItem: FC<Props> = ({ todo }) => {
   const selectedUserId = useSelector(getSelectedUserIdSelector);
   const dispatch = useDispatch();
 
