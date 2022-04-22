@@ -4,6 +4,7 @@ import {
 import classNames from 'classnames';
 import './TodoList.scss';
 import { Todo } from '../Todo/Todo';
+import Form from '../TodoForm/TodoForm';
 
 type Props = {
   todos: Todo[];
@@ -46,8 +47,18 @@ export const TodoList: FC<Props> = memo(({ todos }) => {
 
   return (
     <div className="TodoList">
-
-      <div className="control">
+      <Form
+        categoryValue={selectCategory}
+        titleValue={todoTitle}
+        onChangeInput={(event) => {
+          handleTitleChange(event);
+        }}
+        onChangeSelect={(event) => {
+          handleCategoryChange(event);
+        }}
+      />
+      {/* onChangeSelect, onChangeInput, titleValue, categoryValue */}
+      {/* <div className="control">
         <input
           className="input is-hovered"
           type="text"
@@ -66,7 +77,7 @@ export const TodoList: FC<Props> = memo(({ todos }) => {
           <option>Active</option>
           <option>Completed</option>
         </select>
-      </div>
+      </div> */}
 
       <div className="TodoList__list-container">
         <ul className="TodoList__list">

@@ -39,7 +39,7 @@ export const Todo: FC<Props> = ({ todo }) => {
           className={classNames(
             'TodoList__user-button', 'button', {
               'TodoList__user-button--selected':
-                      todo.userId === selectedUserId,
+                todo.userId === selectedUserId,
             },
           )}
           onClick={() => dispatch(setSelectedUserId(todo.userId))}
