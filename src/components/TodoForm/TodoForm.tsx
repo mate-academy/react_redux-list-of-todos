@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, memo } from 'react';
 
 type Props = {
   titleValue: string,
@@ -7,7 +7,7 @@ type Props = {
   onChangeSelect: (event: ChangeEvent<HTMLSelectElement>) => void,
 };
 
-const Form: FC<Props> = ({
+export const TodoForm: FC<Props> = memo(({
   titleValue,
   categoryValue,
   onChangeSelect,
@@ -37,6 +37,4 @@ const Form: FC<Props> = ({
       </div>
     </form>
   );
-};
-
-export default Form;
+});

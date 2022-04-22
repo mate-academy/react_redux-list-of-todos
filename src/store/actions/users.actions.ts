@@ -1,18 +1,7 @@
-import { getUsers } from '../../data/users.api';
 import { User } from '../../types/user.type';
-import { ActionTypes, AddAllUsersAction } from '../types';
+import { ActionTypes, AddUserAction } from '../types';
 
-const addAllUsers = (payload: User[]): AddAllUsersAction => ({
-  type: ActionTypes.AddAllUsers,
+export const addUserAction = (payload: User | null): AddUserAction => ({
+  type: ActionTypes.AddUser,
   payload,
 });
-
-export const loadUsers = () => async (
-  dispatch: (arg0: { type: string; payload: User[]; }) => void,
-) => {
-  const users = await getUsers();
-
-  const addUserAction = addAllUsers(users);
-
-  dispatch(addUserAction);
-};

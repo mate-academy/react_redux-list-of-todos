@@ -1,31 +1,27 @@
 import {
-  FC, memo, useState, useEffect,
+  FC, memo, useEffect,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getUser } from '../../data/users.api';
+import { getUserById } from '../../data/users.api';
 import { ACTIONS_CREATORS } from '../../store/actions/todos.actions';
-import { User } from '../../types/user.type';
+import { addUserAction } from '../../store/actions/users.actions';
+import {
+  getSelectedUserIdSelector,
+  loadUserSelector,
+} from '../../store/selectors';
 import './UserDetails.scss';
 
-type Props = {
-  userId: number;
-};
-
-export const UserDetails: FC<Props> = memo(({
-  userId,
-}) => {
-  const [user, setUser] = useState<User | null>(Object);
-
+export const UserDetails: FC = memo(() => {
+  const user = useSelector(loadUserSelector);
+  const selectedUserId = useSelector(getSelectedUserIdSelector);
   const dispatch = useDispatch();
-
-  const { setSelectedUserId } = ACTIONS_CREATORS;
+  const { setSelectedUserById } = ACTIONS_CREATORS;
 
   useEffect(() => {
-    getUser(userId).then(data => {
-      setUser(data);
-    });
-  }, [userId]);
+    getUserById(selectedUserId)
+      .then(person => dispatch(addUserAction(person)));
+  }, [selectedUserId]);
 
   return (
     <div key={user?.id}>
@@ -46,7 +42,7 @@ export const UserDetails: FC<Props> = memo(({
           <button
             type="button"
             className="UserDetails__user-button button"
-            onClick={() => dispatch(setSelectedUserId(0))}
+            onClick={() => dispatch(setSelectedUserById(0))}
           >
             Clear
           </button>

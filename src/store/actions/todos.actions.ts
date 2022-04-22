@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { getTodos } from '../../data/todos.api';
 import { Todo } from '../../types/todo.type';
 import {
@@ -23,7 +22,7 @@ const loadTodos = () => async (
   dispatch(addTodoAction);
 };
 
-const setSelectedUserId = (payload: number): SelectedUserIdAction => ({
+const setSelectedUserById = (payload: number): SelectedUserIdAction => ({
   type: ActionTypes.SelectedUserId,
   payload,
 });
@@ -35,6 +34,6 @@ export const removeTodoById = (payload: number): RemoveTodosAction => ({
 
 export const ACTIONS_CREATORS = {
   loadTodos,
-  setSelectedUserId,
+  setSelectedUserById,
   removeTodoById,
 };

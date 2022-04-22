@@ -1,20 +1,20 @@
 import {
   FC, memo, useState, useMemo,
 } from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
+import { loadTodosSelector } from '../../store/selectors';
 import { TodoItem } from '../TodoItem/TodoItem';
-import Form from '../TodoForm/TodoForm';
+import { TodoForm } from '../TodoForm/TodoForm';
 import { Todo } from '../../types/todo.type';
 import './TodoList.scss';
 
-type Props = {
-  todos: Todo[];
-};
-
-export const TodoList: FC<Props> = memo(({ todos }) => {
+export const TodoList: FC = memo(() => {
   const [todoTitle, setTodoTitle] = useState('');
   const [selectCategory, setSelectCategory] = useState('All');
+
+  const todos = useSelector(loadTodosSelector);
 
   const handleTitleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -49,7 +49,7 @@ export const TodoList: FC<Props> = memo(({ todos }) => {
 
   return (
     <div className="TodoList">
-      <Form
+      <TodoForm
         categoryValue={selectCategory}
         titleValue={todoTitle}
         onChangeInput={(event) => {

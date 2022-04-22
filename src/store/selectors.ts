@@ -7,5 +7,5 @@ export const loadTodosSelector = (state: RootState): Todo[] => state.todos;
 export const getSelectedUserIdSelector
   = (state: RootState): number => state.selectedUserId;
 
-export const loadAllUsersSelector
-  = (state: RootState): User[] => state.allUsers;
+export const loadUserSelector
+  = (state: RootState): User | null => state.user;

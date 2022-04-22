@@ -5,9 +5,7 @@ import { User } from '../types/user.type';
 export interface RootState {
   todos: Todo[];
   selectedUserId: number;
-  allUsers: User[];
-  loading: boolean;
-  message: string;
+  user: User | null;
 }
 
 export interface Action<T, P> extends BaseAction<T> {
@@ -18,16 +16,16 @@ export enum ActionTypes {
   AddTodos = 'addTodos',
   RemoveTodo = 'removeTodo',
   SelectedUserId = 'selectedTodoId',
-  AddAllUsers = 'addAllUsers',
+  AddUser = 'addUser',
 }
 
 export type AddTodosAction = Action<ActionTypes.AddTodos, Todo[]>;
-export type AddAllUsersAction = Action<ActionTypes.AddAllUsers, User[]>;
+export type AddUserAction = Action<ActionTypes.AddUser, User | null>;
 export type SelectedUserIdAction = Action<ActionTypes.SelectedUserId, number>;
 export type RemoveTodosAction = Action<ActionTypes.RemoveTodo, number>;
 
 export type Actions =
   AddTodosAction
-  | AddAllUsersAction
+  | AddUserAction
   | SelectedUserIdAction
   | RemoveTodosAction;

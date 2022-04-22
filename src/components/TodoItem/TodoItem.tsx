@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,16 +11,18 @@ type Props = {
   todo: Todo;
 };
 
-export const TodoItem: FC<Props> = ({ todo }) => {
+export const TodoItem: FC<Props> = memo(({ todo }) => {
   const selectedUserId = useSelector(getSelectedUserIdSelector);
   const dispatch = useDispatch();
 
-  const { setSelectedUserId, removeTodoById } = ACTIONS_CREATORS;
+  const { setSelectedUserById, removeTodoById } = ACTIONS_CREATORS;
 
   const deleteTodo = async (todoId: number) => {
     await removeTodo(todoId);
 
-    dispatch(removeTodoById(todoId));
+    if (todoId) {
+      dispatch(removeTodoById(todoId));
+    }
   };
 
   return (
@@ -44,7 +45,9 @@ export const TodoItem: FC<Props> = ({ todo }) => {
                 todo.userId === selectedUserId,
             },
           )}
-          onClick={() => dispatch(setSelectedUserId(todo.userId))}
+          onClick={() => {
+            dispatch(setSelectedUserById(todo.userId));
+          }}
         >
           {`User #${todo.userId}`}
         </button>
@@ -58,4 +61,4 @@ export const TodoItem: FC<Props> = ({ todo }) => {
       </div>
     </>
   );
-};
+});
