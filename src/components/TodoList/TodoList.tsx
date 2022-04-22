@@ -1,12 +1,9 @@
-/* eslint-disable no-console */
 import {
   FC, memo, useState, useMemo,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { ACTIONS_CREATORS } from '../../store/actions/todos.actions';
-import { getSelectedUserIdSelector } from '../../store/selectors';
 import './TodoList.scss';
+import { Todo } from '../Todo/Todo';
 
 type Props = {
   todos: Todo[];
@@ -15,10 +12,6 @@ type Props = {
 export const TodoList: FC<Props> = memo(({ todos }) => {
   const [todoTitle, setTodoTitle] = useState('');
   const [selectCategory, setSelectCategory] = useState('All');
-
-  const selectedUserId = useSelector(getSelectedUserIdSelector);
-  const dispatch = useDispatch();
-  const { setSelectedUserId } = ACTIONS_CREATORS;
 
   const handleTitleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -31,8 +24,6 @@ export const TodoList: FC<Props> = memo(({ todos }) => {
   ) => {
     setSelectCategory(event.target.value);
   };
-
-  console.log('selectedUserId', selectedUserId);
 
   const filteredTodos = useMemo(() => {
     return todos
@@ -61,6 +52,7 @@ export const TodoList: FC<Props> = memo(({ todos }) => {
           className="input is-hovered"
           type="text"
           placeholder="Enter todo's name"
+          value={todoTitle}
           onChange={event => handleTitleChange(event)}
         />
       </div>
@@ -86,51 +78,7 @@ export const TodoList: FC<Props> = memo(({ todos }) => {
                 'TodoList__item--unchecked': !todo.completed,
               })}
             >
-              <label>
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  readOnly
-                />
-                <p>{todo.title}</p>
-              </label>
-
-              <div className="TodoList__btns">
-                <button
-                  type="button"
-                  className={classNames(
-                    'TodoList__user-button', 'button', {
-                      'TodoList__user-button--selected':
-                      todo.userId === selectedUserId,
-                    },
-                  )}
-                  onClick={() => dispatch(setSelectedUserId(todo.userId))}
-                >
-                  {`User #${todo.userId}`}
-                </button>
-                <button
-                  type="button"
-                  className="TodoList__user-button button"
-                >
-                  Delete
-                </button>
-              </div>
-
-              {/* <button
-                type="button"
-                className={classNames(
-                  'TodoList__user-button', 'button', {
-                    'TodoList__user-button--selected':
-                     todo.userId === selectedUserId,
-                  },
-                )}
-                onClick={() => {
-                  selectUser(todo.userId);
-                }}
-              >
-                User&nbsp;#
-                {`${todo.userId}`}
-              </button> */}
+              <Todo todo={todo} />
             </li>
           ))}
         </ul>

@@ -27,9 +27,7 @@ const App = () => {
     dispatch(loadUsers());
   }, []);
 
-  // const onClearUser = () {
-
-  // }
+  console.log('todos', todos);
 
   console.log('selectedTodo', { selectedUserId });
 

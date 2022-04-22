@@ -36,6 +36,18 @@ export const rootReducer: Reducer<RootState, Actions> = (
         ...state,
         selectedUserId: action.payload,
       };
+
+    case ActionTypes.RemoveTodo:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.payload),
+      };
+
+      // case ActionTypes.RemoveTodo:
+      //   return {
+      //     ...state,
+      //     todoId: action.payload,
+      //   };
       // case ActionTypes.StartLoading:
       //   return { ...state, loading: true };
 
