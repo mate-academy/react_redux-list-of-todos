@@ -1,26 +1,77 @@
-import { useSelector } from 'react-redux';
-
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
+import './styles/general.scss';
+import { TodoList } from './components/TodoList';
+import { CurrentUser } from './components/CurrentUser';
+import { getTodos } from './api';
+import {
+  isLoading,
+  getMessage,
+  startLoading,
+  finishLoading,
+  setTodos,
+  getSelectedUserId,
+  getHasLoadingError,
+  setHasLoadingError,
+} from './store';
 
 const App = () => {
+  const dispatch = useDispatch();
+
   const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const message = useSelector(getMessage);
+  const selectedUserId = useSelector(getSelectedUserId);
+  const hasLoadingError = useSelector(getHasLoadingError);
+
+  useEffect(() => {
+    dispatch(setHasLoadingError(false));
+    dispatch(startLoading());
+
+    getTodos()
+      .then(todoList => {
+        let action;
+
+        if (!todoList.error) {
+          dispatch(setTodos(todoList));
+          action = finishLoading('Success!');
+        } else {
+          dispatch(setHasLoadingError(true));
+          action = finishLoading('Error!');
+        }
+
+        dispatch(action);
+      });
+  }, []);
+
+  const sidebarContent = hasLoadingError
+    ? (
+      <h2>{message}</h2>
+    )
+    : (
+      <div className="App__sidebar">
+        <h2>{message}</h2>
+
+        <TodoList />
+      </div>
+    );
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      {loading
+        ? 'Loading'
+        : sidebarContent}
+
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <CurrentUser
+              userId={selectedUserId}
+            />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
