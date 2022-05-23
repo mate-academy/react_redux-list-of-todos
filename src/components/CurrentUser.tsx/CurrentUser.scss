@@ -1,0 +1,51 @@
+@import "../../vars.scss";
+
+.current {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 50px;
+  right: 300px;
+
+  &__title {
+    margin-bottom: 20px;
+
+    &-btn {
+      cursor: pointer;
+    }
+  }
+
+  &__user {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: $white-color;
+    border: 3px solid $todo-border;
+    width: 350px;
+    height: 200px;
+  }
+}
+
+.user {
+  &__id {
+    margin-bottom: 15px;
+    text-decoration: underline;
+  }
+
+  &__contacts {
+    margin-top: 10px;
+
+    &-block {
+      display: block;
+    }
+  }
+}
+
+.loading {
+  position: fixed;
+  right: 400px;
+  top: 50px;
+}
