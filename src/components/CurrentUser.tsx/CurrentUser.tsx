@@ -13,7 +13,12 @@ export const CurrentUser: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!userId) {
+      return;
+    }
+
     setLoading(true);
+
     getUser(userId)
       .then((user) => {
         dispatch(setUserFromServe(user));
@@ -32,13 +37,13 @@ export const CurrentUser: React.FC = () => {
         <p className="loading">Failed loading data</p>
       )}
 
-      {(loading && !loadingError) && (
+      {(Boolean(userId) && !loading && !loadingError) ? (
         <div className="current">
           <div className="current__title">
             <button
               type="button"
               className="current__title-btn"
-              onClick={() => dispatch(setIdAction(100))}
+              onClick={() => dispatch(setIdAction(0))}
             >
               Clear
             </button>
@@ -53,6 +58,10 @@ export const CurrentUser: React.FC = () => {
               <span className="user__contacts-block">{`Email: ${userFromServe?.email}`}</span>
             </p>
           </div>
+        </div>
+      ) : (
+        <div>
+          <p className="loading">No users selected</p>
         </div>
       )}
     </>
