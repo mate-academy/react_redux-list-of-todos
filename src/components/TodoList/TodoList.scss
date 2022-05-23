@@ -1,0 +1,16 @@
+@import "../../vars.scss";
+
+.list {
+  list-style-type: none;
+  padding: 20px 0;
+  background: $white-color;
+  border-radius: 15px;
+  margin-left: 30px;
+  margin-right: 0;
+  width: 600px;
+
+  &__todo {
+    display: flex;
+    justify-content: center;
+  }
+}

@@ -1,1 +1,26 @@
-// not empty
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap");
+@import "./vars.scss";
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: $body-bckg;
+}
+
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+.app {
+  display: flex;
+}
+
+.search {
+  margin-left: 30px;
+  width: 450px;
+  height: 30px;
+  border: none;
+  border-radius: 10px;
+}

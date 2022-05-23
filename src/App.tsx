@@ -1,27 +1,53 @@
-import { useSelector } from 'react-redux';
-
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTodos } from './api/api';
+import { TodoList } from './components/TodoList/TodoList';
+import { loadTodosSelector } from './selectors';
+import { setTodosActions } from './actions';
+import { CurrentUser } from './components/CurrentUser.tsx/CurrentUser';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [loadingError, setLoadingError] = useState(false);
+  const todos = useSelector(loadTodosSelector);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getTodos()
+      .then(todosFromServe => dispatch(setTodosActions(todosFromServe)))
+      .then(() => setLoading(true))
+      .catch(() => setLoadingError(true));
+  }, []);
+
+  const showedTodos = todos
+    .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <>
+      {!loading && (
+        <p>In process...</p>
+      )}
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
-    </div>
+      {(loadingError && loading) && (
+        <p>Failed loading data</p>
+      )}
+
+      {(loading && !loadingError) && (
+        <div className="app">
+          <div className="app__list">
+            <input
+              className="search"
+              placeholder="Search todo"
+              onChange={event => setQuery(event.currentTarget.value)}
+            />
+            <TodoList todos={showedTodos} />
+          </div>
+          <CurrentUser />
+        </div>
+      )}
+    </>
   );
 };
 
