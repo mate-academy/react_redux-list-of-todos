@@ -23,7 +23,6 @@ export const TodoList: React.FC<Props> = React.memo(({
 }) => {
   const query = useAppSelector(selectorsQuery.query);
   const dispatch = useAppDispatch();
-  // const visibleTodos = useAppSelector(toDosSelectors.visibleToDos);
   const [filterCompletedToDos, setFilterCompletedToDos]
     = useState(FilterToDosBy.all);
   const [isRandomized, setIsRandomized] = useState(false);
