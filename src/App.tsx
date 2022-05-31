@@ -1,28 +1,98 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+
+import {
+  getSelectedUserByIdSelector,
+  getTodosSelector,
+} from './store';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import './styles/general.scss';
+import { getTodos } from './api';
+import { TodoList } from './components/TodoList/TodoList';
+import { CurrentUser } from './components/CurrentUser/CurrentUser';
 
-import { isLoading, getMessage } from './store';
+export const App: React.FC = () => {
+  const selectedUserId = useSelector(getSelectedUserByIdSelector);
+  const todos = useSelector(getTodosSelector);
+  const dispstch = useDispatch();
+  const [query, setQuery] = useState('');
+  const [statusTodo, setStatusTodo] = useState('All');
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  useEffect(() => {
+    const getAll = async () => {
+      const all = await getTodos();
+
+      dispstch({ type: 'TODOS_LOADING', todos: all });
+    };
+
+    getAll();
+  }, []);
+
+  const filteredTodos
+    = todos.filter(({ title }) => title.toLowerCase()
+      .includes(query.toLowerCase()));
+
+  const changeStatusTodo = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatusTodo(event.target.value);
+  };
+
+  const preparedTodo = () => {
+    switch (statusTodo) {
+      case 'All':
+        return filteredTodos;
+      case 'Completed':
+        return filteredTodos.filter(({ completed }) => completed);
+      case 'Active':
+        return filteredTodos.filter(({ completed }) => !completed);
+
+      default:
+        return filteredTodos;
+    }
+  };
+
+  const showTodos = preparedTodo();
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__sidebar">
+        <form className="App__form">
+          <p>Select Todos</p>
+          <input
+            onChange={(event) => setQuery(event.target.value)}
+            value={query}
+            type="text"
+            id="search-query"
+            className="App__input"
+            placeholder="Type key-word"
+            data-cy="filterByTitle"
+          />
+
+          <select
+            name="todoFilter"
+            value={statusTodo}
+            className="App__select"
+            onChange={changeStatusTodo}
+          >
+            <option>All</option>
+            <option>Completed</option>
+            <option>Active</option>
+          </select>
+        </form>
+
+        <TodoList
+          todos={showTodos}
+        />
+      </div>
+
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <CurrentUser />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
-
-export default App;

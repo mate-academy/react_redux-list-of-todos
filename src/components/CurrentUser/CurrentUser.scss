@@ -1,0 +1,51 @@
+.CurrentUser {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+
+  &__clearButton {
+    height: 50px;
+    width: 100px;
+    display: block;
+    align-self: center;
+    margin: auto;
+    background-color: aquamarine;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: aqua;
+      transform: scale(1.1);
+    }
+  }
+
+  &__title {
+    font-size: 1rem;
+    color: white;
+
+    span {
+      background-color: #4d457b;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  }
+
+  &__name {
+    margin: 30px 0 10px;
+    font-size: 1.5rem;
+  }
+
+  &__email,
+  &__phone {
+    color: #c4bdd9;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  &__clear {
+    display: block;
+    margin: 20px auto 0;
+  }
+}
