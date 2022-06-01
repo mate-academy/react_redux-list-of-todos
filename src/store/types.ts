@@ -1,3 +1,5 @@
+/// <reference types="react-scripts" />
+
 export interface Todo {
   id: number,
   userId: number,
@@ -11,3 +13,8 @@ export interface User {
   email: string,
   phone: string,
 }
+
+export type State = {
+  todos: Todo[],
+  selectedUserId: number,
+};
