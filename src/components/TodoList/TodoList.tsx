@@ -1,7 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-} from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeTodo } from '../../api';
@@ -12,23 +9,11 @@ import { actions, selectors } from '../../store';
 enum Status {
   All = 'All',
   Active = 'Active',
-  Completed = 'Completed'
+  Completed = 'Completed',
 }
-
-type FuncArg = (v: string) => void;
-
-const debounce = (f: FuncArg, delay: number) => {
-  let timerId: number;
-
-  return (...args: string[]) => {
-    clearTimeout(timerId);
-    timerId = setTimeout(f, delay, ...args);
-  };
-};
 
 export const TodoList: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [appliedQuery, setAppliedQuery] = useState('');
   const [status, setStatus] = useState(`${Status.All}`);
   const [sort, setSort] = useState(false);
 
@@ -37,16 +22,9 @@ export const TodoList: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const applyQuery = useCallback(
-    debounce(setAppliedQuery, 1000),
-    [],
-  );
-
   const todosFilterByStatus = () => {
     const filteredTodos = todos.filter(({ title }) => {
-      const changeTitle = title.toLowerCase();
-
-      return changeTitle.includes(appliedQuery.toLowerCase());
+      return title.toLowerCase().includes(query.toLowerCase());
     });
 
     switch (status) {
@@ -86,7 +64,6 @@ export const TodoList: React.FC = () => {
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);
-            applyQuery(event.target.value);
           }}
         />
       </label>
@@ -121,7 +98,11 @@ export const TodoList: React.FC = () => {
               key={id}
             >
               <label>
-                <input type="checkbox" disabled />
+                <input
+                  type="checkbox"
+                  checked={completed}
+                  disabled
+                />
                 <p>{title}</p>
               </label>
 
