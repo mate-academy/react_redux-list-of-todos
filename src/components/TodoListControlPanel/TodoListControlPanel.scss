@@ -1,0 +1,30 @@
+.controlPanel {
+  display: flex;
+  justify-content: space-between;
+
+  &__titleFilter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__titleFilterInput {
+    padding: 5px;
+
+    border: 1px solid #b8b3d2;
+    border-radius: 5px;
+  }
+
+  &__completedFilter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__completedFilterSelect {
+    padding: 5px;
+
+    border: 1px solid #b8b3d2;
+    border-radius: 5px;
+  }
+}
