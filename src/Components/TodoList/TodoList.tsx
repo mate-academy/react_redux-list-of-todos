@@ -10,15 +10,9 @@ export const TodoList:React.FC = () => {
   const { selectUserId } = ACTIONS;
   const [query, setQuery] = useState('');
   const [selectItems, setSelectItems] = useState('');
-  // const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
   const todos = useSelector(getTodosSelector);
   const selectedUserId = useSelector(getSelectedUserId);
   const dispatch = useDispatch();
-
-  // const visibleTodos = useMemo(() => {
-  //   return todos.filter((el) => el.title.toLocaleLowerCase()
-  //     .includes(query.toLocaleLowerCase()));
-  // }, [todos, query]);
 
   const visibleTodos = useMemo(() => {
     let filteredTodos = todos.filter((el) => el.title.toLocaleLowerCase()
