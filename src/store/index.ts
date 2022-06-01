@@ -5,7 +5,7 @@ enum Select {
   SELECT_USER = 'SELECT_USER',
   GET_ERROR = 'GET_ERROR',
   GET_USER = 'GET_USER',
-  DELETE_TODO = 'DELETE_TODO'
+  DELETE_TODO = 'DELETE_TODO',
 }
 
 export type RootState = {
