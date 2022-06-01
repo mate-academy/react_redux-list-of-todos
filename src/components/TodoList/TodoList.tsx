@@ -39,10 +39,10 @@ export const TodoList: React.FC<Props> = React.memo(({
           return includePattern;
 
         case FilterToDosBy.completed:
-          return includePattern && toDo.completed === true;
+          return includePattern && toDo.completed;
 
         case FilterToDosBy.active:
-          return includePattern && toDo.completed === false;
+          return includePattern && !toDo.completed;
 
         default:
           return toDo;
