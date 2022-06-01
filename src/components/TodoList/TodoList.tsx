@@ -1,13 +1,17 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useCallback, useState } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { FilterToDosBy } from '../../enums/FilterToDosBy';
 import { ToDo } from '../../types/ToDo';
 import './TodoList.scss';
 import {
-  selectors as selectorsQuery,
-  setNewQuery,
-} from '../../store/filterQuerySlice';
+  selectors as selectorsToDo,
+  setToDos,
+  setFilterByQuery,
+  setFilterCompletedToDos,
+  setIsRandomized,
+  removeToDoById,
+} from '../../store/toDosSlice';
 import { useAppDispatch, useAppSelector } from '../../typedHooks/hooks';
 
 type Props = {
@@ -21,52 +25,17 @@ export const TodoList: React.FC<Props> = React.memo(({
   setSelectedUserId,
   toDos,
 }) => {
-  const query = useAppSelector(selectorsQuery.query);
   const dispatch = useAppDispatch();
-  const [filterCompletedToDos, setFilterCompletedToDos]
-    = useState(FilterToDosBy.all);
-  const [isRandomized, setIsRandomized] = useState(false);
 
-  const filter = useCallback(() => {
-    const pattern = query.toLowerCase();
+  useEffect(() => {
+    dispatch(setToDos([...toDos]));
+  }, []);
 
-    return (toDos.filter(toDo => {
-      const title = toDo.title.toLowerCase();
-      const includePattern = title.includes(pattern);
-
-      switch (Number(filterCompletedToDos)) {
-        case FilterToDosBy.all:
-          return includePattern;
-
-        case FilterToDosBy.completed:
-          return includePattern && toDo.completed;
-
-        case FilterToDosBy.active:
-          return includePattern && !toDo.completed;
-
-        default:
-          return toDo;
-      }
-    }));
-  }, [query, toDos, filterCompletedToDos]);
-
-  const randomize = useCallback((arr) => {
-    if (isRandomized) {
-      for (let i = arr.length - 1; i > 0; i -= 1) {
-        const j = Math.floor(Math.random() * (i + 1));
-
-        // eslint-disable-next-line no-param-reassign
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-    }
-  }, [query,
-    toDos,
-    filterCompletedToDos,
-    isRandomized]);
-
-  const filteredArr = filter();
-
-  randomize(filteredArr);
+  const toDoToShow = useAppSelector(selectorsToDo.filteredAndSortedToDos);
+  const filterByQuery = useAppSelector(selectorsToDo.filterByQuery);
+  const filterCompletedToDos
+  = useAppSelector(selectorsToDo.filterCompletedToDos);
+  const isRandomized = useAppSelector(selectorsToDo.isRandomized);
 
   return (
     <div className="TodoList">
@@ -77,9 +46,9 @@ export const TodoList: React.FC<Props> = React.memo(({
           Title contain:
           <input
             type="text"
-            value={query}
+            value={filterByQuery}
             onChange={({ target }) => {
-              dispatch(setNewQuery(target.value));
+              dispatch(setFilterByQuery(target.value));
             }}
           />
         </label>
@@ -89,7 +58,8 @@ export const TodoList: React.FC<Props> = React.memo(({
           <select
             value={filterCompletedToDos}
             onChange={({ target }) => {
-              setFilterCompletedToDos(target.value as unknown as FilterToDosBy);
+              // eslint-disable-next-line max-len
+              dispatch(setFilterCompletedToDos(target.value as unknown as FilterToDosBy));
             }}
           >
             <option value={FilterToDosBy.all}>
@@ -117,7 +87,7 @@ export const TodoList: React.FC<Props> = React.memo(({
           )}
           type="button"
           onClick={() => {
-            setIsRandomized((prevValue) => !prevValue);
+            dispatch(setIsRandomized(!isRandomized));
           }}
         >
           Randomize
@@ -126,7 +96,7 @@ export const TodoList: React.FC<Props> = React.memo(({
 
       <div className="TodoList__list-container">
         <ul className="TodoList__list">
-          {filteredArr.map(toDo => (
+          {toDoToShow.map(toDo => (
             <li
               className={classNames(
                 'TodoList__item',
@@ -146,25 +116,39 @@ export const TodoList: React.FC<Props> = React.memo(({
                 <p>{toDo.title}</p>
               </label>
 
-              {toDo.userId && (
+              <div className="TodoList__btns-container">
+                {toDo.userId && (
+                  <button
+                    className={classNames(
+                      'button',
+                      'TodoList__user-button',
+                      {
+                        'TodoList__user-button--selected':
+                        toDo.userId === selectedUserId,
+                      },
+                    )}
+                    type="button"
+                    onClick={() => {
+                      setSelectedUserId(toDo.userId);
+                    }}
+                  >
+                    User&nbsp;#
+                    {toDo.userId}
+                  </button>
+                )}
                 <button
                   className={classNames(
                     'button',
                     'TodoList__user-button',
-                    {
-                      'TodoList__user-button--selected':
-                      toDo.userId === selectedUserId,
-                    },
                   )}
                   type="button"
                   onClick={() => {
-                    setSelectedUserId(toDo.userId);
+                    dispatch(removeToDoById(toDo.id));
                   }}
                 >
-                  User&nbsp;#
-                  {toDo.userId}
+                  X
                 </button>
-              )}
+              </div>
             </li>
           ))}
         </ul>

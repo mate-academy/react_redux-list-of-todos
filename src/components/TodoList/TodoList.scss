@@ -12,6 +12,11 @@
     padding-left: 5px;
   }
 
+  &__btns-container {
+    display: flex;
+    gap: 10px;
+  }
+
   &__item {
     display: flex;
     justify-content: space-between;

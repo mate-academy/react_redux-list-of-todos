@@ -1,11 +1,11 @@
 /* eslint-disable import/no-cycle */
 import { configureStore } from '@reduxjs/toolkit';
-import queryReducer from './filterQuerySlice';
 import { toDosApi } from './apiWithRedux';
+import toDoReducer from './toDosSlice';
 
 export const store = configureStore({
   reducer: {
-    query: queryReducer,
+    toDos: toDoReducer,
     [toDosApi.reducerPath]: toDosApi.reducer,
   },
 
