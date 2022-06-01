@@ -9,17 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeTodo } from '../../api';
 
 import { actions, selectors } from '../../store';
-
-type FuncArg = (v: string) => void;
-
-const debounce = (f: FuncArg, delay: number) => {
-  let timerId: number;
-
-  return (...args: string[]) => {
-    clearTimeout(timerId);
-    timerId = setTimeout(f, delay, ...args);
-  };
-};
+import { getFilteredTodo } from '../helpers/getFilteredTodo';
+import { getRandomizeTodo } from '../helpers/getRandomizeTodo';
+import { debounce } from '../helpers/debounce';
 
 export const TodoList: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -51,52 +43,25 @@ export const TodoList: React.FC = () => {
     setStatus(value);
   };
 
-  const todosFilterByStatus = () => {
-    const filteredTodos = todos.filter(({ title }) => {
-      const changeTitle = title.toLowerCase();
-
-      return changeTitle.includes(appliedQuery.toLowerCase());
-    });
-
-    switch (status) {
-      case 'Active':
-        return filteredTodos.filter(({ completed }) => !completed);
-
-      case 'Completed':
-        return filteredTodos.filter(({ completed }) => completed);
-
-      default:
-        return filteredTodos;
-    }
-  };
-
-  const randomize = (array: Todo[]) => {
-    const newArr = [...array];
-
-    for (let i = newArr.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-
-      [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-    }
-
-    return newArr;
-  };
-
-  const sortList = (arr: Todo[]) => {
-    return [...arr].sort((t1, t2) => (t1.title).localeCompare(t2.title));
-  };
-
-  const filteredTodosByStatus = todosFilterByStatus();
-  const randomisedTodos = random
-    ? randomize(filteredTodosByStatus)
-    : filteredTodosByStatus;
-  const todosForRender = sort ? sortList(randomisedTodos) : randomisedTodos;
-
   const handleRemoveTodo = async (id: number) => {
     await removeTodo(id);
 
     dispatch(actions.deleteTodo(id));
   };
+
+  const handleUser = useCallback((userId: number) => {
+    dispatch(actions.selectUser(userId));
+  }, []);
+
+  const sortList = (arr: Todo[]) => {
+    return [...arr].sort((t1, t2) => (t1.title).localeCompare(t2.title));
+  };
+
+  const filteredTodosByStatus = getFilteredTodo(todos, appliedQuery, status);
+  const randomisedTodos = random
+    ? getRandomizeTodo(filteredTodosByStatus)
+    : filteredTodosByStatus;
+  const todosForRender = sort ? sortList(randomisedTodos) : randomisedTodos;
 
   return (
     <div className="TodoList">
@@ -160,7 +125,7 @@ export const TodoList: React.FC = () => {
                     userId === selectedUserId,
                   })}
                   type="button"
-                  onClick={() => dispatch(actions.selectUser(userId))}
+                  onClick={() => handleUser(userId)}
                 >
                   {userId ? `User ${userId}` : 'No user'}
                 </button>

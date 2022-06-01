@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './CurrentUser.scss';
 import { getUser } from '../../api';
@@ -25,6 +25,10 @@ export const CurrentUser: React.FC = () => {
     response();
   }, [userId]);
 
+  const handleClear = useCallback((value: number) => {
+    dispatch(actions.selectUser(value));
+  }, []);
+
   return (
     <>
       {user ? (
@@ -39,7 +43,7 @@ export const CurrentUser: React.FC = () => {
 
           <button
             type="button"
-            onClick={() => dispatch(actions.selectUser(0))}
+            onClick={() => handleClear(0)}
             className="CurrentUser__clear"
           >
             Clear
