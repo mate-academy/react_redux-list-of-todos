@@ -113,7 +113,7 @@ export const TodoList: React.FC = () => {
               key={id}
             >
               <label>
-                <input type="checkbox" readOnly />
+                <input type="checkbox" checked={completed} />
                 <p>{title}</p>
               </label>
 
