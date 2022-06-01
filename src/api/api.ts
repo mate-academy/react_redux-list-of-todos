@@ -8,8 +8,8 @@ export const getTodos = async (): Promise<Todo[]> => {
   return response.json();
 };
 
-export const getUser = async (id: number): Promise<User> => {
-  const response = await fetch(`${apiUrl}/users/${id}`);
+export const getUser = async (userId: number): Promise<User> => {
+  const response = await fetch(`${apiUrl}/users/${userId}`);
 
   return response.json();
 };
