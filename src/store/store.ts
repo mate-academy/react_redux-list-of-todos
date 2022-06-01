@@ -1,4 +1,5 @@
 import { createStore, Reducer, Store } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { State, Actions, ActionsTypes } from '../types';
 
 const initialState: State = {
@@ -27,4 +28,4 @@ const reducer: Reducer<State, Actions>
 };
 
 export const store: Store<State, Actions>
-  = createStore(reducer);
+  = createStore(reducer, composeWithDevTools());

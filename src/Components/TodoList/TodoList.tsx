@@ -35,21 +35,6 @@ export const TodoList:React.FC = () => {
     return filteredTodos;
   }, [todos, query, selectItems]);
 
-  // useEffect(() => {
-  //   let filteredTodos = todos.filter((el) => el.title.toLocaleLowerCase()
-  //     .includes(query.toLocaleLowerCase()));
-
-  //   if (selectItems === 'Completed') {
-  //     filteredTodos = filteredTodos.filter(item => (item.completed === true));
-  //   }
-
-  //   if (selectItems === 'Active') {
-  //     filteredTodos = filteredTodos.filter(item => (item.completed === false));
-  //   }
-
-  //   setVisibleTodos(filteredTodos);
-  // }, [todos, query, selectItems]);
-
   return (
     <div className="TodoList">
       <h2>Todos:</h2>
