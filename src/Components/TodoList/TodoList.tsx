@@ -1,16 +1,16 @@
 import './TodoList.scss';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { getTodosSelector, getSelectedUserId } from '../../store/selectors';
 import { ACTIONS } from '../../store/actions';
-import { Todo } from '../../types';
+// import { Todo } from '../../types';
 
 export const TodoList:React.FC = () => {
   const { selectUserId } = ACTIONS;
   const [query, setQuery] = useState('');
   const [selectItems, setSelectItems] = useState('');
-  const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
+  // const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
   const todos = useSelector(getTodosSelector);
   const selectedUserId = useSelector(getSelectedUserId);
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ export const TodoList:React.FC = () => {
   //     .includes(query.toLocaleLowerCase()));
   // }, [todos, query]);
 
-  useEffect(() => {
+  const visibleTodos = useMemo(() => {
     let filteredTodos = todos.filter((el) => el.title.toLocaleLowerCase()
       .includes(query.toLocaleLowerCase()));
 
@@ -32,8 +32,23 @@ export const TodoList:React.FC = () => {
       filteredTodos = filteredTodos.filter(item => (item.completed === false));
     }
 
-    setVisibleTodos(filteredTodos);
+    return filteredTodos;
   }, [todos, query, selectItems]);
+
+  // useEffect(() => {
+  //   let filteredTodos = todos.filter((el) => el.title.toLocaleLowerCase()
+  //     .includes(query.toLocaleLowerCase()));
+
+  //   if (selectItems === 'Completed') {
+  //     filteredTodos = filteredTodos.filter(item => (item.completed === true));
+  //   }
+
+  //   if (selectItems === 'Active') {
+  //     filteredTodos = filteredTodos.filter(item => (item.completed === false));
+  //   }
+
+  //   setVisibleTodos(filteredTodos);
+  // }, [todos, query, selectItems]);
 
   return (
     <div className="TodoList">
@@ -85,7 +100,7 @@ export const TodoList:React.FC = () => {
                     <input
                       type="checkbox"
                       id={`${todo.id}`}
-                      checked={todo.completed}
+                      defaultChecked={todo.completed}
                     />
                     <p>{todo.title}</p>
                   </label>
