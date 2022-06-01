@@ -1,26 +1,71 @@
-import { useSelector } from 'react-redux';
-
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  finishTodosLoading,
+  getLoadedTodos,
+  getMessage,
+  getSelectedUser,
+  loadedTodos,
+  selectedUser,
+  startTodosLoading,
+} from './store';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import { TodoList } from './components/TodoList';
+import { CurrentUser } from './components/CurrentUser';
+import { getTodosFromServer } from './api/api';
 
-import { isLoading, getMessage } from './store';
+const App: React.FC = () => {
+  const dispatch = useDispatch();
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const selectedUserId = useSelector(getSelectedUser);
+  const todos = useSelector(getLoadedTodos);
+  const message = useSelector(getMessage);
+
+  const clearUser = useCallback(() => {
+    dispatch(selectedUser(null));
+  }, []);
+
+  const getTodos = useCallback(async () => {
+    dispatch(startTodosLoading());
+
+    try {
+      const todosFromServer = await getTodosFromServer();
+
+      dispatch(loadedTodos(todosFromServer));
+    } catch {
+      dispatch(finishTodosLoading('Download error'));
+    }
+  }, []);
+
+  const shuffleTodos = useCallback(() => {
+    const shuffled = [...todos].sort(() => Math.random() - 0.5);
+
+    dispatch(loadedTodos(shuffled));
+  }, [todos]);
+
+  useEffect(() => {
+    getTodos();
+  }, []);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+    <div className="App">
+      <div className="App__sidebar">
+        <TodoList
+          onShuffle={shuffleTodos}
+          message={message}
+        />
+      </div>
+
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <CurrentUser
+              onClearUser={clearUser}
+            />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
