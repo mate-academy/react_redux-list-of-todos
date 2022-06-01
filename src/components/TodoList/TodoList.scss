@@ -37,6 +37,10 @@
   &__section {
     padding: 10px;
   }
+
+  &__button-container {
+    display: flex;
+  }
 }
 
 .filter {
@@ -55,4 +59,9 @@
   margin-left: 10px;
   border-radius: 5px;
   padding: 5px;
+  transition: all 0.2s;
+
+  &:hover {
+    box-shadow: 0 2px 2px 5px rgb(236, 229, 229);
+  }
 }

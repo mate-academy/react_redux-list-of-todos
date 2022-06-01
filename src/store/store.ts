@@ -5,6 +5,7 @@ const initialState: State = {
   todos: [],
   selectUserById: 0,
   user: null,
+  removeTodoById: 0,
 };
 
 const reducer: Reducer<State, Actions> = (
@@ -26,6 +27,13 @@ const reducer: Reducer<State, Actions> = (
         ...state,
         user: action.payload,
       };
+
+    case ActionType.RemoveTodoById:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.payload),
+      };
+
     default:
       return state;
   }

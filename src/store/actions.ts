@@ -16,3 +16,10 @@ export const addUserAction = (payload: User): LoadUserByIdAction => ({
   type: ActionType.LoadUserById,
   payload,
 });
+
+export const removeTodo = (payload: number) => {
+  return {
+    type: ActionType.RemoveTodoById,
+    payload,
+  };
+};

@@ -4,7 +4,7 @@ import React, {
 import { useSelector, useDispatch } from 'react-redux';
 import { getTodosFromServer } from '../../api';
 import {
-  addTodosActionCreator, selectUserIdAction,
+  addTodosActionCreator, selectUserIdAction, removeTodo,
 } from '../../store/actions';
 import { getTodosSeletor } from '../../store/selector';
 import './TodoList.scss';
@@ -37,6 +37,10 @@ export const TodoList: React.FC = () => {
         }
       })), [selectedOption, query, todos]);
 
+  const deleteTodo = (id: number) => {
+    dispatch(removeTodo(id));
+  };
+
   return (
     <div className="TodoList">
       <h2>Todos:</h2>
@@ -57,6 +61,7 @@ export const TodoList: React.FC = () => {
         <option value="active">active</option>
         <option value="completed">completed</option>
       </select>
+
       <div className="TodoList__list-container">
         <ul className="TodoList__list">
           {filteredTodos.map(item => (
@@ -69,14 +74,23 @@ export const TodoList: React.FC = () => {
                 <p>{item.title}</p>
               </label>
               {item.userId && (
-                <button
-                  className="TodoList__user-button button"
-                  type="button"
-                  onClick={() => selectUserId(item.userId)}
-                >
-                  User&nbsp;
-                  {item.userId}
-                </button>
+                <div className="TodoList__button-container">
+                  <button
+                    className="TodoList__user-button button"
+                    type="button"
+                    onClick={() => selectUserId(item.userId)}
+                  >
+                    User&nbsp;
+                    {item.userId}
+                  </button>
+                  <button
+                    className="TodoList__user-button button"
+                    type="button"
+                    onClick={() => deleteTodo(item.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               )}
             </li>
           ))}
