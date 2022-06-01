@@ -1,26 +1,57 @@
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import { TodoList } from './components/TodoList';
+import { CurrentUser } from './components/CurrentUser';
+// import { selectors, setNewQuery } from './store/filterQuerySlice';
+// import { useAppSelector, useAppDispatch } from './typedHooks/hooks';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
-
-import { isLoading, getMessage } from './store';
+import { useGetToDosQuery } from './store/apiWithRedux';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  // eslint-disable-next-line max-len
+  const { data: toDos, error } = useGetToDosQuery('', { pollingInterval: 0 });
+
+  const [
+    selectedUserId,
+    setSelectedUserId,
+  ] = useState(0);
+
+  const clearSelectedUser = () => {
+    setSelectedUserId(0);
+  };
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="App__sidebar">
+        {!error && toDos ? (
+          <TodoList
+            toDos={toDos}
+            setSelectedUserId={setSelectedUserId}
+            selectedUserId={selectedUserId}
+          />
+        )
+          : (
+            <>
+              <h2>
+                Loading Error
+              </h2>
+              <h3>
+                No toDos data
+              </h3>
+            </>
+          )}
+      </div>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <CurrentUser
+              selectedUserId={selectedUserId}
+              clearSelectedUserId={clearSelectedUser}
+            />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
