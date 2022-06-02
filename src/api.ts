@@ -3,14 +3,12 @@ const USERS_API = 'https://mate.academy/students-api/users';
 
 export async function getTodos(): Promise<Todo[]> {
   const response = await fetch(TODOS_API);
-  const todos = await response.json();
 
-  return todos;
+  return response.json();
 }
 
 export async function getUser(userId: number): Promise<User> {
   const response = await fetch(`${USERS_API}/${userId}`);
-  const user = await response.json();
 
-  return user;
+  return response.json();
 }

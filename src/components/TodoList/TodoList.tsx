@@ -2,17 +2,15 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './TodoList.scss';
 import classNames from 'classnames';
-import { getSelectedUserByIdSelector } from '../../store';
+import {
+  getSelectedUserByIdSelector,
+  getSelectedTodosSelector,
+} from '../../store';
 
-type Props = {
-  todos: Todo[];
-};
-
-export const TodoList: React.FC<Props> = ({
-  todos,
-}) => {
+export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const selectedUserId = useSelector(getSelectedUserByIdSelector);
+  const todos = useSelector(getSelectedTodosSelector);
 
   return (
     <div className="TodoList">
@@ -39,21 +37,31 @@ export const TodoList: React.FC<Props> = ({
                 <p>{title}</p>
               </label>
               {userId && (
-                <button
-                  className={classNames(
-                    'TodoList__user-button', 'button',
-                    {
-                      'TodoList__user-button--selected': selectedUserId
-                     === userId,
-                    },
-                  )}
-                  type="button"
-                  data-cy="userButton"
-                  value={userId}
-                  onClick={() => dispatch({ type: 'SELECT_ID', id: userId })}
-                >
-                  {`User #${userId}`}
-                </button>
+                <div>
+                  <button
+                    className={classNames(
+                      'TodoList__user-button', 'button',
+                      {
+                        'TodoList__user-button--selected': selectedUserId
+                       === userId,
+                      },
+                    )}
+                    type="button"
+                    data-cy="userButton"
+                    value={userId}
+                    onClick={() => dispatch({ type: 'SELECT_ID', id: userId })}
+                  >
+                    {`User #${userId}`}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="TodoList__user-button button"
+                    onClick={() => dispatch({ type: 'DELETE_TODO', id })}
+                  >
+                    X
+                  </button>
+                </div>
               )}
             </li>
           ))}

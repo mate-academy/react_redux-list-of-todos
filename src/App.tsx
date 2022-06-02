@@ -15,15 +15,16 @@ import { CurrentUser } from './components/CurrentUser/CurrentUser';
 export const App: React.FC = () => {
   const selectedUserId = useSelector(getSelectedUserByIdSelector);
   const todos = useSelector(getTodosSelector);
-  const dispstch = useDispatch();
+  const dispatch = useDispatch();
   const [query, setQuery] = useState('');
   const [statusTodo, setStatusTodo] = useState('All');
+  const [sort, setSort] = useState(true);
 
   useEffect(() => {
     const getAll = async () => {
       const all = await getTodos();
 
-      dispstch({ type: 'TODOS_LOADING', todos: all });
+      dispatch({ type: 'TODOS_LOADING', todos: all });
     };
 
     getAll();
@@ -53,6 +54,14 @@ export const App: React.FC = () => {
 
   const showTodos = preparedTodo();
 
+  if (!sort) {
+    showTodos.sort((tdo1, tdo2) => tdo1.title.localeCompare(tdo2.title));
+  }
+
+  useEffect(() => {
+    dispatch({ type: 'SELECT_TODO', todos: showTodos });
+  }, [showTodos]);
+
   return (
     <div className="App">
 
@@ -81,9 +90,15 @@ export const App: React.FC = () => {
           </select>
         </form>
 
-        <TodoList
-          todos={showTodos}
-        />
+        <button
+          type="button"
+          className="App__sortButton"
+          onClick={() => setSort(!sort)}
+        >
+          {sort ? 'Sort' : 'UnSort'}
+        </button>
+
+        <TodoList />
       </div>
 
       <div className="App__content">
