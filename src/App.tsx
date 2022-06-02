@@ -1,26 +1,53 @@
-import { useSelector } from 'react-redux';
-
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  finishTodosLoading,
+  getMessage,
+  getSelectedUser,
+  loadedTodos,
+  startTodosLoading,
+} from './store';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import { TodoList } from './components/TodoList';
+import { CurrentUser } from './components/CurrentUser';
+import { getTodosFromServer } from './api/api';
 
-import { isLoading, getMessage } from './store';
+const App: React.FC = () => {
+  const dispatch = useDispatch();
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const selectedUserId = useSelector(getSelectedUser);
+  const message = useSelector(getMessage);
+
+  const getTodos = useCallback(async () => {
+    dispatch(startTodosLoading());
+
+    try {
+      const todosFromServer = await getTodosFromServer();
+
+      dispatch(loadedTodos(todosFromServer));
+    } catch {
+      dispatch(finishTodosLoading('Download error'));
+    }
+  }, []);
+
+  useEffect(() => {
+    getTodos();
+  }, []);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+    <div className="App">
+      <div className="App__sidebar">
+        <TodoList message={message} />
+      </div>
+
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <CurrentUser />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
