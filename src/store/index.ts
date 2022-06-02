@@ -18,7 +18,7 @@ const FINISH_TODOS_LOADING = 'FINISH_TODOS_LOADING';
 const TOGGLE_USER_LOADING = 'TOGGLE_USER_LOADING';
 const SELECT_USER = 'SELECT_USER';
 const LOAD_TODOS = 'LOAD_TODOS';
-const LOAD_FILTERED_TODOS = 'LOAD_FILTERED_TODOS';
+const SHUFFLE_TODOS = 'SHUFFLE_TODOS';
 const LOAD_USER = 'LOAD_USER';
 const FILTER_FOR_TODOS = 'FILTER_FOR_TODOS';
 
@@ -44,8 +44,8 @@ export const loadedTodos = (todos: Todo[]) => ({
   type: LOAD_TODOS,
   todos,
 });
-export const filteredTodos = (todos: Todo[]) => ({
-  type: LOAD_FILTERED_TODOS,
+export const shuffleTodos = (todos: Todo[]) => ({
+  type: SHUFFLE_TODOS,
   todos,
 });
 export const filterForTodos = (status: Status) => ({
@@ -89,7 +89,7 @@ const initialState: RootState = {
 // rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case LOAD_FILTERED_TODOS:
+    case SHUFFLE_TODOS:
       return {
         ...state,
         filteredTodos: action.todos,
