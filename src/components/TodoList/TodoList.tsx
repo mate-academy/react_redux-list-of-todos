@@ -2,7 +2,12 @@ import React, { ChangeEvent, useState } from 'react';
 import classNames from 'classnames';
 import './TodoList.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUserIdAC, selectUserIdSelector } from '../../store';
+import {
+  deleteTodoAC,
+  selectUserIdAC,
+  selectUserIdSelector,
+} from '../../store';
+import { removeTodo } from '../../api/api';
 
 type Props = {
   todos: Todo[],
@@ -33,6 +38,12 @@ export const TodoList: React.FC<Props> = ({
 
   const onSelectUserIdHandle = (userId: number) => {
     dispatch(selectUserIdAC(userId));
+  };
+
+  const onDeleteTodoHandle = async (id: number) => {
+    await removeTodo(id);
+
+    dispatch(deleteTodoAC(id));
   };
 
   const filterByTitle = () => {
@@ -110,17 +121,27 @@ export const TodoList: React.FC<Props> = ({
               </label>
 
               {todo.userId && (
-                <button
-                  data-cy="userButton"
-                  className={classNames('TodoList__user-button button', {
-                    'TodoList__user-button--selected':
-                      todo.userId === selectedUserId,
-                  })}
-                  type="button"
-                  onClick={() => onSelectUserIdHandle(todo.userId)}
-                >
-                  {`User ${todo.userId}`}
-                </button>
+                <div className="action-buttons">
+                  <button
+                    data-cy="userButton"
+                    className={classNames('TodoList__user-button button', {
+                      'TodoList__user-button--selected':
+                        todo.userId === selectedUserId,
+                    })}
+                    type="button"
+                    onClick={() => onSelectUserIdHandle(todo.userId)}
+                  >
+                    {`User ${todo.userId}`}
+                  </button>
+
+                  <button
+                    type="button"
+                    className="button button--delete"
+                    onClick={() => onDeleteTodoHandle(todo.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               )}
             </li>
           ))}

@@ -11,3 +11,7 @@ export async function getUser(userId: number): Promise<User> {
 
   return response.json();
 }
+
+export async function removeTodo(id: number) {
+  return fetch(`${BASE_URL}/todos/${id}`, { method: 'DELETE' });
+}

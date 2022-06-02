@@ -1,14 +1,13 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-// Action types
 const LOAD_TODOS = 'LOAD_TODOS';
 const SELECT_USER_ID = 'SELECT_USER_ID';
 const SET_TODOS_LOAD_ERROR = 'SET_TODOS_LOAD_ERROR';
 const SET_USER_LOAD_ERROR = 'SET_USER_LOAD_ERROR';
 const LOAD_USER = 'LOAD_USER';
+const DELETE_TODO = 'DELETE_TODO';
 
-// Action creators - a function returning an action object
 export const loadTodosAC = (todos: Todo[]) => (
   { type: LOAD_TODOS, todos }
 );
@@ -29,7 +28,10 @@ export const loadUserAC = (user: User | null) => (
   { type: LOAD_USER, user }
 );
 
-// Selectors - a function receiving Redux state and returning some data from it
+export const deleteTodoAC = (id: number) => (
+  { type: DELETE_TODO, id }
+);
+
 export const loadTodosSelector = (state: RootState) => state.todos;
 export const selectUserIdSelector = (state: RootState) => state.userId;
 // eslint-disable-next-line max-len
@@ -37,7 +39,6 @@ export const todosLoadErrorSelector = (state: RootState) => state.todosLoadError
 export const userLoadErrorSelector = (state: RootState) => state.userLoadError;
 export const loadUserSelector = (state: RootState) => state.user;
 
-// Initial state
 export type RootState = {
   todos: Todo[],
   userId: number,
@@ -54,7 +55,6 @@ const initialState: RootState = {
   user: null,
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case LOAD_TODOS:
@@ -85,6 +85,12 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         user: action.user,
+      };
+
+    case DELETE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.id),
       };
 
     default:
