@@ -3,6 +3,4 @@ export interface Todo {
   userId: number,
   completed: boolean,
   title: string,
-  createdAt: string,
-  updatedAt: string,
 }
