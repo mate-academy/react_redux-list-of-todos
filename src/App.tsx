@@ -2,11 +2,9 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   finishTodosLoading,
-  getLoadedTodos,
   getMessage,
   getSelectedUser,
   loadedTodos,
-  selectedUser,
   startTodosLoading,
 } from './store';
 import './App.scss';
@@ -18,12 +16,7 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
 
   const selectedUserId = useSelector(getSelectedUser);
-  const todos = useSelector(getLoadedTodos);
   const message = useSelector(getMessage);
-
-  const clearUser = useCallback(() => {
-    dispatch(selectedUser(null));
-  }, []);
 
   const getTodos = useCallback(async () => {
     dispatch(startTodosLoading());
@@ -37,12 +30,6 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const shuffleTodos = useCallback(() => {
-    const shuffled = [...todos].sort(() => Math.random() - 0.5);
-
-    dispatch(loadedTodos(shuffled));
-  }, [todos]);
-
   useEffect(() => {
     getTodos();
   }, []);
@@ -51,18 +38,13 @@ const App: React.FC = () => {
 
     <div className="App">
       <div className="App__sidebar">
-        <TodoList
-          onShuffle={shuffleTodos}
-          message={message}
-        />
+        <TodoList message={message} />
       </div>
 
       <div className="App__content">
         <div className="App__content-container">
           {selectedUserId ? (
-            <CurrentUser
-              onClearUser={clearUser}
-            />
+            <CurrentUser />
           ) : 'No user selected'}
         </div>
       </div>

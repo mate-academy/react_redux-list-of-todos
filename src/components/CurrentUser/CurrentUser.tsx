@@ -7,26 +7,27 @@ import {
   isLoadingUser,
   loadedUser,
   toggleUserLoading,
+  selectedUser,
 } from '../../store';
 import './CurrentUser.scss';
 
-type Props = {
-  onClearUser: () => void,
-};
-
-export const CurrentUser: React.FC<Props> = ({ onClearUser }) => {
+export const CurrentUser: React.FC = () => {
   const dispatch = useDispatch();
   const user = useSelector(getLoadedUser);
-  const selectedUser = useSelector(getSelectedUser);
+  const currUser = useSelector(getSelectedUser);
   const loading = useSelector(isLoadingUser);
+
+  const clearUser = useCallback(() => {
+    dispatch(selectedUser(null));
+  }, []);
 
   const getUser = useCallback(async () => {
     dispatch(loadedUser(null));
 
-    if (selectedUser) {
+    if (currUser) {
       dispatch(toggleUserLoading());
       try {
-        const newUser = await getUserFromServer(selectedUser);
+        const newUser = await getUserFromServer(currUser);
 
         dispatch(loadedUser(newUser));
       } catch {
@@ -35,18 +36,18 @@ export const CurrentUser: React.FC<Props> = ({ onClearUser }) => {
         dispatch(toggleUserLoading());
       }
     }
-  }, [selectedUser]);
+  }, [currUser]);
 
   useEffect(() => {
     getUser();
-  }, [selectedUser]);
+  }, [currUser]);
 
   return (
     <div className="CurrentUser">
       <h2 className="CurrentUser__title">
         <span>
           Selected user:&nbsp;
-          {selectedUser}
+          {currUser}
         </span>
       </h2>
       {!loading && (
@@ -58,7 +59,7 @@ export const CurrentUser: React.FC<Props> = ({ onClearUser }) => {
             <button
               className="CurrentUser__clear button"
               type="button"
-              onClick={onClearUser}
+              onClick={clearUser}
             >
               Clear
             </button>
