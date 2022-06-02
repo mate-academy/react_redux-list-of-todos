@@ -1,0 +1,62 @@
+.TodoList {
+  width: 100%;
+
+  &__input {
+    display: grid;
+    justify-content: center;
+
+    &--title {
+      font-size: 15px;
+      border-radius: 10px;
+      padding: 5px;
+      border: 1px #4d457b solid;
+    }
+
+  }
+
+  &__select {
+    display: grid;
+    justify-content: center;
+
+    &--selector {
+      font-size: 15px;
+      border-radius: 10px;
+      padding: 5px;
+      border: 1px #4d457b solid;
+    }
+  }
+
+  &__user-button--selected {
+    background-color: #4d457b;
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 5px;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+  }
+
+  &__item--checked {
+    background-color: #cde4e4;
+    color: #459595;
+  }
+
+  &__item--unchecked {
+    background-color: #ffe0db;
+    color: #ff3626;
+  }
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 15px;
+}

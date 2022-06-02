@@ -1,26 +1,44 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useEffect } from 'react';
+import { actions, selectors } from './store';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
 
-import { isLoading, getMessage } from './store';
+import { TodoList } from './components/TodoList/TodoList';
+import { getTodos } from './api';
+import { CurrentUser } from './components/CurrentUser/CurrentUser';
 
 const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+  const selectedUserId = useSelector(selectors.getUserId);
+
+  const getAllPosts = useCallback(async () => {
+    const gotTodos = await getTodos();
+
+    dispatch(actions.loading__todos(gotTodos));
+  }, []);
+
+  useEffect(() => {
+    getAllPosts();
+  }, []);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="App__sidebar">
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+        <TodoList />
+      </div>
+
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <CurrentUser />
+          )
+            : (
+              'No user selected'
+            )}
+        </div>
+      </div>
     </div>
   );
 };
