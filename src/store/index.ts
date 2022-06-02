@@ -18,8 +18,9 @@ const FINISH_TODOS_LOADING = 'FINISH_TODOS_LOADING';
 const TOGGLE_USER_LOADING = 'TOGGLE_USER_LOADING';
 const SELECT_USER = 'SELECT_USER';
 const LOAD_TODOS = 'LOAD_TODOS';
+const LOAD_FILTERED_TODOS = 'LOAD_FILTERED_TODOS';
 const LOAD_USER = 'LOAD_USER';
-const FILTER_TODOS = 'FILTER_TODOS';
+const FILTER_FOR_TODOS = 'FILTER_FOR_TODOS';
 
 // Action creators - a function returning an action object
 export const startTodosLoading = (message = 'Loading...') => ({
@@ -43,9 +44,12 @@ export const loadedTodos = (todos: Todo[]) => ({
   type: LOAD_TODOS,
   todos,
 });
-
+export const filteredTodos = (todos: Todo[]) => ({
+  type: LOAD_FILTERED_TODOS,
+  todos,
+});
 export const filterForTodos = (status: Status) => ({
-  type: FILTER_TODOS,
+  type: FILTER_FOR_TODOS,
   status,
 });
 
@@ -85,7 +89,13 @@ const initialState: RootState = {
 // rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case FILTER_TODOS:
+    case LOAD_FILTERED_TODOS:
+      return {
+        ...state,
+        filteredTodos: action.todos,
+      };
+
+    case FILTER_FOR_TODOS:
       return {
         ...state,
         status: action.status,
