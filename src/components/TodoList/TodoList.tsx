@@ -5,11 +5,10 @@ import {
   filterForTodos,
   getFilteredTodos,
   getFilterForTodos,
-  getLoadedTodos,
   getSelectedUser,
   loadedTodos,
   selectedUser,
-  filteredTodos as filteredTodosAction,
+  shuffleTodos as shuffleTodosAction,
 } from '../../store';
 import './TodoList.scss';
 
@@ -28,7 +27,6 @@ export const TodoList: React.FC<Props> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const todos = useSelector(getLoadedTodos);
   const selectedUserId = useSelector(getSelectedUser);
   const filterByStatus = useSelector(getFilterForTodos);
   const filteredTodos = useSelector(getFilteredTodos);
@@ -36,7 +34,7 @@ export const TodoList: React.FC<Props> = ({
   const shuffleTodos = useCallback(() => {
     const shuffled = [...filteredTodos].sort(() => Math.random() - 0.5);
 
-    dispatch(filteredTodosAction(shuffled));
+    dispatch(shuffleTodosAction(shuffled));
   }, [filteredTodos]);
 
   const handleUserButtonClick = useCallback((userId: number) => {
@@ -44,10 +42,10 @@ export const TodoList: React.FC<Props> = ({
   }, [selectedUserId]);
 
   const handleRemoveButtonClick = useCallback((id: number) => {
-    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    const updatedTodos = [...filteredTodos].filter((todo) => todo.id !== id);
 
     dispatch(loadedTodos(updatedTodos));
-  }, [todos]);
+  }, [filteredTodos]);
 
   const [titleQuery, setTitleQuery] = useState('');
 
