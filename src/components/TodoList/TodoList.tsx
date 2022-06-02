@@ -2,35 +2,17 @@ import React, { ChangeEvent, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectors } from '../../store/index';
 import { actions, deleteTodo } from '../../store/actions';
+import './TodoList.scss';
 
 // import { Todo } from '../../react-app-env';
 
 export const TodoList: React.FC = () => {
   const [query, setQuery] = useState('');
-  // const [appliedQuery, setAppliedQuery] = useState('');
   const [selectedTodos, setSelectedTodos] = useState('');
 
   const todos = useSelector(selectors.loadTodosSelector);
 
-  // type FuncArg = (v: string) => void;
-
-  // const debounce = (f: FuncArg, delay: number) => {
-  //   let timerId: number;
-
-  //   return (...args: string[]) => {
-  //     clearTimeout(timerId);
-  //     timerId = setTimeout(f, delay, ...args);
-  //   };
-  // };
-
-  // const selectedUserId = useSelector(selectors.getUsersIdSelector);
-
   const dispatch = useDispatch();
-
-  // const applyQuery = useCallback(
-  //   debounce(setAppliedQuery, 1000),
-  //   [],
-  // );
 
   const getVisibleTodos = () => {
     switch (selectedTodos) {
@@ -51,16 +33,15 @@ export const TodoList: React.FC = () => {
 
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
-    // applyQuery(event.target.value);
   };
 
   const onChangeSelected = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedTodos(event.target.value);
   };
 
-  const handleUser = useCallback((userId: number) => {
-    dispatch(actions.selectUserAction(userId));
-  }, []);
+  // const handleUser = useCallback((userId: number) => {
+  //   dispatch(actions.selectUserAction(userId));
+  // }, []);
 
   const handleDeleteTodo = useCallback((id: number) => {
     dispatch(deleteTodo(id));
@@ -118,12 +99,12 @@ export const TodoList: React.FC = () => {
                       <button
                         type="button"
                         data-cy="userButton"
-                        className={`TodoList__user-button
+                        className={`TodoList__user-button button
                        ${todo.completed
                           && 'TodoList__user-button--selected'}
                         `}
-                        onClick={() => (
-                          handleUser(todo.userId)
+                        onClick={() => dispatch(
+                          actions.selectUserAction(todo.userId),
                         )}
                       >
                         {`User ${todo.userId}`}

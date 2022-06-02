@@ -1,9 +1,7 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { User, Todo } from '../react-app-env';
-// import { RootState } from '.';
 
-// import actions from './Actions';
 import {
   LOAD_TODOS,
   LOAD_USER,
@@ -25,10 +23,10 @@ export const selectors = {
 
 // Action creators - a function returning an action object
 // export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({
-  // type: FINISH_LOADING,
-  message,
-});
+// export const finishLoading = (message = 'No message') => ({
+//   // type: FINISH_LOADING,
+//   message,
+// });
 
 // Selectors - a function receiving Redux state and returning some data from it
 // export const isLoading = (state: RootState) => state.loading;
@@ -56,15 +54,6 @@ const initialState: RootState = {
 // rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    // case START_LOADING:
-    //   return { ...state, loading: true };
-
-    // case FINISH_LOADING:
-    //   return {
-    //     ...state,
-    //     loading: false,
-    //     message: action.message,
-    //   };
     case LOAD_TODOS:
       return {
         ...state,

@@ -5,12 +5,9 @@ import { actions } from './store/actions';
 import { selectors } from './store/index';
 import { CurrentUser } from './components/CurrentUser/CurrentUser';
 import { TodoList } from './components/TodoList/TodoList';
+import './styles/general.scss';
 
 import './App.scss';
-// import Start from './components/Start';
-// import { Finish } from './components/Finish';
-
-// import { isLoading, getMessage } from './store';
 
 const App = () => {
   const selectedUserId = useSelector(selectors.getUsersIdSelector);
