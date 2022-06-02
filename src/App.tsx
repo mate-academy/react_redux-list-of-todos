@@ -1,26 +1,62 @@
-import { useSelector } from 'react-redux';
-
+import React, { useEffect } from 'react';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import './styles/general.scss';
 
-import { isLoading, getMessage } from './store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTodos } from './api/api';
+import { CurrentUser } from './components/CurrentUser/CurrentUser';
+import { TodoList } from './components/TodoList/TodoList';
+import {
+  todosLoadErrorAC,
+  todosLoadErrorSelector,
+  loadTodosAC,
+  loadTodosSelector,
+  selectUserIdSelector,
+} from './store';
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector(loadTodosSelector);
+  const selectedUserId = useSelector(selectUserIdSelector);
+  const errorMessage = useSelector(todosLoadErrorSelector);
+
+  useEffect(() => {
+    async function response() {
+      try {
+        const todosFromServer = await getTodos();
+
+        dispatch(loadTodosAC(todosFromServer));
+      } catch {
+        dispatch(todosLoadErrorAC('Cant load todos from server'));
+      }
+    }
+
+    response();
+  }, []);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      {!errorMessage ? (
+        <div className="App__sidebar">
+          {todos ? (
+            <TodoList
+              todos={todos}
+            />
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
+      ) : (
+        <p>{errorMessage}</p>
+      )}
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <CurrentUser />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
