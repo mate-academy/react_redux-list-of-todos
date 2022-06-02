@@ -30,9 +30,3 @@ export const deleteTodo = (id: number) => ({
   type: DELETE_TODO,
   id,
 });
-
-export const clearUser = () => {
-  return {
-    type: CLEAR_USER,
-  };
-};

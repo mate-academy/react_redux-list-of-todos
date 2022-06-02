@@ -4,8 +4,6 @@ import { selectors } from '../../store/index';
 import { actions, deleteTodo } from '../../store/actions';
 import './TodoList.scss';
 
-// import { Todo } from '../../react-app-env';
-
 export const TodoList: React.FC = () => {
   const [query, setQuery] = useState('');
   const [selectedTodos, setSelectedTodos] = useState('');
@@ -39,37 +37,36 @@ export const TodoList: React.FC = () => {
     setSelectedTodos(event.target.value);
   };
 
-  // const handleUser = useCallback((userId: number) => {
-  //   dispatch(actions.selectUserAction(userId));
-  // }, []);
-
   const handleDeleteTodo = useCallback((id: number) => {
     dispatch(deleteTodo(id));
   }, []);
 
+  const selectUser = useCallback((userId: number) => {
+    dispatch(actions.selectUserAction(userId));
+  }, []);
+
   return (
     <div className="TodoList">
-      <h2>Todos:</h2>
-
-      <div>
-        <label>
-          <input
-            type="text"
-            value={query}
-            data-cy="filterByTitle"
-            onChange={onChangeInput}
-          />
-        </label>
-        <select
+      <h1>Redux list of todos</h1>
+      <label>
+        <input
           className="TodoList__select"
-          value={selectedTodos}
-          onChange={onChangeSelected}
-        >
-          <option value="All">All</option>
-          <option value="Active">Active</option>
-          <option value="Completed">Completed</option>
-        </select>
-      </div>
+          type="text"
+          value={query}
+          data-cy="filterByTitle"
+          onChange={onChangeInput}
+        />
+      </label>
+      <select
+        className="TodoList__select"
+        value={selectedTodos}
+        onChange={onChangeSelected}
+      >
+        <option value="All">All</option>
+        <option value="Active">Active</option>
+        <option value="Completed">Completed</option>
+      </select>
+
       <div className="TodoList__list-container">
         <ul
           className="TodoList__list"
@@ -77,50 +74,46 @@ export const TodoList: React.FC = () => {
         >
           {
             filteredVisibleTodos.map(todo => (
-              <>
-                <li
-                  className={`
+              <li
+                className={`
                     TodoList__item
                     ${todo.completed
                 ? 'TodoList__item--checked'
                 : 'TodoList__item--unchecked'
               }`}
-                  key={todo.id}
-                >
-                  <label>
-                    <input
-                      type="checkbox"
-                      readOnly
-                    />
-                    <p>{todo.title}</p>
-                  </label>
-                  {todo.userId && (
-                    <div>
-                      <button
-                        type="button"
-                        data-cy="userButton"
-                        className={`TodoList__user-button button
+                key={todo.id}
+              >
+                <label className="TodoList__input">
+                  <input
+                    type="checkbox"
+                    readOnly
+                  />
+                  <p>{todo.title}</p>
+                </label>
+                {todo.userId && (
+                  <div>
+                    <button
+                      type="button"
+                      data-cy="userButton"
+                      className={`TodoList__user-button button
                        ${todo.completed
                           && 'TodoList__user-button--selected'}
                         `}
-                        onClick={() => dispatch(
-                          actions.selectUserAction(todo.userId),
-                        )}
-                      >
-                        {`User ${todo.userId}`}
-                      </button>
+                      onClick={() => selectUser(todo.userId)}
+                    >
+                      {`User ${todo.userId}`}
+                    </button>
 
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteTodo(todo.id)}
-                        className="TodoList__deleteButton button"
-                      >
-                        DELETE
-                      </button>
-                    </div>
-                  )}
-                </li>
-              </>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTodo(todo.id)}
+                      className="TodoList__deleteButton button"
+                    >
+                      DELETE
+                    </button>
+                  </div>
+                )}
+              </li>
             ))
           }
         </ul>

@@ -7,51 +7,30 @@ import {
   LOAD_USER,
   LOAD_ERROR,
   DELETE_TODO,
+  SELECT_USER,
 } from './actions';
-
-// Action types - is just a constant. MUST have a unique value.
-// const START_LOADING = 'START_LOADING';
-// const FINISH_LOADING = 'FINISH_LOADING';
 
 export const selectors = {
   loadUserSelector: (state: RootState) => state.user,
   getUsersIdSelector: (state: RootState) => state.userId,
   loadTodosSelector: (state: RootState) => state.todos,
   loadErrorSelector: (state: RootState) => state.errorLoading,
-  // deleteTodoSelector: (state: RootState) => state.userId,
 };
 
-// Action creators - a function returning an action object
-// export const startLoading = () => ({ type: START_LOADING });
-// export const finishLoading = (message = 'No message') => ({
-//   // type: FINISH_LOADING,
-//   message,
-// });
-
-// Selectors - a function receiving Redux state and returning some data from it
-// export const isLoading = (state: RootState) => state.loading;
-// export const getMessage = (state: RootState) => state.message;
-
-// Initial state
 export type RootState = {
   user: User | null,
   userId: number,
   todos: Todo[],
-  // loading: boolean;
-  // message: string;
   errorLoading: string,
 };
 
 const initialState: RootState = {
-  // loading: false,
-  // message: '',
   user: null,
   userId: 0,
   todos: [],
   errorLoading: '',
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
     case LOAD_TODOS:
@@ -63,6 +42,11 @@ const rootReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         user: action.user,
+      };
+    case SELECT_USER:
+      return {
+        ...state,
+        userId: action.userId,
       };
     case DELETE_TODO:
       return {
@@ -80,10 +64,9 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;

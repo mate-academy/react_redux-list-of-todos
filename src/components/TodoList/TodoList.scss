@@ -1,12 +1,25 @@
 .TodoList {
   width: 100%;
 
+  &__user-button {
+    margin: 5px;
+  }
+
   &__user-button--selected {
     background-color: #483e7c;
   }
 
   &__select {
     cursor: pointer;
+    padding: 5px 20px;
+    margin: 5px 5px 0;
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: rgb(65, 5, 176);
   }
 
   &__list {

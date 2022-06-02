@@ -11,7 +11,6 @@ import './App.scss';
 
 const App = () => {
   const selectedUserId = useSelector(selectors.getUsersIdSelector);
-  const errorMessage = useSelector(selectors.loadErrorSelector);
 
   const dispatch = useDispatch();
 
@@ -28,27 +27,20 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      {errorMessage.length === 0
-        ? (
-          <>
-            <div className="App__sidebar">
-              <TodoList />
-            </div>
-
-            <div className="App__content">
-              <div className="App__content-container">
-                {selectedUserId ? (
-                  <CurrentUser />
-                )
-                  : 'No user selected'}
-              </div>
-            </div>
-          </>
-
-        ) : (<p className="App__error">{errorMessage}</p>)}
-    </div>
+    <>
+      <div className="App">
+        <div className="App__sidebar">
+          <TodoList />
+        </div>
+        <div className="App__content">
+          <div className="App__content-container">
+            {selectedUserId ? (
+              <CurrentUser />
+            ) : 'No user selected'}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 

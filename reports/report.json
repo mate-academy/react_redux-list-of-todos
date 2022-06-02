@@ -5,9 +5,9 @@
     "passes": 1,
     "pending": 0,
     "failures": 0,
-    "start": "2022-04-07T10:41:14.674Z",
-    "end": "2022-04-07T10:41:17.346Z",
-    "duration": 1937,
+    "start": "2022-06-02T14:35:32.526Z",
+    "end": "2022-06-02T14:35:33.593Z",
+    "duration": 1022,
     "testsRegistered": 1,
     "passPercent": 100,
     "pendingPercent": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "bcbd00d7-1944-4e82-b92a-76466af1a35a",
+      "uuid": "1c6551aa-5fac-4da8-a555-747758286216",
       "title": "",
       "fullFile": "cypress/integration/page.spec.js",
       "file": "cypress/integration/page.spec.js",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "320f315d-5070-4aa9-bd5c-4ca6c0b33db9",
+          "uuid": "6acadbbc-ca2c-4698-a5f2-1e243c7d017e",
           "title": "Page",
           "fullFile": "",
           "file": "",
@@ -38,7 +38,7 @@
               "title": "should be visitable",
               "fullTitle": "Page should be visitable",
               "timedOut": null,
-              "duration": 1937,
+              "duration": 1022,
               "state": "passed",
               "speed": "fast",
               "pass": true,
@@ -47,20 +47,20 @@
               "context": null,
               "code": "cy.visit('/');",
               "err": {},
-              "uuid": "85d32292-ec57-4a92-998f-b739b45da434",
-              "parentUUID": "320f315d-5070-4aa9-bd5c-4ca6c0b33db9",
+              "uuid": "a61aac28-0f10-42ee-980f-6f02bef4e1aa",
+              "parentUUID": "6acadbbc-ca2c-4698-a5f2-1e243c7d017e",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "85d32292-ec57-4a92-998f-b739b45da434"
+            "a61aac28-0f10-42ee-980f-6f02bef4e1aa"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
-          "duration": 1937,
+          "duration": 1022,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000

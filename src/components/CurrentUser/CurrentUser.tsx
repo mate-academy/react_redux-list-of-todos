@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../api/api';
 import './CurrentUser.scss';
 
-import { actions, clearUser } from '../../store/actions';
+import { actions } from '../../store/actions';
 import { selectors } from '../../store/index';
 
 export const CurrentUser: React.FC = () => {
@@ -26,8 +26,8 @@ export const CurrentUser: React.FC = () => {
     response();
   }, [selectedUserId]);
 
-  const deleteUser = useCallback(() => {
-    dispatch(clearUser());
+  const deleteUser = useCallback((userId: number) => {
+    dispatch(actions.selectUserAction(userId));
   }, []);
 
   return (
@@ -54,7 +54,7 @@ export const CurrentUser: React.FC = () => {
           <button
             type="button"
             className="CurrentUser__button"
-            onClick={deleteUser}
+            onClick={() => deleteUser(0)}
           >
             Clear
           </button>
