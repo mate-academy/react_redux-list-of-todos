@@ -2,6 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import {
+  filterForTodos,
+  getFilteredTodos,
+  getFilterForTodos,
   getLoadedTodos,
   getSelectedUser,
   loadedTodos,
@@ -28,6 +31,8 @@ export const TodoList: React.FC<Props> = ({
 
   const todos = useSelector(getLoadedTodos);
   const selectedUserId = useSelector(getSelectedUser);
+  const filterByStatus = useSelector(getFilterForTodos);
+  const filteredTodos = useSelector(getFilteredTodos);
 
   const handleUserButtonClick = useCallback((userId: number) => {
     dispatch(selectedUser(userId));
@@ -40,25 +45,12 @@ export const TodoList: React.FC<Props> = ({
   }, [todos]);
 
   const [titleQuery, setTitleQuery] = useState('');
-  const [filterByStatus, setFilterByStatus] = useState(Status.All);
 
-  const filteredTodos = todos.filter((todo) => {
+  const visibleTodos = [...filteredTodos].filter((todo) => {
     const isQuery = todo.title.toLowerCase()
       .includes(titleQuery.toLowerCase());
 
-    switch (filterByStatus) {
-      case Status.All:
-        return isQuery;
-
-      case Status.Active:
-        return isQuery && !todo.completed;
-
-      case Status.Completed:
-        return isQuery && todo.completed;
-
-      default:
-        return true;
-    }
+    return isQuery;
   });
 
   return (
@@ -84,7 +76,7 @@ export const TodoList: React.FC<Props> = ({
             className="TodoList__inputs"
             value={filterByStatus}
             onChange={({ target }) => {
-              setFilterByStatus(target.value as Status);
+              dispatch(filterForTodos(target.value as Status));
             }}
           >
             <option value={Status.All}>all</option>
@@ -110,7 +102,7 @@ export const TodoList: React.FC<Props> = ({
         : (
           <div className="TodoList__list-container">
             <ul className="TodoList__list" data-cy="listOfTodos">
-              {filteredTodos.map((todo) => (
+              {visibleTodos.map((todo) => (
                 <li
                   key={todo.id}
                   className={classNames(
