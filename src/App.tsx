@@ -35,7 +35,7 @@ const App = () => {
             <CurrentUser />
           )
             : (
-              <p> No user</p>
+              'No user selected'
             )}
         </div>
       </div>

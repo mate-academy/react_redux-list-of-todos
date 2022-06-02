@@ -46,7 +46,6 @@ export type RootState = {
   userId: number;
   errorLoading: string;
   user: User | null,
-  sort: boolean,
 };
 
 const initialState: RootState = {
@@ -54,7 +53,6 @@ const initialState: RootState = {
   userId: 0,
   errorLoading: '',
   user: null,
-  sort: false,
 };
 
 // rootReducer - this function is called after dispatching an action
