@@ -49,7 +49,6 @@ export const CurrentUser: React.FC<Props> = ({ onClearUser }) => {
           {selectedUser}
         </span>
       </h2>
-      {loading && ('Loading...')}
       {!loading && (
         <>
           <h3 className="CurrentUser__name" data-cy="userName">{user?.name}</h3>
@@ -65,6 +64,9 @@ export const CurrentUser: React.FC<Props> = ({ onClearUser }) => {
             </button>
           )}
         </>
+      )}
+      {loading && (
+        <div className="CurrentUser__error">Loading...</div>
       )}
       {(!user && !loading) && (
         <div className="CurrentUser__error">Can&apos;t load user</div>
