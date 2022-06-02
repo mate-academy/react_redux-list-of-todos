@@ -13,14 +13,10 @@ const App: React.FC = () => {
   const dispatch = useDispatch();
   const todos = useSelector(setTodos);
 
-  const takeTodos = (todosFromServer: Todo[]) => {
-    dispatch(loadTodos(todosFromServer));
-  };
-
   const getTodosFromServer = async () => {
     const todosFromServer = await getTodos();
 
-    takeTodos(todosFromServer);
+    dispatch(loadTodos(todosFromServer));
   };
 
   useEffect(() => {

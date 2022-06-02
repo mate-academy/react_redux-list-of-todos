@@ -16,11 +16,11 @@ export const TodoList: React.FC<Props> = ({
   selectUser,
   selectedUserId,
 }) => {
-  const [listOfTodos, setListOfTodos] = useState('');
+  const [query, setQuery] = useState('');
   const [statusOfTodo, setStatusOfTodo] = useState('all');
 
   const filterTodosByTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setListOfTodos(event.target.value);
+    setQuery(event.target.value);
   };
 
   const changeStatusOfTodo = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -31,7 +31,7 @@ export const TodoList: React.FC<Props> = ({
     const todosFilteredByTitle = todos.filter(({ title }) => {
       const titleInLowerCase = title.toLowerCase();
 
-      return titleInLowerCase.includes(listOfTodos.toLowerCase());
+      return titleInLowerCase.includes(query.toLowerCase());
     });
 
     switch (statusOfTodo) {
@@ -71,7 +71,7 @@ export const TodoList: React.FC<Props> = ({
           <input
             type="text"
             className="TodoList__navigationInput"
-            value={listOfTodos}
+            value={query}
             onChange={filterTodosByTitle}
             data-cy="filterByTitle"
           />

@@ -15,14 +15,10 @@ export const CurrentUser: React.FC<Props> = ({ userId, selectUser }) => {
   const dispatch = useDispatch();
   const user = useSelector(setUser);
 
-  const takeUser = (userFromServer: User) => {
-    dispatch(loadUser(userFromServer));
-  };
-
   const getUserFromServer = async () => {
     const userFromServer = await getUser(userId);
 
-    takeUser(userFromServer);
+    dispatch(loadUser(userFromServer));
   };
 
   useEffect(() => {
