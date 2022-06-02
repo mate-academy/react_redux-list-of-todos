@@ -9,11 +9,11 @@ import {
   getSelectedUser,
   loadedTodos,
   selectedUser,
+  filteredTodos as filteredTodosAction,
 } from '../../store';
 import './TodoList.scss';
 
 type Props = {
-  onShuffle: () => void;
   message: string;
 };
 
@@ -24,7 +24,6 @@ enum Status {
 }
 
 export const TodoList: React.FC<Props> = ({
-  onShuffle,
   message,
 }) => {
   const dispatch = useDispatch();
@@ -33,6 +32,12 @@ export const TodoList: React.FC<Props> = ({
   const selectedUserId = useSelector(getSelectedUser);
   const filterByStatus = useSelector(getFilterForTodos);
   const filteredTodos = useSelector(getFilteredTodos);
+
+  const shuffleTodos = useCallback(() => {
+    const shuffled = [...filteredTodos].sort(() => Math.random() - 0.5);
+
+    dispatch(filteredTodosAction(shuffled));
+  }, [filteredTodos]);
 
   const handleUserButtonClick = useCallback((userId: number) => {
     dispatch(selectedUser(userId));
@@ -88,7 +93,7 @@ export const TodoList: React.FC<Props> = ({
         <button
           type="button"
           className="button"
-          onClick={() => onShuffle()}
+          onClick={shuffleTodos}
         >
           Randomize
         </button>
