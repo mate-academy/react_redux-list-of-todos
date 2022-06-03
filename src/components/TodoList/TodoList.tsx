@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './TodoList.scss';
 import classnames from 'classnames';
-import { Todo } from '../../store/types';
-import { getTodoSelector } from '../../store/selectors';
+import { getTodoSelector, getUserIdSelector } from '../../store/selectors';
 import { ACTIONS } from '../../store/actions';
 
 enum TodoStatus {
@@ -12,29 +11,18 @@ enum TodoStatus {
   Completed = 'Completed',
 }
 
-// type Props = {
-//   todos: Todo[],
-//   onSelect: (userId: number) => void,
-//   getVisibleTodos: (todos: Todo[], query: string) => Todo[],
-//   query: string,
-// };
-
 export const TodoList: React.FC = () => {
   const { selectUserId } = ACTIONS;
   const [query, setQuery] = useState('');
   const [selectValue, setSelectValue] = useState('');
 
   const todos = useSelector(getTodoSelector);
+  const selectedUserId = useSelector(getUserIdSelector);
   const dispatch = useDispatch();
 
-  const getVisibleTodos = (
-    todosFromServer: Todo[],
-    queryFromInput: string,
-  ): Todo[] => {
-    let filteredTodos = todos;
-
-    filteredTodos = todosFromServer.filter(todo => (
-      todo.title.toLowerCase().includes(queryFromInput.toLowerCase())
+  const visibleTodos = useMemo(() => {
+    const filteredTodos = todos.filter((todo: { title: string; }) => (
+      todo.title.toLowerCase().includes(query.toLowerCase())
     ));
 
     switch (selectValue) {
@@ -47,9 +35,7 @@ export const TodoList: React.FC = () => {
       default:
         return filteredTodos;
     }
-  };
-
-  const visibleTodos = getVisibleTodos(todos, query);
+  }, [todos, query, selectValue]);
 
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -108,27 +94,20 @@ export const TodoList: React.FC = () => {
               </label>
 
               <button
-                className="
-                TodoList__user-button
-                TodoList__user-button--selected
-                button
-              "
+                className={classnames(
+                  'TodoList__user-button',
+                  {
+                    'TodoList__user-button--selected':
+                    todo.userId === selectedUserId,
+                  },
+                  'button',
+                )}
                 data-cy="filterByTitle"
                 type="button"
                 onClick={() => dispatch(selectUserId(todo.userId))}
               >
+                User&nbsp;#
                 {todo.userId}
-              </button>
-              <button
-                className="
-                  TodoList__user-button
-                  TodoList__user-button--selected
-                  button
-                "
-                type="button"
-                onClick={() => dispatch(selectUserId(0))}
-              >
-                Clear
               </button>
             </li>
           ))}

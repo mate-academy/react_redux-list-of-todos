@@ -1,22 +1,26 @@
+import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../api/api';
+import { selectUserId } from '../../store/actions';
+import { getUserIdSelector } from '../../store/selectors';
 import { User } from '../../store/types';
 import './CurrentUser.scss';
 
-type Props = {
-  userId: number,
-};
-
-export const CurrentUser: React.FC<Props>
-= ({ userId }) => {
+export const CurrentUser: React.FC
+= () => {
   const [user, setUser] = useState<User | null>(null);
   const [errorText, setErrorText] = useState('');
 
+  const selectedUserId = useSelector(getUserIdSelector);
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    getUser(userId)
-      .then(setUser)
+    getUser(selectedUserId)
+      .then(userFromServer => setUser(userFromServer))
       .catch((error) => setErrorText(error.toString()));
-  }, [userId]);
+  }, [selectedUserId]);
 
   if (errorText) {
     return (
@@ -33,7 +37,7 @@ export const CurrentUser: React.FC<Props>
           <h2 className="CurrentUser__title">
             <span data-cy="userButton">
               Selected user:
-              {userId}
+              {user.id}
             </span>
           </h2>
 
@@ -46,6 +50,20 @@ export const CurrentUser: React.FC<Props>
           <p className="CurrentUser__phone">
             {user.phone}
           </p>
+          <button
+            className={classnames(
+              'TodoList__user-button',
+              {
+                'TodoList__user-button--selected':
+                  user.id === selectedUserId,
+              },
+              'button',
+            )}
+            type="button"
+            onClick={() => dispatch(selectUserId(0))}
+          >
+            Clear
+          </button>
         </>
       ) : (
         <p>loading...</p>
