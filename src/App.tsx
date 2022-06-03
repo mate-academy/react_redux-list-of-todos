@@ -6,18 +6,12 @@ import { CurrentUser } from './components/CurrentUser';
 import { getTodos } from './api/api';
 import { Todo } from './store/types';
 
-enum TodoStatus {
-  All = 'All',
-  Active = 'Active',
-  Completed = 'Completed',
-}
-
 const App: React.FC = () => {
   const [selectedUserId, setSelectedUserId] = useState(0);
   const [todos, setTodos] = useState<Todo[] | null>(null);
   const [errorText, setErrorText] = useState('');
-  const [query, setQuery] = useState('');
-  const [selectValue, setSelectValue] = useState('');
+  // const [query, setQuery] = useState('');
+  // const [selectValue, setSelectValue] = useState('');
 
   useEffect(() => {
     const getDataFromServer = async () => {
@@ -41,40 +35,40 @@ const App: React.FC = () => {
     );
   }
 
-  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
+  // const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setQuery(event.target.value);
+  // };
 
-  const handleChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectValue(event.target.value);
-  };
+  // const handleChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectValue(event.target.value);
+  // };
 
-  const getVisibleTodos = (
-    todosFromServer: Todo[],
-    queryFromInput: string,
-  ): Todo[] => {
-    let filteredTodos = todos;
+  // const getVisibleTodos = (
+  //   todosFromServer: Todo[],
+  //   queryFromInput: string,
+  // ): Todo[] => {
+  //   let filteredTodos = todos;
 
-    filteredTodos = todosFromServer.filter(todo => (
-      todo.title.toLowerCase().includes(queryFromInput.toLowerCase())
-    ));
+  //   filteredTodos = todosFromServer.filter(todo => (
+  //     todo.title.toLowerCase().includes(queryFromInput.toLowerCase())
+  //   ));
 
-    switch (selectValue) {
-      case TodoStatus.Active:
-        return filteredTodos.filter(todo => !todo.completed);
-      case TodoStatus.Completed:
-        return filteredTodos.filter(todo => todo.completed);
+  //   switch (selectValue) {
+  //     case TodoStatus.Active:
+  //       return filteredTodos.filter(todo => !todo.completed);
+  //     case TodoStatus.Completed:
+  //       return filteredTodos.filter(todo => todo.completed);
 
-      case TodoStatus.All:
-      default:
-        return filteredTodos;
-    }
-  };
+  //     case TodoStatus.All:
+  //     default:
+  //       return filteredTodos;
+  //   }
+  // };
 
   return (
     <div className="App">
       <div className="App__sidebar">
-        <h2>Todos:</h2>
+        {/* <h2>Todos:</h2>
 
         <input
           type="text"
@@ -99,15 +93,10 @@ const App: React.FC = () => {
             </option>
 
           ))}
-        </select>
+        </select> */}
 
         {todos ? (
-          <TodoList
-            todos={todos}
-            onSelect={setSelectedUserId}
-            getVisibleTodos={getVisibleTodos}
-            query={query}
-          />
+          <TodoList />
         ) : (
           <p>loading...</p>
         )}

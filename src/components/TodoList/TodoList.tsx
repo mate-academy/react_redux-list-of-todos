@@ -1,25 +1,90 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import './TodoList.scss';
 import classnames from 'classnames';
 import { Todo } from '../../store/types';
+import { getTodoSelector, getUserIdSelector } from '../../store/selectors';
 
-type Props = {
-  todos: Todo[],
-  onSelect: (userId: number) => void,
-  getVisibleTodos: (todos: Todo[], query: string) => Todo[],
-  query: string,
-};
+enum TodoStatus {
+  All = 'All',
+  Active = 'Active',
+  Completed = 'Completed',
+}
 
-export const TodoList: React.FC<Props> = ({
-  todos,
-  onSelect,
-  getVisibleTodos,
-  query,
-}) => {
+// type Props = {
+//   todos: Todo[],
+//   onSelect: (userId: number) => void,
+//   getVisibleTodos: (todos: Todo[], query: string) => Todo[],
+//   query: string,
+// };
+
+export const TodoList: React.FC = () => {
+  const [query, setQuery] = useState('');
+  const [selectValue, setSelectValue] = useState('');
+
+  const todos = useSelector(getTodoSelector);
+  const userId = useSelector(getUserIdSelector);
+
+  const getVisibleTodos = (
+    todosFromServer: Todo[],
+    queryFromInput: string,
+  ): Todo[] => {
+    let filteredTodos = todos;
+
+    filteredTodos = todosFromServer.filter(todo => (
+      todo.title.toLowerCase().includes(queryFromInput.toLowerCase())
+    ));
+
+    switch (selectValue) {
+      case TodoStatus.Active:
+        return filteredTodos.filter(todo => !todo.completed);
+      case TodoStatus.Completed:
+        return filteredTodos.filter(todo => todo.completed);
+
+      case TodoStatus.All:
+      default:
+        return filteredTodos;
+    }
+  };
+
   const visibleTodos = getVisibleTodos(todos, query);
+
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const handleChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectValue(event.target.value);
+  };
 
   return (
     <div className="TodoList">
+      <h2>Todos:</h2>
+
+      <input
+        type="text"
+        className="TodoList__input"
+        placeholder="Type search word"
+        value={query}
+        onChange={handleChangeInput}
+      />
+
+      <select
+        className="TodoList__select"
+        onChange={handleChangeSelect}
+        value={selectValue}
+      >
+        {Object.keys(TodoStatus).map(key => (
+
+          <option
+            value={key}
+            key={key}
+          >
+            {key}
+          </option>
+
+        ))}
+      </select>
       <div className="TodoList__list-container">
         <ul className="TodoList__list" data-cy="listOfTodos">
           {visibleTodos.map(todo => (
@@ -48,7 +113,7 @@ export const TodoList: React.FC<Props> = ({
               "
                 data-cy="filterByTitle"
                 type="button"
-                onClick={() => onSelect(todo.userId)}
+                onClick={() => onSelect(todo.userId)} /* dispatch*/
               >
                 {todo.userId}
               </button>
