@@ -1,54 +1,34 @@
-import { createStore, AnyAction } from 'redux';
+import { legacy_createStore as createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
-
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({
-  type: FINISH_LOADING,
-  message,
-});
-
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
-
-// Initial state
-export type RootState = {
-  loading: boolean;
-  message: string;
+const defaultState: RootState = {
+  selectedUserId: 0,
+  todos: [],
 };
 
-const initialState: RootState = {
-  loading: false,
-  message: '',
-};
+const GET_TODOS = 'GET_TODOS';
+const SET_SELECTED_USERID = 'SET_SELECTED_USERID';
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
+const reducer = (state = defaultState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
+    case GET_TODOS:
+      return { ...state, todos: action.payload };
 
-    case FINISH_LOADING:
-      return {
-        ...state,
-        loading: false,
-        message: action.message,
-      };
+    case SET_SELECTED_USERID:
+      return { ...state, selectedUserId: action.payload };
 
-    default:
-      return state;
+    default: return state;
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
-);
+// Selectors
+export const getTodosSelector = (state: RootState) => state.todos;
+// eslint-disable-next-line max-len
+export const getSelectUserIdSelector = (state: RootState) => state.selectedUserId;
 
-export default store;
+// Creators
+export const getTodos = (payload: Todo[]) => ({ type: GET_TODOS, payload });
+// eslint-disable-next-line max-len
+export const setSelectUserId = (id: number) => ({ type: SET_SELECTED_USERID, payload: id });
+
+export const store = createStore(reducer, composeWithDevTools());
