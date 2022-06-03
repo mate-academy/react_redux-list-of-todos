@@ -96,7 +96,6 @@ export const TodoList: React.FC = () => {
         <div className="actions__filter">
           <h3>Filter</h3>
           <input
-            data-cy="filterByTitle"
             type="text"
             value={filterByString}
             onChange={(event) => setFilterByString(event.target.value)}
@@ -144,7 +143,6 @@ export const TodoList: React.FC = () => {
               </label>
 
               <button
-                data-cy="userButton"
                 onClick={() => dispatch(setSelectUserId(todo.userId))}
                 className={classNames('TodoList__user-button', 'button', {
                   'TodoList__user-button--selected': todo.userId === selectUsId,
