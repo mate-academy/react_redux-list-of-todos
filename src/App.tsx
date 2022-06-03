@@ -41,7 +41,6 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <div className="App__sidebar">
-
         {todos ? (
           <TodoList />
         ) : (
