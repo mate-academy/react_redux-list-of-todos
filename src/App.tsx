@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import './App.scss';
 import './styles/general.scss';
+import { useDispatch, useSelector } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { CurrentUser } from './components/CurrentUser';
 import { getTodos } from './api/api';
-import { Todo } from './store/types';
+import { ACTIONS } from './store/actions';
+import { getTodoSelector, getUserIdSelector } from './store/selectors';
 
 const App: React.FC = () => {
-  const [selectedUserId, setSelectedUserId] = useState(0);
-  const [todos, setTodos] = useState<Todo[] | null>(null);
+  const todos = useSelector(getTodoSelector);
+  const selectedUserId = useSelector(getUserIdSelector);
+  const dispatch = useDispatch();
+  const { addTodos } = ACTIONS;
+  // const [selectedUserId, setSelectedUserId] = useState(0);
+  // const [todos, setTodos] = useState<Todo[] | null>(null);
   const [errorText, setErrorText] = useState('');
   // const [query, setQuery] = useState('');
   // const [selectValue, setSelectValue] = useState('');
@@ -18,7 +24,7 @@ const App: React.FC = () => {
       try {
         const dataFromServer = await getTodos();
 
-        setTodos(dataFromServer);
+        dispatch(addTodos(dataFromServer));
       } catch (error) {
         setErrorText('Can\'t download data from server!');
       }
@@ -107,7 +113,6 @@ const App: React.FC = () => {
           {selectedUserId ? (
             <CurrentUser
               userId={selectedUserId}
-              onSetSelectedUserId={setSelectedUserId}
             />
           ) : 'No user selected'}
         </div>

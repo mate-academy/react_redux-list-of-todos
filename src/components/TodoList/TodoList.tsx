@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './TodoList.scss';
 import classnames from 'classnames';
 import { Todo } from '../../store/types';
-import { getTodoSelector, getUserIdSelector } from '../../store/selectors';
+import { getTodoSelector } from '../../store/selectors';
+import { ACTIONS } from '../../store/actions';
 
 enum TodoStatus {
   All = 'All',
@@ -19,11 +20,12 @@ enum TodoStatus {
 // };
 
 export const TodoList: React.FC = () => {
+  const { selectUserId } = ACTIONS;
   const [query, setQuery] = useState('');
   const [selectValue, setSelectValue] = useState('');
 
   const todos = useSelector(getTodoSelector);
-  const userId = useSelector(getUserIdSelector);
+  const dispatch = useDispatch();
 
   const getVisibleTodos = (
     todosFromServer: Todo[],
@@ -113,9 +115,20 @@ export const TodoList: React.FC = () => {
               "
                 data-cy="filterByTitle"
                 type="button"
-                onClick={() => onSelect(todo.userId)} /* dispatch*/
+                onClick={() => dispatch(selectUserId(todo.userId))}
               >
                 {todo.userId}
+              </button>
+              <button
+                className="
+                  TodoList__user-button
+                  TodoList__user-button--selected
+                  button
+                "
+                type="button"
+                onClick={() => dispatch(selectUserId(0))}
+              >
+                Clear
               </button>
             </li>
           ))}

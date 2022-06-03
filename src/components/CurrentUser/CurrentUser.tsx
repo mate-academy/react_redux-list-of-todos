@@ -5,11 +5,10 @@ import './CurrentUser.scss';
 
 type Props = {
   userId: number,
-  onSetSelectedUserId: (id: number) => void,
 };
 
 export const CurrentUser: React.FC<Props>
-= ({ userId, onSetSelectedUserId }) => {
+= ({ userId }) => {
   const [user, setUser] = useState<User | null>(null);
   const [errorText, setErrorText] = useState('');
 
@@ -47,17 +46,6 @@ export const CurrentUser: React.FC<Props>
           <p className="CurrentUser__phone">
             {user.phone}
           </p>
-          <button
-            className="
-              TodoList__user-button
-              TodoList__user-button--selected
-              button
-            "
-            type="button"
-            onClick={() => onSetSelectedUserId(0)}
-          >
-            Clear
-          </button>
         </>
       ) : (
         <p>loading...</p>
