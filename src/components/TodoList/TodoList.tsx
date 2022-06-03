@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './TodoList.scss';
 import classNames from 'classnames';
@@ -11,6 +11,14 @@ export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const selectedUserId = useSelector(getSelectedUserByIdSelector);
   const todos = useSelector(getSelectedTodosSelector);
+
+  const selectUser = useCallback((userId: number) => {
+    dispatch({ type: 'SELECT_ID', id: userId });
+  }, []);
+
+  const deleteTodo = useCallback((id: number) => {
+    dispatch({ type: 'DELETE_TODO', id });
+  }, []);
 
   return (
     <div className="TodoList">
@@ -49,7 +57,7 @@ export const TodoList: React.FC = () => {
                     type="button"
                     data-cy="userButton"
                     value={userId}
-                    onClick={() => dispatch({ type: 'SELECT_ID', id: userId })}
+                    onClick={() => selectUser(userId)}
                   >
                     {`User #${userId}`}
                   </button>
@@ -57,7 +65,7 @@ export const TodoList: React.FC = () => {
                   <button
                     type="button"
                     className="TodoList__user-button button"
-                    onClick={() => dispatch({ type: 'DELETE_TODO', id })}
+                    onClick={() => deleteTodo(id)}
                   >
                     X
                   </button>

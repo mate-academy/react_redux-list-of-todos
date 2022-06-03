@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedUserByIdSelector } from '../../store';
 import './CurrentUser.scss';
@@ -18,6 +18,10 @@ export const CurrentUser: React.FC = () => {
 
     newUser();
   }, [currentUserId]);
+
+  const cleanUser = useCallback(() => {
+    dispatch({ type: 'SELECT_ID', id: 0 });
+  }, []);
 
   return (
     <>
@@ -43,7 +47,7 @@ export const CurrentUser: React.FC = () => {
           <button
             type="button"
             className="CurrentUser__clearButton"
-            onClick={() => dispatch({ type: 'SELECT_ID', id: 0 })}
+            onClick={() => cleanUser()}
           >
             Clean User
           </button>
