@@ -16,7 +16,7 @@ export const actions = {
     type: SELECT_USER,
     userId,
   }),
-  loadUser: (user: User) => ({
+  loadUser: (user: User | null) => ({
     type: LOAD_USER,
     user,
   }),

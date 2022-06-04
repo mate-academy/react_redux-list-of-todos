@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserFromServer } from '../../api/api';
 import { actions, selectors } from '../../store';
@@ -7,17 +7,20 @@ import './CurrentUser.scss';
 export const CurrentUser: React.FC = () => {
   const user = useSelector(selectors.loadUser);
   const userId = useSelector(selectors.getUserId);
-  const errorMessage = useSelector(selectors.getError);
   const dispatch = useDispatch();
+
+  const [errorLoad, setErrorLoad] = useState('');
 
   useEffect(() => {
     const getUser = async () => {
       try {
+        setErrorLoad('');
+        dispatch(actions.loadUser(null));
         const userFromServer = await getUserFromServer(userId);
 
         dispatch(actions.loadUser(userFromServer));
       } catch {
-        dispatch(actions.getError('Can not load user!'));
+        setErrorLoad('Can not load user!');
       }
     };
 
@@ -58,7 +61,7 @@ export const CurrentUser: React.FC = () => {
           </button>
         </div>
       ) : (
-        <p>{errorMessage}</p>
+        <p>{errorLoad}</p>
       )}
     </>
   );
