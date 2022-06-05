@@ -1,26 +1,57 @@
-import { useSelector } from 'react-redux';
-
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import './styles/general.scss';
+import { TodoList } from './components/TodoList/TodoList';
+import { CurrentUser } from './components/CurrentUser/CurrentUser';
+import { getTodos } from './api';
 
-import { isLoading, getMessage } from './store';
+const App: React.FC = () => {
+  const [selectedUserId, setSelectedUserId] = useState<number>(0);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  useEffect(() => {
+    getTodos()
+      .then((res) => setTodos(res));
+  }, []);
+
+  const clearUser = useCallback(() => {
+    setSelectedUserId(0);
+  }, []);
+
+  const randomize = useCallback(() => {
+    const randomizedArr = todos.sort(
+      () => {
+        if (Math.random() > 0.5) {
+          return 1;
+        }
+
+        return -1;
+      },
+    );
+
+    setTodos([...randomizedArr]);
+  }, [todos]);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="App__sidebar">
+        <TodoList
+          todos={todos}
+          randomize={randomize}
+          setSelectedUserId={setSelectedUserId}
+        />
+      </div>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedUserId ? (
+            <CurrentUser
+              userId={selectedUserId}
+              clearUser={clearUser}
+            />
+          ) : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
