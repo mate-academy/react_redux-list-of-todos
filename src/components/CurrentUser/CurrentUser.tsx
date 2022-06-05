@@ -16,7 +16,8 @@ export const CurrentUser: React.FC = () => {
 
       dispatch(actions.getUser(gottenUser));
     } catch {
-      dispatch(actions.getError('Can not load user'));
+      dispatch(actions.getError(`Can not load the user.
+        Please reload the page.`));
     }
   }
 

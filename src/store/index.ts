@@ -1,80 +1,36 @@
-import { Reducer } from 'react';
-import { legacy_createStore as createStore } from 'redux';
+import { AnyAction, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-// import { getTodos } from '../api/api';
 import { Todo, User } from '../types/TodoType';
 
-// Action types - is just a constant. MUST have a unique value.
 const GET_TODOS = 'GET_TODOS';
 const DELETE_TODO = 'DELETE_TODO';
 const GET_USER = 'GET_USER';
 const SELECT_USER = 'SELECT_USER';
 const GET_ERROR = 'GET_ERROR';
 
-// Action creators - a function returning an action object
-export enum ActionTypes {
-  GetTodos = 'Get::Todos',
-  DeleteTodos = 'Delete::Todos',
-  GetUser = 'Get::User',
-  SelectUser = 'Select::User',
-  GetError = 'Get::Error',
-}
-
-interface GetTodosAction {
-  type: ActionTypes.GetTodos,
-  payload: Todo[],
-}
-
-interface DeleteTodosAction {
-  type: ActionTypes.DeleteTodos,
-  payload: number,
-}
-
-interface GetUserAction {
-  type: ActionTypes.GetUser,
-  payload: User,
-}
-
-interface SelectUserAction {
-  type: ActionTypes.SelectUser,
-  payload: number,
-}
-
-interface GetErrorAction {
-  type: ActionTypes.GetError,
-  payload: string,
-}
-
-type Action = GetTodosAction
-| DeleteTodosAction
-| GetUserAction
-| SelectUserAction
-| GetErrorAction;
-
 export const actions = {
   getTodos: (todos: Todo[]) => ({
     type: GET_TODOS,
-    payload: todos,
+    todos,
   }),
   deleteTodo: (id: number) => ({
     type: DELETE_TODO,
-    payload: id,
+    id,
   }),
   getUser: (user: User) => ({
     type: GET_USER,
-    payload: user,
+    user,
   }),
   selectUser: (userId: number) => ({
     type: SELECT_USER,
-    payload: userId,
+    userId,
   }),
   getError: (messageError: string) => ({
     type: GET_ERROR,
-    payload: messageError,
+    messageError,
   }),
 };
 
-// Selectors - a function receiving Redux state and returning some data from it
 export const selectors = {
   loadTodos: (state: RootState) => state.todos,
   loadUser: (state: RootState) => state.user,
@@ -82,7 +38,6 @@ export const selectors = {
   getMessageError: (state: RootState) => state.messageError,
 };
 
-// Initial state
 export type RootState = {
   todos: Todo[],
   user: User | null,
@@ -97,36 +52,35 @@ const initialState: RootState = {
   messageError: '',
 };
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer: Reducer<RootState, Action> = (
+const rootReducer = (
   state = initialState,
-  action: Action,
+  action: AnyAction,
 ) => {
   switch (action.type) {
-    case ActionTypes.GetTodos:
-      return { ...state, todos: action.payload };
+    case GET_TODOS:
+      return { ...state, todos: action.todos };
 
-    case ActionTypes.DeleteTodos:
+    case DELETE_TODO:
       return {
         ...state,
-        todos: state.todos.filter((todo) => todo.id !== action.payload),
+        todos: state.todos.filter((todo) => todo.id !== action.id),
       };
 
-    case ActionTypes.GetUser:
-      return { ...state, user: action.payload };
+    case GET_USER:
+      return { ...state, user: action.user };
 
-    case ActionTypes.SelectUser:
-      return { ...state, userId: action.payload };
+    case SELECT_USER:
+      return { ...state, userId: action.userId };
 
-    case ActionTypes.GetError:
-      return { ...state, messageError: action.payload };
+    case GET_ERROR:
+      return { ...state, messageError: action.messageError };
 
     default:
       return state;
   }
 };
 
-const store = createStore<RootState, Action, {}, {}>(
+const store = createStore(
   rootReducer,
   composeWithDevTools(),
 );

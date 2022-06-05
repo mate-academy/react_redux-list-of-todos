@@ -70,9 +70,13 @@ input[type="checkbox"]:checked + p:before {
 }
 
 .App {
-  display: flex;
-  justify-content: stretch;
-  align-content: stretch;
+  text-align: center;
+
+  &__main {
+    display: flex;
+    justify-content: stretch;
+    align-content: stretch;
+  }
 
   &__sidebar {
     @extend %stretch-panel;

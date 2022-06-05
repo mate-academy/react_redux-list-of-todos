@@ -31,7 +31,7 @@ const App = () => {
     <div className="App">
       <h1>Redux list of todos</h1>
       {messageError.length === 0 ? (
-        <>
+        <div className="App__main">
           <div className="App__sidebar">
             <TodoList />
           </div>
@@ -43,7 +43,7 @@ const App = () => {
               ) : 'No user selected'}
             </div>
           </div>
-        </>
+        </div>
       ) : (<p className="App__error">{messageError}</p>)}
     </div>
   );

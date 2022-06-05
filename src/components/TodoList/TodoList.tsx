@@ -38,6 +38,10 @@ export const TodoList: React.FC = () => {
     setVisibleTodos(filteredTodos);
   };
 
+  const deleterTodoByUserId = useCallback((id: number) => {
+    dispatch(actions.deleteTodo(id));
+  }, []);
+
   const handleUserId = useCallback((userId: number) => {
     dispatch(actions.selectUser(userId));
   }, []);
@@ -124,24 +128,39 @@ export const TodoList: React.FC = () => {
               </label>
 
               {todo.userId && (
-                <button
-                  type="button"
-                  data-cy="userButton"
-                  onClick={() => handleUserId(Number(todo.userId))}
-                  className={classNames(
-                    'TodoList__user-button',
-                    'button',
-                    {
-                      'TodoList__user-button--selected':
-                        selectedUserId === Number(todo.userId),
-                    },
-                  )}
-                >
-                  User&nbsp;#
-                  {todo.userId}
-                </button>
-              )}
+                <div className="TodoList__buttons">
+                  <button
+                    type="button"
+                    data-cy="userButton"
+                    onClick={() => handleUserId(Number(todo.userId))}
+                    className={classNames(
+                      'TodoList__user-button',
+                      'button',
+                      {
+                        'TodoList__user-button--selected':
+                          selectedUserId === Number(todo.userId),
+                      },
+                    )}
+                  >
+                    User&nbsp;#
+                    {todo.userId}
+                  </button>
 
+                  <button
+                    type="button"
+                    onClick={() => deleterTodoByUserId(Number(todo.id))}
+                    className={classNames(
+                      'TodoList__todo-button',
+                      {
+                        'TodoList__todo-button--selected':
+                          selectedUserId === Number(todo.userId),
+                      },
+                    )}
+                  >
+                    DELETE
+                  </button>
+                </div>
+              )}
             </li>
           ))}
         </ul>

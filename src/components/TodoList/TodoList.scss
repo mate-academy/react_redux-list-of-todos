@@ -25,6 +25,19 @@
     font-weight: bold;
   }
 
+  &__buttons {
+    width: 150px;
+  }
+
+  &__todo-button {
+    background-color: rgba(232, 55, 55, 0.3);
+
+    &:hover {
+      background-color: rgba(115, 9, 9, 0.3);
+      color: red;
+    }
+  }
+
   &__user-button--selected {
     background-color: #4d457b;
   }
