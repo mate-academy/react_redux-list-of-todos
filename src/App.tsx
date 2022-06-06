@@ -1,53 +1,39 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import './App.scss';
 import './styles/general.scss';
+import { useDispatch, useSelector } from 'react-redux';
 import { TodoList } from './components/TodoList/TodoList';
 import { CurrentUser } from './components/CurrentUser/CurrentUser';
-import { getTodos } from './api';
+import { actions as userActions } from './redux/user';
+import { selectors, loadTodos } from './redux';
 
 const App: React.FC = () => {
-  const [selectedUserId, setSelectedUserId] = useState<number>(0);
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const dispatch = useDispatch();
+  const currentUserData = useSelector(selectors.getUser);
+  const todos = useSelector(selectors.getTodos);
 
   useEffect(() => {
-    getTodos()
-      .then((res) => setTodos(res));
+    dispatch(loadTodos());
   }, []);
 
   const clearUser = useCallback(() => {
-    setSelectedUserId(0);
+    dispatch(userActions.setUser(null));
   }, []);
-
-  const randomize = useCallback(() => {
-    const randomizedArr = todos.sort(
-      () => {
-        if (Math.random() > 0.5) {
-          return 1;
-        }
-
-        return -1;
-      },
-    );
-
-    setTodos([...randomizedArr]);
-  }, [todos]);
 
   return (
     <div className="App">
       <div className="App__sidebar">
         <TodoList
           todos={todos}
-          randomize={randomize}
-          setSelectedUserId={setSelectedUserId}
         />
       </div>
 
       <div className="App__content">
         <div className="App__content-container">
-          {selectedUserId ? (
+          {currentUserData ? (
             <CurrentUser
-              userId={selectedUserId}
               clearUser={clearUser}
+              currentUserData={currentUserData}
             />
           ) : 'No user selected'}
         </div>
