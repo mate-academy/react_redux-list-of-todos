@@ -1,43 +1,46 @@
 import { createStore, AnyAction } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+const LOAD_TODOS = 'LOAD_TODOS';
+const LOAD_USER = 'LOAD_USER';
+const DELETE_TODO = 'DELETE_TODO';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({
-  type: FINISH_LOADING,
-  message,
-});
+export const loadTodos
+= (payload: PreparedTodos[]) => ({ type: LOAD_TODOS, payload });
+export const loadUser = (payload: User) => ({ type: LOAD_USER, payload });
+export const deleteTodo = (payload: number) => ({ type: DELETE_TODO, payload });
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const setTodos = (state: RootState) => state.todos;
+export const setUser = (state: RootState) => state.user;
+export const removeTodo = (state: RootState) => state.todos;
 
-// Initial state
 export type RootState = {
-  loading: boolean;
-  message: string;
+  todos: PreparedTodos[],
+  user: User | null,
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  todos: [],
+  user: null,
 };
 
-// rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
+    case LOAD_TODOS:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        todos: [...action.payload],
+      };
+
+    case LOAD_USER:
+      return {
+        ...state,
+        user: action.payload,
+      };
+
+    case DELETE_TODO:
+      return {
+        ...state,
+        todos: state.todos.filter(todo => todo.id !== action.payload),
       };
 
     default:
@@ -45,10 +48,6 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
-const store = createStore(
-  rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
-);
+const store = createStore(rootReducer);
 
 export default store;
