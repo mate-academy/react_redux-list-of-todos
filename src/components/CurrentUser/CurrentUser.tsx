@@ -22,14 +22,6 @@ export const CurrentUser: React.FC
       .catch((error) => setErrorText(error.toString()));
   }, [selectedUserId]);
 
-  if (errorText) {
-    return (
-      <div>
-        {errorText}
-      </div>
-    );
-  }
-
   return (
     <div className="CurrentUser">
       {user ? (
@@ -66,7 +58,7 @@ export const CurrentUser: React.FC
           </button>
         </>
       ) : (
-        <p>loading...</p>
+        <p>{errorText}</p>
       )}
     </div>
   );

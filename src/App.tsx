@@ -28,7 +28,7 @@ const App: React.FC = () => {
     };
 
     getDataFromServer();
-  }, [dispatch]);
+  }, []);
 
   if (errorText) {
     return (
