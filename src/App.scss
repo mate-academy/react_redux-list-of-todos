@@ -1,1 +1,80 @@
-// not empty
+.App {
+  display: flex;
+  justify-content: space-around;
+}
+
+.button {
+  border: none;
+  padding: 7px 15px;
+  border-radius: 3px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.button-x {
+  margin-left: 10px;
+}
+
+label,
+p {
+  margin: 0;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"] + p {
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+input[type="checkbox"] + p:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid;
+  border-radius: 5px;
+  position: absolute;
+  left: 0;
+  top: calc(50% - 10px);
+  opacity: 0.6;
+  -webkit-transition: all 0.12s, border-color 0.08s;
+  transition: all 0.12s, border-color 0.08s;
+}
+
+input[type="checkbox"]:checked + p:before {
+  width: 10px;
+  top: -6px;
+  left: 8px;
+  border-radius: 0;
+  opacity: 1;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+body {
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+h3 {
+  text-align: center;
+}
