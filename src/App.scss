@@ -1,1 +1,16 @@
-// not empty
+.App {
+  display: flex;
+  padding: 10px 0;
+  height: 100vh;
+  justify-content: space-around;
+
+  &__sidebar {
+    flex-grow: 2;
+  }
+
+  &__user {
+    flex-grow: 1;
+    text-align: center;
+    padding: 30px;
+  }
+}

@@ -1,0 +1,21 @@
+.current-user {
+  box-sizing: border-box;
+  text-align: center;
+
+  &__title {
+    font-size: 5rem;
+    color: white;
+  }
+
+  &__email,
+  &__phone {
+    color: #c4bdd9;
+    text-align: center;
+    margin: 5px;
+  }
+
+  &__clear {
+    display: block;
+    margin: 20px auto 0;
+  }
+}
