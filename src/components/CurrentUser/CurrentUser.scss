@@ -1,0 +1,12 @@
+.CurrentUser {
+  text-align: center;
+  background-color: #faf4b7;
+  padding: 30px;
+  border-radius: 5px;
+
+  &__clear {
+    margin-top: 20px;
+    background-color: #f9f9f9;
+    width: 50%;
+  }
+}
