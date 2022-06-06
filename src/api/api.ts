@@ -1,6 +1,6 @@
 import { Todo, User } from '../store/types';
 
-const API_URL = 'https://mate.academy/students-api/123';
+const API_URL = 'https://mate.academy/students-api/';
 
 export const getData = async (endpoint: string) => {
   const response = await fetch(`${API_URL}/${endpoint}`);
