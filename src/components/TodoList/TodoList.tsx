@@ -15,20 +15,26 @@ export const TodoList: React.FC = () => {
 
   const dispatch = useDispatch();
 
+  enum Status {
+    ALL = 'all',
+    COMPLITED = 'completed',
+    ACTIVE = 'active',
+  }
+
   const handlerFilter = () => {
     const filteredTodos = todos.filter((selectedTodo) => {
       const conditionOfSelect = selectedTodo.title
         .toLowerCase().includes(query.trim().toLowerCase());
 
-      if (query.trim() !== '' && status === 'all') {
+      if (query.trim() !== '' && status === Status.ALL) {
         return conditionOfSelect;
       }
 
-      if (status === 'completed') {
+      if (status === Status.COMPLITED) {
         return conditionOfSelect && selectedTodo.completed;
       }
 
-      if (status === 'active') {
+      if (status === Status.ACTIVE) {
         return conditionOfSelect && !selectedTodo.completed;
       }
 
@@ -38,7 +44,7 @@ export const TodoList: React.FC = () => {
     setVisibleTodos(filteredTodos);
   };
 
-  const deleterTodoByUserId = useCallback((id: number) => {
+  const deleteTodoById = useCallback((id: number) => {
     dispatch(actions.deleteTodo(id));
   }, []);
 
@@ -85,13 +91,13 @@ export const TodoList: React.FC = () => {
               setStatus(event.target.value);
             }}
           >
-            <option value="all">
+            <option value={Status.ALL}>
               Demonstrate all
             </option>
-            <option value="active">
+            <option value={Status.ACTIVE}>
               Demonstrate active
             </option>
-            <option value="completed">
+            <option value={Status.COMPLITED}>
               Demonstrate completed
             </option>
           </select>
@@ -148,7 +154,7 @@ export const TodoList: React.FC = () => {
 
                   <button
                     type="button"
-                    onClick={() => deleterTodoByUserId(Number(todo.id))}
+                    onClick={() => deleteTodoById(Number(todo.id))}
                     className={classNames(
                       'TodoList__todo-button',
                       {

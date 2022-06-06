@@ -6,7 +6,6 @@ import { CurrentUser } from './components/CurrentUser';
 import { TodoList } from './components/TodoList';
 import { actions, selectors } from './store';
 import './styles/general.scss';
-// import { Todo } from './types/TodoType';
 
 const App = () => {
   const selectedUserId = useSelector(selectors.getUserId);

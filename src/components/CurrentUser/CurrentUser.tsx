@@ -25,8 +25,8 @@ export const CurrentUser: React.FC = () => {
     response();
   }, [userId]);
 
-  const resetUserId = useCallback((value: number) => {
-    dispatch(actions.selectUser(value));
+  const resetUserId = useCallback(() => {
+    dispatch(actions.selectUser(0));
   }, []);
 
   return (
@@ -46,7 +46,7 @@ export const CurrentUser: React.FC = () => {
 
           <button
             type="button"
-            onClick={() => resetUserId(0)}
+            onClick={() => resetUserId()}
             className="CurrentUser__clear"
           >
             Clear

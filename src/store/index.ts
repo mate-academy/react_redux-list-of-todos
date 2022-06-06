@@ -1,6 +1,7 @@
 import { AnyAction, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { Todo, User } from '../types/TodoType';
+import { Todo } from '../types/TodoType';
+import { User } from '../types/UserType';
 
 const GET_TODOS = 'GET_TODOS';
 const DELETE_TODO = 'DELETE_TODO';
