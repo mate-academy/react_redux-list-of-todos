@@ -5,16 +5,15 @@ import './styles/general.scss';
 import { TodoList } from './components/TodoList';
 import { CurrentUser } from './components/CurrentUser';
 import { getTodos } from './api';
-import { getTodosSelector, getUserIdSelector } from './store';
+import { getUserIdSelector, todosLoading } from './store';
 
 const App: React.FC = () => {
   const selectedUserId = useSelector(getUserIdSelector);
-  const todos = useSelector(getTodosSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const todosFromServer = async () => {
-      dispatch({ type: 'TODOS_LOADING', todos: await getTodos() });
+      dispatch(todosLoading(await getTodos()));
     };
 
     todosFromServer();
@@ -23,18 +22,13 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <div className="App__sidebar">
-        <TodoList
-          todos={todos}
-          selctedUser={selectedUserId}
-        />
+        <TodoList />
       </div>
 
       <div className="App__content">
         <div className="App__content-container">
           {selectedUserId ? (
-            <CurrentUser
-              userId={selectedUserId}
-            />
+            <CurrentUser />
           ) : 'No user selected'}
         </div>
       </div>

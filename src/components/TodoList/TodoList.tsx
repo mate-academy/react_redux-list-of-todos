@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './TodoList.scss';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
-
-type Props = {
-  todos: Todo[],
-  selctedUser: number,
-};
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  deleteTodo,
+  getTodosSelector,
+  getUserIdSelector,
+  selectUserId,
+} from '../../store';
 
 enum Show {
   All = 'All',
@@ -14,10 +15,9 @@ enum Show {
   Completed = 'Completed',
 }
 
-export const TodoList: React.FC<Props> = ({
-  todos,
-  selctedUser,
-}) => {
+export const TodoList: React.FC = () => {
+  const todos = useSelector(getTodosSelector);
+  const selctedUser = useSelector(getUserIdSelector);
   const [query, setQuery] = useState('');
   const [showTodos, setShowTodos] = useState('');
 
@@ -83,9 +83,7 @@ export const TodoList: React.FC<Props> = ({
               <div>
                 <button
                   data-cy="userButton"
-                  onClick={() => dispatch(
-                    { type: 'SELECT_USER_ID', selectedUserId: todo.userId },
-                  )}
+                  onClick={() => dispatch(selectUserId(todo.userId))}
                   className={classNames({
                     'TodoList__user-button button': true,
                     'TodoList__user-button--selected': todo.userId
@@ -97,9 +95,7 @@ export const TodoList: React.FC<Props> = ({
                 </button>
                 {' '}
                 <button
-                  onClick={() => dispatch(
-                    { type: 'DELETE_TODO', deleteTodoId: todo.id },
-                  )}
+                  onClick={() => dispatch(deleteTodo(todo.id))}
                   className="TodoList__user-button button"
                   type="button"
                 >
