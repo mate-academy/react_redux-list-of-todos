@@ -18,6 +18,8 @@ enum Show {
 export const TodoList: React.FC = () => {
   const todos = useSelector(getTodosSelector);
   const selctedUser = useSelector(getUserIdSelector);
+  const dispatch = useDispatch();
+
   const [query, setQuery] = useState('');
   const [showTodos, setShowTodos] = useState('');
 
@@ -35,8 +37,6 @@ export const TodoList: React.FC = () => {
 
   const visibleTodos = show()
     .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
-
-  const dispatch = useDispatch();
 
   return (
     <div className="TodoList">
