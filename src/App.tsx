@@ -1,26 +1,34 @@
-import { useSelector } from 'react-redux';
-
+import { useEffect, FC } from 'react';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import { useDispatch, useSelector } from 'react-redux';
+import { CurrentUser } from './components/CurrentUser';
+import { TodoList } from './components/TodoList/TodoList';
+import { RootState } from './store/store';
+import { User } from './types/User';
+import { loadTodos } from './store/actions';
 
-import { isLoading, getMessage } from './store';
+const App: FC = () => {
+  const currentUser: User | null = useSelector(
+    (state: RootState) => state.reducer.currentUser,
+  );
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadTodos());
+  }, [dispatch]);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="App__sidebar">
+        <TodoList />
+      </div>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__user">
+        {currentUser ? (
+          <CurrentUser />
+        ) : 'No user selected'}
+      </div>
     </div>
   );
 };
