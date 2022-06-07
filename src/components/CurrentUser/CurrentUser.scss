@@ -1,0 +1,84 @@
+.CurrentUser {
+  &__title {
+    font-size: 1rem;
+    color: white;
+
+    span {
+      background-color: #4d457b;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  }
+
+  &__name {
+    margin: 30px 0 10px;
+    font-size: 1.5rem;
+  }
+
+  &__email,
+  &__phone {
+    color: #c4bdd9;
+    text-align: center;
+    margin: 5px;
+  }
+
+  &__clear {
+    display: grid;
+    place-items: center;
+  }
+}
+
+.button-user {
+  appearance: none;
+  backface-visibility: hidden;
+  background-color: #2f80ed;
+  border-radius: 10px;
+  border-style: none;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  margin: 0 auto;
+  font-size: 15px;
+  font-weight: 500;
+  height: 50px;
+  letter-spacing: normal;
+  line-height: 1.5;
+  outline: none;
+  overflow: hidden;
+  padding: 14px 30px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transform: translate3d(0, 0, 0);
+  transition: all 0.3s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.button-user:hover {
+  background-color: #1366d6;
+  box-shadow: rgba(0, 0, 0, 0.05) 0 5px 30px, rgba(0, 0, 0, 0.05) 0 1px 4px;
+  opacity: 1;
+  transform: translateY(0);
+  transition-duration: 0.35s;
+}
+
+.button-user:hover:after {
+  opacity: 0.5;
+}
+
+.button-user:active {
+  box-shadow: rgba(0, 0, 0, 0.1) 0 3px 6px 0,
+    rgba(0, 0, 0, 0.1) 0 0 10px 0,
+    rgba(0, 0, 0, 0.1) 0 1px 4px -1px;
+  transform: translateY(2px);
+  transition-duration: 0.35s;
+}
+
+.button:active:after {
+  opacity: 1;
+}
