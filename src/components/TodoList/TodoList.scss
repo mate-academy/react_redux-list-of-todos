@@ -1,0 +1,56 @@
+.todoList {
+  width: 100%;
+
+  &__navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  &__navigationInput {
+    width: 200px;
+    height: 20px;
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 5px;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid black;
+    border-radius: 5px;
+
+    transition: all 0.3s;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+
+  &__item--unchecked {
+    background-color: #ffe0db;
+    color: red;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__button {
+    border-radius: 5px;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
