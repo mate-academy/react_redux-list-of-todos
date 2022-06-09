@@ -61,10 +61,10 @@ export const TodoList: React.FC<Props> = (props) => {
           </select>
         </div>
         <button
-          className="TodoList__randomize"
+          className="TodoList__randomize button"
           type="button"
           onClick={() => {
-            dispatch(todosActions.randomize);
+            dispatch(todosActions.randomize());
           }}
         >
           Randomize
