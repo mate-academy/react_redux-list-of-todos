@@ -1,0 +1,94 @@
+.Search-panel__form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+
+  &__search {
+    font-size: 18px;
+    color: inherit;
+    cursor: pointer;
+    min-height: 32px;
+    width: 40%;
+    min-width: 300px;
+    border: none;
+    border-bottom: 2px solid #4d457b;
+    outline: none;
+    padding: 10px 0 3px 5px;
+    margin-right: 15px;
+    transition: all 0.4s;
+
+    &::placeholder {
+      font-size: inherit;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: #4d457b07;
+      border-radius: 5px;
+    }
+  }
+
+  &__select {
+    min-height: 32px;
+    width: 35%;
+    min-width: 200px;
+    padding: 5px 10px;
+    margin-right: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: inherit;
+    font-weight: bold;
+    color: inherit;
+    background-color: #b8b3d2;
+    transition: background-color 0.12s;
+
+    &:hover,
+    &:focus {
+      cursor: pointer;
+      border: none;
+      color: white;
+      background-color: #4d457b;
+    }
+
+    &__option {
+
+      &:hover,
+      &:focus {
+        border: none;
+        color: white;
+        background-color: #4d457b;
+      }
+    }
+  }
+
+  &__button {
+    min-height: 32px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: inherit;
+    font-weight: bold;
+    color: inherit;
+    background-color: #b8b3d2;
+    transition: background-color 0.12s;
+
+    &:hover {
+      cursor: pointer;
+      color: white;
+      background-color: #4d457b;
+    }
+
+    &--on {
+      color: white;
+      background-color: #4d457b;
+
+      &:hover {
+        cursor: pointer;
+        color: inherit;
+        background-color: #b8b3d2;
+      }
+    }
+  }
+}
