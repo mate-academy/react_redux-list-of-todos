@@ -1,0 +1,41 @@
+.TableBody {
+  &__body {
+
+    &--row {
+      border: 1px solid $color-borderTable;
+    }
+
+    &--cell {
+      text-align: center;
+      padding: 5px 10px;
+      border: 1px solid $color-borderTable;
+
+      &:nth-child(n+3) {
+        text-align: left;
+      }
+    }
+
+    &--text {
+      margin-bottom: 20px;
+    }
+
+    &--button {
+      padding: 10px;
+      margin: 0 auto;
+      display: block;
+      background-color: rgb(184, 109, 109);
+      color: white;
+      transition: 0.2s;
+      border-radius: 5px;
+
+      &:hover {
+        cursor: pointer;
+        background-color: rgb(118, 29, 29);
+      }
+
+      &:active {
+        background-color: rgb(88, 32, 32);
+      }
+    }
+  }
+}

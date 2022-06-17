@@ -1,0 +1,14 @@
+@import "./blocks/reset.scss";
+@import "./utils/vars";
+@import "./utils/mixins";
+@import "./utils/extends";
+@import "./fonts";
+@import "./typography";
+@import "../App.scss";
+@import "../components/UserForm/UserForm.scss";
+@import "../components/UsersTable/UsersTable.scss";
+@import "../components/TableBody/TableBody.scss";
+
+body {
+  background: $general-bgc-gray;
+}

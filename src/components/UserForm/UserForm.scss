@@ -1,0 +1,162 @@
+.UserForm {
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+
+  transform: translateX(-100%);
+  transition: 0.5s;
+
+  &--active {
+    transform: translateX(0);
+    transition: 0.5s;
+  }
+
+  &__fieldset {
+    border: 1px solid $border-fieldSet;
+    margin: 10px;
+    padding: 15px;
+  }
+
+  &__subtitle {
+    padding: 0 5px;
+    margin-left: 10px;
+    padding-bottom: 20px;
+
+    font-weight: bolder;
+    font-size: 30px;
+    font-style: italic;
+    text-align: center;
+    color: blue;
+  }
+
+  &__button-close {
+    margin-bottom: 15px;
+    padding: 10px;
+
+    color: $color-buttonCloseForm;
+    background-color: rgb(250, 215, 226);
+
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      background-color: rgb(228, 136, 165);
+      color: black;
+    }
+
+    @include bigScreen {
+      position: fixed;
+      top: 37px;
+      right: 10px;
+      height: 40px;
+    }
+  }
+
+  &__form {
+    background-color: $bgc-form-area;
+
+    &--container {
+
+      &-out {
+        display: block;
+        padding: 10px 0;
+
+        @include middleScreen {
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      &-in {
+        text-align: left;
+        padding-left: 20px;
+
+        @include middleScreen {
+          padding-left: 0;
+        }
+      }
+    }
+  }
+
+  &__field {
+    padding: 10px;
+  }
+
+  &__name {
+    display: inline;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+
+  &__input {
+    border: 1px solid $color-borderInput;
+    border-radius: 5px;
+    padding-left: 5px;
+    height: 40px;
+
+    &--desc {
+      overflow: hidden;
+      padding: 10px 0;
+      height: 80px;
+      resize: none;
+      overflow-y: auto;
+    }
+  }
+
+  &__error {
+    text-align: center;
+    margin-bottom: 15px;
+    color: $color-error;
+    font-style: italic;
+    height: 20px;
+  }
+
+  &__buttons {
+    display: block;
+
+    @include middleScreen {
+      display: flex;
+    }
+  }
+
+  &__button-add {
+    display: block;
+    margin: 20px auto;
+    height: 50px;
+    width: 250px;
+
+    background-color: $bgc-buttonAddUser;
+    border: transparent;
+    border-radius: 10px;
+
+    font-size: 25px;
+
+    transition: 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: aqua;
+      transform: scale(1.1);
+      border: 1px solid rgb(3, 29, 29);
+      color: rgb(180, 19, 19);
+    }
+
+    &:active {
+      border: 3px solid rgb(180, 19, 19);
+      background-color: rgb(3, 123, 123);
+    }
+
+    &--passive {
+      &:hover {
+        background-color: $bgc-buttonAddUser;
+        transform: scale(1);
+        border: transparent;
+        color: transparent;
+        cursor: auto;
+      }
+    }
+  }
+}

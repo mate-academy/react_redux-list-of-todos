@@ -1,0 +1,61 @@
+.UserTable {
+  margin: 0 auto 30px;
+
+  border-spacing: 0;
+  border-collapse: collapse;
+  overflow-x: auto;
+
+  &__title {
+    margin-bottom: 10px;
+    font-size: 30px;
+  }
+
+  &__head {
+    &--row {
+      position: sticky;
+      top: 0;
+
+      border: 1px solid $color-borderTable;
+      background-color: $bgc-tabelTitle;
+    }
+
+    &--cell {
+      padding: 10px;
+
+      font-weight: bolder;
+      border: 1px solid $color-borderTable;
+    }
+  }
+
+  &__body {
+    width: 100%;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    column-gap: 50px;
+  }
+
+  &__button {
+    margin-bottom: 30px;
+    height: 40px;
+    width: 120px;
+    background-color: $bgc-buttonOpenForm;
+    border-radius: 5px;
+    transition: all 0.3s;
+
+    &:hover {
+      background-color: rgb(60, 183, 183);
+    }
+
+    &:active {
+      color: red;
+      border: 1px solid red;
+    }
+  }
+
+  &__error {
+    color: $color-error;
+  }
+}

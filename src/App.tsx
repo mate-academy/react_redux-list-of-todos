@@ -1,23 +1,28 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTodos } from './api/api';
-import './App.scss';
-import { CurrentUser } from './components/CurrentUser';
-import { TodoList } from './components/TodoList';
+import { getUsers } from './api/api';
+import { UserForm } from './components/UserForm/UserForm';
+import { UsersTable } from './components/UsersTable';
 import { actions, selectors } from './store';
-import './styles/general.scss';
+import './styles/main.scss';
 
-const App = () => {
-  const selectedUserId = useSelector(selectors.getUserId);
+export const App = () => {
   const messageError = useSelector(selectors.getMessageError);
+  const isOpenForm = useSelector(selectors.getIsOpenForm);
+  const isCorrectForm = useSelector(selectors.getIsCorrectForm);
   const dispatch = useDispatch();
+
+  const handlerOpenForm = useCallback(() => {
+    dispatch(actions.getIsOpenForm(true));
+    dispatch(actions.getIsCorrectForm(false));
+  }, []);
 
   useEffect(() => {
     async function response() {
       try {
-        const todosFromServer = await getTodos();
+        const usersFromServer = await getUsers();
 
-        dispatch(actions.getTodos(todosFromServer));
+        dispatch(actions.getUsers(usersFromServer));
       } catch {
         dispatch(actions.getError('Can not load todos'));
       }
@@ -27,25 +32,27 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      {messageError.length === 0 ? (
-        <div className="App__main">
-          <div className="App__sidebar">
-            <TodoList />
-          </div>
-
-          <div className="App__content">
-            <div className="App__content-container">
-              {selectedUserId ? (
-                <CurrentUser />
-              ) : 'No user selected'}
-            </div>
-          </div>
-        </div>
-      ) : (<p className="App__error">{messageError}</p>)}
-    </div>
+    <main className="App">
+      <h1 className="App__title">
+        Information about users of our products.
+      </h1>
+      <button
+        type="button"
+        className="App__button
+        App__button--opener"
+        hidden={isOpenForm || isCorrectForm}
+        onClick={handlerOpenForm}
+      >
+        Open form for user
+      </button>
+      {messageError.length === 0
+        ? (
+          <>
+            <UserForm />
+            <UsersTable />
+          </>
+        )
+        : (<p className="App__error">{messageError}</p>)}
+    </main>
   );
 };
-
-export default App;
