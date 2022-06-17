@@ -1,54 +1,143 @@
-import { createStore, AnyAction } from 'redux';
+import { AnyAction, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { User } from '../types/UserType';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+const GET_USERS = 'GET_USERS';
+const UPDATE_USERS = 'UPDATE_USERS';
+const GET_USER = 'GET_USER';
+const CORRECT_USER = 'CORRECT_USER';
+const DELETE_USER = 'DELETE_USER';
+const GET_ERROR = 'GET_ERROR';
+const OPEN_FORM = 'OPEN_FORM';
+const CORRECT_FORM = 'CORRECT_FORM';
+const GET_START = 'GET_START';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({
-  type: FINISH_LOADING,
-  message,
-});
+export const actions = {
+  getUsers: (users: User[]) => ({
+    type: GET_USERS,
+    users,
+  }),
+  updateLocalUsers: (user: User) => ({
+    type: UPDATE_USERS,
+    user,
+  }),
+  getUser: (user: User) => ({
+    type: GET_USER,
+    user,
+  }),
+  correctUser: (userId: number) => ({
+    type: CORRECT_USER,
+    userId,
+  }),
+  deleteUser: (id: number) => ({
+    type: DELETE_USER,
+    id,
+  }),
+  getError: (messageError: string) => ({
+    type: GET_ERROR,
+    messageError,
+  }),
+  getIsOpenForm: (isOpenForm: boolean) => ({
+    type: OPEN_FORM,
+    isOpenForm,
+  }),
+  getIsCorrectForm: (isCorrectForm: boolean) => ({
+    type: CORRECT_FORM,
+    isCorrectForm,
+  }),
+  getStartIndex: (start: number) => ({
+    type: GET_START,
+    start,
+  }),
+};
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const selectors = {
+  loadUsers: (state: RootState) => state.users,
+  getUser: (state: RootState) => state.user,
+  getUserId: (state: RootState) => state.userId,
+  getMessageError: (state: RootState) => state.messageError,
+  getIsOpenForm: (state: RootState) => state.isOpenForm,
+  getIsCorrectForm: (state: RootState) => state.isCorrectForm,
+  getStartIndex: (state: RootState) => state.start,
+};
 
-// Initial state
 export type RootState = {
-  loading: boolean;
-  message: string;
+  users: User[],
+  user: User,
+  userId: number,
+  messageError: string,
+  isOpenForm: boolean,
+  isCorrectForm: boolean,
+  start: number,
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  users: [],
+  user: {
+    _id: '',
+    name: '',
+    surname: '',
+    desc: '',
+    user_id: 0,
+    __v: 0,
+  },
+  userId: 0,
+  messageError: '',
+  isOpenForm: false,
+  isCorrectForm: false,
+  start: 0,
 };
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
+const rootReducer = (
+  state = initialState,
+  action: AnyAction,
+) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
+    case GET_USERS:
+      return { ...state, users: action.users };
 
-    case FINISH_LOADING:
+    case UPDATE_USERS:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        users: [
+          ...state.users,
+          action.user,
+        ],
       };
+
+    case GET_USER:
+      return { ...state, user: action.user };
+
+    case CORRECT_USER:
+      return { ...state, userId: action.userId };
+
+    case DELETE_USER:
+      return {
+        ...state,
+        // eslint-disable-next-line
+        users: [...state.users].filter((person) => person.user_id !== action.id),
+      };
+
+    case GET_ERROR:
+      return { ...state, messageError: action.messageError };
+
+    case OPEN_FORM:
+      return { ...state, isOpenForm: action.isOpenForm };
+
+    case CORRECT_FORM:
+      return { ...state, isCorrectForm: action.isCorrectForm };
+
+    case GET_START:
+      return { ...state, start: action.start };
 
     default:
       return state;
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;

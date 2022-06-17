@@ -1,28 +1,58 @@
-import { useSelector } from 'react-redux';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsers } from './api/api';
+import { UserForm } from './components/UserForm/UserForm';
+import { UsersTable } from './components/UsersTable';
+import { actions, selectors } from './store';
+import './styles/main.scss';
 
-import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+export const App = () => {
+  const messageError = useSelector(selectors.getMessageError);
+  const isOpenForm = useSelector(selectors.getIsOpenForm);
+  const isCorrectForm = useSelector(selectors.getIsCorrectForm);
+  const dispatch = useDispatch();
 
-import { isLoading, getMessage } from './store';
+  const handlerOpenForm = useCallback(() => {
+    dispatch(actions.getIsOpenForm(true));
+    dispatch(actions.getIsCorrectForm(false));
+  }, []);
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  useEffect(() => {
+    async function response() {
+      try {
+        const usersFromServer = await getUsers();
+
+        dispatch(actions.getUsers(usersFromServer));
+      } catch {
+        dispatch(actions.getError('Can not load todos'));
+      }
+    }
+
+    response();
+  }, []);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
-    </div>
+    <main className="App">
+      <h1 className="App__title">
+        Information about users of our products.
+      </h1>
+      <button
+        type="button"
+        className="App__button
+        App__button--opener"
+        hidden={isOpenForm || isCorrectForm}
+        onClick={handlerOpenForm}
+      >
+        Open form for user
+      </button>
+      {messageError.length === 0
+        ? (
+          <>
+            <UserForm />
+            <UsersTable />
+          </>
+        )
+        : (<p className="App__error">{messageError}</p>)}
+    </main>
   );
 };
-
-export default App;
