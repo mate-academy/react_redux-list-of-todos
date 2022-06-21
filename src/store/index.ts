@@ -1,54 +1,89 @@
-import { createStore, AnyAction } from 'redux';
+import { AnyAction, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { Todo } from '../types/TodoType';
+import { User } from '../types/UserType';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+const GET_TODOS = 'GET_TODOS';
+const DELETE_TODO = 'DELETE_TODO';
+const GET_USER = 'GET_USER';
+const SELECT_USER = 'SELECT_USER';
+const GET_ERROR = 'GET_ERROR';
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({
-  type: FINISH_LOADING,
-  message,
-});
+export const actions = {
+  getTodos: (todos: Todo[]) => ({
+    type: GET_TODOS,
+    todos,
+  }),
+  deleteTodo: (id: number) => ({
+    type: DELETE_TODO,
+    id,
+  }),
+  getUser: (user: User) => ({
+    type: GET_USER,
+    user,
+  }),
+  selectUser: (userId: number) => ({
+    type: SELECT_USER,
+    userId,
+  }),
+  getError: (messageError: string) => ({
+    type: GET_ERROR,
+    messageError,
+  }),
+};
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+export const selectors = {
+  loadTodos: (state: RootState) => state.todos,
+  loadUser: (state: RootState) => state.user,
+  getUserId: (state: RootState) => state.userId,
+  getMessageError: (state: RootState) => state.messageError,
+};
 
-// Initial state
 export type RootState = {
-  loading: boolean;
-  message: string;
+  todos: Todo[],
+  user: User | null,
+  userId: number,
+  messageError: string,
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  todos: [],
+  user: null,
+  userId: 0,
+  messageError: '',
 };
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
+const rootReducer = (
+  state = initialState,
+  action: AnyAction,
+) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
+    case GET_TODOS:
+      return { ...state, todos: action.todos };
 
-    case FINISH_LOADING:
+    case DELETE_TODO:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        todos: state.todos.filter((todo) => todo.id !== action.id),
       };
+
+    case GET_USER:
+      return { ...state, user: action.user };
+
+    case SELECT_USER:
+      return { ...state, userId: action.userId };
+
+    case GET_ERROR:
+      return { ...state, messageError: action.messageError };
 
     default:
       return state;
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
+  composeWithDevTools(),
 );
 
 export default store;
