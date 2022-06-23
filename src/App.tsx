@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setTodos } from './redux/actions/todos';
-import { RootState } from './redux/store';
+import { TodosActionCreators } from './redux/reducers/todos/action-creators';
+import { selectedUser } from './redux/reducers/todos/selectors';
 
 import { TodoList } from './components/TodoList';
 import { CurrentUser } from './components/CurrentUser';
@@ -12,14 +12,11 @@ import './styles/general.scss';
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
-
-  const selectedUserId = useSelector((state: RootState) => (
-    state.todosList.selectedUser
-  ));
+  const selectedUserId = useSelector(selectedUser);
 
   useEffect(() => {
     getTodos()
-      .then((data) => dispatch(setTodos(data)));
+      .then((data) => dispatch(TodosActionCreators.setTodos(data)));
   }, []);
 
   return (

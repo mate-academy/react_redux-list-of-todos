@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails } from '../../api/api';
-import { setSelectedUser } from '../../redux/actions/todos';
-import { RootState } from '../../redux/store';
+import { selectedUser } from '../../redux/reducers/todos/selectors';
+import { TodosActionCreators }
+  from '../../redux/reducers/todos/action-creators';
 import { User } from '../../types/User';
 import './CurrentUser.scss';
 
 export const CurrentUser: React.FC = () => {
   const dispatch = useDispatch();
-  const selectedUserId = useSelector((state: RootState) => (
-    state.todosList.selectedUser
-  ));
+  const selectedUserId = useSelector(selectedUser);
   const [userDetail, setUserDetail] = useState<User>();
 
   useEffect(() => {
@@ -19,7 +18,7 @@ export const CurrentUser: React.FC = () => {
   }, [selectedUserId]);
 
   const removeSelectedUser = () => {
-    dispatch(setSelectedUser(null));
+    dispatch(TodosActionCreators.setSelectedUser(null));
   };
 
   return (

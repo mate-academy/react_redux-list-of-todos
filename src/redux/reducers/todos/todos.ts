@@ -1,32 +1,24 @@
-import { Todo } from '../../types/Todo';
-import {
-  ActionDeleteTodo,
-  ActionSetCurrentUser,
-  ActionSetTodos,
-} from '../actions/todos';
-import { ActionTypes } from '../../types/actionTypes';
+import { Todo } from '../../../types/Todo';
+import { ActionTypes, AuthAction } from './types';
 
 const initialState = {
   selectedUser: null,
   todos: [],
 };
 
-const todosList = (
-  state = initialState,
-  action: ActionSetTodos | ActionSetCurrentUser | ActionDeleteTodo,
-) => {
+const todosList = (state = initialState, action: AuthAction) => {
   switch (action.type) {
     case ActionTypes.SET_TODOS: {
       return {
         ...state,
-        todos: action.payload.todos,
+        todos: action.payload,
       };
     }
 
     case ActionTypes.SELECT_USER: {
       return {
         ...state,
-        selectedUser: action.payload.userId,
+        selectedUser: action.payload,
       };
     }
 
@@ -34,7 +26,7 @@ const todosList = (
       return {
         ...state,
         todos: state.todos.filter((item: Todo) => (
-          item.id !== action.payload.todoId
+          item.id !== action.payload
         )),
       };
     }

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
-import './TodoList.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { setSelectedUser, deleteTodo } from '../../redux/actions/todos';
+import { allTodos, selectedUser } from '../../redux/reducers/todos/selectors';
+import { TodosActionCreators }
+  from '../../redux/reducers/todos/action-creators';
+import './TodoList.scss';
 
 enum Completed {
   all = 'All',
@@ -13,23 +14,21 @@ enum Completed {
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
-  const todos = useSelector((state: RootState) => state.todosList.todos);
-  const selectedUser = useSelector((state: RootState) => (
-    state.todosList.selectedUser
-  ));
+  const todos = useSelector(allTodos);
+  const selectedUserId = useSelector(selectedUser);
 
   const [search, setSearch] = useState<string>('');
   const [completed, setCompleted] = useState<Completed | string>(Completed.all);
   const [filteredTodos, setFilteredTodos] = useState(todos);
 
   const selectUser = (userId: number) => {
-    if (selectedUser !== userId) {
-      dispatch(setSelectedUser(userId));
+    if (selectedUserId !== userId) {
+      dispatch(TodosActionCreators.setSelectedUser(userId));
     }
   };
 
   const deleteTodoHandler = (todoId: number) => {
-    dispatch(deleteTodo(todoId));
+    dispatch(TodosActionCreators.deleteTodo(todoId));
   };
 
   useEffect(() => {
@@ -115,7 +114,7 @@ export const TodoList: React.FC = () => {
                       'button',
                       {
                         'TodoList__user-button--selected':
-                        todo.userId === selectedUser,
+                        todo.userId === selectedUserId,
                       },
                     )}
                     type="button"
