@@ -1,13 +1,10 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
-import { Todo } from '../../react-app-env';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllTodos, getUserById } from '../../api/api';
+import { setTodosAction, setUserAction } from '../../store/action';
+import { getTodosSelector, getUsersSelector } from '../../store/selectors';
 import './TodoList.scss';
-
-interface Props {
-  todosFromServer: Todo[];
-  selectUser: React.Dispatch<React.SetStateAction<number>>;
-  selectedUserId: number;
-}
 
 enum SeeFiltered {
   all = 'all',
@@ -15,14 +12,17 @@ enum SeeFiltered {
   active = 'active',
 }
 
-export const TodoList: React.FC<Props> = ({
-  todosFromServer, selectUser, selectedUserId,
-}) => {
+export const TodoList: React.FC = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector(getTodosSelector);
+  const user = useSelector(getUsersSelector);
+  // =====================
+
   const [filter, setFilter] = useState('');
   const [selectFilter, setSelectFilter] = useState('all');
 
   const filteredByState
-    = todosFromServer.filter(todo => {
+    = todos.filter(todo => {
       if (todo.completed === true && selectFilter === SeeFiltered.completed) {
         return true;
       }
@@ -40,6 +40,27 @@ export const TodoList: React.FC<Props> = ({
 
   const filteredByTitle
     = filteredByState.filter(todo => todo.title.includes(filter));
+
+  useEffect(() => {
+    const loadTodosFromServer = async () => {
+      const todosFromServer = await getAllTodos();
+
+      dispatch(setTodosAction(todosFromServer));
+    };
+
+    loadTodosFromServer();
+  }, []);
+
+  const getUser = async (id: number) => {
+    try {
+      const userFromServ = await getUserById(id);
+
+      dispatch(setUserAction(userFromServ));
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
 
   return (
     <div className="TodoList">
@@ -91,11 +112,11 @@ export const TodoList: React.FC<Props> = ({
               </label>
 
               <button
-                className={`TodoList__user-button button ${selectedUserId === todo.userId && 'TodoList__user-button--selected'}`}
+                className={`TodoList__user-button button ${user?.id === todo.userId && 'TodoList__user-button--selected'}`}
                 data-cy="userButton"
                 type="button"
                 onClick={() => {
-                  selectUser(todo.userId);
+                  getUser(todo.userId);
                 }}
               >
                 {`User #${todo.userId}`}

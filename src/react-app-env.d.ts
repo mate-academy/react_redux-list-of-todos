@@ -9,6 +9,16 @@ export interface Todo {
   userId: number;
 }
 
+export interface State {
+  todos: Todo[];
+  user: User | null;
+}
+
+export interface Action {
+  type: string;
+  payload: any;
+}
+
 export interface User {
   id: number;
   createdAt: string;

@@ -1,26 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './CurrentUser.scss';
-import { getUser } from '../../api/api';
-import { User } from '../../react-app-env';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsersSelector } from '../../store/selectors';
+import { setUserAction } from '../../store/action';
 
-interface Props {
-  selectedUserId: number;
-  setSelectedUserId: React.Dispatch<React.SetStateAction<number>>;
-}
+export const CurrentUser: React.FC = () => {
+  const user = useSelector(getUsersSelector);
+  const dispatch = useDispatch();
 
-export const CurrentUser: React.FC<Props> = ({
-  selectedUserId, setSelectedUserId,
-}) => {
-  const [user, setUser] = useState<User | null>();
-
-  useEffect(() => {
-    getUser(selectedUserId)
-      .then(result => setUser(result))
-      .catch(error => {
-        // eslint-disable-next-line no-console
-        console.log(error, 'something wrong with syntax');
-      });
-  }, [selectedUserId]);
+  if (!user) {
+    return <p>No selected user</p>;
+  }
 
   return (
     <div className="CurrentUser">
@@ -32,24 +22,24 @@ export const CurrentUser: React.FC<Props> = ({
             "
         type="button"
         onClick={() => {
-          setSelectedUserId(0);
+          dispatch(setUserAction(null));
         }}
       >
         clear
       </button>
 
       <h2 className="CurrentUser__title">
-        <span>{`Selected user: ${selectedUserId}`}</span>
+        <span>{`Selected user: ${user.id}`}</span>
       </h2>
 
       <h3
         className="CurrentUser__name"
         data-cy="userName"
       >
-        {user?.name}
+        {user.name}
       </h3>
-      <p className="CurrentUser__email">{user?.email}</p>
-      <p className="CurrentUser__phone">{user?.phone}</p>
+      <p className="CurrentUser__email">{user.email}</p>
+      <p className="CurrentUser__phone">{user.phone}</p>
     </div>
   );
 };
