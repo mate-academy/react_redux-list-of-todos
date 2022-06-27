@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllTodos, getUserById } from '../../api/api';
+import { getAllTodos, getUserById, remove } from '../../api/api';
 import { setTodosAction, setUserAction } from '../../store/action';
 import { getTodosSelector, getUsersSelector } from '../../store/selectors';
 import './TodoList.scss';
@@ -16,7 +16,6 @@ export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const todos = useSelector(getTodosSelector);
   const user = useSelector(getUsersSelector);
-  // =====================
 
   const [filter, setFilter] = useState('');
   const [selectFilter, setSelectFilter] = useState('all');
@@ -41,13 +40,13 @@ export const TodoList: React.FC = () => {
   const filteredByTitle
     = filteredByState.filter(todo => todo.title.includes(filter));
 
+  const loadTodosFromServer = async () => {
+    const todosFromServer = await getAllTodos();
+
+    dispatch(setTodosAction(todosFromServer));
+  };
+
   useEffect(() => {
-    const loadTodosFromServer = async () => {
-      const todosFromServer = await getAllTodos();
-
-      dispatch(setTodosAction(todosFromServer));
-    };
-
     loadTodosFromServer();
   }, []);
 
@@ -60,6 +59,11 @@ export const TodoList: React.FC = () => {
       // eslint-disable-next-line no-console
       console.log(error);
     }
+  };
+
+  const deleteTodo = async (id: number) => {
+    await remove(id);
+    await loadTodosFromServer();
   };
 
   return (
@@ -111,16 +115,29 @@ export const TodoList: React.FC = () => {
                 <p>{todo.title}</p>
               </label>
 
-              <button
-                className={`TodoList__user-button button ${user?.id === todo.userId && 'TodoList__user-button--selected'}`}
-                data-cy="userButton"
-                type="button"
-                onClick={() => {
-                  getUser(todo.userId);
-                }}
-              >
-                {`User #${todo.userId}`}
-              </button>
+              <div>
+                <button
+                  className={`TodoList__user-button button mgr-small ${user?.id === todo.userId && 'TodoList__user-button--selected'}`}
+                  data-cy="userButton"
+                  type="button"
+                  onClick={() => {
+                    getUser(todo.userId);
+                  }}
+                >
+                  {`User #${todo.userId}`}
+                </button>
+
+                <button
+                  className="TodoList__user-button button is-danger"
+                  data-cy="userButton"
+                  type="button"
+                  onClick={() => {
+                    deleteTodo(todo.id);
+                  }}
+                >
+                  X
+                </button>
+              </div>
             </li>
           ))}
         </ul>
