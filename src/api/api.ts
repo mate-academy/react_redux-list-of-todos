@@ -19,3 +19,19 @@ export const remove = async (id: number) => {
 
   return response;
 };
+
+export const addTodo = async () => {
+  const response = await fetch(`${API_URL}/todos`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: 'А я сейчас вам покажу, '
+          + 'откуда на Беларусь готовилось нападение',
+        userId: 3,
+        completed: false,
+      }),
+    });
+
+  return response;
+};

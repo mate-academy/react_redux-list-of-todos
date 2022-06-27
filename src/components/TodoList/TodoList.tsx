@@ -1,7 +1,12 @@
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllTodos, getUserById, remove } from '../../api/api';
+import {
+  addTodo,
+  getAllTodos,
+  getUserById,
+  remove,
+} from '../../api/api';
 import { setTodosAction, setUserAction } from '../../store/action';
 import { getTodosSelector, getUsersSelector } from '../../store/selectors';
 import './TodoList.scss';
@@ -61,6 +66,11 @@ export const TodoList: React.FC = () => {
     }
   };
 
+  const addNewTodo = async () => {
+    await addTodo();
+    await loadTodosFromServer();
+  };
+
   const deleteTodo = async (id: number) => {
     await remove(id);
     await loadTodosFromServer();
@@ -69,6 +79,19 @@ export const TodoList: React.FC = () => {
   return (
     <div className="TodoList">
       <h2>Todos:</h2>
+
+      <button
+        className="TodoList__user-button button is-succes"
+        data-cy="userButton"
+        type="button"
+        onClick={() => {
+          addNewTodo();
+        }}
+      >
+        add todo if no more
+      </button>
+
+      <br />
 
       <input
         className="input"
