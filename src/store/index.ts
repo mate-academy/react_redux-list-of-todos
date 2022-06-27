@@ -1,6 +1,6 @@
-import { createStore, AnyAction } from 'redux';
-import { ADD_TODO, SET_TODOS, SET_USER } from './actions';
+import { createStore } from 'redux';
 import { RootState } from '../react-app-env.d';
+import { Action, ActionType } from './types/types';
 
 const initialState: RootState = {
   todos: [],
@@ -8,21 +8,21 @@ const initialState: RootState = {
 };
 
 // rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
+const rootReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case SET_TODOS:
+    case ActionType.SET_TODOS:
       return {
         ...state,
         todos: [...action.payload],
       };
 
-    case ADD_TODO:
+    case ActionType.ADD_TODO:
       return {
         ...state,
         todos: [...state.todos, action.payload],
       };
 
-    case SET_USER:
+    case ActionType.SET_USER:
       return {
         ...state,
         user: action.payload,
