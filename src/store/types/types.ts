@@ -18,7 +18,7 @@ export interface AddTodoAction {
 
 export interface SetUserAction {
   type: ActionType.SET_USER;
-  payload: User;
+  payload: User | null;
 }
 
 export type Action = SetTodosAction | AddTodoAction | SetUserAction;

@@ -15,7 +15,7 @@ export const addTodoAction = (payload: Todo): AnyAction => ({
   payload,
 });
 
-export const setUserAction = (payload: User): AnyAction => ({
+export const setUserAction = (payload: User | null): AnyAction => ({
   type: SET_USER,
   payload,
 });
