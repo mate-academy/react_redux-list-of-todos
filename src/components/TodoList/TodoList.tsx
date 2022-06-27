@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { deleteTodo, getTodos, getUserById } from '../../api/api';
 import { setTodosAction, setUserAction } from '../../store/actions';
-import { getTodosSelector, getUserSelector } from '../../store/selectors';
+import {
+  getFilteredTodosSelector, getTodosSelector, getUserSelector,
+} from '../../store/selectors';
 import './TodoList.scss';
 import { Todo } from '../../react-app-env';
 
@@ -18,6 +20,7 @@ export const TodoList: React.FC = () => {
 
   const todos = useSelector(getTodosSelector);
   const user = useSelector(getUserSelector);
+  const filteredTodosByCompleted = useSelector(getFilteredTodosSelector());
 
   const [title, setTitle] = useState('');
   const [selectedOption, setSelectedOption] = useState<Option | string>('all');
@@ -59,16 +62,12 @@ export const TodoList: React.FC = () => {
     switch (selectedOption) {
       case Option.All:
         setFilteredTodos(todos);
-        // eslint-disable-next-line no-console
-        console.log(filteredTodos);
         break;
       case Option.Active:
-        setFilteredTodos(currT => currT.filter(todo => !todo.completed));
+        setFilteredTodos(todos.filter(todo => !todo.completed));
         break;
       case Option.Completed:
-        setFilteredTodos(currT => currT.filter(todo => todo.completed));
-        // eslint-disable-next-line no-console
-        console.log(filteredTodos);
+        setFilteredTodos(filteredTodosByCompleted);
         break;
       default:
         break;
