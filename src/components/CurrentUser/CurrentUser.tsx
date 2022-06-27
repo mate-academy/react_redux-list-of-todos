@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserByIdAction } from '../../store/actions';
-import { getSelectedUserById } from '../../store/selectors';
+import { getSelectedUserByIdSelector } from '../../store/selectors';
 import './CurrentUser.scss';
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 
 export const CurrentUser: React.FC<Props> = () => {
   const dispatch = useDispatch();
-  const selectedUser = useSelector(getSelectedUserById);
+  const selectedUser = useSelector(getSelectedUserByIdSelector);
 
   const clearUser = () => {
     dispatch(setUserByIdAction(null));

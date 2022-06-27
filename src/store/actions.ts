@@ -1,12 +1,38 @@
-export const SET_TODOS = 'SET_TODOS';
-export const SET_USER = 'SET_USER';
+export enum ActionType {
+  SET_TODOS = 'SET_TODOS',
+  SET_USER = 'SET_USER',
+  DELETE_USER = 'DELETE_USER',
+}
 
-export const setTodosAction = (payload: Todo[]) => ({
-  type: SET_TODOS,
+export type Action = SetTodosAction | SetUserByIdAction | DeleteTodoByIdAction;
+
+interface SetTodosAction {
+  type: ActionType.SET_TODOS,
+  payload: Todo[],
+}
+
+interface SetUserByIdAction {
+  type: ActionType.SET_USER,
+  payload: User | null,
+}
+
+interface DeleteTodoByIdAction {
+  type: ActionType.DELETE_USER,
+  payload: number,
+}
+
+export const setTodosAction = (payload: Todo[]): SetTodosAction => ({
+  type: ActionType.SET_TODOS,
   payload,
 });
 
-export const setUserByIdAction = (payload: User | null) => ({
-  type: SET_USER,
+export const setUserByIdAction = (payload: User | null): SetUserByIdAction => ({
+  type: ActionType.SET_USER,
   payload,
 });
+
+export const deleteTodoByIdAction
+  = (payload: number): DeleteTodoByIdAction => ({
+    type: ActionType.DELETE_USER,
+    payload,
+  });

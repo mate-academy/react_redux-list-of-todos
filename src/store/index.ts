@@ -1,5 +1,5 @@
 import { createStore } from 'redux';
-import { SET_TODOS, SET_USER } from './actions';
+import { Action, ActionType } from './actions';
 
 const initialState: State = {
   todos: [],
@@ -8,16 +8,23 @@ const initialState: State = {
 
 const reducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case SET_TODOS:
+    case ActionType.SET_TODOS:
       return {
         ...state,
         todos: [...action.payload],
       };
 
-    case SET_USER:
+    case ActionType.SET_USER:
       return {
         ...state,
         user: action.payload,
+      };
+
+    case ActionType.DELETE_USER:
+      return {
+        ...state,
+        todos: [...state.todos]
+          .filter(todo => todo.id !== action.payload),
       };
 
     default:

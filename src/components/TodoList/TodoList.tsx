@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import './TodoList.scss';
 import cn from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteTodoByid, getTodos, getUser } from '../../api/api';
-import { setTodosAction, setUserByIdAction } from '../../store/actions';
-import { getSelectedUserById, getTodosSelector } from '../../store/selectors';
+import { getTodos, getUser } from '../../api/api';
+// eslint-disable-next-line max-len
+import { deleteTodoByIdAction, setTodosAction, setUserByIdAction } from '../../store/actions';
+// eslint-disable-next-line max-len
+import { getFilteredTodosSelector, getSelectedUserByIdSelector } from '../../store/selectors';
 
 type Props = {
 };
@@ -16,8 +18,8 @@ export const TodoList: React.FC<Props> = () => {
   const [visibleTodos, setVisibleTodos] = useState('all');
   const options: OptionArray = ['all', 'active', 'completed'];
 
-  const todos = useSelector(getTodosSelector);
-  const selectedUser = useSelector(getSelectedUserById);
+  // const todos = useSelector(getTodosSelector);
+  const selectedUser = useSelector(getSelectedUserByIdSelector);
 
   const requestTodos = async () => {
     try {
@@ -51,9 +53,7 @@ export const TodoList: React.FC<Props> = () => {
     setQuery(event.target.value);
   };
 
-  const filteredQuery = todos
-    .filter((todo: Todo) => todo.title.toLocaleLowerCase()
-      .includes(query.toLocaleLowerCase()));
+  const filteredQuery = useSelector(getFilteredTodosSelector(query));
 
   const filteredVisible = (allTodos: Todo[]) => {
     switch (visibleTodos) {
@@ -113,9 +113,13 @@ export const TodoList: React.FC<Props> = () => {
                 <button
                   className="button-delete"
                   type="button"
-                  onClick={async () => {
-                    await deleteTodoByid(todo.id);
-                    requestTodos();
+                  onClick={() => {
+                    // to delete the todo from server
+                    // onClick={async () => {
+                    //   await deleteTodoByid(todo.id);
+                    //   requestTodos();
+
+                    dispatch(deleteTodoByIdAction(todo.id));
                   }}
                 >
                   Delete

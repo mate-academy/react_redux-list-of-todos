@@ -12,8 +12,9 @@ export const getUser = async (userId: number) => {
   return response.json();
 };
 
-export const deleteTodoByid = async (todoId: number) => {
-  await fetch(`${BASE_URL}/todos/${todoId}`, {
-    method: 'DELETE',
-  });
-};
+// to delete todos from server instead of redux
+// export const deleteTodoByid = async (todoId: number) => {
+//   await fetch(`${BASE_URL}/todos/${todoId}`, {
+//     method: 'DELETE',
+//   });
+// };
