@@ -28,7 +28,7 @@ export const addTodo = async () => {
       body: JSON.stringify({
         title: 'А я сейчас вам покажу, '
           + 'откуда на Беларусь готовилось нападение',
-        userId: Math.floor(Math.random() * 1000) + 1,
+        userId: Math.floor(Math.random() * 20) + 1,
         completed: false,
       }),
     });
