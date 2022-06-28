@@ -1,0 +1,14 @@
+.TodoList {
+  &__input {
+    width: 500px;
+    height: 25px;
+    line-height: 25px;
+    color: #4d457b;
+    font-weight: bold;
+    outline-color: #4d457b;
+
+    &--add {
+      margin: 0 auto 20px ;
+    }
+  }
+}
