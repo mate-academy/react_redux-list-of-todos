@@ -1,8 +1,7 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-
-import store from './store';
+import { store } from './store/index';
 import App from './App';
 
 // Just a convenient component with all the wrappers for the `App`
