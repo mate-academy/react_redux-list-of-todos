@@ -1,43 +1,39 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
-
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({
-  type: FINISH_LOADING,
-  message,
-});
-
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+import { Todo, User } from '../react-app-env';
+import {
+  DELETE_TODO,
+  LOADING_TODOS,
+  SHOW_USER,
+} from './actions';
 
 // Initial state
 export type RootState = {
-  loading: boolean;
-  message: string;
+  todos: Todo[];
+  user: User | null;
 };
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  todos: [],
+  user: null,
 };
 
 // rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
+    case LOADING_TODOS:
+      return { ...state, todos: [...state.todos, ...action.payload] };
 
-    case FINISH_LOADING:
+    case SHOW_USER:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        user: action.payload,
+      };
+
+    case DELETE_TODO:
+      return {
+        ...state,
+        todos: [...state.todos].filter(todo => todo.id !== action.payload),
       };
 
     default:
