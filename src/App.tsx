@@ -1,7 +1,6 @@
 import './App.scss';
 import { TodoList } from './components/TodoList';
 import { CurrentUser } from './components/CurrentUser';
-import './styles/general.scss';
 
 const App = () => {
   return (

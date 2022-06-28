@@ -1,8 +1,6 @@
 // eslint-disable-next-line
 /// <reference types="react-scripts" />
 export type RootState = {
-  loading: boolean;
-  message: string;
   todos: Todo[];
   user: User | null;
 };
@@ -25,10 +23,4 @@ export type User = {
   website: string;
   createdAt: string;
   updatedAt: string;
-};
-
-export type Action = {
-  type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload: any;
 };

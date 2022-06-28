@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './TodoList.scss';
 import classnames from 'classnames';
-import { getTodos, getUserById } from '../../api/api';
+import { deleteTodoById, getTodos, getUserById } from '../../api/api';
 import { setTodosAction, setUser } from '../../store/actions';
 import { getTodosSelector, getUserSelector } from '../../store/selectors';
 
@@ -15,19 +15,24 @@ enum Selected {
 export const TodoList: React.FC = () => {
   const [currentValue, setCurrentValue] = useState('');
   const [selectedSelect, setSelectedSelect] = useState('0');
+  const [currentError, setCurrentError] = useState(false);
   const dispatch = useDispatch();
   const todos = useSelector(getTodosSelector);
   const user = useSelector(getUserSelector);
 
   useEffect(() => {
     const loadTodosFromServer = async () => {
-      const todosFromServer = await getTodos();
+      try {
+        const todosFromServer = await getTodos();
 
-      dispatch(setTodosAction(todosFromServer));
+        dispatch(setTodosAction(todosFromServer));
+      } catch (error) {
+        setCurrentError(true);
+      }
     };
 
     loadTodosFromServer();
-  }, []);
+  }, [todos]);
 
   const prepearedTodos = () => {
     const filteredTodos = todos.filter(todo => {
@@ -47,9 +52,13 @@ export const TodoList: React.FC = () => {
   };
 
   const getUser = async (id: number) => {
-    const userFromServer = await getUserById(id);
+    try {
+      const userFromServer = await getUserById(id);
 
-    dispatch(setUser(userFromServer));
+      dispatch(setUser(userFromServer));
+    } catch (error) {
+      dispatch(setUser(null));
+    }
   };
 
   return (
@@ -84,11 +93,11 @@ export const TodoList: React.FC = () => {
           className="TodoList__list"
           data-cy="listOfTodos"
         >
-          {prepearedTodos().map(todo => (
+          {!currentError && prepearedTodos().map(todo => (
             <li
               className={classnames(
                 'TodoList__item',
-                'TodoList__item--unchecked',
+                { 'TodoList__item--unchecked': !todo.completed },
                 { 'TodoList__item--checked': todo.completed },
               )}
               key={todo.id}
@@ -96,29 +105,40 @@ export const TodoList: React.FC = () => {
               <label>
                 <input
                   type="checkbox"
+                  readOnly
                   checked={todo.completed}
                 />
                 <p>{todo.title}</p>
               </label>
 
-              <button
-                className={classnames(
-                  'button',
-                  'TodoList__user-button',
-                  {
-                    'TodoList__user-button--selected':
-                    user?.id === todo.userId,
-                  },
-
-                )}
-                type="button"
-                data-cy="userButton"
-                onClick={() => {
-                  getUser(todo.userId);
-                }}
-              >
-                {`User ${todo.userId}`}
-              </button>
+              <div className="TodoList__boxbuttons">
+                <button
+                  className={classnames(
+                    'TodoList__user-button',
+                    {
+                      'TodoList__user-button--selected':
+                      user?.id === todo.userId,
+                    },
+                  )}
+                  type="button"
+                  data-cy="userButton"
+                  onClick={() => {
+                    getUser(todo.userId);
+                  }}
+                >
+                  {`User ${todo.userId}`}
+                </button>
+                <button
+                  className="TodoList__user-button"
+                  type="button"
+                  data-cy="userButton"
+                  onClick={() => {
+                    deleteTodoById(todo.id);
+                  }}
+                >
+                  X
+                </button>
+              </div>
             </li>
           ))}
         </ul>

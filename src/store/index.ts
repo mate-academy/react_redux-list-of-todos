@@ -1,36 +1,27 @@
 import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { RootState, Action } from '../react-app-env';
-import {
-  SET_TODOS,
-  ADD_TODO,
-  SET_USER,
-} from './actions';
+import { RootState } from '../react-app-env';
+import { SetTodosAction, SetUserAction, ActionType } from './actions';
 
 // Initial state
 const initialState: RootState = {
-  loading: false,
-  message: '',
   todos: [],
   user: null,
 };
 
 // rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: Action) => {
+const rootReducer = (
+  state = initialState,
+  action: SetTodosAction | SetUserAction,
+) => {
   switch (action.type) {
-    case SET_TODOS:
+    case ActionType.SET_TODOS:
       return {
         ...state,
         todos: [...action.payload],
       };
 
-    case ADD_TODO:
-      return {
-        ...state,
-        todos: [...state.todos, action.payload],
-      };
-
-    case SET_USER:
+    case ActionType.SET_USER:
       return {
         ...state,
         user: action.payload,
