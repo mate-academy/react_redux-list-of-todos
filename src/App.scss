@@ -1,1 +1,16 @@
 // not empty
+
+.main {
+  display: flex;
+}
+
+.leftside {
+  flex-grow: 1;
+}
+
+.rightside {
+  position: fixed;
+  top: 0;
+  right: 0;
+  flex-grow: 1;
+}
