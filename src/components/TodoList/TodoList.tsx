@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import { deleteTodo, getTodos, getUserById } from '../../api/api';
 import { setTodosAction, setUserAction } from '../../store/actions';
 import {
-  getFilteredTodosSelector, getTodosSelector, getUserSelector,
+  getActiveTodosSelector, getFilteredTodosByTitleSelector,
+  getTodosSelector, getUserSelector,
 } from '../../store/selectors';
 import './TodoList.scss';
 import { Todo } from '../../react-app-env';
@@ -18,14 +19,15 @@ enum Option {
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
 
-  const todos = useSelector(getTodosSelector);
-  const user = useSelector(getUserSelector);
-  const filteredTodosByCompleted = useSelector(getFilteredTodosSelector());
-
   const [title, setTitle] = useState('');
   const [selectedOption, setSelectedOption] = useState<Option | string>('all');
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
   const options = ['all', 'active', 'completed'];
+
+  const todos = useSelector(getTodosSelector);
+  const user = useSelector(getUserSelector);
+  const filteredTodosByCompleted = useSelector(getActiveTodosSelector());
+  const filteredByTitle = useSelector(getFilteredTodosByTitleSelector(title));
 
   useEffect(() => {
     const loadTodosFromServer = async () => {
@@ -39,9 +41,14 @@ export const TodoList: React.FC = () => {
   }, []);
 
   const getUser = async (id: number) => {
-    const userFromServer = await getUserById(id);
+    try {
+      const userFromServer = await getUserById(id);
 
-    dispatch(setUserAction(userFromServer));
+      dispatch(setUserAction(userFromServer));
+    } catch {
+      // eslint-disable-next-line no-console
+      console.log('user not found');
+    }
   };
 
   const removeTodo = async (id: number) => {
@@ -55,8 +62,9 @@ export const TodoList: React.FC = () => {
     setFilteredTodos([...todos]);
   }, [todos]);
 
-  const filteredByTitle = filteredTodos
-    .filter(todo => todo.title.toLowerCase().includes(title.toLowerCase()));
+  useEffect(() => {
+    setFilteredTodos(filteredByTitle);
+  }, [title]);
 
   const visibleTodos = () => {
     switch (selectedOption) {
@@ -107,7 +115,7 @@ export const TodoList: React.FC = () => {
       <h2>Todos:</h2>
       <div className="TodoList__list-container">
         <ul className="TodoList__list">
-          {filteredByTitle.map(todo => (
+          {filteredTodos.map(todo => (
             <li
               className={classNames(
                 'TodoList__item', {
