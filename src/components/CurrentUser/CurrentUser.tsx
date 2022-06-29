@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUserSelector } from '../../store/selectors';
 import { removeSelectedUser } from '../../store/actions';
 
-export const CurrentUser: React.FC = () => {
+type Props = {
+  setUserId: (id: number) => void
+};
+
+export const CurrentUser: React.FC<Props> = ({ setUserId }) => {
   const user = useSelector(getUserSelector);
   const dispatch = useDispatch();
 
@@ -24,11 +28,10 @@ export const CurrentUser: React.FC = () => {
       <button
         type="button"
         className="
-          TodoList__user-button
-          TodoList__user-button--selected
           button"
         onClick={() => {
           dispatch(removeSelectedUser());
+          setUserId(0);
         }}
       >
         Clear

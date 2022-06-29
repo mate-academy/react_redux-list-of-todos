@@ -12,4 +12,18 @@
   &:hover {
     background-color: #4d457b;
   }
+
+  &__focused {
+    background-color: #4d457b;
+  }
+
+  &__delete {
+    border: 1px solid red;
+    background-color: #fec3a7;
+    margin-left: 5px;
+
+    &:hover {
+      background-color: rgb(252, 120, 120);
+    }
+  }
 }

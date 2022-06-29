@@ -13,3 +13,9 @@ export const getUserById = async (userId: number): Promise<User> => {
 
   return response.json();
 };
+
+export const removeTodo = async (todoId: number) => {
+  const result = await fetch(`${API_URL}/todos/${todoId}`, { method: 'DELETE' });
+
+  return result;
+};

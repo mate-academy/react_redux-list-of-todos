@@ -1,6 +1,13 @@
 import { createStore } from 'redux';
-import { Action, State } from '../react-app-env';
-import { SET_TODOS, SET_USER, REMOVE_USER } from './actions';
+import { State } from '../react-app-env';
+import { Action } from './actions';
+// import { SET_TODOS, SET_USER, REMOVE_USER } from './actions';
+
+enum ActionType {
+  SET_TODOS = 'SET_TODOS',
+  SET_USER = 'SET_USER',
+  REMOVE_USER = 'REMOVE_USER',
+}
 
 const initialState: State = {
   todos: [],
@@ -9,19 +16,19 @@ const initialState: State = {
 
 const reducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case SET_TODOS:
+    case ActionType.SET_TODOS:
       return {
         ...state,
         todos: [...action.payload],
       };
 
-    case SET_USER:
+    case ActionType.SET_USER:
       return {
         ...state,
         user: action.payload,
       };
 
-    case REMOVE_USER:
+    case ActionType.REMOVE_USER:
       return {
         ...state,
         user: null,

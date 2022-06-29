@@ -23,8 +23,3 @@ export interface State {
   todos: Todo[],
   user: User | null,
 }
-
-export interface Action {
-  type: string,
-  payload?: any,
-}
