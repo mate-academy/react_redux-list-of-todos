@@ -1,0 +1,22 @@
+
+.user {
+  width: max-content;
+  border: 1px solid black;
+  padding: 20px;
+
+  &__remove {
+    outline: none;
+
+    background-color: red;
+
+    border-radius: 10px;
+
+    border-color: beige;
+
+    font-size: 26px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

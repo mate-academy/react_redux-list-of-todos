@@ -1,0 +1,58 @@
+.list {
+  list-style-type: none;
+
+  padding: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  &__item {
+    width: max-content;
+
+    padding: 10px 5px;
+
+    border-radius: 8px;
+
+    background-color: rgb(75, 70, 70);
+
+    &_compl {
+      padding: 5px 8px;
+
+      border-radius: 10px;
+
+      background: rgb(50, 252, 0);
+    }
+
+    &_uncompl {
+      padding: 5px 8px;
+
+      border-radius: 10px;
+
+      background: rgb(252, 0, 0);
+    }
+
+    &_button {
+      display: inline-block;
+
+      &_btn {
+        border-radius: 5px;
+
+        margin-left: 10px;
+
+        color: aqua;
+
+        background-color: rgb(31, 26, 26);
+
+        transition: 0.3s;
+
+        &:hover {
+          color: rgb(47, 117, 94);
+
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
