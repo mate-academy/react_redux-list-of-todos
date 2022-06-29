@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './TodoList.scss';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTodos, getUserById } from '../../api/api';
+import { getTodos, getUserById, deleteTodo } from '../../api/api';
 import { setTodosAction, setUserAction } from '../../store/actions';
 import {
   getFilteredTodosSelector,
@@ -58,18 +58,9 @@ export const TodoList: React.FC = () => {
     }
   });
 
-  const url = 'https://mate.academy/students-api/todos';
-  const options = {
-    method: 'DELETE',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  };
-
   const deleteHandler = (todoId: number) => {
     try {
-      fetch(`${url}/${todoId}`, options);
+      deleteTodo(todoId);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
