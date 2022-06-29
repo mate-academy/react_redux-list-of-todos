@@ -58,13 +58,17 @@ export const TodoList: React.FC = () => {
     }
   });
 
-  const deleteHandler = (todoId: number) => {
+  const deleteHandler = async (todoId: number) => {
     try {
-      deleteTodo(todoId);
+      await deleteTodo(todoId);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
     }
+
+    const todosFromServer = await getTodos();
+
+    dispatch(setTodosAction(todosFromServer));
   };
 
   return (
@@ -139,10 +143,7 @@ export const TodoList: React.FC = () => {
                     'TodoList__user-button--selected': todo.userId === user?.id,
                   },
                 )}
-                onClick={() => {
-                  deleteHandler(todo.id);
-                  window.location.reload();
-                }}
+                onClick={() => deleteHandler(todo.id)}
               >
                 Remove
               </button>
