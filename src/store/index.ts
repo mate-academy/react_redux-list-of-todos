@@ -1,13 +1,12 @@
 import { createStore } from 'redux';
 import { State } from '../react-app-env';
-import { Action } from './actions';
-// import { SET_TODOS, SET_USER, REMOVE_USER } from './actions';
+import { Action, ActionType } from './actions';
 
-enum ActionType {
-  SET_TODOS = 'SET_TODOS',
-  SET_USER = 'SET_USER',
-  REMOVE_USER = 'REMOVE_USER',
-}
+// enum ActionType {
+//   SET_TODOS = 'SET_TODOS',
+//   SET_USER = 'SET_USER',
+//   REMOVE_USER = 'REMOVE_USER',
+// }
 
 const initialState: State = {
   todos: [],
