@@ -1,11 +1,6 @@
 // eslint-disable-next-line
 /// <reference types="react-scripts" />
 
-export interface Action {
-  type: string,
-  payload: any,
-}
-
 export interface Todo {
   id: number,
   userId: number,

@@ -13,3 +13,9 @@ export const getUser = async (userId: number): Promise<User> => {
 
   return response.json();
 };
+
+export const deleteTodo = async (todoId: number) => {
+  const response = await fetch(`${BASE_API}/todos/${todoId}`, { method: 'DELETE' });
+
+  return response.json();
+};

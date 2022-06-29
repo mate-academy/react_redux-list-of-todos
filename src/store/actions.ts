@@ -1,25 +1,37 @@
 import { Todo, User } from '../react-app-env';
 
-export const SET_TODOS = 'SET_TODOS';
-export const SET_USER = 'SET_USER';
-export const REMOVE_USER = 'REMOVE_USER';
-export const FILTER_TODOS = 'FILTER_TODOS';
+export enum ActionType {
+  SET_TODOS = 'SET_TODOS',
+  SET_USER = 'SET_USER',
+  REMOVE_USER = 'REMOVE_USER',
+}
+
+export interface SetTodosAction {
+  type: ActionType.SET_TODOS,
+  payload: Todo[],
+}
+
+export interface SetUserAction {
+  type: ActionType.SET_USER,
+  payload: User,
+}
+
+export interface RemoveUserAction {
+  type: ActionType.REMOVE_USER,
+}
+
+export type Action = SetTodosAction | SetUserAction | RemoveUserAction;
 
 export const setTodosAction = (payload: Todo[]) => ({
-  type: SET_TODOS,
+  type: ActionType.SET_TODOS,
   payload,
 });
 
-export const setUserAction = (payload: User) => ({
-  type: SET_USER,
+export const setUserAction = (payload: User | null) => ({
+  type: ActionType.SET_USER,
   payload,
 });
 
 export const removeUserAction = () => ({
-  type: REMOVE_USER,
+  type: ActionType.REMOVE_USER,
 });
-
-// export const filterTodosAction = (payload: Todo[], text: string) => ({
-//   type: FILTER_TODOS,
-//   payload: payload.filter(todo => todo.title.includes(text)),
-// });

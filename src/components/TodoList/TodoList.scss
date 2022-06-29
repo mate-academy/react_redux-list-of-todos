@@ -33,3 +33,12 @@
     background-color: #4d457b;
   }
 }
+
+.button-container {
+  display: flex;
+  gap: 5px;
+}
+
+.button--close {
+  background-color: rgb(212, 59, 59);
+}
