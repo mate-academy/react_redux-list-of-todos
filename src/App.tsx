@@ -1,26 +1,18 @@
-import { useSelector } from 'react-redux';
-
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import { CurrentUser } from './components/CurrentUser/CurrentUser';
+import { TodoList } from './components/TodoList/TodoList';
 
-import { isLoading, getMessage } from './store';
-
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
-
+const App: React.FC = () => {
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__sidebar">
+        <TodoList />
+      </div>
+      <div className="App__content">
+        <div className="App__content-container">
+          <CurrentUser />
+        </div>
+      </div>
     </div>
   );
 };
