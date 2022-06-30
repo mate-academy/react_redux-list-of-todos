@@ -13,3 +13,9 @@ export const getUserById = async (userId: number): Promise<User> => {
 
   return response.json();
 };
+
+export function deleteRequest(specify : string) : Promise<Response> {
+  const result = fetch(`${BASE_URL}/${specify}`, { method: 'DELETE' });
+
+  return result;
+}

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTodos, getUserById } from '../../api/api';
+import { deleteRequest, getTodos, getUserById } from '../../api/api';
 import { TodosStatus } from '../../store';
 import {
   setTodosAction,
@@ -24,6 +24,8 @@ export const TodoList = () => {
   const todos = useSelector(getTodosSelector);
   const user = useSelector(getUserSelector);
   const filter = useSelector(getFilterSelector);
+
+  const [needToUpdate, setNeedToUpdate] = useState(false);
 
   useEffect(() => {
     const loadTodosFromServer = async () => {
@@ -58,7 +60,7 @@ export const TodoList = () => {
     };
 
     loadTodosFromServer();
-  }, [status, filter]);
+  }, [status, filter, needToUpdate]);
 
   const getUser = async (id: number) => {
     const userFromServer = await getUserById(id);
@@ -146,6 +148,15 @@ export const TodoList = () => {
                 }}
               >
                 {`User #${todo.userId}`}
+              </button>
+              <button
+                type="button"
+                onClick={async () => {
+                  await deleteRequest(`/todos/${todo.id}`);
+                  setNeedToUpdate(!needToUpdate);
+                }}
+              >
+                X
               </button>
             </li>
           ))}
