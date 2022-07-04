@@ -4,6 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // Action types - is just a constant. MUST have a unique value.
 const SET_TODOS = 'SET_TODOS';
 const SET_USER = 'SET_USER';
+const DELETE_TODO = 'delete';
 const SELECTED_ID = 'selected_id';
 
 // Action creators - a function returning an action object
@@ -22,6 +23,13 @@ export const setUserAction = (payload: User | null): AnyAction => (
 export const setSelectedTodoId = (todoId: number): AnyAction => (
   {
     type: SELECTED_ID,
+    todoId,
+  }
+);
+
+export const setDeleteTodoAction = (todoId: number): AnyAction => (
+  {
+    type: DELETE_TODO,
     todoId,
   }
 );

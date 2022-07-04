@@ -1,6 +1,30 @@
 .TodoList {
   width: 100%;
 
+  &__user-btn-block {
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+  }
+
+  &__user-button {
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+
+    &--remove {
+      margin-left: 5px;
+      background-color: rgb(248, 63, 63);
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+        background-color: rgb(248, 63, 63);
+      }
+    }
+
+  }
+
   &__user-button--selected {
     background-color: #4d457b;
   }

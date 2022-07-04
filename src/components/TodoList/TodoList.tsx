@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,22 +17,24 @@ import { getTodos, getUserById } from '../api/api';
 export const TodoList: React.FC = () => {
   const [inputedValue, setInputedValue] = useState('');
   const [selectedTodosValue, setSelectedTodosValue] = useState('all');
+  const [random, setRandom] = useState(false);
+  const [todoForRemoving, setTodoForRemoving] = useState([0]);
 
-  // function shuffleArray(array: any) {
-  //   let curId = array.length;
+  function shuffleArray(array: any) {
+    let curId = array.length;
 
-  //   while (curId !== 0) {
-  //     const randId = Math.floor(Math.random() * curId);
+    while (curId !== 0) {
+      const randId = Math.floor(Math.random() * curId);
 
-  //     curId -= 1;
-  //     const tmp = array[curId];
+      curId -= 1;
+      const tmp = array[curId];
 
-  //     array[curId] = array[randId];
-  //     array[randId] = tmp;
-  //   }
+      array[curId] = array[randId];
+      array[randId] = tmp;
+    }
 
-  //   return array;
-  // }
+    return array;
+  }
 
   const selectTodos = (value: string) => {
     setSelectedTodosValue(value);
@@ -60,15 +63,21 @@ export const TodoList: React.FC = () => {
       case 'active':
         return todo.completed === false;
       default:
-        return todo;
+        return !todoForRemoving.includes(todo.id);
     }
   });
 
-  const filteredTodos = [...selectedTodos].filter((todo) => {
+  let filteredTodos = [];
+
+  filteredTodos = [...selectedTodos].filter((todo) => {
     return todo.title.toLowerCase().includes(
       inputedValue.toLowerCase(),
     );
   });
+
+  useEffect(() => {
+    dispatch(setTodosAction(shuffleArray(todosFromServer)));
+  }, [random]);
 
   const selectUser = async (id: number) => {
     try {
@@ -90,6 +99,8 @@ export const TodoList: React.FC = () => {
         className="form"
         onSubmit={(event) => {
           event.preventDefault();
+          dispatch(setTodosAction(shuffleArray(todosFromServer)));
+          setRandom(!random);
         }}
       >
         <input
@@ -159,38 +170,53 @@ export const TodoList: React.FC = () => {
                   <p>{todo.title}</p>
                 </label>
 
-                {selectedTodoId === todo.userId ? (
+                <div className="TodoList__user-btn-block">
+                  {selectedTodoId === todo.userId ? (
+                    <button
+                      className="
+                        TodoList__user-button
+                        TodoList__user-button--selected
+                        button
+                      "
+                      type="button"
+                      data-cy="userButton"
+                      onClick={() => {
+                        selectUser(todo.userId);
+                        dispatch(setSelectedTodoId(todo.userId));
+                      }}
+                    >
+                      {`User # ${todo.userId}`}
+                    </button>
+                  ) : (
+                    <button
+                      className="
+                        TodoList__user-button
+                        button
+                      "
+                      type="button"
+                      data-cy="userButton"
+                      onClick={() => {
+                        selectUser(todo.userId);
+                        dispatch(setSelectedTodoId(todo.userId));
+                      }}
+                    >
+                      {`User # ${todo.userId}`}
+                    </button>
+                  )}
                   <button
-                    className="
-                      TodoList__user-button
-                      TodoList__user-button--selected
-                      button
-                    "
                     type="button"
-                    data-cy="userButton"
+                    className="
+                      button
+                      TodoList__user-button
+                      TodoList__user-button--remove
+                    "
                     onClick={() => {
-                      selectUser(todo.userId);
-                      dispatch(setSelectedTodoId(todo.userId));
+                      setTodoForRemoving([...todoForRemoving, todo.id]);
                     }}
                   >
-                    {`User # ${todo.userId}`}
+                    Remove
                   </button>
-                ) : (
-                  <button
-                    className="
-                      TodoList__user-button
-                      button
-                    "
-                    type="button"
-                    data-cy="userButton"
-                    onClick={() => {
-                      selectUser(todo.userId);
-                      dispatch(setSelectedTodoId(todo.userId));
-                    }}
-                  >
-                    {`User # ${todo.userId}`}
-                  </button>
-                )}
+                </div>
               </li>
             ))}
           </ul>
