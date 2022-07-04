@@ -1,28 +1,52 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { TodoList } from './components/TodoList';
+import { CurrentUser } from './components/CurrentUser';
+import './styles/general.scss';
 
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import { getInitTodos, getSelectedId } from './store';
+import { setValueFilter, setValueSelect, setRandomize } from './store/actions';
 
-import { isLoading, getMessage } from './store';
-
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+export const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector(getInitTodos);
+  const selectedId = useSelector(getSelectedId);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="App__sidebar">
+        <h2>{`Todos: ${todos.length}`}</h2>
+        <div className="sidebar">
+          <input
+            type="text"
+            className="input"
+            placeholder="Enter title"
+            onChange={(e) => dispatch(setValueFilter(e.target.value))}
+          />
+          <select
+            className="select"
+            onChange={(e) => dispatch(setValueSelect(e.target.value))}
+          >
+            {['all', 'active', 'completed'].map(item => (
+              <option key={item}>{item}</option>
+            ))}
+          </select>
+          <button
+            type="button"
+            className="randomize"
+            onClick={() => dispatch(setRandomize())}
+          >
+            Randomize
+          </button>
+        </div>
+        <TodoList />
+      </div>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__content">
+        <div className="App__content-container">
+          {selectedId ? <CurrentUser /> : 'No user selected'}
+        </div>
+      </div>
     </div>
   );
 };
-
-export default App;

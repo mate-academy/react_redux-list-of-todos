@@ -1,43 +1,101 @@
-import { createStore, AnyAction } from 'redux';
+import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { Action, ActionType } from './actions';
 
-// Action types - is just a constant. MUST have a unique value.
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+export const getInitTodos = (state: RootState) => {
+  const {
+    initTodos,
+    valueSelect,
+    valueFilter,
+  } = state;
+  let result = initTodos;
 
-// Action creators - a function returning an action object
-export const startLoading = () => ({ type: START_LOADING });
-export const finishLoading = (message = 'No message') => ({
-  type: FINISH_LOADING,
-  message,
-});
+  result = result.filter((todo) => {
+    switch (valueSelect) {
+      case 'active':
+        return !todo.completed;
+      case 'completed':
+        return todo.completed;
+      default:
+        return todo;
+    }
+  });
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const isLoading = (state: RootState) => state.loading;
-export const getMessage = (state: RootState) => state.message;
+  if (valueFilter) {
+    const value = valueFilter.toLocaleLowerCase();
 
-// Initial state
-export type RootState = {
-  loading: boolean;
-  message: string;
+    result = result.filter(todo => (
+      todo.title.toLowerCase().includes(value)));
+  }
+
+  return result;
 };
+
+export const getId = (state: RootState) => state.id;
+export const getSelectedId = (state: RootState) => state.selectedId;
+export const getValueFilter = (state: RootState) => state.valueFilter;
+export const getValueSelect = (state: RootState) => state.valueSelect;
+export const getUser = (state: RootState) => state.user;
 
 const initialState: RootState = {
-  loading: false,
-  message: '',
+  initTodos: [],
+  id: 0,
+  selectedId: 0,
+  valueFilter: '',
+  valueSelect: 'all',
+  randomize: false,
+  user: null,
 };
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: AnyAction) => {
+const rootReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case START_LOADING:
-      return { ...state, loading: true };
-
-    case FINISH_LOADING:
+    case ActionType.SET_INIT_TODOS:
       return {
         ...state,
-        loading: false,
-        message: action.message,
+        initTodos: action.value,
+      };
+
+    case ActionType.SET_ID:
+      return {
+        ...state,
+        initTodos: state.initTodos
+          .filter(todo => todo.id !== action.value),
+        id: action.value,
+      };
+
+    case ActionType.SET_SELECTED_ID:
+      return {
+        ...state,
+        selectedId: action.value,
+      };
+
+    case ActionType.SET_VALUE_FILTER:
+      return {
+        ...state,
+        valueFilter: action.value,
+      };
+
+    case ActionType.SET_VALUE_SELECT:
+      return {
+        ...state,
+        initTodos: state.randomize
+          ? [...state.initTodos].sort((a, b) => a.userId - b.userId)
+          : state.initTodos,
+        valueSelect: action.value,
+        selectedId: 0,
+        randomize: false,
+      };
+
+    case ActionType.SET_RANDOMIZE:
+      return {
+        ...state,
+        initTodos: [...state.initTodos].sort(() => Math.random() - 0.5),
+        randomize: true,
+      };
+    case ActionType.SET_USER:
+      return {
+        ...state,
+        user: action.value,
       };
 
     default:
@@ -45,7 +103,6 @@ const rootReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-// The `store` should be passed to the <Provider store={store}> in `/src/index.tsx`
 const store = createStore(
   rootReducer,
   composeWithDevTools(), // allows you to use http://extension.remotedev.io/
