@@ -18,7 +18,7 @@ const reducer = (state: State = initialState, action: Action) => {
     case ActionType.ADD_TODO:
       return {
         ...state,
-        todos: [...state.todos, ...action.payload],
+        todos: [...state.todos, action.payload],
       };
 
     case ActionType.SET_USER:

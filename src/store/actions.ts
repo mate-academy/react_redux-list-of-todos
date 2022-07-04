@@ -6,6 +6,10 @@ export enum ActionType {
   SET_USER = 'SET_USER',
 }
 
+export type Action = SetTodosAction
+| AddTodoAction
+| SetUserAction;
+
 export interface SetTodosAction {
   type: ActionType.SET_TODOS,
   payload: Todo[],
@@ -20,10 +24,6 @@ export interface SetUserAction {
   type: ActionType.SET_USER,
   payload: User | null,
 }
-
-export type Action = SetTodosAction
-| AddTodoAction
-| SetUserAction;
 
 export const setTodosActions = (payload: Todo[]): Action => ({
   type: ActionType.SET_TODOS,
