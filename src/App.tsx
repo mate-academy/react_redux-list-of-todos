@@ -1,11 +1,10 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { CurrentUser } from './components/CurrentUser';
-import './styles/general.scss';
-
-import './App.scss';
 import { getInitTodos, getSelectedId } from './store';
 import { setValueFilter, setValueSelect, setRandomize } from './store/actions';
+import './styles/general.scss';
+import './App.scss';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();

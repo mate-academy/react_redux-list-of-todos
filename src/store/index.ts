@@ -1,5 +1,4 @@
 import { createStore } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { Action, ActionType } from './actions';
 
 export const getInitTodos = (state: RootState) => {
@@ -105,7 +104,6 @@ const rootReducer = (state = initialState, action: Action) => {
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(), // allows you to use http://extension.remotedev.io/
 );
 
 export default store;
