@@ -21,6 +21,12 @@ const reducer = (state: State = initialState, action: Action) => {
         todos: [...state.todos, action.payload],
       };
 
+    case ActionType.DELETE_TODO:
+      return {
+        ...state,
+        todos: [...state.todos].filter(todo => todo.id !== action.payload.id),
+      };
+
     case ActionType.SET_USER:
       return {
         ...state,

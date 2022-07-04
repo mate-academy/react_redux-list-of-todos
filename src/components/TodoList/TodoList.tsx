@@ -1,21 +1,62 @@
 import './TodoList.scss';
 import classNames from 'classnames';
 
-import React, { useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 
+import { debounce } from 'lodash';
 import { deleteTodo, requestTodos, requestUserById } from '../../api';
 import { Todo } from '../../react-app-env';
 
 import { getTodosSelector } from '../../store/selectors';
-import { setTodosActions, setUserActions } from '../../store/actions';
+
+import {
+  deleteTodoActions,
+  setTodosActions,
+  setUserActions,
+} from '../../store/actions';
+
+const shuffleArray = (todosToShuffle: Todo[]) => {
+  return todosToShuffle
+    .map(todo => ({ todo, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ todo }) => todo);
+};
+
+const categoryOfTodos = (todosToFilter: Todo[], group: string) => {
+  if (group === 'completed') {
+    return todosToFilter.filter(todo => todo.completed);
+  }
+
+  if (group === 'active') {
+    return todosToFilter.filter(todo => !todo.completed);
+  }
+
+  return todosToFilter;
+};
+
+const deletingTodo = (todo: Todo) => {
+  deleteTodoActions(todo);
+  deleteTodo(todo.id)
+    .then(() => requestTodos());
+};
 
 export const TodoList: React.FC = () => {
+  const [visibleText, setVisibleText] = useState('');
   const [searchText, setSearchText] = useState('');
   const [category, setCategory] = useState('all');
 
   const dispatch = useDispatch();
   const todos = useSelector(getTodosSelector);
+
+  // eslint-disable-next-line no-console
+  console.log('render TodoList');
 
   // #region todos
   useEffect(() => {
@@ -28,37 +69,15 @@ export const TodoList: React.FC = () => {
     loadTodosFromServer();
   }, []);
 
-  const categoryOfTodos = (todosToFilter: Todo[], group: string) => {
-    if (group === 'completed') {
-      return todosToFilter.filter(todo => todo.completed);
-    }
-
-    if (group === 'active') {
-      return todosToFilter.filter(todo => !todo.completed);
-    }
-
-    return todosToFilter;
-  };
-
-  const filterTodos = (group2: Todo[]) => {
-    return group2.filter(todo => todo.title.includes(searchText));
-  };
-
   const groupOfTodos = categoryOfTodos(todos, category);
+  const searchQuery = useCallback(debounce(setSearchText, 1000), []);
 
-  const todosToShow = filterTodos(groupOfTodos);
+  const todosToShow = useMemo(() => {
+    // eslint-disable-next-line no-console
+    console.log('filtering todos', searchText);
 
-  const shuffleArray = (todosToShuffle: Todo[]) => {
-    return todosToShuffle
-      .map(todo => ({ todo, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ todo }) => todo);
-  };
-
-  const deletingTodo = (id: number) => {
-    deleteTodo(id)
-      .then(() => requestTodos());
-  };
+    return groupOfTodos.filter(todo => todo.title.includes(searchText));
+  }, [groupOfTodos, searchText]);
   // #endregion
 
   // #region User
@@ -77,9 +96,10 @@ export const TodoList: React.FC = () => {
         <input
           type="text"
           placeholder="filter todos"
-          value={searchText}
+          value={visibleText}
           onChange={(event) => {
-            setSearchText(event.target.value);
+            searchQuery(event.target.value);
+            setVisibleText(event.target.value);
           }}
           data-cy="filterByTitle"
         />
@@ -105,6 +125,7 @@ export const TodoList: React.FC = () => {
 
         <button
           type="button"
+          className="button"
           onClick={() => {
             dispatch(setTodosActions(shuffleArray([...todos])));
           }}
@@ -152,7 +173,7 @@ export const TodoList: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      deletingTodo(todo.id);
+                      deletingTodo(todo);
                     }}
                     className="button
                       TodoList__user-button
