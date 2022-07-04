@@ -1,26 +1,54 @@
-import { useSelector } from 'react-redux';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-param-reassign */
+import React from 'react';
 import './App.scss';
-import Start from './components/Start';
-import { Finish } from './components/Finish';
+import './styles/general.scss';
+import { TodoList } from './components/TodoList/TodoList';
+import { CurrentUser } from './components/CurrentUser';
 
-import { isLoading, getMessage } from './store';
+const App: React.FC = () => {
+  // function shuffleArray(array: any) {
+  //   let curId = array.length;
 
-const App = () => {
-  const loading = useSelector(isLoading);
-  const message = useSelector(getMessage) || 'Ready!';
+  //   while (curId !== 0) {
+  //     const randId = Math.floor(Math.random() * curId);
+
+  //     curId -= 1;
+  //     const tmp = array[curId];
+
+  //     array[curId] = array[randId];
+  //     array[randId] = tmp;
+  //   }
+
+  //   return array;
+  // }
+
+  // const randomSort = () => {
+  //   request(urlTodos)
+  //     .then(todos => {
+  //       const sorted = shuffleArray(todos);
+
+  //       setTheTodos(sorted);
+  //     });
+  // };
+
+  // const selectUser = (selectedId: number) => {
+  //   if (selectedId !== selectedUserId) {
+  //     setSelectedUserId(selectedId);
+  //   }
+  // };
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <div className="App__sidebar">
+        <TodoList />
+      </div>
 
-      <Start title="Start loading" />
-      <Finish title="Succeed loading" message="Loaded successfully!" />
-      <Finish
-        title="Fail loading"
-        message="An error occurred when loading data."
-      />
+      <div className="App__content">
+        <div className="App__content-container">
+          <CurrentUser />
+        </div>
+      </div>
     </div>
   );
 };
