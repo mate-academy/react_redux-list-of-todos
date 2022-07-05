@@ -8,7 +8,7 @@ export const setTodosAction = (payload: Todo[]): Action => ({
   payload,
 });
 
-export const setUserAction = (payload: User): Action => ({
+export const setUserAction = (payload: User | null): Action => ({
   type: SET_USER,
   payload,
 });
