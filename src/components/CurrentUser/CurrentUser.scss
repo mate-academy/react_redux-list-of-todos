@@ -1,0 +1,26 @@
+.CurrentUser {
+  &__title {
+    font-size: 1rem;
+    color: white;
+
+    span {
+      background-color: cadetblue;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+  }
+
+  &__name {
+    font-size: 1.5rem;
+  }
+
+  &__email,
+  &__phone {
+    text-align: center;
+  }
+
+  &__clear {
+    display: block;
+    margin: 20px auto 0;
+  }
+}
