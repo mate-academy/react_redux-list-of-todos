@@ -1,0 +1,46 @@
+.TodoList {
+  width: 100%;
+
+  &__list {
+    list-style: none;
+    padding-left: 5px;
+  }
+
+  &__item {
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 4px solid;
+    border-left: 1px solid;
+    border-top: 1px solid;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+
+  &__item--checked {
+    border-color: #6fb9af;
+  }
+
+  &__item--unchecked {
+    border-color: #ec7753;
+  }
+
+  &__warn-message {
+    font-size: 20px;
+    color: #f16e46;
+    margin: 0 0 0 15px;
+  }
+
+  &__button {
+    margin: 0 15px 0 0;
+  }
+
+  &__button-remove {
+    &:hover {
+      color: #ec7753;
+    }
+  }
+}
