@@ -7,7 +7,11 @@
   "license": "GPL-3.0",
   "dependencies": {
     "@cypress/react": "^5.12.4",
+    "@reduxjs/toolkit": "^1.8.3",
+    "@types/lodash": "^4.14.182",
     "bulma": "^0.9.3",
+    "classnames": "^2.3.1",
+    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.8",
