@@ -3,17 +3,17 @@ import classNames from 'classnames';
 import './ControlPanel.scss';
 
 type Props = {
-  value: string;
+  query: string;
   sortBy: string;
   randomSort: boolean;
-  changeValue: React.Dispatch<React.SetStateAction<string>>;
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
   changeSortBy: React.Dispatch<React.SetStateAction<string>>;
   changeRandomSort: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const ControlPanel: React.FC<Props> = ({
-  value,
-  changeValue,
+  query: value,
+  setQuery,
   sortBy,
   changeSortBy,
   randomSort,
@@ -30,7 +30,7 @@ export const ControlPanel: React.FC<Props> = ({
           type="text"
           placeholder="Search todo"
           value={value}
-          onChange={({ target }) => changeValue(target.value)}
+          onChange={({ target }) => setQuery(target.value)}
         />
 
         <div className="sorting-form__footer">

@@ -10,7 +10,7 @@ import './App.scss';
 import './styles/general.scss';
 
 const App: React.FC = () => {
-  const [value, setValue] = useState('');
+  const [query, setQuery] = useState('');
   const [sortBy, setSortBy] = useState('');
   const [randomSort, setRandomSort] = useState(false);
 
@@ -24,8 +24,8 @@ const App: React.FC = () => {
   []);
 
   const filteredByTitle = useMemo(() => {
-    return todos.filter(todo => todo.title.includes(value));
-  }, [value, todos]);
+    return todos.filter(todo => todo.title.includes(query));
+  }, [query, todos]);
 
   const filteredByOption = useMemo(() => {
     switch (sortBy) {
@@ -50,8 +50,8 @@ const App: React.FC = () => {
     <div className="App">
       <div className="App__sidebar">
         <ControlPanel
-          value={value}
-          changeValue={setValue}
+          query={query}
+          setQuery={setQuery}
           sortBy={sortBy}
           changeSortBy={setSortBy}
           randomSort={randomSort}
