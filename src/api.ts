@@ -4,21 +4,25 @@ const url = 'https://mate.academy/students-api';
 
 export const requestTodos = async (): Promise<Todo[]> => {
   const response = await fetch(`${url}/todos`);
-  const todo = await response.json();
+  const todos = await response.json();
 
-  return todo;
+  return todos;
 };
 
-export const requestUserById = async (userId: number): Promise<User> => {
-  const response = await fetch(`${url}/users/${userId}`);
-  const user = await response.json();
+export const requestUserById = async (userId: number): Promise<User | null> => {
+  try {
+    const response = await fetch(`${url}/users/${userId}`);
+    const user = await response.json();
 
-  return user;
+    return user;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+
+  return null;
 };
 
 export const deleteTodo = async (todoId: number) => {
-  const response = await fetch(`${url}/todos/${todoId}`, { method: 'DELETE' });
-  const deletedTodo = await response.json();
-
-  return deletedTodo;
+  return fetch(`${url}/todos/${todoId}`, { method: 'DELETE' });
 };

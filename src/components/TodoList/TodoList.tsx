@@ -17,7 +17,6 @@ import { Todo } from '../../react-app-env';
 import { getTodosSelector } from '../../store/selectors';
 
 import {
-  deleteTodoActions,
   setTodosActions,
   setUserActions,
 } from '../../store/actions';
@@ -39,12 +38,6 @@ const categoryOfTodos = (todosToFilter: Todo[], group: string) => {
   }
 
   return todosToFilter;
-};
-
-const deletingTodo = (todo: Todo) => {
-  deleteTodoActions(todo);
-  deleteTodo(todo.id)
-    .then(() => requestTodos());
 };
 
 export const TodoList: React.FC = () => {
@@ -78,13 +71,20 @@ export const TodoList: React.FC = () => {
 
     return groupOfTodos.filter(todo => todo.title.includes(searchText));
   }, [groupOfTodos, searchText]);
+
+  const deletingTodo = async (todo: Todo) => {
+    await deleteTodo(todo.id);
+    const newTodos = await requestTodos();
+
+    dispatch(setTodosActions(newTodos));
+  };
   // #endregion
 
   // #region User
   const getUser = async (id: number) => {
-    const serverUser = await requestUserById(id);
+    const user = await requestUserById(id);
 
-    dispatch(setUserActions(serverUser));
+    dispatch(setUserActions(user));
   };
   // #endregion
 
