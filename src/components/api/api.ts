@@ -1,4 +1,4 @@
-import { Todo, User } from '../../store';
+import { Todo, User } from '../types/type';
 
 export const urlTodos = 'https://mate.academy/students-api/todos';
 

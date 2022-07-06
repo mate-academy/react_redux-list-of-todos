@@ -1,5 +1,6 @@
 import { createStore, AnyAction } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { Todo, User, RootState } from '../components/types/type';
 
 // Action types - is just a constant. MUST have a unique value.
 const SET_TODOS = 'SET_TODOS';
@@ -34,39 +35,18 @@ export const setDeleteTodoAction = (todoId: number): AnyAction => (
   }
 );
 
-// Selectors - a function receiving Redux state and returning some data from it
-export const getTodosSelector = (state: RootState) => state.todos;
-export const getUserSelector = (state: RootState) => state.user;
-export const getSelectedTodoId = (state: RootState) => state.todoId;
-
 // Initial state
-export type Todo = {
-  id: number;
-  createdAt: string;
-  upDatedAt: string;
-  userId: number;
-  title: string;
-  completed: boolean;
-};
 
-export type User = {
-  id: number,
-  name: string,
-  email: string,
-  phone: string,
-};
-
-export type RootState = {
-  todos: Todo[];
-  user: User | null;
-  todoId: number,
-};
-
-const initialState: RootState = {
+export const initialState: RootState = {
   todos: [],
   user: null,
   todoId: 0,
 };
+
+// Selectors - a function receiving Redux state and returning some data from it
+export const getTodosSelector = (state: RootState) => state.todos;
+export const getUserSelector = (state: RootState) => state.user;
+export const getSelectedTodoId = (state: RootState) => state.todoId;
 
 // rootReducer - this function is called after dispatching an action
 const rootReducer = (state = initialState, action: AnyAction) => {

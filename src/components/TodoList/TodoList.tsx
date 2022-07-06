@@ -10,13 +10,17 @@ import {
   setSelectedTodoId,
   getSelectedTodoId,
 } from '../../store';
+import { TodosValue } from '../types/type';
 
 import './TodoList.scss';
 import { getTodos, getUserById } from '../api/api';
 
 export const TodoList: React.FC = () => {
   const [inputedValue, setInputedValue] = useState('');
-  const [selectedTodosValue, setSelectedTodosValue] = useState('all');
+  const [
+    selectedTodosValue, setSelectedTodosValue,
+  ] = useState<TodosValue | string>(TodosValue.all);
+
   const [random, setRandom] = useState(false);
   const [todoForRemoving, setTodoForRemoving] = useState([0]);
 
@@ -36,7 +40,7 @@ export const TodoList: React.FC = () => {
     return array;
   }
 
-  const selectTodos = (value: string) => {
+  const selectTodos = (value: TodosValue | string) => {
     setSelectedTodosValue(value);
   };
 
@@ -56,11 +60,11 @@ export const TodoList: React.FC = () => {
 
   const todosFromServer = useSelector(getTodosSelector);
 
-  const selectedTodos = [...todosFromServer].filter((todo) => {
+  const selectedTodos = todosFromServer.filter((todo) => {
     switch (selectedTodosValue) {
-      case 'completed':
+      case TodosValue.completed:
         return todo.completed === true;
-      case 'active':
+      case TodosValue.active:
         return todo.completed === false;
       default:
         return !todoForRemoving.includes(todo.id);
@@ -69,7 +73,7 @@ export const TodoList: React.FC = () => {
 
   let filteredTodos = [];
 
-  filteredTodos = [...selectedTodos].filter((todo) => {
+  filteredTodos = selectedTodos.filter((todo) => {
     return todo.title.toLowerCase().includes(
       inputedValue.toLowerCase(),
     );
@@ -121,19 +125,19 @@ export const TodoList: React.FC = () => {
           }}
         >
           <option
-            value="all"
+            value={TodosValue.all}
           >
             All
           </option>
 
           <option
-            value="active"
+            value={TodosValue.active}
           >
             Active
           </option>
 
           <option
-            value="completed"
+            value={TodosValue.completed}
           >
             Completed
           </option>
