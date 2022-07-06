@@ -1,0 +1,109 @@
+.TodoList {
+  width: 100%;
+
+  &__user-btn-block {
+    display: flex;
+    justify-content: space-between;
+    width: 30%;
+  }
+
+  &__user-button {
+    width: 80px;
+    height: 30px;
+    font-size: 11px;
+
+    &--remove {
+      margin-left: 5px;
+      background-color: rgb(248, 63, 63);
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+        background-color: rgb(248, 63, 63);
+      }
+    }
+
+  }
+
+  &__user-button--selected {
+    background-color: #4d457b;
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 5px;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+  }
+
+  &__item--checked {
+    background-color: #cde4e4;
+    color: #459595;
+  }
+
+  &__item--unchecked {
+    background-color: #ffe0db;
+    color: #ff3626;
+  }
+}
+
+.form {
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+  &__input {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #cde4e4;
+    color: #459595;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #459595;
+    }
+
+  }
+}
+
+.select {
+  width: 230px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #cde4e4;
+  color: #459595;
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.btn {
+  width: 230px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #cde4e4;
+  color: #459595;
+  border: none;
+  outline: none;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #459595;
+    color: #cde4e4;
+
+  }
+}
