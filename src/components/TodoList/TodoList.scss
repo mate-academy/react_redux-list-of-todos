@@ -1,0 +1,41 @@
+.TodoList {
+  width: 100%;
+
+  .user-button {
+    background: #4d457b;
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 5px;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #ffe0db;
+    color: #ff3626;
+    gap: 10px;
+
+    &-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-grow: 1;
+    }
+  }
+
+  &__item--checked {
+    background-color: #cde4e4;
+    color: #459595;
+  }
+
+  .button-delete {
+    border: 1px solid #4d457b;
+  }
+
+}
