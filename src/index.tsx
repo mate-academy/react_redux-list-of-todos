@@ -1,18 +1,14 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
 
-import store from './store';
 import App from './App';
+import store from './redux';
 
 // Just a convenient component with all the wrappers for the `App`
 // The Router component (if you use it) should be placed inside the Provider
-const Root = () => (
+ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>
+    <App />
+  </Provider>,
+  document.getElementById('root'),
 );
-
-ReactDOM.render(<Root />, document.getElementById('root'));
