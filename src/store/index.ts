@@ -22,12 +22,12 @@ type CombinedState = {
   user: UserState,
 };
 
-export const loadTodos = () => (dispatch: Dispatch) => [
+export const loadTodos = () => (dispatch: Dispatch) => {
   getTodos()
     .then((todos) => {
       dispatch(todosActions.setTodos(todos));
-    }),
-];
+    });
+};
 
 export const loadUser = (userId: number) => (dispatch: Dispatch) => {
   getUser(userId)
