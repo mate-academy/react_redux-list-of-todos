@@ -1,14 +1,28 @@
-import { Todo, Action, User } from '../react-app-env';
+import { Todo, User } from '../react-app-env';
 
-export const SET_TODOS = 'SET_TODOS';
-export const SET_USER = 'SET_USER';
+export enum ActionType {
+  SET_TODOS = 'SET_TODOS',
+  SET_USER = 'SET_USER',
+}
+
+interface SetTodosAction {
+  type: ActionType.SET_TODOS,
+  payload: Todo[],
+}
+
+interface SetUserAction {
+  type: ActionType.SET_USER,
+  payload: User | null,
+}
+
+export type Action = SetTodosAction | SetUserAction;
 
 export const setTodosAction = (payload: Todo[]): Action => ({
-  type: SET_TODOS,
+  type: ActionType.SET_TODOS,
   payload,
 });
 
 export const setUserAction = (payload: User | null): Action => ({
-  type: SET_USER,
+  type: ActionType.SET_USER,
   payload,
 });

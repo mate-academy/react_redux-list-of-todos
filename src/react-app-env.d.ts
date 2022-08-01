@@ -12,11 +12,6 @@ export interface State {
   user: User | null,
 }
 
-export interface Action {
-  type: string,
-  payload: any,
-}
-
 export interface User {
   id: number,
   name: string,
