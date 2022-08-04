@@ -1,5 +1,4 @@
 # React + Redux list of TODOs
-- Replace `<your_account>` with your Github username in the
   [DEMO LINK](https://kkiirill.github.io/react_redux-list-of-todos/)
 - Follow the [React task guideline](https://github.com/mate-academy/react_task-guideline#react-tasks-guideline)
 
