@@ -1,7 +1,9 @@
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useDispatch } from 'react-redux';
 
-import { RootState, isLoading, startLoading } from '../store';
+import {
+  RootState, isLoading, startLoading, fetchTodos,
+} from '../store';
 
 /**
  * mapState - is a function receiving full Redux state as the first argument
@@ -42,10 +44,15 @@ type Props = ConnectedProps<typeof connector> & {
 };
 
 const Start: React.FC<Props> = ({ load, loading, title }) => {
+  const dispatch = useDispatch();
+
   return (
     <button
       type="button"
-      onClick={load}
+      onClick={() => {
+        load();
+        dispatch(fetchTodos);
+      }}
       disabled={loading}
     >
       {title}
