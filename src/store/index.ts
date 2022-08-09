@@ -5,6 +5,7 @@ import { rootReducer, RootState } from './reducers';
 
 export const getingTodos = (state: RootState) => state.todos;
 export const getingUser = (state: RootState) => state.user;
+export const gettingPagination = (state: RootState) => state.pagination;
 
 const store = createStore(
   rootReducer,

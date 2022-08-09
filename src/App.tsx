@@ -11,6 +11,7 @@ import { Loader } from './components/Loader';
 import { fetchTodos } from './store/action-creators/todos';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
+import { PaginationActionTypes } from './store/reducers/paginationReducer';
 
 const App = () => {
   const [filterBy, setFilterBy] = useState('all');
@@ -19,21 +20,7 @@ const App = () => {
     todos, error, loading, todo,
   } = useSelector(getingTodos);
   const [checkedTodo, setCheckedTodo] = useState<boolean>(true);
-  const [selectedPage, setSelectedPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(20);
-  const [totalItems, setTotalItems] = useState(0);
-  const [visibleNumberTodos, setVNT] = useState([selectedPage, itemsPerPage]);
   const dispatch = useDispatch();
-
-  const handlePageChange = (pageFromComponent: number) => {
-    setSelectedPage(prevState => {
-      if (prevState !== pageFromComponent) {
-        return pageFromComponent;
-      }
-
-      return prevState;
-    });
-  };
 
   const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFilterBy(event.target.value);
@@ -48,37 +35,15 @@ const App = () => {
   };
 
   useEffect(() => {
-    setTotalItems(todos.length);
-  }, [todos]);
-
-  const updateInfo = () => {
-    for (let i = 1; i < totalItems; i += 1) {
-      const start = selectedPage * itemsPerPage - (itemsPerPage - 1);
-      const finish = ((selectedPage * itemsPerPage) < totalItems)
-        ? selectedPage * itemsPerPage
-        : totalItems;
-
-      setVNT([start, finish]);
-    }
-  };
-
-  useEffect(() => {
-    updateInfo();
-  }, [selectedPage, itemsPerPage]);
-
-  useEffect(() => {
     dispatch(fetchTodos());
   }, []);
 
-  const handlePerPageChange = (perPageFromComponent: number) => {
-    setItemsPerPage(prevState => {
-      if (prevState !== perPageFromComponent) {
-        return perPageFromComponent;
-      }
-
-      return prevState;
+  useEffect(() => {
+    dispatch({
+      type: PaginationActionTypes.UPDATE_TOTAL_AMOUNT,
+      payload: todos.length,
     });
-  };
+  }, [todos]);
 
   const openModalHandler = () => {
     setCheckedTodo(true);
@@ -105,16 +70,9 @@ const App = () => {
           <TodoList
             filterBy={filterBy}
             openModalHandler={openModalHandler}
-            visibleNumberTodos={visibleNumberTodos}
             appliedQuery={appliedQuery}
           />
-          <Pagination
-            total={totalItems}
-            perPage={itemsPerPage}
-            page={selectedPage}
-            handlePageChange={handlePageChange}
-            handlePerPageChange={handlePerPageChange}
-          />
+          <Pagination />
           {todo !== null && checkedTodo && (
             <TodoModal closeModalHandler={closeModalHandler} />
           )}

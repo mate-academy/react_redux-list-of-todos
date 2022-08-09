@@ -1,50 +1,43 @@
 import React from 'react';
 import './Pagination.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { gettingPagination } from '../../store';
+import { PaginationActionTypes } from '../../store/reducers/paginationReducer';
 
-interface Props {
-  total: number,
-  perPage: number,
-  page: number,
-  handlePageChange: (pageFromComponent: number) => void;
-  handlePerPageChange: (perPageFromComponent: number) => void
-}
+const Pagination: React.FC = () => {
+  const { page, total, amountItemsPerPage } = useSelector(gettingPagination);
+  const dispatch = useDispatch();
 
-const Pagination: React.FC<Props> = ({
-  total, perPage, page, handlePageChange, handlePerPageChange,
-}) => {
   function goToNextPage() {
-    handlePageChange(page + 1);
+    dispatch({ type: PaginationActionTypes.CHANGE_PAGE_NEXT });
   }
 
   function goToPreviousPage() {
-    handlePageChange((page - 1));
+    dispatch({ type: PaginationActionTypes.CHANGE_PAGE_PREV });
   }
 
   function changePage(event: React.MouseEvent<HTMLButtonElement>) {
     const pageNumber = Number(event.currentTarget.textContent);
 
-    handlePageChange(pageNumber);
+    dispatch({
+      type: PaginationActionTypes.UPDATE_AMOUNT_ITEMS,
+      payload: pageNumber,
+    });
   }
 
   const isRenderButton = (item: number) => {
-    const indexPage = (total / perPage);
+    const indexPage = (total / amountItemsPerPage);
 
     return item > Math.floor(indexPage);
   };
 
   const isDisabled = () => {
-    if (perPage !== 3) {
-      Math.floor((total / perPage) + 1);
+    if (amountItemsPerPage !== 3) {
+      Math.floor((total / amountItemsPerPage) + 1);
     }
 
-    return Math.floor(total / perPage);
+    return Math.floor(total / amountItemsPerPage);
   };
-
-  function changePerPage(event: React.ChangeEvent<HTMLSelectElement>) {
-    const pageNumber = Number(event.currentTarget.value);
-
-    handlePerPageChange(pageNumber);
-  }
 
   const getPaginationGroup = () => {
     return new Array(total).fill(0).map((_, idx) => {
@@ -56,8 +49,13 @@ const Pagination: React.FC<Props> = ({
     <div className="pagination is-center">
       <select
         name="selectAmountPerPage"
-        value={perPage}
-        onChange={changePerPage}
+        value={amountItemsPerPage}
+        onChange={(event) => {
+          dispatch({
+            type: PaginationActionTypes.UPDATE_AMOUNT_ITEMS,
+            payload: Number(event.currentTarget.value),
+          });
+        }}
       >
         <option value={3}>3</option>
         <option value={5}>5</option>

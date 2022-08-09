@@ -1,26 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getingTodos } from '../store';
+import { getingTodos, gettingPagination } from '../store';
 import { TodosActionTypes } from '../types/Todo';
+import { updateNextPieceOfData } from '../helpers/updateNextPieceOfData';
+import { PaginationActionTypes } from '../store/reducers/paginationReducer';
 
 type Props = {
   filterBy: string;
-  visibleNumberTodos: number[],
   openModalHandler: () => void,
   appliedQuery: string;
 };
 
 const TodoList: React.FC<Props> = ({
   filterBy,
-  visibleNumberTodos,
   openModalHandler,
   appliedQuery,
 }) => {
-  const [start, finish] = visibleNumberTodos;
   const { todos } = useSelector(getingTodos);
+  const { amountItemsPerPage, page, total } = useSelector(gettingPagination);
   const dispatch = useDispatch();
 
-  let visibleTodos = todos.filter(todo => {
+  const [start, finish] = updateNextPieceOfData(
+    total,
+    page,
+    amountItemsPerPage,
+  );
+
+  const visibleTodos = todos.filter(todo => {
     switch (filterBy) {
       case 'all':
         return todo.title.includes(appliedQuery);
@@ -33,7 +39,12 @@ const TodoList: React.FC<Props> = ({
     }
   });
 
-  visibleTodos = visibleTodos.slice(start - 1, finish + 1);
+  useEffect(() => {
+    dispatch({
+      type: PaginationActionTypes.UPDATE_TOTAL_AMOUNT,
+      payload: visibleTodos.length,
+    });
+  }, [amountItemsPerPage, filterBy, appliedQuery]);
 
   return (
     <table
@@ -42,7 +53,7 @@ const TodoList: React.FC<Props> = ({
     >
 
       <tbody>
-        {visibleTodos.map((todo) => {
+        {visibleTodos.slice(start - 1, finish + 1).map((todo) => {
           return (
             <tr
               key={todo.id}
