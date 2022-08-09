@@ -1,43 +1,89 @@
 import React from 'react';
-import { connect, ConnectedProps } from 'react-redux';
-import { getingTodos, RootState } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getingTodos } from '../store';
+import { TodosActionTypes } from '../types/Todo';
 
-const mapState = (state: RootState) => {
-  return {
-    todos: getingTodos(state),
-  };
-};
-
-const connector = connect(mapState);
-
-type Props = ConnectedProps<typeof connector> & {
+type Props = {
   filterBy: string;
-  visibleNumberTodos: number[]
+  visibleNumberTodos: number[],
+  openModalHandler: () => void,
+  appliedQuery: string;
 };
 
-const TodoList: React.FC<Props> = ({ todos, filterBy, visibleNumberTodos }) => {
+const TodoList: React.FC<Props> = ({
+  filterBy,
+  visibleNumberTodos,
+  openModalHandler,
+  appliedQuery,
+}) => {
   const [start, finish] = visibleNumberTodos;
+  const { todos } = useSelector(getingTodos);
+  const dispatch = useDispatch();
 
   let visibleTodos = todos.filter(todo => {
     switch (filterBy) {
       case 'all':
-        return true;
+        return todo.title.includes(appliedQuery);
       case 'completed':
-        return todo.completed;
+        return todo.completed && todo.title.includes(appliedQuery);
       case 'active':
-        return !todo.completed;
+        return !todo.completed && todo.title.includes(appliedQuery);
       default:
         return true;
     }
   });
 
-  visibleTodos = visibleTodos.slice(start, finish + 1);
+  visibleTodos = visibleTodos.slice(start - 1, finish + 1);
 
   return (
-    <ul>
-      {visibleTodos.map(todo => <li key={todo.id}>{todo.title}</li>)}
-    </ul>
+    <table
+      data-cy="listOfTodos"
+      className="table is-narrow is-fullwidth"
+    >
+
+      <tbody>
+        {visibleTodos.map((todo) => {
+          return (
+            <tr
+              key={todo.id}
+              className={todo.completed
+                ? 'has-background-success-light has-text-success'
+                : 'has-background-danger-light has-text-danger'}
+            >
+              <td className="is-vcentered">
+                <span className="icon is-size-5">
+                  <i className={todo.completed
+                    ? 'fas fa-check-square'
+                    : 'fas fa-square-xmark'}
+                  />
+                </span>
+              </td>
+              <td className="is-vcentered is-expanded">
+                {todo.title}
+              </td>
+              <td className="has-text-right is-vcentered">
+                <button
+                  className="button is-warning"
+                  type="button"
+                  onClick={() => {
+                    dispatch({
+                      type: TodosActionTypes.SET_TODO,
+                      payload: todo,
+                    });
+                    openModalHandler();
+                  }}
+                >
+                  Show &nbsp;#
+                  {todo.id}
+                </button>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+
+    </table>
   );
 };
 
-export default connector(TodoList);
+export default TodoList;
