@@ -15,11 +15,11 @@ import { PaginationActionTypes } from './store/reducers/paginationReducer';
 
 const App = () => {
   const [filterBy, setFilterBy] = useState('all');
+  const [checkedTodo, setCheckedTodo] = useState(true);
   const [appliedQuery, setAppliedQuery] = useState('');
   const {
     todos, error, loading, todo,
   } = useSelector(getingTodos);
-  const [checkedTodo, setCheckedTodo] = useState<boolean>(true);
   const dispatch = useDispatch();
 
   const handleUserChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

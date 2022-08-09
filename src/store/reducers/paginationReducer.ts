@@ -5,6 +5,7 @@ export enum PaginationActionTypes {
   CHANGE_PAGE_PREV = 'CHANGE_PAGE_PREV',
   UPDATE_TOTAL_AMOUNT = 'UPDATE_TOTAL_AMOUNT',
   UPDATE_AMOUNT_ITEMS = 'UPDATE_AMOUNT_ITEMS',
+  CHANGE_PAGE = 'CHANGE_PAGE',
 }
 
 const initialState = {
@@ -34,6 +35,11 @@ export const paginationReducer = (state = initialState, action: AnyAction) => {
       return {
         ...state,
         amountItemsPerPage: action.payload,
+      };
+    case PaginationActionTypes.CHANGE_PAGE:
+      return {
+        ...state,
+        page: action.payload,
       };
     default:
       return state;

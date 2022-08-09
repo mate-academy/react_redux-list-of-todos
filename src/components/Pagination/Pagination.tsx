@@ -20,7 +20,7 @@ const Pagination: React.FC = () => {
     const pageNumber = Number(event.currentTarget.textContent);
 
     dispatch({
-      type: PaginationActionTypes.UPDATE_AMOUNT_ITEMS,
+      type: PaginationActionTypes.CHANGE_PAGE,
       payload: pageNumber,
     });
   }
