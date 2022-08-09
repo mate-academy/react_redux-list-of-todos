@@ -18,11 +18,9 @@ export const TodoModal: React.FC<Props> = ({
   selectTodoId,
 }) => {
   const [user, setUser] = useState<User>();
-
   const dispatch = useDispatch();
 
   const currentTodo = todos.find(td => td.id === selectTodoId);
-
   const currentUserId = currentTodo?.userId || 0;
 
   if (currentTodo) {

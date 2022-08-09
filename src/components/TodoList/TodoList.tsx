@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { TodoModal } from '../TodoModal';
-// import { TodoModal } from '../TodoModal/TodoModal';
 
 type Props = {
   todos: Todo[],

@@ -38,10 +38,3 @@ const todoReducer = (state = todoState, action: AnyAction): TodoType => {
 };
 
 export default todoReducer;
-
-// export const todoStore = createStore(
-//   todoReducer,
-//   composeWithDevTools( // allows you to use https://github.com/reduxjs/redux-devtools/tree/main/extension#redux-devtools-extension
-//     applyMiddleware(thunk),
-//   ),
-// );
