@@ -15,5 +15,5 @@ using the Redux. It should look and work idetically so use the same markup.
 - add the `loadTodo` thunk to the `store/index.ts` and use it in the `App`;
 
 ## Instructions
-- Replace `<your_account>` with your Github username in the [DEMO LINK](https://<your_account>.github.io/react_redux-list-of-todos/)
+- Replace `<your_account>` with your Github username in the [DEMO LINK](https://Samaev.github.io/react_redux-list-of-todos/)
 - Follow the [React task guideline](https://github.com/mate-academy/react_task-guideline#react-tasks-guideline)
