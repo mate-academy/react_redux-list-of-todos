@@ -36,9 +36,6 @@ export const App = () => {
       .finally(() => dispatch(actions.loadingActions.finishLoading()));
   }, []);
 
-  // eslint-disable-next-line no-console
-  console.log('after ', loading);
-
   /* FUNCTIONS */
   const handlSelectedTodos = async (event: { target: { value: string; }; }) => {
     setCertainTypeTodos(event.target.value);
