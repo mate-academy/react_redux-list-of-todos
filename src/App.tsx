@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 /* API, , STORE and TYPES */
-import { actions, selectors } from './store';
+import { selectors, actions } from './store';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
 /* COMPONENTS */
@@ -22,21 +22,22 @@ export const App = () => {
   const [certainTypeTodos, setCertainTypeTodos] = useState('all');
 
   /* REDUX HOOKS */
-  const loading = useSelector(selectors.selectorsLoading.isLoading);
+  const loading = useSelector(selectors.getLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getTodos().then(todosFromServer => setTodos(todosFromServer));
-
     dispatch(actions.loadingActions.startLoading());
 
-    if (todos) {
-      const action = actions.loadingActions.finishLoading();
+    // eslint-disable-next-line no-console
+    console.log(loading);
 
-      /* Added so we can see the Loader */
-      setTimeout(() => dispatch(action), 1000);
-    }
+    getTodos()
+      .then(todosFromServer => setTodos(todosFromServer))
+      .finally(() => dispatch(actions.loadingActions.finishLoading()));
   }, []);
+
+  // eslint-disable-next-line no-console
+  console.log('after ', loading);
 
   /* FUNCTIONS */
   const handlSelectedTodos = async (event: { target: { value: string; }; }) => {

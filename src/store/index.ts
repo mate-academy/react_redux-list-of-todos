@@ -3,6 +3,7 @@ import {
   createStore,
   combineReducers,
 } from 'redux';
+
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
@@ -13,18 +14,20 @@ import todoReducer, {
 
 import loadingReducer, {
   actions as loadingActions,
-  selectorsLoading,
+  selectors as selectorsLoading,
 } from './loading';
 
 export const actions = { todoActions, loadingActions };
 
 export const selectors = {
-  selectorsLoading,
+  getLoading: (state: { loading: boolean }) => (
+    selectorsLoading.isLoading(state.loading)
+  ),
 };
 
 const reducer = combineReducers({
-  todoReducer,
-  loadingReducer,
+  todo: todoReducer,
+  loading: loadingReducer,
 });
 
 export const store = createStore(

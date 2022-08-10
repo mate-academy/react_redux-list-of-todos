@@ -24,9 +24,7 @@ export const TodoModal: React.FC<Props> = ({
   const currentUserId = currentTodo?.userId || 0;
 
   if (currentTodo) {
-    const action = actions.todoActions.setTodos(currentTodo);
-
-    dispatch(action);
+    dispatch(actions.todoActions.setTodos(currentTodo));
   }
 
   useEffect(() => {

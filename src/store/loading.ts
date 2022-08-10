@@ -1,45 +1,35 @@
+// type FinishLoading = {
+//   type: 'loading/finish',
+//   message: boolean,
+// };
+
 type Action = {
-  type: 'START_LOADING' | 'FINISH_LOADING';
+  type: 'loading/start' | 'loading/finish';
 };
 
-export type LoadingType = {
-  loading: boolean;
-};
+export type LoadingType = boolean;
 
-export const loadingState: LoadingType = {
-  loading: false,
-};
+const initialState = true;
 
-const loadingReducer = (state = loadingState, action: Action) => {
+// eslint-disable-next-line max-len
+const loadingReducer = (loading:LoadingType = initialState, action: Action) => {
   switch (action.type) {
-    case 'START_LOADING':
-      return {
-        ...state,
-        loading: true,
-      };
-    case 'FINISH_LOADING':
-      return {
-        ...state,
-        loading: false,
-      };
-
+    case 'loading/start':
+      return true;
+    case 'loading/finish':
+      return false;
     default:
-      return state;
+      return loading;
   }
 };
 
 export const actions = {
-  startLoading: () => ({
-    type: 'START_LOADING',
-  }),
-
-  finishLoading: () => ({
-    type: 'FINISH_LOADING',
-  }),
+  startLoading: () => ({ type: 'loading/start' }),
+  finishLoading: () => ({ type: 'loading/finish' }),
 };
 
-export const selectorsLoading = {
-  isLoading: (state: LoadingType) => state.loading,
+export const selectors = {
+  isLoading: (loading: LoadingType) => loading,
 };
 
 export default loadingReducer;
