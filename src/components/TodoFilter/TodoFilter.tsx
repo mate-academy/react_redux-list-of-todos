@@ -45,7 +45,6 @@ export const TodoFilter: FC = () => {
           placeholder="Search..."
           value={query}
           onChange={(event) => {
-            window.console.log(event.target.value);
             dispatch(actions.setQueryfilter(event.target.value));
           }}
         />
