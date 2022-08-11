@@ -1,28 +1,66 @@
-import { useSelector } from 'react-redux';
+/* eslint-disable no-console */
+import React, { useEffect, useState } from 'react';
 
+import { useDispatch } from 'react-redux';
 import './App.scss';
-import { Start } from './components/Start';
-import { Finish } from './components/Finish';
+import { useAppSelector } from './store';
 
-import { selectors } from './store';
+import '@fortawesome/@fortawesome/fontawesome-free/css/all.css';
+import 'bulma/css/bulma.css';
 
-export const App = () => {
-  // `useSelector` connects our component to the Redux store
-  // and rerenders it after every dispatched action
-  const loading = useSelector(selectors.isLoading);
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+import { Loader } from './components/Loader';
+import { getTodos } from './api';
+import { actions as todosActions } from './store/todos';
+import { actions as loadingActions } from './store/loading';
 
-  // we do not call a selector with (), just pass a link to it
-  const message = useSelector(selectors.getMessage) || 'Ready!';
+export const App: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const { loading, selectedTodo } = useAppSelector(state => state);
+  const [userId, setUserId] = useState(0);
+
+  useEffect(() => {
+    dispatch(loadingActions.startLoading());
+
+    getTodos()
+      .then(todosFromServer => dispatch(todosActions.set(todosFromServer)))
+      .finally(() => dispatch(loadingActions.finishLoading()));
+  }, []);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+      <>
+        <div className="section">
+          <div className="container">
+            <div className="box">
+              <h1 className="title">Todos:</h1>
 
-      {/* these buttons are used only for the demo */}
-      <Start title="Start loading" />
-      <Finish title="Succeed" message="Loaded successfully!" />
-      <Finish title="Fail" message="Error occurred." />
+              <div className="block">
+                <TodoFilter />
+              </div>
+
+              <div className="block">
+                {loading
+                  ? <Loader />
+                  : (
+                    <TodoList
+                      userId={user => setUserId(user)}
+                    />
+                  )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {selectedTodo && (
+          <TodoModal
+            userId={userId}
+          />
+        )}
+      </>
     </div>
   );
 };
