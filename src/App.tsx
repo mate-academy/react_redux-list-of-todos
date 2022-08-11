@@ -1,28 +1,128 @@
-import { useSelector } from 'react-redux';
+/* eslint-disable no-console */
+/* eslint-disable max-len */
+import React, { useCallback, useEffect, useState } from 'react';
+import 'bulma/css/bulma.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+import debounce from 'lodash.debounce';
 
-import './App.scss';
-import { Start } from './components/Start';
-import { Finish } from './components/Finish';
+import { useDispatch, useSelector } from 'react-redux';
+import { TodoFilter } from './components/TodoFilter';
+import { Todo } from './types/Todo';
+import { getTodos } from './api';
+import { TodoList } from './components/TodoList';
+import { TodoModal } from './components/TodoModal';
+import { actionsLoading, selectorsLoading } from './store/loading';
+import { Loader } from './components/Loader';
 
-import { selectors } from './store';
+enum FilterType {
+  ALL = 'all',
+  ACTIVE = 'active',
+  COMPLETED = 'completed',
+}
 
-export const App = () => {
-  // `useSelector` connects our component to the Redux store
-  // and rerenders it after every dispatched action
-  const loading = useSelector(selectors.isLoading);
+export const App: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todoSelected, setTodoSelected] = useState<Todo | null>(null);
+  // const [isLoaded, setIsLoaded] = useState(false);
+  const [visibleTodos, setVisibleTodos] = useState<Todo[]>(todos);
+  const [query, setQuery] = useState('');
+  const [appliedQuery, setAppliedQuery] = useState('');
+  const [typeOfSelection, setTypeOfSelection] = useState<string>(FilterType.ALL);
+  const dispatch = useDispatch();
+  const isLoaded = useSelector(selectorsLoading.getLoaded);
 
-  // we do not call a selector with (), just pass a link to it
-  const message = useSelector(selectors.getMessage) || 'Ready!';
+  useEffect(() => {
+    getTodos()
+      .then(setTodos)
+      .finally(() => dispatch(actionsLoading.finishLoading()));
+  }, []);
+
+  useEffect(() => {
+    switch (typeOfSelection) {
+      case FilterType.ALL:
+        setVisibleTodos(todos);
+        break;
+
+      case FilterType.ACTIVE:
+        setVisibleTodos(todos
+          .filter(todo => todo.completed === false));
+        break;
+
+      case FilterType.COMPLETED:
+        setVisibleTodos(todos.filter(todo => todo.completed === true));
+        break;
+
+      default:
+        break;
+    }
+
+    const lowQuery = appliedQuery.toLowerCase();
+
+    setVisibleTodos(currentTodos => currentTodos
+      .filter(todo => todo.title.toLowerCase().includes(lowQuery)));
+  }, [typeOfSelection, appliedQuery, todos]);
+
+  const applyQuery = useCallback(
+    debounce(setAppliedQuery, 1000),
+    [],
+  );
+
+  const handleInputQuery = (inputQuery: string) => {
+    setQuery(inputQuery);
+  };
+
+  const handleFilterType = (selectType: string) => {
+    setTypeOfSelection(selectType);
+  };
+
+  const handleTodoSelect = (selectedTodo: Todo | null) => {
+    setTodoSelected(selectedTodo);
+  };
+
+  const mixTodos = (todosVisible: Todo[]) => {
+    setVisibleTodos([...todosVisible].sort(() => Math.random() - 0.5));
+  };
+
+  const reset = () => setQuery('');
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
 
-      {/* these buttons are used only for the demo */}
-      <Start title="Start loading" />
-      <Finish title="Succeed" message="Loaded successfully!" />
-      <Finish title="Fail" message="Error occurred." />
-    </div>
+            <div className="block">
+              <TodoFilter
+                query={query}
+                onReset={reset}
+                onApplyQuery={applyQuery}
+                onHandleInputQuery={handleInputQuery}
+                onHandleFilterType={handleFilterType}
+              />
+            </div>
+
+            <div className="block">
+              {!isLoaded
+                ? <Loader />
+                : (
+                  <TodoList
+                    todos={visibleTodos}
+                    todoSelectedId={todoSelected?.id || 0}
+                    onTodoSelect={handleTodoSelect}
+                    onMixTodos={mixTodos}
+                  />
+                )}
+            </div>
+          </div>
+        </div>
+      </div>
+      {todoSelected && (
+        <TodoModal
+          todo={todoSelected}
+          onClose={setTodoSelected}
+        />
+      )}
+    </>
   );
 };
