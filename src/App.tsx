@@ -63,7 +63,6 @@ export const App = () => {
 
                 <div className="block">
                   <TodoFilter
-                    todos={todos}
                     onSetVisibleTodos={setVisibleTodos}
                   />
                 </div>
@@ -81,7 +80,6 @@ export const App = () => {
 
       {isModalVisible && (
         <TodoModal
-          selectedTodo={selectedTodo}
           currentUser={user}
           onModalClosing={handleModalClosing}
         />

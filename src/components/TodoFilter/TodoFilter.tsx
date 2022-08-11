@@ -1,10 +1,10 @@
 import debounce from 'lodash.debounce';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../store';
 import { Todo } from '../../types/Todo';
 
 interface Props {
-  todos: Todo[];
   onSetVisibleTodos: React.Dispatch<React.SetStateAction<Todo[]>>
 }
 
@@ -14,7 +14,8 @@ enum Selector {
   completed = 'completed',
 }
 
-export const TodoFilter: React.FC<Props> = ({ todos, onSetVisibleTodos }) => {
+export const TodoFilter: React.FC<Props> = ({ onSetVisibleTodos }) => {
+  const todos = useAppSelector(state => state.todos);
   const navigation = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -32,7 +33,7 @@ export const TodoFilter: React.FC<Props> = ({ todos, onSetVisibleTodos }) => {
 
       navigation(`?${searchParams}`, { replace: true });
     }, 500),
-    [],
+    [location.search],
   );
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
