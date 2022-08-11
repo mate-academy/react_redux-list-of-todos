@@ -28,9 +28,6 @@ export const App = () => {
   useEffect(() => {
     dispatch(actions.loadingActions.startLoading());
 
-    // eslint-disable-next-line no-console
-    console.log(loading);
-
     getTodos()
       .then(todosFromServer => setTodos(todosFromServer))
       .finally(() => dispatch(actions.loadingActions.finishLoading()));

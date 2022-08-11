@@ -1,10 +1,8 @@
-// type FinishLoading = {
-//   type: 'loading/finish',
-//   message: boolean,
-// };
+const startLoading = 'loading/start';
+const finishLoading = 'loading/finish';
 
 type Action = {
-  type: 'loading/start' | 'loading/finish';
+  type: typeof startLoading | typeof finishLoading;
 };
 
 export type LoadingType = boolean;
