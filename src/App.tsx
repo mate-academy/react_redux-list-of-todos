@@ -20,7 +20,7 @@ export const App: FC = () => {
   const selectedTodo = useAppSelector(state => state.selectTodo.todo);
   const todos = useAppSelector(state => state.todos);
   const dispatch = useDispatch();
-  // const [selectedTodo, setSelectedTodo] = useState<Todo>();
+
   const [query, setQuery] = useState('');
   const [filtredTodo, setFiltredTodo] = useState<Todo[]>([]);
   const [targetValue, setTargetValue] = useState('all');

@@ -11,7 +11,7 @@ export type Todoselected = {
 };
 
 export type ResetTodo = {
-  type: 'TODO_REST',
+  type: 'TODO_RESET',
 };
 
 export type ActionTodo = (
@@ -23,8 +23,10 @@ export type TodoState = {
   todo: Todo | null;
 };
 
-// eslint-disable-next-line max-len
-export const userReducer = (state = initialState, action: ActionTodo): TodoState => {
+export const userReducer = (
+  state = initialState,
+  action: ActionTodo,
+): TodoState => {
   switch (action.type) {
     case 'TODO_SELECT':
       return {
@@ -32,7 +34,7 @@ export const userReducer = (state = initialState, action: ActionTodo): TodoState
         todo: action.payload,
       };
 
-    case 'TODO_REST':
+    case 'TODO_RESET':
       return {
         ...state,
         todo: null,
@@ -53,6 +55,6 @@ export const actions = {
   }),
 
   resetTodo: ():ResetTodo => ({
-    type: 'TODO_REST',
+    type: 'TODO_RESET',
   }),
 };

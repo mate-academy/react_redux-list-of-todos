@@ -24,10 +24,6 @@ export const loaderReducer = (loading = false, action: ActionLoading): boolean =
   }
 };
 
-export const actionsLoader = {
-
-};
-
 export const actions = {
   startLoading: (): StartLoadingAction => ({
     type: 'START_LOADING',

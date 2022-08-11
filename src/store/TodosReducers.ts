@@ -21,10 +21,6 @@ export const TodosReducer = (
   }
 };
 
-export const actionsLoader = {
-
-};
-
 export const actions = {
   setTodos: (todos: Todo[]): SetTodoList => ({
     type: 'SET_TODOLIST',
