@@ -1,30 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
-import { Todo } from '../../types/Todo';
+// import { Todo } from '../../types/Todo';
+import { selectors } from '../../store';
+import { actions as seletedTodoActions } from '../../store/currentTodo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 
-type Props = {
-  selectedToDo: Todo,
-  unselectToDo: (todo: Todo | null) => void,
-};
-
-export const TodoModal: React.FC<Props> = ({ selectedToDo, unselectToDo }) => {
+export const TodoModal: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
-  const {
-    id,
-    title,
-    completed,
-    userId,
-  } = selectedToDo;
+  const selectedTodo = useSelector(selectors.getTodo);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getUser(userId).then((userFromServer) => {
-      setUser(userFromServer);
-      setIsLoaded(true);
-    });
+    if (selectedTodo) {
+      getUser(selectedTodo?.userId).then((userFromServer) => {
+        setUser(userFromServer);
+        setIsLoaded(true);
+      });
+    }
   }, []);
 
   return (
@@ -39,7 +35,7 @@ export const TodoModal: React.FC<Props> = ({ selectedToDo, unselectToDo }) => {
                 data-cy="modal-header"
               >
                 Todo #
-                {id}
+                {selectedTodo?.id}
               </div>
 
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -47,19 +43,20 @@ export const TodoModal: React.FC<Props> = ({ selectedToDo, unselectToDo }) => {
                 type="button"
                 className="delete"
                 data-cy="modal-close"
-                onClick={() => unselectToDo(null)}
+                onClick={() => dispatch(seletedTodoActions
+                  .setSelectedTodo(null))}
               />
             </header>
 
             <div className="modal-card-body">
               <p className="block" data-cy="modal-title">
-                {title}
+                {selectedTodo?.title}
               </p>
 
               <p className="block" data-cy="modal-user">
                 {/* <strong className="has-text-success">Done</strong> */}
                 <strong className="has-text-danger">
-                  {completed
+                  {selectedTodo?.completed
                     ? <strong className="has-text-success">Done</strong>
                     : <strong className="has-text-danger">Planned</strong>}
                 </strong>

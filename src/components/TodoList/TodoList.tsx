@@ -1,19 +1,21 @@
 import classNames from 'classnames';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Todo } from '../../types/Todo';
 import { selectors } from '../../store';
+import { actions as seletedTodoActions } from '../../store/currentTodo';
 
 type Props = {
   todos: Todo[],
-  selectToDo: (todo: Todo | null) => void,
+  // selectToDo: (todo: Todo | null) => void,
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
-  selectToDo,
+  // selectToDo,
 }) => {
   const selectedTodo = useSelector(selectors.getTodo);
+  const dispatch = useDispatch();
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -41,7 +43,11 @@ export const TodoList: React.FC<Props> = ({
           const isSelected = selectedTodo?.id === id;
 
           return (
-            <tr data-cy="todo" className="">
+            <tr
+              key={id}
+              data-cy="todo"
+              className=""
+            >
               <td className="is-vcentered">{id}</td>
               <td className="is-vcentered">
                 {completed && (
@@ -64,7 +70,8 @@ export const TodoList: React.FC<Props> = ({
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => selectToDo(todo)}
+                  onClick={() => dispatch(seletedTodoActions
+                    .setSelectedTodo(todo))}
                 >
                   <span className="icon">
                     <i

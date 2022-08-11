@@ -14,7 +14,7 @@ import { getTodos } from './api';
 import { Filter } from './types/Filter';
 import { selectors } from './store';
 import { actions as loadingActions } from './store/loading';
-import { actions as seletedTodoActions } from './store/currentTodo';
+// import { actions as seletedTodoActions } from './store/currentTodo';
 
 export const App: React.FC = () => {
   const isLoaded = useSelector(selectors.isLoading);
@@ -69,9 +69,9 @@ export const App: React.FC = () => {
     setSearch(value);
   };
 
-  const handleToDoSelection = (todo: Todo | null) => {
-    dispatch(seletedTodoActions.setSelectedTodo(todo));
-  };
+  // const handleToDoSelection = (todo: Todo | null) => {
+  //   dispatch(seletedTodoActions.setSelectedTodo(todo));
+  // };
 
   return (
     <>
@@ -94,8 +94,7 @@ export const App: React.FC = () => {
               {todos.length > 0 && (
                 <TodoList
                   todos={todos}
-                  selectToDo={handleToDoSelection}
-                  // selectedTodoID={selectedTodo?.id || 0}
+                  // selectToDo={handleToDoSelection}
                 />
               )}
             </div>
@@ -104,10 +103,7 @@ export const App: React.FC = () => {
       </div>
       {selectedTodo !== null
       && (
-        <TodoModal
-          selectedToDo={selectedTodo}
-          unselectToDo={handleToDoSelection}
-        />
+        <TodoModal />
       )}
     </>
   );
