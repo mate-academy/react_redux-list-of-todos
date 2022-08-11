@@ -8,6 +8,7 @@ export const TodoFilter: React.FC = () => {
   const [query, setQuery] = useState('');
 
   const reset = () => {
+    setQuery('');
     dispatch(filterActions.setQueryFilter(''));
     dispatch(filterActions.SetCompletedFilter('filter-all'));
   };
