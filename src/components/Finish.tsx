@@ -1,23 +1,20 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { selectors, actions } from '../store';
+import { selectors } from '../store';
+import { loadActions } from '../store/loading';
 
 type Props = {
   title: string;
-  message: string;
 };
 
-export const Finish: React.FC<Props> = ({ title, message }) => {
-  // it is a link to `store.dispatch` method
+export const Finish: React.FC<Props> = ({ title }) => {
   const dispatch = useDispatch();
   const loading = useSelector(selectors.isLoading);
 
   const handleClick = () => {
-    // action creator returns an action that must be dispatched
-    // { type: 'FINISH_LOADING', message: 'some text' }
     dispatch(
-      actions.finishLoading(message),
+      loadActions.finishLoading(),
     );
   };
 
