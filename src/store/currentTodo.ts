@@ -15,7 +15,6 @@ type TodoActions = CurrentTodoAction | RemoveCurrentTodoAction;
 export const currentTodoReducer = (currentTodo: Todo | null = null, action: TodoActions) => {
   switch (action.type) {
     case 'todo/selected':
-
       return action.payload;
 
     case 'todo/remove':

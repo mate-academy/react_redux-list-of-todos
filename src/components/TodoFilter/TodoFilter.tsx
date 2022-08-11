@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { actions as todosActions } from '../../store/todos';
+import { Status } from '../../type/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
@@ -12,12 +13,16 @@ export const TodoFilter: React.FC = () => {
 
   useEffect(() => {
     switch (status) {
-      case 'completed':
+      case Status.COMPLETED:
         dispatch(todosActions.filterByCompletedTodos(query));
         break;
 
-      case 'active':
+      case Status.ACTIVE:
         dispatch(todosActions.filterByActiveTodos(query));
+        break;
+
+      case Status.ALL:
+        dispatch(todosActions.filterAllTodos(query));
         break;
 
       default:
@@ -34,9 +39,9 @@ export const TodoFilter: React.FC = () => {
             value={status}
             onChange={(event) => setStutus(event.target.value)}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Status.ALL}>All</option>
+            <option value={Status.ACTIVE}>Active</option>
+            <option value={Status.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>

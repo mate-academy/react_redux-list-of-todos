@@ -32,7 +32,6 @@ export const App = () => {
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
       <>
         <div className="section">
           <div className="container">
@@ -44,13 +43,9 @@ export const App = () => {
               </div>
 
               <div className="block">
-                { loading ? (
-                  <Loader />
-                )
-                  : (
-                    <TodoList />
-                  )}
-
+                { loading
+                  ? <Loader />
+                  : <TodoList />}
               </div>
             </div>
           </div>
@@ -60,7 +55,6 @@ export const App = () => {
           <TodoModal />
         )}
       </>
-
     </div>
   );
 };
