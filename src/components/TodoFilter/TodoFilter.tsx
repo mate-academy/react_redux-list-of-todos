@@ -44,9 +44,10 @@ export const TodoFilter: FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={(event) => (
-            dispatch(actions.setQueryfilter(event.target.value))
-          )}
+          onChange={(event) => {
+            window.console.log(event.target.value);
+            dispatch(actions.setQueryfilter(event.target.value));
+          }}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -58,7 +59,7 @@ export const TodoFilter: FC = () => {
             <button
               type="button"
               className="delete has-text"
-              onClick={() => dispatch(actions.setQueryfilter(''))}
+              onClick={() => dispatch(actions.clearQueryFilter())}
             />
           )}
         </span>

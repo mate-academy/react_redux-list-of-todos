@@ -5,6 +5,7 @@ import {
   SetQueryFilterAction,
   FilterAction,
   FilterState,
+  ClearQueryFilterAction,
 } from '../types/Redux/Filter';
 import { SortedType } from '../types/SortType';
 
@@ -16,7 +17,6 @@ const initialFilters: FilterState = {
 export const filterReducer = (
   filter: FilterState = initialFilters,
   action: FilterAction,
-  payload?: string,
 ) => {
   switch (action.type) {
     case 'filter/all':
@@ -24,24 +24,29 @@ export const filterReducer = (
         ...filter,
         completingState: SortedType.all,
       };
+
     case 'filter/active':
       return {
         ...filter,
         completingState: SortedType.active,
       };
+
     case 'filter/completed':
       return {
         ...filter,
         completingState: SortedType.completed,
       };
-    case 'filter/setQuery':
-      if (!payload) {
-        return filter;
-      }
 
+    case 'filter/setQuery':
       return {
         ...filter,
-        query: payload,
+        query: action.payload,
+      };
+
+    case 'filter/clearQuery':
+      return {
+        ...filter,
+        query: '',
       };
     default:
       return filter;
@@ -54,5 +59,8 @@ export const actions = {
   completedFilter: (): CompletedFilterAction => ({ type: 'filter/completed' }),
   setQueryfilter: (payload: string): SetQueryFilterAction => (
     { type: 'filter/setQuery', payload }
+  ),
+  clearQueryFilter: (): ClearQueryFilterAction => (
+    { type: 'filter/clearQuery' }
   ),
 };

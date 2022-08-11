@@ -22,9 +22,14 @@ export type SetQueryFilterAction = {
   payload: string,
 };
 
+export type ClearQueryFilterAction = {
+  type: 'filter/clearQuery',
+};
+
 export type FilterAction = (
   AllFilterAction
   | ActiveFilterAction
   | CompletedFilterAction
   | SetQueryFilterAction
+  | ClearQueryFilterAction
 );
