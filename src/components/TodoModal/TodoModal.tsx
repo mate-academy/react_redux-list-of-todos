@@ -7,7 +7,7 @@ import Loader from '../Loader';
 
 import User from '../../types/User';
 
-import { loadTodo, selectors } from '../../store';
+import { selectors } from '../../store';
 import { actions as currentTodoActions } from '../../store/currentTodo';
 
 import { getUser } from '../../api/user';
@@ -17,16 +17,12 @@ const TodoModal: React.FC = () => {
   const {
     todo,
     error: isError,
-    loading: isLoading,
+    loading: isTodoLoading,
   } = useSelector(selectors.currentTodo);
 
   const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    dispatch(currentTodoActions.setLoading(true));
-
-    dispatch(loadTodo(todo.id));
-  }, []);
+  const [isUserError, setIsUserError] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -35,17 +31,17 @@ const TodoModal: React.FC = () => {
       setUser(userFromServer);
     };
 
-    if (todo.userId) {
+    if (!isTodoLoading) {
       loadUser()
-        .catch(() => dispatch(currentTodoActions.setError(true)))
-        .finally(() => dispatch(currentTodoActions.setLoading(false)));
+        .catch(() => setIsUserError(true))
+        .finally(() => setIsUserLoading(false));
     }
-  }, [todo]);
+  }, [isTodoLoading]);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
-      {isLoading
+      {isUserLoading && !user
         ? (
           <Loader />
         )
@@ -73,8 +69,13 @@ const TodoModal: React.FC = () => {
               </p>
 
               <p className="block" data-cy="modal-user">
-                {!isError && user
+                {isError || isUserError || !user
                   ? (
+                    <strong className="has-text-danger">
+                      Error has occurred
+                    </strong>
+                  )
+                  : (
                     <>
                       <strong
                         className={classNames({
@@ -91,11 +92,6 @@ const TodoModal: React.FC = () => {
                         {user.name}
                       </a>
                     </>
-                  )
-                  : (
-                    <strong className="has-text-danger">
-                      Error has occurred
-                    </strong>
                   )}
               </p>
             </div>

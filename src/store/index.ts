@@ -22,6 +22,7 @@ export const selectors = {
       todo: state.currentTodo.todo,
       error: state.currentTodo.error,
       loading: state.currentTodo.loading,
+      shown: state.currentTodo.shown,
     }
   ),
   filter: (state: RootState) => state.filter,
@@ -42,6 +43,8 @@ export const store = createStore(
 
 export const loadTodo = (todoId: number) => {
   return async (dispatch: typeof store.dispatch) => {
+    dispatch(currentTodoActions.setLoading(true));
+
     try {
       const todos = await getTodos();
 
@@ -55,6 +58,8 @@ export const loadTodo = (todoId: number) => {
     } catch {
       dispatch(currentTodoActions.setError(true));
     }
+
+    dispatch(currentTodoActions.setLoading(false));
   };
 };
 

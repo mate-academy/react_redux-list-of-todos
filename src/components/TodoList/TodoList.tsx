@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Todo from '../../types/Todo';
 
-import { selectors } from '../../store';
+import { loadTodo, selectors } from '../../store';
 import { actions as currentTodoActions } from '../../store/currentTodo';
 
 type Props = {
@@ -17,7 +17,8 @@ const TodoList: React.FC<Props> = ({ todos }) => {
   const { todo: selectedTodo } = useSelector(selectors.currentTodo);
 
   const handleTodoSelect = (todoId: number) => {
-    dispatch(currentTodoActions.setTodoId(todoId));
+    dispatch(loadTodo(todoId));
+    dispatch(currentTodoActions.setShown(true));
   };
 
   return (

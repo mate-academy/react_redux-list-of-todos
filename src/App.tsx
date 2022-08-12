@@ -23,13 +23,13 @@ import {
 export const App: React.FC = () => {
   const dispatch = useDispatch();
   const { status, query } = useSelector(selectors.filter);
-  const { loading: isLoading } = useSelector(selectors.todos);
-  const { todo: selectedTodo } = useSelector(selectors.currentTodo);
-
-  const [isTodosError] = useState(false);
+  const {
+    loading: isLoading,
+    error: isTodosError,
+  } = useSelector(selectors.todos);
+  const { shown: isCurrentTodoShown } = useSelector(selectors.currentTodo);
 
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
     dispatch(todosActions.setLoading(true));
@@ -37,14 +37,13 @@ export const App: React.FC = () => {
     getTodos()
       .then(todosFromServer => {
         setTodos(todosFromServer);
-        setVisibleTodos(todosFromServer);
       })
       .catch(() => dispatch(todosActions.setError(true)))
       .finally(() => dispatch(todosActions.setLoading(false)));
   }, []);
 
   const handleRandomizeClick = useCallback(() => {
-    const shuffledTodos = [...visibleTodos];
+    const shuffledTodos = [...todos];
 
     for (let i = shuffledTodos.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (
@@ -55,31 +54,33 @@ export const App: React.FC = () => {
         = [shuffledTodos[j], shuffledTodos[i]];
     }
 
-    setVisibleTodos(shuffledTodos);
-  }, [visibleTodos]);
+    setTodos(shuffledTodos);
+  }, [todos]);
 
-  useEffect(() => {
+  const prepareTodos = useCallback(() => {
     const loweredQuery = query.toLowerCase();
 
-    let newVisibleTodos = todos.filter(todo => (
+    let preparedTodos = todos.filter(todo => (
       todo.title.toLowerCase().includes(loweredQuery)
     ));
 
     switch (status) {
       case Status.Active:
-        newVisibleTodos = newVisibleTodos.filter(todo => !todo.completed);
+        preparedTodos = preparedTodos.filter(todo => !todo.completed);
         break;
 
       case Status.Completed:
-        newVisibleTodos = newVisibleTodos.filter(todo => todo.completed);
+        preparedTodos = preparedTodos.filter(todo => todo.completed);
         break;
 
       default:
         break;
     }
 
-    setVisibleTodos(newVisibleTodos);
+    return preparedTodos;
   }, [todos, query, status]);
+
+  const preparedTodos = prepareTodos();
 
   return (
     <>
@@ -104,13 +105,13 @@ export const App: React.FC = () => {
                   <h1>An error has occurred</h1>
                 )
                 : (
-                  <TodoList todos={visibleTodos} />
+                  <TodoList todos={preparedTodos} />
                 )}
             </div>
           </div>
         </div>
       </div>
-      {selectedTodo.id && (
+      {isCurrentTodoShown && (
         <TodoModal />
       )}
     </>

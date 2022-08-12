@@ -5,13 +5,13 @@ type SetTodoAction = {
   payload: Todo;
 };
 
-type SetTodoIdAction = {
-  type: 'currentTodo/SET_ID';
-  payload: number;
-};
-
 type SetLoadingAction = {
   type: 'currentTodo/LOADING';
+  payload: boolean;
+};
+
+type SetShownAction = {
+  type: 'currentTodo/SHOW';
   payload: boolean;
 };
 
@@ -26,8 +26,8 @@ type ResetTodoAction = {
 
 type Action = (
   SetTodoAction
-  | SetTodoIdAction
   | SetLoadingAction
+  | SetShownAction
   | SetErrorAction
   | ResetTodoAction
 );
@@ -36,6 +36,7 @@ type CurrentTodoState = {
   todo: Todo;
   error: boolean;
   loading: boolean;
+  shown: boolean;
 };
 
 export const initialTodo: Todo = {
@@ -49,6 +50,7 @@ const initialState: CurrentTodoState = {
   todo: initialTodo,
   error: false,
   loading: false,
+  shown: false,
 };
 
 const currentTodoReducer = (
@@ -62,19 +64,16 @@ const currentTodoReducer = (
         todo: action.payload,
       };
 
-    case 'currentTodo/SET_ID':
-      return {
-        ...state,
-        todo: {
-          ...state.todo,
-          id: action.payload,
-        },
-      };
-
     case 'currentTodo/LOADING':
       return {
         ...state,
         loading: action.payload,
+      };
+
+    case 'currentTodo/SHOW':
+      return {
+        ...state,
+        shown: action.payload,
       };
 
     case 'currentTodo/ERROR':
@@ -96,8 +95,8 @@ export const actions = {
     { type: 'currentTodo/SET_TODO', payload: newTodo }
   ),
 
-  setTodoId: (id: number): SetTodoIdAction => (
-    { type: 'currentTodo/SET_ID', payload: id }
+  setShown: (shownState: boolean): SetShownAction => (
+    { type: 'currentTodo/SHOW', payload: shownState }
   ),
 
   setLoading: (loadingState: boolean): SetLoadingAction => (
