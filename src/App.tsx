@@ -1,29 +1,78 @@
-import { useSelector } from 'react-redux';
+/* eslint-disable max-len */
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import { Start } from './components/Start';
-import { Finish } from './components/Finish';
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+import { Loader } from './components/Loader';
 
-import { selectors } from './store';
+import { getTodos } from './api';
+import { Todo } from './types/Todo';
+import { Status } from './types/Status';
 
-export const App = () => {
-  // `useSelector` connects our component to the Redux store
-  // and rerenders it after every dispatched action
-  const loading = useSelector(selectors.isLoading);
+export const App: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [selectedTodo, setTodo] = useState<Todo | null>(null);
+  const [query, setQuery] = useState('');
+  const [status, setStatus] = useState<Status>('all');
 
-  // we do not call a selector with (), just pass a link to it
-  const message = useSelector(selectors.getMessage) || 'Ready!';
+  useEffect(() => {
+    getTodos().then(setTodos);
+  }, []);
+
+  const lowerQuery = query.toLowerCase();
+
+  const visibleTodos = todos.filter(todo => {
+    if (status === 'active' && todo.completed) {
+      return false;
+    }
+
+    if (status === 'completed' && !todo.completed) {
+      return false;
+    }
+
+    return todo.title.toLowerCase().includes(lowerQuery);
+  });
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
 
-      {/* these buttons are used only for the demo */}
-      <Start title="Start loading" />
-      <Finish title="Succeed" message="Loaded successfully!" />
-      <Finish title="Fail" message="Error occurred." />
-    </div>
+            <div className="block">
+              <TodoFilter
+                query={query}
+                onQueryChanged={setQuery}
+                status={status}
+                onStatusChanged={setStatus}
+              />
+            </div>
+
+            <div className="block">
+              {todos.length > 0 ? (
+                <TodoList
+                  todos={visibleTodos}
+                  todoId={selectedTodo?.id}
+                  onTodoSelected={setTodo}
+                />
+              ) : (
+                <Loader />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {selectedTodo && (
+        <TodoModal
+          todo={selectedTodo}
+          onClose={() => setTodo(null)}
+        />
+      )}
+    </>
   );
 };
