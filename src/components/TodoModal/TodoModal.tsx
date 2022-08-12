@@ -1,46 +1,46 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useState } from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
-import { Loader } from '../Loader';
+
+import Loader from '../Loader';
+
+import User from '../../types/User';
+
+import { loadTodo, selectors } from '../../store';
+import { actions as currentTodoActions } from '../../store/currentTodo';
 
 import { getUser } from '../../api/user';
 
-import Todo from '../../types/Todo';
-import User from '../../types/User';
-
-type Props = {
-  selectedTodo: Todo | null;
-  onModalCloseClick: () => void;
-};
-
-const TodoModal: React.FC<Props> = ({
-  selectedTodo,
-  onModalCloseClick,
-}) => {
-  const [isLoading, setIsLoading] = useState(false);
+const TodoModal: React.FC = () => {
+  const dispatch = useDispatch();
+  const {
+    todo,
+    error: isError,
+    loading: isLoading,
+  } = useSelector(selectors.currentTodo);
 
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const loadTodos = async () => {
-      if (selectedTodo === null) {
-        return Promise.reject();
-      }
+    dispatch(currentTodoActions.setLoading(true));
 
-      setIsLoading(true);
+    dispatch(loadTodo(todo.id));
+  }, []);
 
-      const response = await getUser(selectedTodo.userId);
+  useEffect(() => {
+    const loadUser = async () => {
+      const userFromServer = await getUser(todo.userId);
 
-      setIsLoading(false);
-
-      return response;
+      setUser(userFromServer);
     };
 
-    loadTodos()
-      .then(userFromServer => setUser(userFromServer))
-      .catch(() => {
-      });
-  }, []);
+    if (todo.userId) {
+      loadUser()
+        .catch(() => dispatch(currentTodoActions.setError(true)))
+        .finally(() => dispatch(currentTodoActions.setLoading(false)));
+    }
+  }, [todo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -52,51 +52,50 @@ const TodoModal: React.FC<Props> = ({
         : (
           <div className="modal-card">
             <header className="modal-card-head">
-              {selectedTodo && (
-                <div
-                  className="modal-card-title has-text-weight-medium"
-                  data-cy="modal-header"
-                >
-                  {`Todo #${selectedTodo.id}`}
-                </div>
-              )}
+              <div
+                className="modal-card-title has-text-weight-medium"
+                data-cy="modal-header"
+              >
+                {`Todo #${todo.id}`}
+              </div>
 
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button
                 type="button"
                 className="delete"
                 data-cy="modal-close"
-                onClick={onModalCloseClick}
+                onClick={() => dispatch(currentTodoActions.resetTodo())}
               />
             </header>
 
             <div className="modal-card-body">
               <p className="block" data-cy="modal-title">
-                {selectedTodo ? selectedTodo.title : 'Could not load todo'}
+                {todo.title}
               </p>
 
               <p className="block" data-cy="modal-user">
-                {user && selectedTodo
+                {!isError && user
                   ? (
                     <>
                       <strong
                         className={classNames({
-                          'has-text-success': selectedTodo.completed,
-                          'has-text-danger': !selectedTodo.completed,
+                          'has-text-success': todo.completed,
+                          'has-text-danger': !todo.completed,
                         })}
                       >
-                        {selectedTodo.completed ? 'Done' : 'Planned'}
+                        {todo.completed ? 'Done' : 'Planned'}
                       </strong>
 
                       {' by '}
 
-                      <a href="mailto:Sincere@april.biz">
+                      <a href={`mailto:${user.email}`}>
                         {user.name}
                       </a>
                     </>
                   )
                   : (
-                    <span>Could not load user</span>
+                    <strong className="has-text-danger">
+                      Error has occurred
+                    </strong>
                   )}
               </p>
             </div>
@@ -107,53 +106,3 @@ const TodoModal: React.FC<Props> = ({
 };
 
 export default TodoModal;
-
-//
-//   <div className="modal-card">
-//     {isError || selectedTodo === null
-//       ? (
-//         <h1>Error</h1>
-//       )
-//       : (
-//         <>
-//           <header className="modal-card-head">
-//             <div
-//               className="modal-card-title has-text-weight-medium"
-//               data-cy="modal-header"
-//             >
-//               {`Todo #${selectedTodo.id}`}
-//             </div>
-//
-//             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-//             <button
-//               type="button"
-//               className="delete"
-//               data-cy="modal-close"
-//               onClick={onModalCloseClick}
-//             />
-//           </header>
-//
-//           <div className="modal-card-body">
-//             <p className="block" data-cy="modal-title">
-//               {selectedTodo.title}
-//             </p>
-//
-//             <p className="block" data-cy="modal-user">
-//               {selectedTodo.completed
-//                 ? (
-//                   <strong className="has-text-success">Done</strong>
-//                 )
-//                 : (
-//                   <strong className="has-text-danger">Planned</strong>
-//                 )}
-//
-//               {' by '}
-//
-//               <a href="mailto:Sincere@april.biz">
-//                 {user?.name}
-//               </a>
-//             </p>
-//           </div>
-//         </>
-//       )}
-//   </div>

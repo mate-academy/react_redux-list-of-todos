@@ -1,24 +1,25 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { debounce } from 'lodash';
 
 import Status from '../../enums/Status';
 
+import { actions as filterActions } from '../../store/filter';
+
 type Props = {
-  onFilterChange: (value: string) => void;
-  onQueryChange: (value: string) => void;
   onRandomizeClick: () => void;
 };
 
-const TodoFilter: React.FC<Props> = ({
-  onFilterChange,
-  onQueryChange,
-  onRandomizeClick,
-}) => {
+const TodoFilter: React.FC<Props> = ({ onRandomizeClick }) => {
+  const dispatch = useDispatch();
+
   const [query, setQuery] = useState('');
 
   const applyQuery = useCallback(
-    debounce(onQueryChange, 500),
+    debounce((value) => {
+      dispatch(filterActions.setQuery(value));
+    }, 500),
     [],
   );
 
@@ -27,13 +28,24 @@ const TodoFilter: React.FC<Props> = ({
     applyQuery(value);
   };
 
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.setStatus(event.target.value));
+  };
+
   return (
-    <form className="field has-addons">
+    <form
+      className="field has-addons"
+      onSubmit={handleFormSubmit}
+    >
       <p className="control">
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={({ target }) => onFilterChange(target.value)}
+            onChange={handleSelectChange}
           >
             {Object.keys(Status).map(key => (
               <option key={key} value={key}>{key}</option>

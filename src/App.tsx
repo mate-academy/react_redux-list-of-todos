@@ -1,6 +1,5 @@
-import React, {
-  useCallback, useEffect, useMemo, useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -16,33 +15,32 @@ import { getTodos } from './api/todos';
 import Todo from './types/Todo';
 import Status from './enums/Status';
 
+import { selectors } from './store';
+import {
+  actions as todosActions,
+} from './store/todos';
+
 export const App: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { status, query } = useSelector(selectors.filter);
+  const { loading: isLoading } = useSelector(selectors.todos);
+  const { todo: selectedTodo } = useSelector(selectors.currentTodo);
+
+  const [isTodosError] = useState(false);
 
   const [todos, setTodos] = useState<Todo[]>([]);
   const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
-  const [selectedTodoId, setSelectedTodoId] = useState(0);
-
-  const [todoStatusFilter, setTodoStatusFilter] = useState('All');
-  const [query, setQuery] = useState('');
 
   useEffect(() => {
-    const loadTodos = async () => {
-      setIsLoading(true);
+    dispatch(todosActions.setLoading(true));
 
-      const response = await getTodos();
-
-      setIsLoading(false);
-
-      return response;
-    };
-
-    loadTodos()
+    getTodos()
       .then(todosFromServer => {
         setTodos(todosFromServer);
         setVisibleTodos(todosFromServer);
       })
-      .catch();
+      .catch(() => dispatch(todosActions.setError(true)))
+      .finally(() => dispatch(todosActions.setLoading(false)));
   }, []);
 
   const handleRandomizeClick = useCallback(() => {
@@ -58,7 +56,7 @@ export const App: React.FC = () => {
     }
 
     setVisibleTodos(shuffledTodos);
-  }, []);
+  }, [visibleTodos]);
 
   useEffect(() => {
     const loweredQuery = query.toLowerCase();
@@ -67,7 +65,7 @@ export const App: React.FC = () => {
       todo.title.toLowerCase().includes(loweredQuery)
     ));
 
-    switch (todoStatusFilter) {
+    switch (status) {
       case Status.Active:
         newVisibleTodos = newVisibleTodos.filter(todo => !todo.completed);
         break;
@@ -81,11 +79,7 @@ export const App: React.FC = () => {
     }
 
     setVisibleTodos(newVisibleTodos);
-  }, [query, todoStatusFilter]);
-
-  const selectedTodo = useMemo(() => {
-    return todos.find(todo => todo.id === selectedTodoId) || null;
-  }, [todos, selectedTodoId]);
+  }, [todos, query, status]);
 
   return (
     <>
@@ -96,62 +90,29 @@ export const App: React.FC = () => {
 
             <div className="block">
               <TodoFilter
-                onFilterChange={setTodoStatusFilter}
-                onQueryChange={setQuery}
                 onRandomizeClick={handleRandomizeClick}
               />
             </div>
 
-            <div className="block">
-              {isLoading && (
-                <Loader />
-              )}
+            {isLoading && (
+              <Loader />
+            )}
 
-              <TodoList
-                todos={visibleTodos}
-                selectedTodoId={selectedTodoId}
-                onSelectTodoClick={setSelectedTodoId}
-              />
+            <div className="block">
+              {isTodosError
+                ? (
+                  <h1>An error has occurred</h1>
+                )
+                : (
+                  <TodoList todos={visibleTodos} />
+                )}
             </div>
           </div>
         </div>
       </div>
-
-      {selectedTodoId > 0 && (
-        <TodoModal
-          selectedTodo={selectedTodo}
-          onModalCloseClick={() => setSelectedTodoId(0)}
-        />
+      {selectedTodo.id && (
+        <TodoModal />
       )}
     </>
   );
 };
-
-// import { useSelector } from 'react-redux';
-//
-// import './App.scss';
-// import { Start } from './components/Start';
-// import { Finish } from './components/Finish';
-//
-// import { selectors } from './store';
-//
-// export const App = () => {
-//   // `useSelector` connects our component to the Redux store
-//   // and rerenders it after every dispatched action
-//   const loading = useSelector(selectors.isLoading);
-//
-//   // we do not call a selector with (), just pass a link to it
-//   const message = useSelector(selectors.getMessage) || 'Ready!';
-//
-//   return (
-//     <div className="App">
-//       <h1>Redux list of todos</h1>
-//       <h2>{loading ? 'Loading...' : message}</h2>
-//
-//       {/* these buttons are used only for the demo */}
-//       <Start title="Start loading" />
-//       <Finish title="Succeed" message="Loaded successfully!" />
-//       <Finish title="Fail" message="Error occurred." />
-//     </div>
-//   );
-// };
