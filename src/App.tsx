@@ -1,29 +1,86 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import { Start } from './components/Start';
-import { Finish } from './components/Finish';
+import React, { useEffect, useState } from 'react';
 
-import { selectors } from './store';
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/ToDoFilter';
+import { Loader } from './components/Loader';
+import { getTodos } from './api';
+import { Todo } from './types/Todo';
+import { TodoModal } from './components/TodoModal';
 
-export const App = () => {
-  // `useSelector` connects our component to the Redux store
-  // and rerenders it after every dispatched action
-  const loading = useSelector(selectors.isLoading);
+import './App.scss';
 
-  // we do not call a selector with (), just pass a link to it
-  const message = useSelector(selectors.getMessage) || 'Ready!';
+import { actions, selectors } from './store';
+
+export const App: React.FC = () => {
+  const [todosFromServer, setTodosFromServer] = useState<Todo[]>([]);
+  const [visibleTodos, setVisibleTotos] = useState<Todo[]>([]);
+
+  const selectedTodo = useSelector(selectors.selectedTodo);
+  const isLoading = useSelector(selectors.isLoading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const loading = async () => {
+      setTodosFromServer(await getTodos());
+      setVisibleTotos(await getTodos());
+      dispatch(actions.loadingActions.startLoading());
+    };
+
+    loading();
+  }, []);
+
+  const filteredTodos = (value: string, status: string) => {
+    const todos = todosFromServer.filter(todo => {
+      switch (status) {
+        case 'completed':
+          return todo.completed && todo.title.includes(value);
+        case 'active':
+          return !todo.completed && todo.title.includes(value);
+        default:
+          return todo.title.includes(value);
+      }
+    });
+
+    setVisibleTotos(todos);
+  };
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
 
-      {/* these buttons are used only for the demo */}
-      <Start title="Start loading" />
-      <Finish title="Succeed" message="Loaded successfully!" />
-      <Finish title="Fail" message="Error occurred." />
-    </div>
+            <div className="block">
+              <TodoFilter filteredTodos={filteredTodos} />
+            </div>
+
+            <div className="block">
+              {!isLoading
+                ? (
+                  <Loader />
+                ) : (
+                  <TodoList
+                    todos={visibleTodos}
+                    selectedTodo={selectedTodo}
+                  />
+                )}
+            </div>
+          </div>
+        </div>
+      </div>
+      {selectedTodo && (
+        <TodoModal
+          todo={visibleTodos.find(todo => todo.id === selectedTodo.id)}
+          onClose={() => dispatch(
+            actions.selectedTodoActions.unSelectTodo(),
+          )}
+        />
+      )}
+    </>
   );
 };
