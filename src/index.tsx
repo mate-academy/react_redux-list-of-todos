@@ -1,16 +1,17 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { HashRouter as Router } from 'react-router-dom';
-
-import { store } from './store';
 import { App } from './App';
+import { store } from './app/store';
 
-const Root = () => (
-  <Provider store={store}>
-    <Router>
+const Root = () => {
+  return (
+    <Provider store={store}>
       <App />
-    </Router>
-  </Provider>
-);
+    </Provider>
+  );
+};
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+ReactDOM.render(
+  <Root />,
+  document.getElementById('root'),
+);
