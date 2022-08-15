@@ -7,11 +7,7 @@ import { getUser } from '../../api';
 import { selectors } from '../../store';
 import { ModalTodoActions } from '../../store/currentTodo';
 
-type Props = {
-  selectUser: (value: number) => void;
-};
-
-export const TodoModal: React.FC<Props> = () => {
+export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User>();
   const [isLoading, setIsLoading] = useState(true);
   const todo = useSelector(selectors.getTodo);

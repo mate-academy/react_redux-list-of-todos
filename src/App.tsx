@@ -14,13 +14,10 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { selectors } from './store';
 import { loadingActions } from './store/loading';
-import { ModalTodoActions } from './store/currentTodo';
 
 export const App: React.FC = () => {
   const [todosFromServer, setTodosFromServer] = useState<Todo[]>([]);
-  // const [isLoaded, setIsLoaded] = useState(false);
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
-  const [selectedTodoId, setSelectedTodoId] = useState(0);
 
   const dispatch = useDispatch();
   const isLoaded = useSelector(selectors.getloadingStatus);
@@ -58,15 +55,6 @@ export const App: React.FC = () => {
     setFilteredTodos(todos);
   };
 
-  const idSelector = (id: number) => setSelectedTodoId(id);
-  const modalTodo = filteredTodos.find(todo => todo.id === selectedTodoId);
-
-  useEffect(() => {
-    if (modalTodo) {
-      dispatch(ModalTodoActions.selectTodo(modalTodo));
-    }
-  }, [selectedTodoId]);
-
   return (
     <>
       <div className="section">
@@ -80,15 +68,13 @@ export const App: React.FC = () => {
 
             <div className="block">
               {isLoaded
-                ? <TodoList todos={filteredTodos} selectTodo={idSelector} />
+                ? <TodoList todos={filteredTodos} />
                 : <Loader />}
             </div>
           </div>
         </div>
       </div>
-
-      {selectedTodo
-        && <TodoModal selectUser={idSelector} />}
+      {selectedTodo && <TodoModal />}
     </>
   );
 };
