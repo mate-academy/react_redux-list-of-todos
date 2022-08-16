@@ -58,30 +58,26 @@ export const TodoFilter: React.FC<Props> = ({ onSetVisibleTodos }) => {
   };
 
   const selectFilterCallback = (todo: Todo) => {
-    const pickFilterParam = (str: string) => {
-      switch (location.search.includes(str)) {
-        case str === '':
-          return todo;
+    switch (location.search) {
+      case `?select=${Selector.active}`:
+        return !todo.completed;
 
-        case str === Selector.active:
-          return !todo.completed;
+      case `?select=${Selector.completed}`:
+        return todo.completed;
 
-        case str === Selector.completed:
-          return todo.completed;
-
-        default:
-          return todo;
-      }
-    };
-
-    return pickFilterParam(selectFilter || '');
+      default:
+        return todo;
+    }
   };
 
   useEffect(() => {
     onSetVisibleTodos(todos
       .filter(selectFilterCallback)
-      .filter(todo => todo.title.toLowerCase()
-        .includes(appliedQuery.toLowerCase())));
+      .filter(
+        todo => todo.title.toLowerCase().includes(
+          appliedQuery.toLowerCase(),
+        ),
+      ));
   }, [appliedQuery, selectFilter]);
 
   return (

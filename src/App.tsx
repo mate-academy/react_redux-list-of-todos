@@ -41,7 +41,7 @@ export const App = () => {
   useEffect(() => {
     if (selectedTodo) {
       getUser(selectedTodo.userId)
-        .then(currentUser => setUser(currentUser));
+        .then(setUser);
     }
   }, [isModalVisible]);
 

@@ -5,11 +5,9 @@ type SetTodosAction = {
   payload: Todo[],
 };
 
-export type TodosAction = SetTodosAction;
-
 export const todosReducer = (
   todos: Todo[] = [],
-  action: TodosAction,
+  action: SetTodosAction,
 ): Todo[] => {
   switch (action.type) {
     case 'todos/SET':
