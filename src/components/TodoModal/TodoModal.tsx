@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
-// import { Todo } from '../../types/Todo';
 import { selectors } from '../../store';
 import { actions as seletedTodoActions } from '../../store/currentTodo';
 import { User } from '../../types/User';
@@ -34,8 +33,7 @@ export const TodoModal: React.FC = () => {
                 className="modal-card-title has-text-weight-medium"
                 data-cy="modal-header"
               >
-                Todo #
-                {selectedTodo?.id}
+                {`Todo #${selectedTodo?.id}`}
               </div>
 
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -54,7 +52,6 @@ export const TodoModal: React.FC = () => {
               </p>
 
               <p className="block" data-cy="modal-user">
-                {/* <strong className="has-text-success">Done</strong> */}
                 <strong className="has-text-danger">
                   {selectedTodo?.completed
                     ? <strong className="has-text-success">Done</strong>

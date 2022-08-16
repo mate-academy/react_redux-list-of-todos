@@ -7,8 +7,7 @@ type FinishLoadingAction = {
 };
 
 type Action = (
-  StartLoadingAction
-  | FinishLoadingAction
+  StartLoadingAction | FinishLoadingAction
 );
 
 export const LoadingReducer = (state = false, action: Action) => {

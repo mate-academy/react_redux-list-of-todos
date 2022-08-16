@@ -7,12 +7,10 @@ import { actions as seletedTodoActions } from '../../store/currentTodo';
 
 type Props = {
   todos: Todo[],
-  // selectToDo: (todo: Todo | null) => void,
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
-  // selectToDo,
 }) => {
   const selectedTodo = useSelector(selectors.getTodo);
   const dispatch = useDispatch();
@@ -70,8 +68,9 @@ export const TodoList: React.FC<Props> = ({
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => dispatch(seletedTodoActions
-                    .setSelectedTodo(todo))}
+                  onClick={() => dispatch(
+                    seletedTodoActions.setSelectedTodo(todo),
+                  )}
                 >
                   <span className="icon">
                     <i

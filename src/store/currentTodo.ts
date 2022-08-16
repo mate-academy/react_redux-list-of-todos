@@ -11,8 +11,7 @@ type UnsetSelectedTodo = {
 };
 
 type Action = (
-  SetSelectedTodo
-  | UnsetSelectedTodo
+  SetSelectedTodo | UnsetSelectedTodo
 );
 
 export const selectedTodoReducer = (state = null, action: Action) => {

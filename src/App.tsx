@@ -14,7 +14,6 @@ import { getTodos } from './api';
 import { Filter } from './types/Filter';
 import { selectors } from './store';
 import { actions as loadingActions } from './store/loading';
-// import { actions as seletedTodoActions } from './store/currentTodo';
 
 export const App: React.FC = () => {
   const isLoaded = useSelector(selectors.isLoading);
@@ -69,10 +68,6 @@ export const App: React.FC = () => {
     setSearch(value);
   };
 
-  // const handleToDoSelection = (todo: Todo | null) => {
-  //   dispatch(seletedTodoActions.setSelectedTodo(todo));
-  // };
-
   return (
     <>
       <div className="section">
@@ -94,15 +89,13 @@ export const App: React.FC = () => {
               {todos.length > 0 && (
                 <TodoList
                   todos={todos}
-                  // selectToDo={handleToDoSelection}
                 />
               )}
             </div>
           </div>
         </div>
       </div>
-      {selectedTodo !== null
-      && (
+      {selectedTodo && (
         <TodoModal />
       )}
     </>
