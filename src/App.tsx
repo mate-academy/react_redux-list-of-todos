@@ -5,14 +5,15 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import debounce from 'lodash.debounce';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { TodoFilter } from './components/TodoFilter';
 import { Todo } from './types/Todo';
-import { getTodos } from './api';
 import { TodoList } from './components/TodoList';
 import { TodoModal } from './components/TodoModal';
-import { actionsLoading, selectorsLoading } from './store/loading';
 import { Loader } from './components/Loader';
+import { useAppSelector } from './store/hooks';
+import { loadTodos } from './store';
+import { clearTodo } from './features/selectedTodo';
 
 enum FilterType {
   ALL = 'all',
@@ -21,20 +22,20 @@ enum FilterType {
 }
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [todoSelected, setTodoSelected] = useState<Todo | null>(null);
-  // const [isLoaded, setIsLoaded] = useState(false);
+  const dispatch = useDispatch();
+  const { items: todos, loaded } = useAppSelector(state => state.todos);
+  const todoSelected = useAppSelector(state => state.selectedTodo);
   const [visibleTodos, setVisibleTodos] = useState<Todo[]>(todos);
   const [query, setQuery] = useState('');
   const [appliedQuery, setAppliedQuery] = useState('');
   const [typeOfSelection, setTypeOfSelection] = useState<string>(FilterType.ALL);
-  const dispatch = useDispatch();
-  const isLoaded = useSelector(selectorsLoading.getLoaded);
+
+  const clearSelection = () => {
+    dispatch(clearTodo());
+  };
 
   useEffect(() => {
-    getTodos()
-      .then(setTodos)
-      .finally(() => dispatch(actionsLoading.finishLoading()));
+    dispatch(loadTodos());
   }, []);
 
   useEffect(() => {
@@ -75,9 +76,9 @@ export const App: React.FC = () => {
     setTypeOfSelection(selectType);
   };
 
-  const handleTodoSelect = (selectedTodo: Todo | null) => {
-    setTodoSelected(selectedTodo);
-  };
+  // const handleTodoSelect = (selectedTodo: Todo | null) => {
+  //   setTodoSelected(selectedTodo);
+  // };
 
   const mixTodos = (todosVisible: Todo[]) => {
     setVisibleTodos([...todosVisible].sort(() => Math.random() - 0.5));
@@ -103,13 +104,11 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!isLoaded
+              {!loaded
                 ? <Loader />
                 : (
                   <TodoList
                     todos={visibleTodos}
-                    todoSelectedId={todoSelected?.id || 0}
-                    onTodoSelect={handleTodoSelect}
                     onMixTodos={mixTodos}
                   />
                 )}
@@ -120,7 +119,7 @@ export const App: React.FC = () => {
       {todoSelected && (
         <TodoModal
           todo={todoSelected}
-          onClose={setTodoSelected}
+          onClose={clearSelection}
         />
       )}
     </>

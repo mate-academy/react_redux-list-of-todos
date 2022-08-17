@@ -6,7 +6,7 @@ import { Loader } from '../Loader';
 
 type Props = {
   todo: Todo,
-  onClose: (todo: Todo | null) => void,
+  onClose: () => void,
 };
 
 export const TodoModal: React.FC<Props> = ({ todo, onClose }) => {
@@ -43,7 +43,7 @@ export const TodoModal: React.FC<Props> = ({ todo, onClose }) => {
                 data-cy="modal-close"
                 onClick={() => {
                   setIsUserLoaded(false);
-                  onClose(null);
+                  onClose();
                 }}
               />
             </header>

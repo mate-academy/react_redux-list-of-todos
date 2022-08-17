@@ -1,19 +1,24 @@
 import classNames from 'classnames';
+import { setTodo } from '../../features/selectedTodo';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Todo } from '../../types/Todo';
 
 type Props = {
   todos: Todo[],
-  todoSelectedId: number,
-  onTodoSelect: (selectedTodo: Todo | null) => void,
   onMixTodos: (todos: Todo[]) => void,
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
-  todoSelectedId,
-  onTodoSelect,
   onMixTodos,
 }) => {
+  const dispatch = useAppDispatch();
+  const selelctedTodo = useAppSelector(state => state.selectedTodo);
+
+  const selectTodo = (todo: Todo) => {
+    dispatch(setTodo(todo));
+  };
+
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -43,7 +48,7 @@ export const TodoList: React.FC<Props> = ({
             data-cy="todo"
             className={classNames(
               {
-                'has-background-info-light': todo.id === todoSelectedId,
+                'has-background-info-light': todo.id === selelctedTodo?.id,
               },
             )}
             key={todo.id}
@@ -66,13 +71,13 @@ export const TodoList: React.FC<Props> = ({
               </p>
             </td>
             <td className="has-text-right is-vcentered">
-              {todoSelectedId === todo.id ? (
+              {selelctedTodo?.id === todo.id ? (
                 <button
                   data-cy="selectButton"
                   className="button"
                   type="button"
                   onClick={() => {
-                    onTodoSelect(null);
+                    selectTodo(todo);
                   }}
                 >
                   <span className="icon">
@@ -86,7 +91,7 @@ export const TodoList: React.FC<Props> = ({
                     className="button"
                     type="button"
                     onClick={() => {
-                      onTodoSelect(todo);
+                      selectTodo(todo);
                     }}
                   >
                     <span className="icon">

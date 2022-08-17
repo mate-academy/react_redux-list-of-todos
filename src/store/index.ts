@@ -1,19 +1,23 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
-import { currentTodoReducer } from './currentTodo';
-import { loadingReducer } from './loading';
+import { configureStore } from '@reduxjs/toolkit';
+import { getTodos } from '../api';
+import selectedTodo from '../features/selectedTodo';
+import todosReducer, { todosActions } from '../features/todos';
 
-export const RootReducer = combineReducers({
-  isLoaded: loadingReducer,
-  userLoading: currentTodoReducer,
+export const store = configureStore({
+  reducer: {
+    todos: todosReducer,
+    selectedTodo,
+  },
 });
 
-export const store = createStore(
-  RootReducer,
-  composeWithDevTools(
-    applyMiddleware(thunk),
-  ),
-);
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
-export type RootState = ReturnType<typeof RootReducer>;
+export const loadTodos = () => {
+  return (dispatch: AppDispatch) => {
+    dispatch(todosActions.startLoading());
+    getTodos()
+      .then(todosFromServer => dispatch(todosActions.setTodos(todosFromServer)))
+      .finally(() => dispatch(todosActions.finishLoading()));
+  };
+};
