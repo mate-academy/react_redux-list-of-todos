@@ -80,10 +80,10 @@ export const App = () => {
             <div className="block">
               <TodoFilter
                 selectEl={certainTypeTodos}
-                selectedTodos={handlSelectedTodos}
+                onSelectedTodos={handlSelectedTodos}
                 query={query}
-                resetQuery={resetQuery}
-                filter={handleSetQuery}
+                onResetQuery={resetQuery}
+                onFilter={handleSetQuery}
               />
             </div>
 

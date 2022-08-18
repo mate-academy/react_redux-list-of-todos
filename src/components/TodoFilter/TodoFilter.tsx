@@ -1,18 +1,18 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 type Props = {
   selectEl: string,
-  selectedTodos: (event: { target: { value: string } }) => void,
+  onSelectedTodos: (event: { target: { value: string } }) => void,
   query: string,
-  resetQuery: () => void,
-  filter: (event: { target: { value: string }; }) => void,
+  onResetQuery: () => void,
+  onFilter: (event: { target: { value: string }; }) => void,
 };
 
 export const TodoFilter: React.FC<Props> = ({
   selectEl,
-  selectedTodos,
+  onSelectedTodos: selectedTodos,
   query,
-  resetQuery,
-  filter,
+  onResetQuery: resetQuery,
+  onFilter: filter,
 }) => {
   return (
     <form className="field has-addons">
