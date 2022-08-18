@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../api';
@@ -48,7 +49,6 @@ export const TodoModal: React.FC<Props> = ({
               {`Todo #${selectTodoId}`}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"

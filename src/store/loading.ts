@@ -9,7 +9,6 @@ export type LoadingType = boolean;
 
 const initialState = true;
 
-// eslint-disable-next-line max-len
 const loadingReducer = (loading:LoadingType = initialState, action: Action) => {
   switch (action.type) {
     case 'loading/start':

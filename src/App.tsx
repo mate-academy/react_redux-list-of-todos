@@ -12,7 +12,6 @@ import { TodoFilter } from './components/TodoFilter';
 /* STYLES */
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import './App.scss';
 
 export const App = () => {
   /* STATES */
@@ -34,15 +33,15 @@ export const App = () => {
   }, []);
 
   /* FUNCTIONS */
-  const handlSelectedTodos = async (event: { target: { value: string; }; }) => {
+  const handlSelectedTodos = (event: { target: { value: string; }; }) => {
     setCertainTypeTodos(event.target.value);
   };
 
-  const handleSetQuery = async (event: { target: { value: string; }; }) => {
+  const handleSetQuery = (event: { target: { value: string; }; }) => {
     setQuery(event.target.value.toLowerCase());
   };
 
-  const handleUserIdBtn = async (userIdFromTodo: number) => {
+  const handleUserIdBtn = (userIdFromTodo: number) => {
     setTodoId(userIdFromTodo);
   };
 
@@ -63,11 +62,11 @@ export const App = () => {
     return todo.title.toLowerCase().includes(query);
   });
 
-  const resetQuery = async () => {
+  const resetQuery = () => {
     setQuery('');
   };
 
-  const resetTodoId = async () => {
+  const resetTodoId = () => {
     setTodoId(0);
   };
 
@@ -94,9 +93,9 @@ export const App = () => {
               ) : (
                 <TodoList
                   todos={visibleTodos}
-                  resetTodoId={resetTodoId}
+                  onResetTodoId={resetTodoId}
                   selectTodoId={todoId}
-                  selectTodo={handleUserIdBtn}
+                  onSelectTodo={handleUserIdBtn}
                 />
               )}
             </div>

@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 type Props = {
   selectEl: string,
-  selectedTodos: (event: { target: { value: string }; }) => Promise<void>,
+  selectedTodos: (event: { target: { value: string } }) => void,
   query: string,
   resetQuery: () => void,
-  filter: (event: { target: { value: string }; }) => Promise<void>,
+  filter: (event: { target: { value: string }; }) => void,
 };
 
 export const TodoFilter: React.FC<Props> = ({

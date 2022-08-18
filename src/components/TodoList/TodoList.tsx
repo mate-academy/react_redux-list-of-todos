@@ -5,15 +5,15 @@ import { TodoModal } from '../TodoModal';
 
 type Props = {
   todos: Todo[],
-  resetTodoId: () => void,
-  selectTodo: (userIdFromTodo: number) => Promise<void>,
+  onResetTodoId: () => void,
+  onSelectTodo: (userIdFromTodo: number) => void,
   selectTodoId: number,
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
-  resetTodoId,
-  selectTodo,
+  onResetTodoId: resetTodoId,
+  onSelectTodo: selectTodo,
   selectTodoId,
 }) => {
   return (
