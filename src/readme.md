@@ -1,0 +1,1 @@
+Small application with Redux
