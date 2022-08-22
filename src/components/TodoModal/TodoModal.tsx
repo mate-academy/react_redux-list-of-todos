@@ -1,36 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
-import { actions as todoActions } from '../../store/currentTodo';
 
 type Props = {
-  todo: Todo;
-  userId: number;
+  todo: Todo | undefined;
+  onClose: () => void;
 };
 
-export const TodoModal: React.FC<Props> = ({ todo, userId }) => {
+export const TodoModal: React.FC<Props> = ({ todo, onClose }) => {
   const [user, setUser] = useState<User | null>(null);
-
-  const dispatch = useDispatch();
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    const loading = async () => {
-      const loadingUser = await getUser(userId);
-
-      setUser(loadingUser);
-    };
-
-    loading();
+    if (todo) {
+      getUser(todo.userId)
+        .then(person => {
+          setUser(person);
+          setLoading(true);
+        });
+    }
   }, []);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {!user ? (
+      {!isLoading ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -47,7 +44,7 @@ export const TodoModal: React.FC<Props> = ({ todo, userId }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(todoActions.unsetTodo())}
+              onClick={() => onClose()}
             />
           </header>
 
@@ -57,7 +54,6 @@ export const TodoModal: React.FC<Props> = ({ todo, userId }) => {
             </p>
 
             <p className="block" data-cy="modal-user">
-              {/* <strong className="has-text-success">Done</strong> */}
               {todo?.completed ? (
                 <strong className="has-text-danger">Done</strong>
               ) : (

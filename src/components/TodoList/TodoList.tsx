@@ -1,7 +1,8 @@
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { actions } from '../../store/currentTodo';
 import { Todo } from '../../types/Todo';
-import { TodoModal } from '../TodoModal';
 
 type Props = {
   todos: Todo[];
@@ -9,11 +10,7 @@ type Props = {
 };
 
 export const TodoList: React.FC<Props> = ({ todos, selectedTodo }) => {
-  const [userId, setUserId] = useState(0);
-
-  const onSelectTodo = (selectedUserId: number) => {
-    setUserId(selectedUserId);
-  };
+  const dispatch = useDispatch();
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -64,27 +61,16 @@ export const TodoList: React.FC<Props> = ({ todos, selectedTodo }) => {
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => onSelectTodo(todo.userId)}
+                  onClick={() => dispatch(actions.setTodo(todo))}
                 >
                   <span className="icon">
-                    <i className={classNames(
-                      'far fa-eye',
-                      { 'fa-eye-slash': todo === selectedTodo },
-                    )}
-                    />
+                    <i className="far fa-eye" />
                   </span>
                 </button>
               </td>
             </tr>
           </>
         ))}
-
-        {selectedTodo && (
-          <TodoModal
-            todo={selectedTodo}
-            userId={userId}
-          />
-        )}
       </tbody>
     </table>
   );

@@ -5,33 +5,32 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { selectors } from './store';
-import { actions as loadingAction } from './store/loading';
-
 import { Todo } from './types/Todo';
-
 import { getTodos } from './api';
+import { selectors } from './store';
+import { actions as todoActions } from './store/currentTodo';
+import { actions as loadingActions } from './store/loading';
 
 export const App: React.FC = () => {
   const [todosFromServer, setTodosFromServer] = useState<Todo[]>([]);
   const [visibleTodos, setVisibleTotos] = useState<Todo[]>([]);
 
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectors.loading);
   const selectedTodo = useSelector(selectors.todo);
+  const isLoading = useSelector(selectors.loading);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadingAction.startLoading());
-
-    const load = async () => {
+    const loading = async () => {
       const loadingTodo = await getTodos();
 
       setTodosFromServer(loadingTodo);
       setVisibleTotos(loadingTodo);
+      dispatch(loadingActions.startLoading());
     };
 
-    load();
+    loading();
   }, []);
 
   const filtredTodos = (query: string, condition: string) => {
@@ -63,7 +62,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoading
+              {!isLoading
                 ? (
                   <Loader />
                 ) : (
@@ -76,6 +75,12 @@ export const App: React.FC = () => {
           </div>
         </div>
       </div>
+      {selectedTodo && (
+        <TodoModal
+          todo={visibleTodos.find(todo => todo.id === selectedTodo.id)}
+          onClose={() => dispatch(todoActions.unsetTodo())}
+        />
+      )}
     </>
   );
 };
