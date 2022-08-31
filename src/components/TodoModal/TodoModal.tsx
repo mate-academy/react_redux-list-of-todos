@@ -1,10 +1,12 @@
 import { FC, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '../Loader';
 import { Maybe } from '../../types/Maybe';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { Todo } from '../../types/Todo';
+import { selectors } from '../../store';
+import { actions as loadingActions } from '../../store/loading';
 import { actions as todoActions } from '../../store/currentTodo';
 
 interface Props {
@@ -13,13 +15,15 @@ interface Props {
 
 export const TodoModal: FC<Props> = ({ todo }) => {
   const [user, setUser] = useState<Maybe<User>>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectors.isLoading);
 
   useEffect(() => {
+    dispatch(loadingActions.startLoading());
+
     getUser(todo.userId)
       .then(userFromServer => setUser(userFromServer))
-      .finally(() => setIsLoading(false));
+      .finally(() => dispatch(loadingActions.finishLoading()));
   }, []);
 
   return (

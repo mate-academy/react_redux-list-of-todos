@@ -4,11 +4,12 @@ import thunk from 'redux-thunk';
 import loadingReducer from './loading';
 import currentTodoReducer from './currentTodo';
 
-export type RootState = ReturnType<typeof rootReducer>;
 const rootReducer = combineReducers({
   loading: loadingReducer,
   currentTodo: currentTodoReducer,
 });
+
+type RootState = ReturnType<typeof rootReducer>;
 
 export const selectors = {
   isLoading: (state: RootState) => state.loading,

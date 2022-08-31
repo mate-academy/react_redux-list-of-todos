@@ -5,7 +5,7 @@ import {
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import './App.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
@@ -15,24 +15,20 @@ import { FilterType } from './types/FilterType';
 import { getTodos } from './api';
 import { debounce } from './decorator';
 import { selectors } from './store';
-import { actions as loadingActions } from './store/loading';
 
 export const App: FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [filterType, setFilterType] = useState(FilterType.All);
   const [query, setQuery] = useState('');
   const [appliedQuery, setAppliedQuery] = useState('');
 
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectors.isLoading);
   const currenTodo = useSelector(selectors.getTodo);
 
   useEffect(() => {
-    dispatch(loadingActions.startLoading());
-
     getTodos()
       .then(todosFromServer => setTodos(todosFromServer))
-      .finally(() => dispatch(loadingActions.finishLoading()));
+      .finally(() => setIsLoading(false));
   }, []);
 
   const applyQuery = useCallback(debounce(setAppliedQuery, 500), []);
