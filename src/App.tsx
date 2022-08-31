@@ -1,29 +1,91 @@
-import { useSelector } from 'react-redux';
+/* eslint-disable max-len */
+import {
+  FC, useCallback, useEffect, useMemo, useState,
+} from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
-import { Start } from './components/Start';
-import { Finish } from './components/Finish';
-
+import './App.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+import { Loader } from './components/Loader';
+import { Todo } from './types/Todo';
+import { FilterType } from './types/FilterType';
+import { getTodos } from './api';
+import { debounce } from './decorator';
 import { selectors } from './store';
+import { actions as loadingActions } from './store/loading';
 
-export const App = () => {
-  // `useSelector` connects our component to the Redux store
-  // and rerenders it after every dispatched action
-  const loading = useSelector(selectors.isLoading);
+export const App: FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [filterType, setFilterType] = useState(FilterType.All);
+  const [query, setQuery] = useState('');
+  const [appliedQuery, setAppliedQuery] = useState('');
 
-  // we do not call a selector with (), just pass a link to it
-  const message = useSelector(selectors.getMessage) || 'Ready!';
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectors.isLoading);
+  const currenTodo = useSelector(selectors.getTodo);
+
+  useEffect(() => {
+    dispatch(loadingActions.startLoading());
+
+    getTodos()
+      .then(todosFromServer => setTodos(todosFromServer))
+      .finally(() => dispatch(loadingActions.finishLoading()));
+  }, []);
+
+  const applyQuery = useCallback(debounce(setAppliedQuery, 500), []);
+  const filteredTodos = useMemo(() => {
+    const lowerCasedQuery = query.toLowerCase();
+
+    return todos.filter(todo => {
+      const checkQuery = todo.title.toLowerCase().includes(lowerCasedQuery);
+
+      switch (filterType) {
+        case FilterType.All:
+          return checkQuery;
+        case FilterType.Active:
+          return checkQuery && !todo.completed;
+        case FilterType.Completed:
+          return checkQuery && todo.completed;
+        default:
+          return true;
+      }
+    });
+  }, [todos, appliedQuery, filterType]);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
 
-      {/* these buttons are used only for the demo */}
-      <Start title="Start loading" />
-      <Finish title="Succeed" message="Loaded successfully!" />
-      <Finish title="Fail" message="Error occurred." />
-    </div>
+            <div className="block">
+              <TodoFilter
+                filterType={filterType}
+                onFilterChange={setFilterType}
+                searchQuery={query}
+                onChange={setQuery}
+                onAppliedChange={applyQuery}
+              />
+            </div>
+
+            <div className="block">
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <TodoList todos={filteredTodos} />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {currenTodo && (
+        <TodoModal todo={currenTodo} />
+      )}
+    </>
   );
 };
