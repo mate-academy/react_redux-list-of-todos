@@ -1,19 +1,19 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import currentTodoReducer from './currentTodo';
 import userReducer from './user';
+import todosReducer from './todos';
 
 const rootReducer = combineReducers({
+  todosInfo: todosReducer,
   userInfo: userReducer,
-  currentTodo: currentTodoReducer,
 });
 
 type RootState = ReturnType<typeof rootReducer>;
 
 export const selectors = {
   getUserInfo: (state: RootState) => state.userInfo,
-  getTodo: (state: RootState) => state.currentTodo,
+  getTodosInfo: (state: RootState) => state.todosInfo,
 };
 
 // The `store` is passed to the Provider in `/src/index.tsx`

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { selectors } from '../../store';
-import { actions as todoActions } from '../../store/currentTodo';
+import { actions as todosActions } from '../../store/todos';
 
 type Props = {
   todo: Todo;
@@ -15,14 +15,14 @@ export const TodoComponent: FC<Props> = memo(({ todo }) => {
   } = todo;
 
   const dispatch = useDispatch();
-  const currenTodo = useSelector(selectors.getTodo);
+  const { selectedTodo } = useSelector(selectors.getTodosInfo);
 
   return (
     <tr
       key={id}
       data-cy="todo"
       className={classNames({
-        'has-background-info-light': currenTodo?.id === id,
+        'has-background-info-light': selectedTodo?.id === id,
       })}
     >
       <td className="is-vcentered">{userId}</td>
@@ -43,12 +43,12 @@ export const TodoComponent: FC<Props> = memo(({ todo }) => {
           data-cy="selectButton"
           className="button"
           type="button"
-          onClick={() => dispatch(todoActions.select(todo))}
+          onClick={() => dispatch(todosActions.selectTodo(todo))}
         >
           <span className="icon">
             <i
               className={
-                currenTodo?.id !== id
+                selectedTodo?.id !== id
                   ? 'far fa-eye'
                   : 'far fa-eye-slash'
               }

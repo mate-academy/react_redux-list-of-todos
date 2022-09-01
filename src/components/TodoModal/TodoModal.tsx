@@ -4,7 +4,7 @@ import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
 import { selectors } from '../../store';
 import { actions as userActions, fetchUser } from '../../store/user';
-import { actions as todoActions } from '../../store/currentTodo';
+import { actions as todosActions } from '../../store/todos';
 
 interface Props {
   todo: Todo;
@@ -43,7 +43,7 @@ export const TodoModal: FC<Props> = ({ todo }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(todoActions.unSelect())}
+              onClick={() => dispatch(todosActions.unselectTodo())}
             />
           </header>
 

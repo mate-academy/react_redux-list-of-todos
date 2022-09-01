@@ -1,47 +1,9 @@
 import { Dispatch } from 'redux';
-import { User } from '../types/User';
-import { Maybe } from '../types/Maybe';
+import {
+  UserFetchError, UserFetchFinish, UserFetchStart, UserFetchSuccess,
+  User, UserAction, UserActionTypes, UserState, UserUnselect,
+} from '../types/User';
 import { getUser } from '../api';
-
-enum UserActionTypes {
-  user_FETCH_START,
-  user_FETCH_SUCCESS,
-  user_FETCH_ERROR,
-  user_FETCH_FINISH,
-  user_UNSELECT,
-}
-
-interface FetchStart {
-  type: UserActionTypes.user_FETCH_START,
-}
-
-interface FetchSuccess {
-  type: UserActionTypes.user_FETCH_SUCCESS,
-  payload: User,
-}
-
-interface FetchError {
-  type: UserActionTypes.user_FETCH_ERROR,
-  payload: string,
-}
-
-interface FetchFinish {
-  type: UserActionTypes.user_FETCH_FINISH,
-}
-
-interface UserUnselect {
-  type: UserActionTypes.user_UNSELECT,
-}
-
-type UserAction = (
-  FetchStart | FetchSuccess | FetchError | FetchFinish | UserUnselect
-);
-
-interface UserState {
-  user: Maybe<User>,
-  loading: boolean,
-  error: Maybe<string>,
-}
 
 const initialState: UserState = {
   user: null,
@@ -50,16 +12,20 @@ const initialState: UserState = {
 };
 
 export const actions = {
-  startFetch: (): FetchStart => ({ type: UserActionTypes.user_FETCH_START }),
-  setUser: (user: User): FetchSuccess => ({
+  startFetch: (): UserFetchStart => ({
+    type: UserActionTypes.user_FETCH_START,
+  }),
+  setUser: (user: User): UserFetchSuccess => ({
     type: UserActionTypes.user_FETCH_SUCCESS,
     payload: user,
   }),
-  setError: (error: string): FetchError => ({
+  setError: (error: string): UserFetchError => ({
     type: UserActionTypes.user_FETCH_ERROR,
     payload: error,
   }),
-  finishFetch: (): FetchFinish => ({ type: UserActionTypes.user_FETCH_FINISH }),
+  finishFetch: (): UserFetchFinish => ({
+    type: UserActionTypes.user_FETCH_FINISH,
+  }),
   userUnselect: (): UserUnselect => ({ type: UserActionTypes.user_UNSELECT }),
 };
 
