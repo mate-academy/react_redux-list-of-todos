@@ -1,14 +1,17 @@
-const START_LOADING = 'START_LOADING';
-const FINISH_LOADING = 'FINISH_LOADING';
+type StartLoading = {
+  type: 'START_LOADING',
+};
+
+type FinishLoading = {
+  type: 'FINISH_LOADING',
+};
 
 export const actions = {
-  startLoading: () => ({ type: START_LOADING }),
-  finishLoading: () => ({ type: FINISH_LOADING }),
+  startLoading: (): StartLoading => ({ type: 'START_LOADING' }),
+  finishLoading: (): FinishLoading => ({ type: 'FINISH_LOADING' }),
 };
 
-type Action = {
-  type: 'START_LOADING' | 'FINISH_LOADING';
-};
+type Action = StartLoading | FinishLoading;
 
 export const selectors = {
   getLoading: (loading: boolean) => loading,
@@ -18,10 +21,10 @@ const initialState = false;
 
 const loadingReducer = (state = initialState, action: Action): boolean => {
   switch (action.type) {
-    case START_LOADING:
+    case 'START_LOADING':
       return true;
 
-    case FINISH_LOADING:
+    case 'FINISH_LOADING':
       return false;
 
     default:
