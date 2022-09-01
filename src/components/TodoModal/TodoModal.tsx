@@ -1,12 +1,9 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '../Loader';
-import { Maybe } from '../../types/Maybe';
-import { getUser } from '../../api';
-import { User } from '../../types/User';
 import { Todo } from '../../types/Todo';
 import { selectors } from '../../store';
-import { actions as loadingActions } from '../../store/loading';
+import { actions as userActions, fetchUser } from '../../store/user';
 import { actions as todoActions } from '../../store/currentTodo';
 
 interface Props {
@@ -14,23 +11,22 @@ interface Props {
 }
 
 export const TodoModal: FC<Props> = ({ todo }) => {
-  const [user, setUser] = useState<Maybe<User>>(null);
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectors.isLoading);
+  const { user, loading } = useSelector(selectors.getUserInfo);
 
   useEffect(() => {
-    dispatch(loadingActions.startLoading());
+    dispatch(fetchUser(todo.userId));
 
-    getUser(todo.userId)
-      .then(userFromServer => setUser(userFromServer))
-      .finally(() => dispatch(loadingActions.finishLoading()));
+    return () => {
+      dispatch(userActions.userUnselect());
+    };
   }, []);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading ? (
+      {loading ? (
         <Loader />
       ) : (
         <div className="modal-card">

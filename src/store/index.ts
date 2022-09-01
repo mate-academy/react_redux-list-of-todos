@@ -1,18 +1,18 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import loadingReducer from './loading';
 import currentTodoReducer from './currentTodo';
+import userReducer from './user';
 
 const rootReducer = combineReducers({
-  loading: loadingReducer,
+  userInfo: userReducer,
   currentTodo: currentTodoReducer,
 });
 
 type RootState = ReturnType<typeof rootReducer>;
 
 export const selectors = {
-  isLoading: (state: RootState) => state.loading,
+  getUserInfo: (state: RootState) => state.userInfo,
   getTodo: (state: RootState) => state.currentTodo,
 };
 
