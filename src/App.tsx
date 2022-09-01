@@ -8,6 +8,7 @@ import {
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+import { useDispatch, useSelector } from 'react-redux';
 import { getTodos } from './api';
 
 import { TodoList } from './components/TodoList';
@@ -15,6 +16,8 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { Todo } from './types/Todo';
+import { selectors } from './store';
+import { actions as loadingActions } from './store/loading';
 
 const debounce = (func: (arg: string) => void, delay: number) => {
   let timerId: number;
@@ -27,14 +30,19 @@ const debounce = (func: (arg: string) => void, delay: number) => {
 };
 
 export const App = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector(selectors.getLoading);
+  const selectedTodo = useSelector(selectors.getTodo);
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [filter, setFilter] = useState('all');
   const [inputValue, setInputValue] = useState('');
   const [appliedInputValue, setAppliedInputValue] = useState('');
 
   useEffect(() => {
-    getTodos().then(todosFromServer => setTodos(todosFromServer));
+    dispatch(loadingActions.startLoading());
+    getTodos()
+      .then(todosFromServer => setTodos(todosFromServer))
+      .finally(() => dispatch(loadingActions.finishLoading()));
   }, []);
 
   const applyInputValue = useCallback(
@@ -85,12 +93,10 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {todos.length === 0 && (<Loader />)}
+              {loading && (<Loader />)}
               {filteredTodos && (
                 <TodoList
                   todos={filteredTodos}
-                  selectedTodo={selectedTodo}
-                  onSelectedTodo={setSelectedTodo}
                 />
               )}
             </div>
@@ -99,10 +105,7 @@ export const App = () => {
       </div>
 
       { selectedTodo && (
-        <TodoModal
-          selectedTodo={selectedTodo}
-          onDeletedSelectedTodo={setSelectedTodo}
-        />
+        <TodoModal />
       )}
     </>
   );
