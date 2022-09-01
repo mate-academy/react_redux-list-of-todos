@@ -1,7 +1,5 @@
 /* eslint-disable max-len */
-import {
-  FC, useCallback, useEffect, useMemo, useState,
-} from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import './App.scss';
@@ -11,25 +9,20 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { FilterType } from './types/FilterType';
-import { debounce } from './decorator';
 import { selectors } from './store';
 import { fetchTodos } from './store/todos';
 
 export const App: FC = () => {
-  const [filterType, setFilterType] = useState(FilterType.All);
-  const [query, setQuery] = useState('');
-  const [appliedQuery, setAppliedQuery] = useState('');
-
   const dispatch = useDispatch();
   const { todos, loading, selectedTodo } = useSelector(selectors.getTodosInfo);
+  const { filterType, appliedQuery } = useSelector(selectors.getFilter);
 
   useEffect(() => {
     dispatch(fetchTodos());
   }, []);
 
-  const applyQuery = useCallback(debounce(setAppliedQuery, 500), []);
   const filteredTodos = useMemo(() => {
-    const lowerCasedQuery = query.toLowerCase();
+    const lowerCasedQuery = appliedQuery.toLowerCase();
 
     return todos.filter(todo => {
       const checkQuery = todo.title.toLowerCase().includes(lowerCasedQuery);
@@ -55,13 +48,7 @@ export const App: FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                filterType={filterType}
-                onFilterChange={setFilterType}
-                searchQuery={query}
-                onChange={setQuery}
-                onAppliedChange={applyQuery}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
