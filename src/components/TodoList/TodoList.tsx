@@ -1,14 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Todo } from '../../types/Todo';
 import { selectors } from '../../store';
 import { actions } from '../../store/currentTodo';
 
-interface Props {
-  todos: Todo[];
-}
-
-export const TodoList = ({ todos }: Props) => {
+export const TodoList = () => {
   const selectedTodo = useSelector(selectors.getTodo);
+  const todos = useSelector(selectors.getTodos);
   const dispatch = useDispatch();
 
   return (
@@ -27,7 +23,7 @@ export const TodoList = ({ todos }: Props) => {
       </thead>
 
       <tbody>
-        {todos.map(todo => (
+        {todos.filtered.map(todo => (
           <tr
             key={todo.id}
             data-cy="todo"

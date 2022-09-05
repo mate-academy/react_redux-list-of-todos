@@ -1,30 +1,61 @@
-interface Props {
-  filter: string;
-  inputValue: string;
-  onFilter: (filter: string) => void;
-  onInputValue: (inputValue: string) => void;
-  onAppliedInputValue: (appliedInputValue: string) => void;
-}
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { FilterType } from '../../types/FilterType';
+import { actions as todosActions } from '../../store/todos';
 
-export const TodoFilter = ({
-  filter,
-  inputValue,
-  onFilter,
-  onInputValue,
-  onAppliedInputValue,
-}: Props) => {
+// const debounce = (func: (arg: string) => void, delay: number) => {
+//   let timerId: number;
+//
+//   return (...args: string[]) => {
+//     clearInterval(timerId);
+//
+//     timerId = window.setTimeout(func, delay, ...args);
+//   };
+// };
+
+export const TodoFilter = () => {
+  const dispatch = useDispatch();
+  const [filterBy, setFilterBy] = useState('all');
+  const [query, setQuery] = useState('');
+  const [appliedQuery, setAppliedQuery] = useState('');
+
+  console.log(appliedQuery); // eslint-disable-line
+
+  // const applyInputValue = useCallback(
+  //   debounce(setAppliedQuery, 400), [appliedQuery],
+  // );
+
+  useEffect(() => {
+    switch (filterBy) {
+      case FilterType.ALL:
+        dispatch(todosActions.clearFilter(query));
+
+        break;
+      case FilterType.COMPLETED:
+        dispatch(todosActions.setFilterByCompleted(query));
+
+        break;
+      case FilterType.ACTIVE:
+        dispatch(todosActions.setFilterByActive(query));
+
+        break;
+      default:
+        dispatch(todosActions.clearFilter(query));
+    }
+  }, [filterBy, query]);
+
   return (
     <form className="field has-addons">
       <p className="control">
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={filter}
-            onChange={(event) => onFilter(event.target.value)}
+            value={filterBy}
+            onChange={(event) => setFilterBy(event.target.value)}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={FilterType.ALL}>All</option>
+            <option value={FilterType.ACTIVE}>Active</option>
+            <option value={FilterType.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>
@@ -35,17 +66,17 @@ export const TodoFilter = ({
           type="text"
           className="input"
           placeholder="Search..."
-          value={inputValue}
+          value={query}
           onChange={({ target }) => {
-            onInputValue(target.value);
-            onAppliedInputValue(target.value);
+            setQuery(target.value);
+            setAppliedQuery(target.value);
           }}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {inputValue && (
+        {query && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
@@ -53,8 +84,8 @@ export const TodoFilter = ({
               type="button"
               className="delete"
               onClick={() => {
-                onInputValue('');
-                onAppliedInputValue('');
+                setQuery('');
+                setAppliedQuery('');
               }}
             />
           </span>
