@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { FilterType } from '../../types/FilterType';
 import { actions as todosActions } from '../../store/todos';
 
-// const debounce = (func: (arg: string) => void, delay: number) => {
-//   let timerId: number;
-//
-//   return (...args: string[]) => {
-//     clearInterval(timerId);
-//
-//     timerId = window.setTimeout(func, delay, ...args);
-//   };
-// };
+const debounce = (func: (arg: string) => void, delay: number) => {
+  let timerId: number;
+
+  return (...args: string[]) => {
+    clearInterval(timerId);
+
+    timerId = window.setTimeout(func, delay, ...args);
+  };
+};
 
 export const TodoFilter = () => {
   const dispatch = useDispatch();
@@ -19,30 +19,28 @@ export const TodoFilter = () => {
   const [query, setQuery] = useState('');
   const [appliedQuery, setAppliedQuery] = useState('');
 
-  console.log(appliedQuery); // eslint-disable-line
-
-  // const applyInputValue = useCallback(
-  //   debounce(setAppliedQuery, 400), [appliedQuery],
-  // );
+  const applyInputValue = useCallback(
+    debounce(setAppliedQuery, 400), [appliedQuery],
+  );
 
   useEffect(() => {
     switch (filterBy) {
       case FilterType.ALL:
-        dispatch(todosActions.clearFilter(query));
+        dispatch(todosActions.clearFilter(appliedQuery));
 
         break;
       case FilterType.COMPLETED:
-        dispatch(todosActions.setFilterByCompleted(query));
+        dispatch(todosActions.setFilterByCompleted(appliedQuery));
 
         break;
       case FilterType.ACTIVE:
-        dispatch(todosActions.setFilterByActive(query));
+        dispatch(todosActions.setFilterByActive(appliedQuery));
 
         break;
       default:
-        dispatch(todosActions.clearFilter(query));
+        dispatch(todosActions.clearFilter(appliedQuery));
     }
-  }, [filterBy, query]);
+  }, [filterBy, appliedQuery]);
 
   return (
     <form className="field has-addons">
@@ -69,7 +67,7 @@ export const TodoFilter = () => {
           value={query}
           onChange={({ target }) => {
             setQuery(target.value);
-            setAppliedQuery(target.value);
+            applyInputValue(target.value);
           }}
         />
         <span className="icon is-left">
@@ -85,7 +83,7 @@ export const TodoFilter = () => {
               className="delete"
               onClick={() => {
                 setQuery('');
-                setAppliedQuery('');
+                applyInputValue('');
               }}
             />
           </span>
