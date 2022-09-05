@@ -1,5 +1,5 @@
-import { FC, memo } from 'react';
-import debounce from 'lodash.debounce';
+import { FC, memo, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch, useSelector } from 'react-redux';
 import { actions as filterActions } from '../../store/filter';
 import { FilterType } from '../../types/FilterType';
@@ -7,13 +7,12 @@ import { selectors } from '../../store';
 
 export const TodoFilter: FC = memo(() => {
   const dispatch = useDispatch();
-  const { filterType, query } = useSelector(selectors.getFilter);
+  const { filterType } = useSelector(selectors.getFilter);
+  const [query, setQuery] = useState('');
 
-  const setAppliedQuery = (str: string) => {
-    dispatch(filterActions.setAppliedQuery(str));
-  };
-
-  const applyQuery = debounce(setAppliedQuery, 500);
+  const setAppliedQuery = useDebouncedCallback((value) => {
+    dispatch(filterActions.setAppliedQuery(value));
+  }, 300);
 
   return (
     <form className="field has-addons">
@@ -28,9 +27,9 @@ export const TodoFilter: FC = memo(() => {
               );
             }}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={FilterType.All}>All</option>
+            <option value={FilterType.Active}>Active</option>
+            <option value={FilterType.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -45,8 +44,8 @@ export const TodoFilter: FC = memo(() => {
           onChange={(event) => {
             const { value } = event.target;
 
-            dispatch(filterActions.setQuery(value));
-            applyQuery(value);
+            setQuery(value);
+            setAppliedQuery(value);
           }}
         />
         <span className="icon is-left">
@@ -61,8 +60,8 @@ export const TodoFilter: FC = memo(() => {
               type="button"
               className="delete"
               onClick={() => {
-                dispatch(filterActions.setQuery(''));
-                applyQuery('');
+                setQuery('');
+                setAppliedQuery('');
               }}
             />
           </span>
