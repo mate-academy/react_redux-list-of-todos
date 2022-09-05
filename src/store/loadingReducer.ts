@@ -1,17 +1,14 @@
-type StartLoading = {
-  type: 'START_LOADING',
-};
-
-type FinishLoading = {
-  type: 'FINISH_LOADING',
-};
+import {
+  LoadingAction,
+  LoadingReducerActionTypes,
+} from '../types/LoadingReducerActionTypes';
 
 export const actions = {
-  startLoading: (): StartLoading => ({ type: 'START_LOADING' }),
-  finishLoading: (): FinishLoading => ({ type: 'FINISH_LOADING' }),
+  // eslint-disable-next-line max-len
+  startLoading: () => ({ type: LoadingReducerActionTypes.START_LOADING }),
+  // eslint-disable-next-line max-len
+  finishLoading: () => ({ type: LoadingReducerActionTypes.FINISH_LOADING }),
 };
-
-type Action = StartLoading | FinishLoading;
 
 export const selectors = {
   getLoading: (loading: boolean) => loading,
@@ -19,12 +16,15 @@ export const selectors = {
 
 const initialState = false;
 
-const loadingReducer = (state = initialState, action: Action): boolean => {
+const loadingReducer = (
+  state = initialState,
+  action: LoadingAction,
+): boolean => {
   switch (action.type) {
-    case 'START_LOADING':
+    case LoadingReducerActionTypes.START_LOADING:
       return true;
 
-    case 'FINISH_LOADING':
+    case LoadingReducerActionTypes.FINISH_LOADING:
       return false;
 
     default:

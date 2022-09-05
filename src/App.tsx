@@ -1,41 +1,33 @@
 /* eslint-disable max-len */
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { TodoList } from './components/TodoList';
-import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
-import { Loader } from './components/Loader';
-import { Todo } from './types/Todo';
-import { getTodos } from './api';
+import { useDispatch } from 'react-redux';
 import { Filter } from './types/Filter';
-import { selectors } from './store';
 import { actions as loadingActions } from './store/loadingReducer';
 import { actions as currentTodoReducer } from './store/currentTodoReducer';
+import { actions } from './store/TodosReducer';
+import { useTypedSelector } from './components/hooks/useTypedSelector';
+import {
+  Loader, TodoFilter, TodoList, TodoModal,
+} from './components/index';
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const todos = useTypedSelector(state => state.todo);
   const [userId, setUserId] = useState(0);
   const [visibleTodos, setVisibleTodos] = useState(todos);
   const [filteredBy, setFilteredBy] = useState('all');
   const [query, setQuery] = useState('');
 
-  const isLoading = useSelector(selectors.getLoading);
-  const selectedTodo = useSelector(selectors.getTodo);
+  const isLoading = useTypedSelector(state => state.loading);
+  const selectedTodo = useTypedSelector(state => state.todoId);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const loadTodos = async () => {
-      const todosFromServer = await getTodos();
+    dispatch(loadingActions.startLoading());
 
-      dispatch(loadingActions.startLoading());
-      setTodos(todosFromServer);
-      setVisibleTodos(todosFromServer);
-    };
+    dispatch(actions.getTodos());
 
-    loadTodos();
     dispatch(loadingActions.finishLoading());
   }, []);
 
@@ -68,7 +60,7 @@ export const App: React.FC = () => {
       default:
         break;
     }
-  }, [filteredBy, query]);
+  }, [filteredBy, query, todos]);
 
   const selectUser = (id: number, todoId: number) => {
     setUserId(id);
@@ -93,7 +85,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!isLoading && <Loader />}
+              {isLoading && <Loader />}
               <TodoList todos={visibleTodos} selectUser={selectUser} />
             </div>
           </div>

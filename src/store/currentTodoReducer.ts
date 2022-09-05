@@ -1,23 +1,27 @@
-const SET_TODO = 'SET_TODO';
+import { CurrentTodoReducerTypes } from '../types/CurrentTodoReducerTypes';
 
 export const actions = {
-  setTodo: (todoId: number) => ({ type: SET_TODO, payload: todoId }),
+  // eslint-disable-next-line max-len
+  setTodo: (todoId: number) => ({ type: CurrentTodoReducerTypes.SET_TODO, payload: todoId }),
 };
 
-type Action = {
-  type: 'SET_TODO',
+type CurrentTodoAction = {
+  type: CurrentTodoReducerTypes.SET_TODO,
   payload: number,
 };
 
 export const selectors = {
-  getTodo: (todoId: number) => todoId,
+  setTodo: (todoId: number) => todoId,
 };
 
 const initialState = 0;
 
-const loadingReducer = (state = initialState, action: Action): number => {
+const loadingReducer = (
+  state = initialState,
+  action: CurrentTodoAction,
+): number => {
   switch (action.type) {
-    case SET_TODO:
+    case CurrentTodoReducerTypes.SET_TODO:
       return action.payload;
     default:
       return state;
