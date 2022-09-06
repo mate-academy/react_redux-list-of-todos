@@ -3,19 +3,23 @@ import { Todo } from '../Types/Todo';
 type RootState = Todo | null;
 
 type SelectTask = {
-  type: 'SelectTask',
+  type: 'currentTodo/SelectTask',
   payload: Todo,
 };
 
 type RemoveTask = {
-  type: 'RemoveTask'
+  type: 'currentTodo/RemoveTask'
 };
 
 type Action = RemoveTask | SelectTask;
 
 export const todoActions = {
-  SelectTask: (todo: Todo) => ({ type: 'SelectTask', payload: todo }),
-  RemoveTask: () => ({ type: 'RemoveTask' }),
+  SelectTask: (todo: Todo) => (
+    {
+      type: 'currentTodo/SelectTask',
+      payload: todo,
+    }),
+  RemoveTask: () => ({ type: 'currentTodo/RemoveTask' }),
 };
 
 const initialState: RootState = null;
@@ -25,10 +29,10 @@ const currentTodoReducer = (
   action: Action,
 ): RootState => {
   switch (action.type) {
-    case 'SelectTask':
+    case 'currentTodo/SelectTask':
       return action.payload;
 
-    case 'RemoveTask':
+    case 'currentTodo/RemoveTask':
       return null;
 
     default:

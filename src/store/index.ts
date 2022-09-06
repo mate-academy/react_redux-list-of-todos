@@ -4,10 +4,12 @@ import thunk from 'redux-thunk';
 import loadingReducer from './loading';
 import currentTodoReducer from './currentTodo';
 import { Todo } from '../Types/Todo';
+import todosReducer from './todos';
 
 const rootReducer = combineReducers({
   isTodosLoading: loadingReducer,
   currentTodo: currentTodoReducer,
+  todosList: todosReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -16,6 +18,7 @@ export type RootState = ReturnType<typeof rootReducer>;
 export const selectors = {
   isLoading: (state: RootState): boolean => state.isTodosLoading,
   selectedTodo: (state: RootState): Todo => state.currentTodo,
+  todosList: (state: RootState): Todo[] => state.todosList,
 };
 
 // The `store` is passed to the Provider in `/src/index.tsx`

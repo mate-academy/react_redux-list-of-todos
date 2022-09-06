@@ -1,9 +1,9 @@
 type StartLoadingAction = {
-  type: 'START_LOADING',
+  type: 'loading/startLoading',
 };
 
 type FinishLoadingAction = {
-  type: 'FINISH_LOADING',
+  type: 'loading/endLoading',
 };
 
 type Action = (
@@ -13,14 +13,12 @@ type Action = (
 
 type RootState = boolean;
 
-const initialState: RootState = false;
-
-const loadingReducer = (state = initialState, action: Action): RootState => {
+const loadingReducer = (state = false, action: Action): RootState => {
   switch (action.type) {
-    case 'START_LOADING':
+    case 'loading/startLoading':
       return true;
 
-    case 'FINISH_LOADING':
+    case 'loading/endLoading':
       return false;
 
     default:
@@ -30,11 +28,11 @@ const loadingReducer = (state = initialState, action: Action): RootState => {
 
 export const actions = {
   startLoading: (): StartLoadingAction => ({
-    type: 'START_LOADING',
+    type: 'loading/startLoading',
   }),
 
   finishLoading: (): FinishLoadingAction => ({
-    type: 'FINISH_LOADING',
+    type: 'loading/endLoading',
   }),
 };
 

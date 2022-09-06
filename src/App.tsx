@@ -9,18 +9,18 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
-import { Todo } from './Types/Todo';
 import { TodosFilter } from './Types/TodosFilter';
 import { selectors, store } from './store';
 import { actions } from './store/loading';
+import { todosActions } from './store/todos';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
 
   const loading = useSelector(selectors.isLoading);
   const selectedTodo = useSelector(selectors.selectedTodo);
+  const todosFromSever = useSelector(selectors.todosList);
 
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredBy, setFilteredBy]
     = useState<TodosFilter>(TodosFilter.DEFAULT);
@@ -31,7 +31,7 @@ export const App: React.FC = () => {
     console.log(store.getState());
     getTodos()
       .then((todosFromServer) => {
-        setTodos(todosFromServer);
+        dispatch(todosActions.SetTodos(todosFromServer));
       })
       .finally(() => {
         dispatch(actions.finishLoading());
@@ -41,7 +41,7 @@ export const App: React.FC = () => {
   }, []);
 
   const prepareTasks = () => {
-    return todos
+    return todosFromSever
       .filter(task => {
         if (filteredBy === TodosFilter.ACTIVE) {
           return !task.completed;
