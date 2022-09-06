@@ -4,14 +4,12 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getTodos } from './api';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { selectors } from './store';
-import { actions as loadingActions } from './store/loading';
 import { actions as todosActions } from './store/todos';
 
 export const App = () => {
@@ -21,10 +19,7 @@ export const App = () => {
   const todos = useSelector(selectors.getTodos);
 
   useEffect(() => {
-    dispatch(loadingActions.startLoading());
-    getTodos()
-      .then(todosFromServer => dispatch(todosActions.setTodos(todosFromServer)))
-      .finally(() => dispatch(loadingActions.finishLoading()));
+    dispatch(todosActions.loadTodos);
   }, []);
 
   return (

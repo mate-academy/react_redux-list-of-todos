@@ -1,4 +1,7 @@
+import { Dispatch } from 'redux';
 import { Todo } from '../types/Todo';
+import { actions as loadingActions } from './loading';
+import { getTodos } from '../api';
 
 type SetTodosAction = {
   type: 'SET_TODOS';
@@ -42,6 +45,12 @@ export const actions = {
     type: 'FILTER_BY_ACTIVE',
     payload: query,
   }),
+  loadTodos: (dispatch: Dispatch) => {
+    dispatch(loadingActions.startLoading());
+    getTodos()
+      .then(todosFromServer => dispatch(actions.setTodos(todosFromServer)))
+      .finally(() => dispatch(loadingActions.finishLoading()));
+  },
 };
 
 type State = {
