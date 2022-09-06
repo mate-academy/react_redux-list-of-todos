@@ -6,22 +6,26 @@ import { actionsWithTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => {
-    const todosToShow = state.todos;
-    // const { query, status } = state.filter;
+    let todosToShow = state.todos;
+    const { query, status } = state.filter;
 
-    // todosToShow = todosToShow.filter(todo => {
-    //   switch (status) {
-    //     case 'active':
-    //       return !todo.completed;
+    todosToShow = todosToShow.filter(todo => {
+      switch (status) {
+        case 'active':
+          return !todo.completed;
 
-    //     case 'completed':
-    //       return todo.completed;
+        case 'completed':
+          return todo.completed;
 
-    //     case 'all':
-    //     default:
-    //       return todo;
-    //   }
-    // });
+        case 'all':
+        default:
+          return todo;
+      }
+    });
+
+    todosToShow = todosToShow.filter(
+      todo => todo.title.toLowerCase().includes(query),
+    );
 
     return todosToShow;
   });
@@ -30,9 +34,11 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+      {todos.length === 0 && (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      )}
 
       <table className="table is-narrow is-fullwidth">
         <thead>
