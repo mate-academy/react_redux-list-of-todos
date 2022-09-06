@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
+import cn from 'classnames';
 import { Todo } from '../../types/Todo';
 import { selectors } from '../../store';
 import { actions as todosActions } from '../../store/todos';
@@ -21,7 +21,7 @@ export const TodoComponent: FC<Props> = memo(({ todo }) => {
     <tr
       key={id}
       data-cy="todo"
-      className={classNames({
+      className={cn({
         'has-background-info-light': selectedTodo?.id === id,
       })}
     >

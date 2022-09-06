@@ -8,39 +8,39 @@ export interface Todo {
 }
 
 export enum TodosActionTypes {
-  todos_FETCH_START = 'todos_FETCH_START',
-  todos_FETCH_SUCCESS = 'todos_FETCH_SUCCESS',
-  todos_FETCH_ERROR = 'todos_FETCH_ERRO',
-  todos_FETCH_FINISH = 'todos_FETCH_FINISH',
-  todo_SELECT = 'todo_SELECT',
-  todo_UNSELECT = 'todo_UNSELECT',
+  TodosFetchStart = 'todos/FETCH_START',
+  TodosFetchSuccess = 'todos/FETCH_SUCCESS',
+  TodosFetchError = 'todos/FETCH_ERROR',
+  TodosFetchFinish = 'todos/FETCH_FINIS',
+  TodoSelect = 'todo/SELECT',
+  TodoUnselect = 'todo/UNSELECT',
 }
 
 export interface TodosFetchStart {
-  type: TodosActionTypes.todos_FETCH_START,
+  type: TodosActionTypes.TodosFetchStart,
 }
 
 export interface TodosFetchSuccess {
-  type: TodosActionTypes.todos_FETCH_SUCCESS,
+  type: TodosActionTypes.TodosFetchSuccess,
   payload: Todo[],
 }
 
 export interface TodosFetchError {
-  type: TodosActionTypes.todos_FETCH_ERROR,
+  type: TodosActionTypes.TodosFetchError,
   payload: string,
 }
 
 export interface TodosFetchFinish {
-  type: TodosActionTypes.todos_FETCH_FINISH,
+  type: TodosActionTypes.TodosFetchFinish,
 }
 
 export interface SelectTodo {
-  type: TodosActionTypes.todo_SELECT,
+  type: TodosActionTypes.TodoSelect,
   payload: Todo,
 }
 
 export interface UnselectTodo {
-  type: TodosActionTypes.todo_UNSELECT,
+  type: TodosActionTypes.TodoUnselect,
 }
 
 export type TodosAction = (

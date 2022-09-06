@@ -22,24 +22,24 @@ const initialState: TodosState = {
 
 export const actions = {
   startFetch: (): TodosFetchStart => ({
-    type: TodosActionTypes.todos_FETCH_START,
+    type: TodosActionTypes.TodosFetchStart,
   }),
   setTodos: (todos: Todo[]): TodosFetchSuccess => ({
-    type: TodosActionTypes.todos_FETCH_SUCCESS,
+    type: TodosActionTypes.TodosFetchSuccess,
     payload: todos,
   }),
   setError: (error: string): TodosFetchError => ({
-    type: TodosActionTypes.todos_FETCH_ERROR,
+    type: TodosActionTypes.TodosFetchError,
     payload: error,
   }),
   finishFetch: (): TodosFetchFinish => ({
-    type: TodosActionTypes.todos_FETCH_FINISH,
+    type: TodosActionTypes.TodosFetchFinish,
   }),
   selectTodo: (todo: Todo): SelectTodo => ({
-    type: TodosActionTypes.todo_SELECT,
+    type: TodosActionTypes.TodoSelect,
     payload: todo,
   }),
-  unselectTodo: (): UnselectTodo => ({ type: TodosActionTypes.todo_UNSELECT }),
+  unselectTodo: (): UnselectTodo => ({ type: TodosActionTypes.TodoUnselect }),
 };
 
 export const fetchTodos = () => {
@@ -58,32 +58,32 @@ const todosReducer = (
   action: TodosAction,
 ) : TodosState => {
   switch (action.type) {
-    case TodosActionTypes.todos_FETCH_START:
+    case TodosActionTypes.TodosFetchStart:
       return {
         ...state,
         loading: true,
       };
-    case TodosActionTypes.todos_FETCH_SUCCESS:
+    case TodosActionTypes.TodosFetchSuccess:
       return {
         ...state,
         todos: action.payload,
       };
-    case TodosActionTypes.todos_FETCH_ERROR:
+    case TodosActionTypes.TodosFetchError:
       return {
         ...state,
         error: action.payload,
       };
-    case TodosActionTypes.todos_FETCH_FINISH:
+    case TodosActionTypes.TodosFetchFinish:
       return {
         ...state,
         loading: false,
       };
-    case TodosActionTypes.todo_SELECT:
+    case TodosActionTypes.TodoSelect:
       return {
         ...state,
         selectedTodo: action.payload,
       };
-    case TodosActionTypes.todo_UNSELECT:
+    case TodosActionTypes.TodoUnselect:
       return {
         ...state,
         selectedTodo: null,

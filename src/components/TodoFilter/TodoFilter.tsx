@@ -14,6 +14,11 @@ export const TodoFilter: FC = memo(() => {
     dispatch(filterActions.setAppliedQuery(value));
   }, 300);
 
+  const handleChangeQuery = (value = '') => {
+    setQuery(value);
+    setAppliedQuery(value);
+  };
+
   return (
     <form className="field has-addons">
       <p className="control">
@@ -41,12 +46,7 @@ export const TodoFilter: FC = memo(() => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={(event) => {
-            const { value } = event.target;
-
-            setQuery(value);
-            setAppliedQuery(value);
-          }}
+          onChange={(event) => handleChangeQuery(event.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -59,10 +59,7 @@ export const TodoFilter: FC = memo(() => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => {
-                setQuery('');
-                setAppliedQuery('');
-              }}
+              onClick={() => handleChangeQuery()}
             />
           </span>
         )}

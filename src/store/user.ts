@@ -13,20 +13,20 @@ const initialState: UserState = {
 
 export const actions = {
   startFetch: (): UserFetchStart => ({
-    type: UserActionTypes.user_FETCH_START,
+    type: UserActionTypes.UserFetchStart,
   }),
   setUser: (user: User): UserFetchSuccess => ({
-    type: UserActionTypes.user_FETCH_SUCCESS,
+    type: UserActionTypes.UserFetchSuccess,
     payload: user,
   }),
   setError: (error: string): UserFetchError => ({
-    type: UserActionTypes.user_FETCH_ERROR,
+    type: UserActionTypes.UserFetchError,
     payload: error,
   }),
   finishFetch: (): UserFetchFinish => ({
-    type: UserActionTypes.user_FETCH_FINISH,
+    type: UserActionTypes.UserFetchFinish,
   }),
-  userUnselect: (): UserUnselect => ({ type: UserActionTypes.user_UNSELECT }),
+  userUnselect: (): UserUnselect => ({ type: UserActionTypes.UserUnselect }),
 };
 
 export const fetchUser = (userId: number) => {
@@ -45,27 +45,27 @@ const userReducer = (
   action: UserAction,
 ) : UserState => {
   switch (action.type) {
-    case UserActionTypes.user_FETCH_START:
+    case UserActionTypes.UserFetchStart:
       return {
         ...state,
         loading: true,
       };
-    case UserActionTypes.user_FETCH_SUCCESS:
+    case UserActionTypes.UserFetchSuccess:
       return {
         ...state,
         user: action.payload,
       };
-    case UserActionTypes.user_FETCH_ERROR:
+    case UserActionTypes.UserFetchError:
       return {
         ...state,
         error: action.payload,
       };
-    case UserActionTypes.user_FETCH_FINISH:
+    case UserActionTypes.UserFetchFinish:
       return {
         ...state,
         loading: false,
       };
-    case UserActionTypes.user_UNSELECT:
+    case UserActionTypes.UserUnselect:
       return {
         ...state,
         user: null,

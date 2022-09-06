@@ -8,33 +8,33 @@ export interface User {
 }
 
 export enum UserActionTypes {
-  user_FETCH_START = 'user_FETCH_START',
-  user_FETCH_SUCCESS = 'user_FETCH_SUCCESS',
-  user_FETCH_ERROR = 'user_FETCH_ERROR',
-  user_FETCH_FINISH = 'user_FETCH_FINISH',
-  user_UNSELECT = 'user_UNSELECT',
+  UserFetchStart = 'user/FETCH_START',
+  UserFetchSuccess = 'user/FETCH_SUCCESS',
+  UserFetchError = 'user/FETCH_ERROR',
+  UserFetchFinish = 'user/FETCH_FINISH',
+  UserUnselect = 'user/UNSELECT',
 }
 
 export interface UserFetchStart {
-  type: UserActionTypes.user_FETCH_START,
+  type: UserActionTypes.UserFetchStart,
 }
 
 export interface UserFetchSuccess {
-  type: UserActionTypes.user_FETCH_SUCCESS,
+  type: UserActionTypes.UserFetchSuccess,
   payload: User,
 }
 
 export interface UserFetchError {
-  type: UserActionTypes.user_FETCH_ERROR,
+  type: UserActionTypes.UserFetchError,
   payload: string,
 }
 
 export interface UserFetchFinish {
-  type: UserActionTypes.user_FETCH_FINISH,
+  type: UserActionTypes.UserFetchFinish,
 }
 
 export interface UserUnselect {
-  type: UserActionTypes.user_UNSELECT,
+  type: UserActionTypes.UserUnselect,
 }
 
 export type UserAction = (
