@@ -47,7 +47,7 @@ export const TodoModal: React.FC<Props> = (props) => {
               className="delete"
               data-cy="modal-close"
               onClick={() => {
-                dispatch(todoActions.RemoveTask);
+                dispatch(todoActions.RemoveTask());
               }}
             />
           </header>

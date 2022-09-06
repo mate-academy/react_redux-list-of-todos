@@ -15,7 +15,7 @@ type Action = RemoveTask | SelectTask;
 
 export const todoActions = {
   SelectTask: (todo: Todo) => ({ type: 'SelectTask', payload: todo }),
-  RemoveTask: { type: 'RemoveTask' },
+  RemoveTask: () => ({ type: 'RemoveTask' }),
 };
 
 const initialState: RootState = null;
