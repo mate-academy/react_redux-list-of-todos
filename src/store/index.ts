@@ -1,82 +1,55 @@
-import { createStore, applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import {
+  createStore, applyMiddleware, combineReducers, Action as BasicAction,
+} from 'redux';
+import { composeWithDevTools } from '@redux-devtools/extension';
 import thunk from 'redux-thunk';
+import { Todo } from '../types/Todo';
 
-type StartLoadingAction = {
-  // we use a literal as a type so the type can't have any other value
-  type: 'START_LOADING',
+import { LoadingActions, loadingReducer } from './loading';
+import {
+  loadTodosAction, setTodosActionCreator, TodosActions, todosReducer,
+} from './todos';
+import { currentTodoIdReducer } from './currentTodoId';
+
+export interface Action<T, P> extends BasicAction<T> {
+  payload: P,
+}
+
+export type LoadTodos = LoadingActions | TodosActions;
+
+export const TODOS_ACTIONS_CREATOR = {
+  set: setTodosActionCreator,
+  loadTodos: loadTodosAction,
 };
 
-type FinishLoadingAction = {
-  type: 'FINISH_LOADING',
-  payload: string,
+export const rootReducer = combineReducers({
+  loading: loadingReducer,
+  currentTodoId: currentTodoIdReducer,
+  todos: todosReducer,
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+const loadingSelector = (state: RootState): boolean => state.loading;
+
+export const LOADING_SELECTORS = {
+  loading: loadingSelector,
 };
 
-// Only the listed actions can be dispatched in the App
-type Action = (
-  StartLoadingAction
-  | FinishLoadingAction
-);
+const currentTodoIdSelector = (
+  state: RootState,
+): number | null => state.currentTodoId;
 
-type RootState = {
-  message: string;
-  loading: boolean;
+export const TODO_SELECTORS = {
+  currentTodoId: currentTodoIdSelector,
 };
 
-const initialState: RootState = {
-  message: '',
-  loading: false,
+const todosSelector = (state: RootState): Todo[] => state.todos;
+
+export const TODOS_SELECTORS = {
+  todos: todosSelector,
 };
 
-// rootReducer - this function is called after dispatching an action
-const rootReducer = (state = initialState, action: Action): RootState => {
-  switch (action.type) {
-    // this is the second time we use this literal
-    // Later we will use Redux Toolkit to avoid such a duplication
-    case 'START_LOADING':
-      return {
-        ...state, // we copy the state to avoid mutations
-        loading: true,
-      };
-
-    case 'FINISH_LOADING':
-      // now we now that the action is of FinishLoadingAction type
-      // becase other possible Actions have different `type` values
-      return {
-        loading: false,
-        message: action.payload,
-      };
-
-    // we must return the current state if we don't know the action
-    default:
-      return state;
-  }
-};
-
-// Action creator returns an action object
-export const actions = {
-  // the function return type gatantees that we can't mistype
-  startLoading: (): StartLoadingAction => ({
-    type: 'START_LOADING',
-  }),
-
-  finishLoading: (message: string): FinishLoadingAction => ({
-    type: 'FINISH_LOADING',
-    // the function return type forces us to add the `payload` property with a string
-    payload: message,
-  }),
-};
-
-// Selectors receive RootState from the `useSelector` hook and return required data
-export const selectors = {
-  isLoading: (state: RootState) => state.loading,
-  getMessage: (state: RootState) => state.message,
-};
-
-// The `store` is passed to the Provider in `/src/index.tsx`
-export const store = createStore(
-  rootReducer,
-  composeWithDevTools( // allows you to use https://github.com/reduxjs/redux-devtools/tree/main/extension#redux-devtools-extension
-    applyMiddleware(thunk),
-  ),
-);
+export const store = createStore(rootReducer, composeWithDevTools(
+  applyMiddleware(thunk),
+));
