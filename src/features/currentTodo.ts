@@ -10,6 +10,10 @@ type SetTodoAction = {
 };
 
 // Action creator return type protect us from a mistype
+enum ActionsWithTodo {
+  SET = 'currentTodo/SET',
+  REMOVE = 'currentTodo/REMOVE',
+}
 const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
 
 const setTodo = (todo: Todo): SetTodoAction => ({
@@ -18,7 +22,10 @@ const setTodo = (todo: Todo): SetTodoAction => ({
 });
 
 // These actions will be used in the application
-export const actions = { setTodo, removeTodo };
+export const actionsWithTodo = {
+  set: setTodo,
+  remove: removeTodo,
+};
 
 type State = Todo | null;
 type Action = SetTodoAction | RemoveTodoAction;
@@ -28,7 +35,10 @@ const currentTodoReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    // Implement all actions here
+    case ActionsWithTodo.SET:
+      return action.payload;
+    case ActionsWithTodo.REMOVE:
+      return null;
 
     default:
       return state;
