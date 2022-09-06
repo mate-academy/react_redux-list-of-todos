@@ -1,5 +1,5 @@
 import React from 'react';
-import { TodosFilter } from '../../types/TodosFilter';
+import { TodosFilter } from '../../Types/TodosFilter';
 
 interface Props {
   filteredBy: TodosFilter,

@@ -1,29 +1,98 @@
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
+import './index.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import { Start } from './components/Start';
-import { Finish } from './components/Finish';
+import { useDispatch, useSelector } from 'react-redux';
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+import { Loader } from './components/Loader';
+import { getTodos } from './api';
+import { Todo } from './Types/Todo';
+import { TodosFilter } from './Types/TodosFilter';
+import { selectors, store } from './store';
+import { actions } from './store/loading';
 
-import { selectors } from './store';
+export const App: React.FC = () => {
+  const dispatch = useDispatch();
 
-export const App = () => {
-  // `useSelector` connects our component to the Redux store
-  // and rerenders it after every dispatched action
   const loading = useSelector(selectors.isLoading);
+  const selectedTodo = useSelector(selectors.selectedTodo);
 
-  // we do not call a selector with (), just pass a link to it
-  const message = useSelector(selectors.getMessage) || 'Ready!';
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredBy, setFilteredBy]
+    = useState<TodosFilter>(TodosFilter.DEFAULT);
+
+  useEffect(() => {
+    dispatch(actions.startLoading());
+    // eslint-disable-next-line no-console
+    console.log(store.getState());
+    getTodos()
+      .then((todosFromServer) => {
+        setTodos(todosFromServer);
+      })
+      .finally(() => {
+        dispatch(actions.finishLoading());
+        // eslint-disable-next-line no-console
+        console.log(store.getState());
+      });
+  }, []);
+
+  const prepareTasks = () => {
+    return todos
+      .filter(task => {
+        if (filteredBy === TodosFilter.ACTIVE) {
+          return !task.completed;
+        }
+
+        if (filteredBy === TodosFilter.COMPLETED) {
+          return task.completed;
+        }
+
+        return task;
+      })
+      .filter(task => {
+        return task.title.includes(searchQuery);
+      });
+  };
+
+  const preparedTodos = prepareTasks();
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
 
-      {/* these buttons are used only for the demo */}
-      <Start title="Start loading" />
-      <Finish title="Succeed" message="Loaded successfully!" />
-      <Finish title="Fail" message="Error occurred." />
-    </div>
+            <div className="block">
+              <TodoFilter
+                filteredBy={filteredBy}
+                setFilteredBy={setFilteredBy}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              />
+            </div>
+
+            <div className="block">
+              {loading
+                ? <Loader />
+                : (
+                  <TodoList
+                    todos={preparedTodos}
+                  />
+                )}
+            </div>
+          </div>
+        </div>
+      </div>
+      {selectedTodo && (
+        <TodoModal
+          todo={selectedTodo}
+        />
+      )}
+    </>
   );
 };

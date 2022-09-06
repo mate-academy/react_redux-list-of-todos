@@ -1,15 +1,19 @@
 import React from 'react';
 import cn from 'classnames';
-import { Todo } from '../../types/Todo';
+import { useDispatch, useSelector } from 'react-redux';
+import { Todo } from '../../Types/Todo';
+import { todoActions } from '../../store/currentTodo';
+import { selectors } from '../../store';
 
 interface Props {
   todos: Todo[];
-  showInfo: (id: number) => void
-  id: number | undefined
 }
 
 export const TodoList: React.FC<Props> = (props) => {
-  const { todos, showInfo, id } = props;
+  const { todos } = props;
+
+  const dispatch = useDispatch();
+  const selectedTodo = useSelector(selectors.selectedTodo);
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -59,10 +63,12 @@ export const TodoList: React.FC<Props> = (props) => {
                 data-cy="selectButton"
                 className="button"
                 type="button"
-                onClick={() => showInfo(todo.id)}
+                onClick={() => {
+                  dispatch(todoActions.SelectTask(todo));
+                }}
               >
                 <span className="icon">
-                  {todo.id === id ? (
+                  {selectedTodo && todo.id === selectedTodo.id ? (
                     <i className="far fa-eye-slash" />
                   ) : (
                     <i className="far fa-eye" />
