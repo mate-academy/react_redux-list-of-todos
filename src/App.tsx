@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import './App.scss';
@@ -7,37 +7,17 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { FilterType } from './types/FilterType';
 import { selectors } from './store';
 import { fetchTodos } from './store/todos';
 
 export const App: FC = () => {
   const dispatch = useDispatch();
-  const { todos, loading, selectedTodo } = useSelector(selectors.getTodosInfo);
-  const { filterType, appliedQuery } = useSelector(selectors.getFilter);
+  const { loading, selectedTodo } = useSelector(selectors.getTodosInfo);
+  const filteredTodos = useSelector(selectors.getFilteredTodos);
 
   useEffect(() => {
     dispatch(fetchTodos());
   }, []);
-
-  const filteredTodos = useMemo(() => {
-    const lowerCasedQuery = appliedQuery.toLowerCase();
-
-    return todos.filter(todo => {
-      const checkQuery = todo.title.toLowerCase().includes(lowerCasedQuery);
-
-      switch (filterType) {
-        case FilterType.All:
-          return checkQuery;
-        case FilterType.Active:
-          return checkQuery && !todo.completed;
-        case FilterType.Completed:
-          return checkQuery && todo.completed;
-        default:
-          return true;
-      }
-    });
-  }, [todos, appliedQuery, filterType]);
 
   return (
     <>
