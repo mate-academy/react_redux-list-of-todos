@@ -35,7 +35,7 @@ export const App = () => {
 
             <div className="block">
               {loading && (<Loader />)}
-              {todos.filtered.length > 0 && (
+              {todos.length > 0 && (
                 <TodoList />
               )}
             </div>

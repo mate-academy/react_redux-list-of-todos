@@ -1,7 +1,8 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FilterType } from '../../types/FilterType';
-import { actions as todosActions } from '../../store/todos';
+import { selectors } from '../../store';
+import { actions as filterActions } from '../../store/filter';
 
 const debounce = (func: (arg: string) => void, delay: number) => {
   let timerId: number;
@@ -15,7 +16,7 @@ const debounce = (func: (arg: string) => void, delay: number) => {
 
 export const TodoFilter = () => {
   const dispatch = useDispatch();
-  const [filterBy, setFilterBy] = useState('all');
+  const { status } = useSelector(selectors.getFilter);
   const [query, setQuery] = useState('');
   const [appliedQuery, setAppliedQuery] = useState('');
 
@@ -24,23 +25,8 @@ export const TodoFilter = () => {
   );
 
   useEffect(() => {
-    switch (filterBy) {
-      case FilterType.ALL:
-        dispatch(todosActions.clearFilter(appliedQuery));
-
-        break;
-      case FilterType.COMPLETED:
-        dispatch(todosActions.setFilterByCompleted(appliedQuery));
-
-        break;
-      case FilterType.ACTIVE:
-        dispatch(todosActions.setFilterByActive(appliedQuery));
-
-        break;
-      default:
-        dispatch(todosActions.clearFilter(appliedQuery));
-    }
-  }, [filterBy, appliedQuery]);
+    dispatch(filterActions.setQuery(appliedQuery));
+  }, [appliedQuery]);
 
   return (
     <form className="field has-addons">
@@ -48,8 +34,10 @@ export const TodoFilter = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={filterBy}
-            onChange={(event) => setFilterBy(event.target.value)}
+            value={status}
+            onChange={(event) => (
+              dispatch(filterActions.setStatus(event.target.value))
+            )}
           >
             <option value={FilterType.ALL}>All</option>
             <option value={FilterType.ACTIVE}>Active</option>

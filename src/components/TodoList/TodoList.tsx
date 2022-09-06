@@ -23,7 +23,7 @@ export const TodoList = () => {
       </thead>
 
       <tbody>
-        {todos.filtered.map(todo => (
+        {todos.map(todo => (
           <tr
             key={todo.id}
             data-cy="todo"

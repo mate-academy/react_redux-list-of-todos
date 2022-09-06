@@ -24,7 +24,7 @@ export const actions = {
 export const selectionTodoReducer = (
   state: null | Todo = null,
   action: Action,
-) => {
+): Todo | null => {
   switch (action.type) {
     case 'SET_TODO':
       return action.payload;
