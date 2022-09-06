@@ -48,15 +48,16 @@ export const App: React.FC = () => {
 
   const selectTodo = useSelector(CURRENT_TODO_SELECT.currentTodo);
 
-  const [filteredArray, setFilteredArray] = useState([]);
+  const [filteredArray, setFilteredArray] = useState<Todo[]>([]);
 
   const { status, query } = useSelector(FILTER_SELECTOR.filter);
 
   useEffect(() => {
     const filteredBySelect = filtredByComleted(status, todos);
 
-    // setFilteredArray(() => filredByQuery(query, filteredBySelect));
-    setFilteredArray((): any => filredByQuery(query, filteredBySelect));
+    setFilteredArray(() => {
+      return filredByQuery(query, filteredBySelect);
+    });
   }, [status, query, todos]);
 
   useEffect(() => {
