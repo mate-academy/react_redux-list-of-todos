@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import './index.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -20,10 +20,7 @@ export const App: React.FC = () => {
   const loading = useSelector(selectors.isLoading);
   const selectedTodo = useSelector(selectors.selectedTodo);
   const todosFromSever = useSelector(selectors.todosList);
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredBy, setFilteredBy]
-    = useState<TodosFilter>(TodosFilter.DEFAULT);
+  const todosFilter = useSelector(selectors.filterTodos);
 
   useEffect(() => {
     dispatch(actions.startLoading());
@@ -43,18 +40,18 @@ export const App: React.FC = () => {
   const prepareTasks = () => {
     return todosFromSever
       .filter(task => {
-        if (filteredBy === TodosFilter.ACTIVE) {
+        if (todosFilter.status === TodosFilter.ACTIVE) {
           return !task.completed;
         }
 
-        if (filteredBy === TodosFilter.COMPLETED) {
+        if (todosFilter.status === TodosFilter.COMPLETED) {
           return task.completed;
         }
 
         return task;
       })
       .filter(task => {
-        return task.title.includes(searchQuery);
+        return task.title.includes(todosFilter.query);
       });
   };
 
@@ -68,12 +65,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                filteredBy={filteredBy}
-                setFilteredBy={setFilteredBy}
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">

@@ -1,20 +1,11 @@
 import React from 'react';
-import { TodosFilter } from '../../Types/TodosFilter';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterActions } from '../../store/filter';
+import { selectors } from '../../store';
 
-interface Props {
-  filteredBy: TodosFilter,
-  setFilteredBy: CallableFunction,
-  searchQuery: string,
-  setSearchQuery: CallableFunction,
-}
-
-export const TodoFilter: React.FC<Props> = React.memo((props) => {
-  const {
-    filteredBy,
-    setFilteredBy,
-    searchQuery,
-    setSearchQuery,
-  } = props;
+export const TodoFilter: React.FC = React.memo(() => {
+  const dispatch = useDispatch();
+  const todosFilter = useSelector(selectors.filterTodos);
 
   return (
     <form
@@ -25,9 +16,9 @@ export const TodoFilter: React.FC<Props> = React.memo((props) => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={filteredBy}
+            value={todosFilter.status}
             onChange={(event) => {
-              setFilteredBy(event.target.value);
+              dispatch(filterActions.SetStatus(event.target.value));
             }}
           >
             <option value="all">All</option>
@@ -43,21 +34,23 @@ export const TodoFilter: React.FC<Props> = React.memo((props) => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={searchQuery}
-          onChange={(event) => setSearchQuery(event.target.value)}
+          value={todosFilter.query}
+          onChange={(event) => {
+            dispatch(filterActions.SetQuery(event.target.value));
+          }}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {searchQuery.length > 0 && (
+          {todosFilter.query.length > 0 && (
             // eslint-disable-next-line jsx-a11y/control-has-associated-label
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => setSearchQuery('')}
+              onClick={() => dispatch(filterActions.SetQuery(''))}
             />
           )}
         </span>
