@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '../Loader';
-import { User } from '../../Types/User';
 import { getUser } from '../../api';
-import { Todo } from '../../Types/Todo';
 import { selectors } from '../../store';
 import { todoActions } from '../../store/currentTodo';
+import { userActions } from '../../store/user';
 
-interface Props {
-  todo: Todo,
-}
-
-export const TodoModal: React.FC<Props> = (props) => {
-  const { todo } = props;
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    getUser(todo.userId).then(userFromServer => setUser(userFromServer));
-  }, []);
-
+export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
   const selectedTodo = useSelector(selectors.selectedTodo);
+  const selectedUser = useSelector(selectors.currentTodoUser);
+
+  useEffect(() => {
+    getUser(selectedTodo.userId).then(userFromServer => {
+      dispatch(userActions.SetUser(userFromServer));
+    });
+  }, []);
 
   return (
     <div
@@ -29,7 +24,7 @@ export const TodoModal: React.FC<Props> = (props) => {
     >
       <div className="modal-background" />
 
-      {!user ? (
+      {!selectedUser ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -47,6 +42,7 @@ export const TodoModal: React.FC<Props> = (props) => {
               className="delete"
               data-cy="modal-close"
               onClick={() => {
+                dispatch(userActions.RemoveUser());
                 dispatch(todoActions.RemoveTask());
               }}
             />
@@ -64,8 +60,8 @@ export const TodoModal: React.FC<Props> = (props) => {
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={`mailto:${user.email}`}>
-                {user.name}
+              <a href={`mailto:${selectedUser.email}`}>
+                {selectedUser.name}
               </a>
             </p>
           </div>
