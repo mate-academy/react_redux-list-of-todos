@@ -10,16 +10,16 @@ type RemoveLoading = {
 
 type Action = (SetLoading | RemoveLoading);
 
-const setLoading = ():SetLoading => (
+const startLoading = ():SetLoading => (
   { type: 'SET_TODOS_LOADING', payload: true });
 
-const removeLoading = ():RemoveLoading => (
+const finishLoading = ():RemoveLoading => (
   { type: 'REMOVE_TODOS_LOADING', payload: false });
 
 export const loaderActions = (
   {
-    setLoading,
-    removeLoading,
+    startLoading,
+    finishLoading,
   }
 );
 

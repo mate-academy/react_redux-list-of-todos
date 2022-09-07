@@ -16,7 +16,7 @@ export type FilterState = {
   status: Status,
 };
 
-export type SortType = 'SET_ACTIVE' | 'SET_COMPLETED' | 'SET_ALL';
+export type SortType = 'active' | 'completed' | 'all';
 
 type Action = {
   type: SortType | 'SET_QUERY',
@@ -31,17 +31,17 @@ const initialState: FilterState = {
 
 const filterReducer = (state: FilterState = initialState, action: Action) => {
   switch (action.type) {
-    case 'SET_ACTIVE':
+    case 'active':
       return {
         ...state,
         status: 'active',
       };
-    case 'SET_COMPLETED':
+    case 'completed':
       return {
         ...state,
         status: 'completed',
       };
-    case 'SET_ALL':
+    case 'all':
       return {
         ...state,
         status: 'all',

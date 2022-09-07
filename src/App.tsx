@@ -19,10 +19,10 @@ export const App: React.FC = () => {
   const loading = useSelector((state: RootState) => state.loading);
 
   useEffect(() => {
-    dispatch(loaderActions.setLoading());
+    dispatch(loaderActions.startLoading());
     getTodos()
       .then((todos: Todo[]) => dispatch(todosActions.setTodo(todos)))
-      .finally(() => dispatch(loaderActions.removeLoading()));
+      .finally(() => dispatch(loaderActions.finishLoading()));
   }, []);
 
   return (

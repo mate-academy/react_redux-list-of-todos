@@ -13,21 +13,8 @@ export const TodoFilter: React.FC = () => {
     dispatch(filterActions.setQuery(text));
   };
 
-  const changeSortHandler = (value:string) => {
-    let currentSortType: SortType = 'SET_ALL';
-
-    switch (value) {
-      case 'active':
-        currentSortType = 'SET_ACTIVE';
-        break;
-      case 'completed':
-        currentSortType = 'SET_COMPLETED';
-        break;
-      default:
-        currentSortType = 'SET_ALL';
-    }
-
-    dispatch(filterActions.setSortType(currentSortType));
+  const changeSortHandler = (value:SortType) => {
+    dispatch(filterActions.setSortType(value));
   };
 
   const clearQueryHandler = () => {
@@ -43,7 +30,8 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={(event) => (changeSortHandler(event.target.value))}
+            onChange={(event) => (
+              changeSortHandler(event.target.value as SortType))}
           >
             <option value="all">All</option>
             <option value="active">Active</option>

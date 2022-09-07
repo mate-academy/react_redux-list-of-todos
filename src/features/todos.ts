@@ -42,6 +42,16 @@ export const PREPARED_TODOS = (state: RootState) => {
   return [];
 };
 
+export const SELECTED_TODO = (state: RootState) => {
+  const { todos, currentTodo } = state;
+
+  if (todos) {
+    return todos.find(todo => todo.id === currentTodo);
+  }
+
+  return undefined;
+};
+
 const todosReducer = (
   state: State = null,
   action: Action,

@@ -3,17 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../api';
 import { RootState } from '../../app/store';
 import { currentTodoActions } from '../../features/currentTodo';
+import { SELECTED_TODO } from '../../features/todos';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
-  const currTodo = useSelector((state: RootState) => state.currentTodo);
+  const currTodo = useSelector((state: RootState) => SELECTED_TODO(state));
   const [user, setUser] = useState<User>();
 
   const closeTodo = () => {
     setUser(undefined);
-    dispatch(currentTodoActions.removeTodo());
+    dispatch(currentTodoActions.removeTodoId());
   };
 
   useEffect(() => {

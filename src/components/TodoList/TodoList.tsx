@@ -1,42 +1,23 @@
 /* eslint-disable max-len */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { currentTodoActions } from '../../features/currentTodo';
-import { FilterState } from '../../features/filter';
 import { Todo } from '../../types/Todo';
+import { PREPARED_TODOS } from '../../features/todos';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
-  const currTodos = useSelector((state: RootState) => state.todos);
-  const currentFilter: FilterState = useSelector((state: RootState) => state.filter);
-  const currTodo = useSelector((state: RootState) => state.currentTodo);
+  const currTodoId = useSelector((state: RootState) => state.currentTodo);
 
-  const todosByStatus = useMemo(() => {
-    if (currTodos) {
-      switch (currentFilter.status) {
-        case 'active':
-          return currTodos.filter(todo => !todo.completed);
-        case 'completed':
-          return currTodos.filter(todo => todo.completed);
-        default:
-          return currTodos;
-      }
-    }
-
-    return [];
-  }, [currTodos, currentFilter.status]);
-
-  const todosPrepared = useMemo(() => (
-    todosByStatus.filter(todo => todo.title.toLowerCase().includes(currentFilter.query))
-  ), [todosByStatus, currentFilter.query]);
+  const todosPrepared = useSelector((state: RootState) => PREPARED_TODOS(state));
 
   const setSelectedTodo = (todo: Todo) => {
-    dispatch(currentTodoActions.setTodo(todo));
+    dispatch(currentTodoActions.setTodoId(todo.id));
   };
 
   return (
-    currTodos && currTodos.length > 0
+    todosPrepared && todosPrepared.length > 0
       ? (
         <table className="table is-narrow is-fullwidth">
           <thead>
@@ -58,7 +39,7 @@ export const TodoList: React.FC = () => {
             {todosPrepared.map(todo => (
               <tr
                 data-cy="todo"
-                className={currTodo && currTodo.id === todo.id
+                className={currTodoId === todo.id
                   ? 'has-background-info-light'
                   : ''}
                 key={todo.id}
@@ -87,7 +68,7 @@ export const TodoList: React.FC = () => {
                   >
                     <span className="icon">
                       <i
-                        className={`far fa-eye${currTodo && currTodo.id === todo.id
+                        className={`far fa-eye${currTodoId === todo.id
                           ? '-slash'
                           : ''}`}
                       />

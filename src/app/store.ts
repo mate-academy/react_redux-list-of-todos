@@ -4,8 +4,8 @@ import thunk from 'redux-thunk';
 
 import currentTodoReducer from '../features/currentTodo';
 import filterReducer from '../features/filter';
-import todosReducer from '../features/todos';
 import loadingReducer from '../features/loading';
+import todosReducer from '../features/todos';
 
 const rootReducer = combineReducers({
   currentTodo: currentTodoReducer,
