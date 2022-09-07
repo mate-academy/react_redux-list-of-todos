@@ -3,26 +3,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../api';
 import { RootState } from '../../app/store';
 import { currentTodoActions } from '../../features/currentTodo';
-import { loaderActions } from '../../features/loading';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
   const currTodo = useSelector((state: RootState) => state.currentTodo);
-  const loading = useSelector((state: RootState) => state.loading);
   const [user, setUser] = useState<User>();
 
   const closeTodo = () => {
+    setUser(undefined);
     dispatch(currentTodoActions.removeTodo());
   };
 
   useEffect(() => {
     if (currTodo) {
-      dispatch(loaderActions.setTodoLoading());
       getUser(currTodo.userId)
-        .then((currUser: User) => setUser(currUser))
-        .finally(() => dispatch(loaderActions.removeTodoLoading()));
+        .then((currUser: User) => setUser(currUser));
     }
   }, []);
 
@@ -32,7 +29,7 @@ export const TodoModal: React.FC = () => {
         <div className="modal is-active" data-cy="modal">
           <div className="modal-background" />
 
-          {loading.todoLoading ? (
+          {!user ? (
             <Loader />
           ) : (
             <div className="modal-card">

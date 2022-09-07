@@ -1,3 +1,4 @@
+import type { RootState } from '../app/store';
 import { Todo } from '../types/Todo';
 
 type Action = {
@@ -15,6 +16,31 @@ const setTodo = (todos: Todo[]) => ({
 });
 
 export const todosActions = { setTodo, removeTodos };
+
+export const PREPARED_TODOS = (state: RootState) => {
+  const { todos, filter } = state;
+  const { query, status } = filter;
+
+  if (todos) {
+    let preparedTodos: Todo[] = [];
+
+    switch (status) {
+      case 'active':
+        preparedTodos = todos.filter((todo:Todo) => !todo.completed);
+        break;
+      case 'completed':
+        preparedTodos = todos.filter((todo:Todo) => todo.completed);
+        break;
+      default:
+        preparedTodos = todos;
+    }
+
+    return preparedTodos.filter(todo => (
+      todo.title.toLowerCase().includes(query)));
+  }
+
+  return [];
+};
 
 const todosReducer = (
   state: State = null,

@@ -19,10 +19,10 @@ export const App: React.FC = () => {
   const loading = useSelector((state: RootState) => state.loading);
 
   useEffect(() => {
-    dispatch(loaderActions.setTodosLoading());
+    dispatch(loaderActions.setLoading());
     getTodos()
       .then((todos: Todo[]) => dispatch(todosActions.setTodo(todos)))
-      .finally(() => dispatch(loaderActions.removeTodosLoading()));
+      .finally(() => dispatch(loaderActions.removeLoading()));
   }, []);
 
   return (
@@ -37,7 +37,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loading.todosLoading
+              {loading
                 ? <Loader />
                 : <TodoList />}
             </div>
