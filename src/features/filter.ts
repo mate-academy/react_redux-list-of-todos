@@ -1,5 +1,11 @@
 import { Status } from '../types/Status';
 
+export enum FilterMethods {
+  ALL = 'all',
+  COMPLETED = 'completed',
+  ACTIVE = 'active',
+}
+
 export enum ActionsWithFilter {
   ALL = 'filterStatus/ALL',
   COMPLETED = 'filterStatus/COMPLETED',
@@ -26,17 +32,17 @@ type SetFilterByQuery = {
 
 const filteredAll = (): SetFilterStatusAll => ({
   type: ActionsWithFilter.ALL,
-  payload: 'all',
+  payload: FilterMethods.ALL,
 });
 
 const filteredByCompleted = (): SetFilterStatusDone => ({
   type: ActionsWithFilter.COMPLETED,
-  payload: 'completed',
+  payload: FilterMethods.COMPLETED,
 });
 
 const filteredByActive = (): SetFilterStatusActive => ({
   type: ActionsWithFilter.ACTIVE,
-  payload: 'active',
+  payload: FilterMethods.ACTIVE,
 });
 
 const filteredByQuery = (query: string): SetFilterByQuery => ({
@@ -64,7 +70,7 @@ type Action = (
 const filterReducer = (
   state: State = {
     query: '',
-    status: 'all',
+    status: FilterMethods.ALL,
   },
   action: Action,
 ): State => {
@@ -72,19 +78,19 @@ const filterReducer = (
     case ActionsWithFilter.ALL:
       return {
         ...state,
-        status: 'all',
+        status: FilterMethods.ALL,
       };
 
     case ActionsWithFilter.ACTIVE:
       return {
         ...state,
-        status: 'active',
+        status: FilterMethods.ACTIVE,
       };
 
     case ActionsWithFilter.COMPLETED:
       return {
         ...state,
-        status: 'completed',
+        status: FilterMethods.COMPLETED,
       };
 
     case ActionsWithFilter.QUERY:

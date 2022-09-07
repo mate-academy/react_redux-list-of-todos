@@ -3,6 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { actionsWithTodo } from '../../features/currentTodo';
+import { FilterMethods } from '../../features/filter';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => {
@@ -13,13 +14,13 @@ export const TodoList: React.FC = () => {
       const isIncludeQuery = todo.title.toLowerCase().includes(query.toLowerCase().trim());
 
       switch (status) {
-        case 'active':
+        case FilterMethods.COMPLETED:
           return !todo.completed && isIncludeQuery;
 
-        case 'completed':
+        case FilterMethods.ACTIVE:
           return todo.completed && isIncludeQuery;
 
-        case 'all':
+        case FilterMethods.ALL:
         default:
           return isIncludeQuery;
       }

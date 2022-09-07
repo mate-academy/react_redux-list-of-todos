@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { actionsWithFilter } from '../../features/filter';
+import { actionsWithFilter, FilterMethods } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
@@ -12,13 +12,13 @@ export const TodoFilter: React.FC = () => {
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     switch (event.target.value) {
-      case 'active':
+      case FilterMethods.ACTIVE:
         return dispatch(actionsWithFilter.active());
 
-      case 'completed':
+      case FilterMethods.COMPLETED:
         return dispatch(actionsWithFilter.completed());
 
-      case 'all':
+      case FilterMethods.ALL:
       default:
         return dispatch(actionsWithFilter.all());
     }
@@ -35,9 +35,9 @@ export const TodoFilter: React.FC = () => {
             data-cy="statusSelect"
             onChange={chooseOfFilterMethod}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={FilterMethods.ALL}>All</option>
+            <option value={FilterMethods.ACTIVE}>Active</option>
+            <option value={FilterMethods.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>
