@@ -1,4 +1,8 @@
-export const actions = { /* put action creators here */};
+const ALL_TODOS = 'ALL_TODOS';
+
+export const actions = {
+  allTodos: () => ({ type: ALL_TODOS }),
+};
 
 const filterReducer = () => {
   return {
