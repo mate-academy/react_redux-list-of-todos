@@ -27,7 +27,7 @@ export const App: FC = () => {
 
   useEffect(() => {
     dispatch(TODOS_ACTIONS_CREATOR.loadTodos());
-  }, []);
+  }, [dispatch]);
 
   const selectedTodo = useSelector((state: RootState) => {
     const newSelectedTodo = state.todos.find(todo => todo.id === currentTodoId) || null;
@@ -41,7 +41,7 @@ export const App: FC = () => {
       const prepSearchQuery = searchQuery.toLowerCase();
 
       return prepTitle.includes(prepSearchQuery);
-    })), [todos]);
+    })), [searchQuery, todos]);
 
   const filteredTodos = useMemo(() => {
     return filteredTodosBySearchQuery.filter(todo => {
@@ -56,7 +56,7 @@ export const App: FC = () => {
           return true;
       }
     });
-  }, [complitedFilter, searchQuery, todos]);
+  }, [complitedFilter, filteredTodosBySearchQuery]);
 
   const errorNoTodosFromServer = !loading && todos.length === 0 && !searchQuery;
   const errorNoSuchTodosBySearchQuery = !loading && filteredTodos.length === 0 && searchQuery;
