@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -7,8 +8,20 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { useAppSelector } from './app/hooks';
+import { CURRENT_TODOS_SELECTORS, TODOS_SELECTORS } from './app/selectors';
+import { TODOS_ACTIONS } from './features/todos';
 
 export const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const filteredTodos = useAppSelector(TODOS_SELECTORS.filteredTodos);
+  const isLoading = useAppSelector(TODOS_SELECTORS.isLoading);
+  const currentTodo = useAppSelector(CURRENT_TODOS_SELECTORS.currentTodo);
+
+  useEffect(() => {
+    dispatch(TODOS_ACTIONS.loadTodos);
+  }, []);
+
   return (
     <>
       <div className="section">
@@ -21,14 +34,18 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {isLoading
+                ? (
+                  <Loader />
+                ) : (
+                  <TodoList todos={filteredTodos} />
+                )}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {currentTodo && <TodoModal />}
     </>
   );
 };
