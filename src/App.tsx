@@ -32,6 +32,9 @@ export const App: React.FC = () => {
         case Filter.COMPLETED:
           return includeSearch && todo.completed === true;
 
+        case Filter.ALL:
+          return includeSearch;
+
         default:
           return todo;
       }
