@@ -16,7 +16,7 @@ const setTodosActionCreator = (todos: Todo[]): SetTodosAction => ({
   payload: todos,
 });
 
-export const actionsTodo = {
+export const actionsWithTodos = {
   set: setTodosActionCreator,
 };
 

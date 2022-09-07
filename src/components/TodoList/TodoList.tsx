@@ -6,27 +6,24 @@ import { actionsWithTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => {
-    let todosToShow = state.todos;
+    let { todos: todosToShow } = state;
     const { query, status } = state.filter;
 
     todosToShow = todosToShow.filter(todo => {
+      const isIncludeQuery = todo.title.toLowerCase().includes(query.toLowerCase());
+
       switch (status) {
         case 'active':
-          return !todo.completed;
+          return !todo.completed && isIncludeQuery;
 
         case 'completed':
-          return todo.completed;
+          return todo.completed && isIncludeQuery;
 
         case 'all':
         default:
-          return todo;
+          return isIncludeQuery;
       }
     });
-    // const queryToCheck = query.toLowerCase();
-
-    todosToShow = todosToShow.filter(
-      todo => todo.title.toLowerCase().includes(query),
-    );
 
     return todosToShow;
   });

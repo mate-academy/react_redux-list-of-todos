@@ -9,7 +9,7 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
-import { actionsTodo } from './features/todos';
+import { actionsWithTodos } from './features/todos';
 import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
@@ -21,7 +21,7 @@ export const App: React.FC = () => {
     setIsLoading(true);
     getTodos()
       .then(res => {
-        dispatch(actionsTodo.set(res));
+        dispatch(actionsWithTodos.set(res));
       })
       .finally(() => setIsLoading(false));
   }, []);

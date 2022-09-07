@@ -14,10 +14,10 @@ enum ActionsWithTodo {
   SET = 'currentTodo/SET',
   REMOVE = 'currentTodo/REMOVE',
 }
-const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
+const removeTodo = (): RemoveTodoAction => ({ type: ActionsWithTodo.REMOVE });
 
 const setTodo = (todo: Todo): SetTodoAction => ({
-  type: 'currentTodo/SET',
+  type: ActionsWithTodo.SET,
   payload: todo,
 });
 

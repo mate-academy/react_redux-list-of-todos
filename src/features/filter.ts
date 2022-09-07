@@ -67,7 +67,7 @@ const filterReducer = (
     status: 'all',
   },
   action: Action,
-) => {
+): State => {
   switch (action.type) {
     case ActionsWithFilter.ALL:
       return {
