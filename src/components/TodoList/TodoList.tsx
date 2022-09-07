@@ -22,6 +22,7 @@ export const TodoList: React.FC = () => {
           return todo;
       }
     });
+    // const queryToCheck = query.toLowerCase();
 
     todosToShow = todosToShow.filter(
       todo => todo.title.toLowerCase().includes(query),
@@ -67,12 +68,16 @@ export const TodoList: React.FC = () => {
                 {todo.id}
               </td>
               <td className="is-vcentered">
-                <span
-                  className="icon"
-                  data-cy="iconCompleted"
-                >
-                  <i className={todo.completed ? 'fas fa-check' : ''} />
-                </span>
+                {todo.completed && (
+                  <span
+                    className="icon"
+                    data-cy="iconCompleted"
+                  >
+                    <i
+                      className="fas fa-check"
+                    />
+                  </span>
+                )}
               </td>
 
               <td className="is-vcentered is-expanded">

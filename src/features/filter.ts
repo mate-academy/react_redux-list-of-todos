@@ -1,28 +1,28 @@
 import { Status } from '../types/Status';
 
-type SetFilterStatusAll = {
-  type: 'filterStatus/ALL';
-  payload: Status;
-};
-type SetFilterStatusDone = {
-  type: 'filterStatus/COMPLETED';
-  payload: Status;
-};
-type SetFilterStatusActive = {
-  type: 'filterStatus/ACTIVE';
-  payload: Status;
-};
-type SetFilterByQuery = {
-  type: 'filterQuery/QUERY';
-  payload: string;
-};
-
 enum ActionsWithFilter {
   ALL = 'filterStatus/ALL',
   COMPLETED = 'filterStatus/COMPLETED',
   ACTIVE = 'filterStatus/ACTIVE',
   QUERY = 'filterQuery/QUERY',
 }
+
+type SetFilterStatusAll = {
+  type: ActionsWithFilter.ALL;
+  payload: Status;
+};
+type SetFilterStatusDone = {
+  type: ActionsWithFilter.COMPLETED;
+  payload: Status;
+};
+type SetFilterStatusActive = {
+  type: ActionsWithFilter.ACTIVE;
+  payload: Status;
+};
+type SetFilterByQuery = {
+  type: ActionsWithFilter.QUERY;
+  payload: string;
+};
 
 const filteredAll = (): SetFilterStatusAll => ({
   type: ActionsWithFilter.ALL,
