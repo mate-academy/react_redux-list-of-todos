@@ -8,8 +8,6 @@ import { Loader } from '../Loader';
 
 interface Props {
   selectTodo: Todo;
-  // setIsActiveModal: (isActiveModal: boolean) => void;
-  // setTodo: (todo: Todo | null) => void;
 }
 
 export const TodoModal: React.FC<Props> = (props) => {

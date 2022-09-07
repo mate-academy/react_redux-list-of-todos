@@ -16,7 +16,6 @@ export const TodoList: React.FC<Props> = (props) => {
   const dispach = useDispatch();
 
   const handelActivetedModal = (todo: Todo) => {
-    // setIsActiveModal(true);
     dispach(TODO_ACTIONS.setTodo(todo));
   };
 
