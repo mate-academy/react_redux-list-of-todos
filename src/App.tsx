@@ -1,29 +1,47 @@
-import { useSelector } from 'react-redux';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
-import { Start } from './components/Start';
-import { Finish } from './components/Finish';
-
-import { selectors } from './store';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { action, selectors } from './store';
+import { Loader } from './components/Loader';
+import { TodoList } from './components/TodoList';
+import { TodoModal } from './components/TodoModal';
+import { TodoFilter } from './components/TodoFilter';
 
 export const App = () => {
-  // `useSelector` connects our component to the Redux store
-  // and rerenders it after every dispatched action
-  const loading = useSelector(selectors.isLoading);
+  const dispatch = useDispatch();
+  const isLoading = useSelector(selectors.getLoadingInfo);
+  const selectedTodoID = useSelector(selectors.getSelectedTodo);
 
-  // we do not call a selector with (), just pass a link to it
-  const message = useSelector(selectors.getMessage) || 'Ready!';
+  useEffect(() => {
+    dispatch(action.uploadTodos());
+  }, []);
 
   return (
-    <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
 
-      {/* these buttons are used only for the demo */}
-      <Start title="Start loading" />
-      <Finish title="Succeed" message="Loaded successfully!" />
-      <Finish title="Fail" message="Error occurred." />
-    </div>
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {isLoading
+                ? (<Loader />)
+                : (
+                  <TodoList />
+                )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {selectedTodoID && (
+        <TodoModal />
+      )}
+    </>
   );
 };
