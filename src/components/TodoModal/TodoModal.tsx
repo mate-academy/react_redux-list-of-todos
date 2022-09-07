@@ -30,7 +30,7 @@ export const TodoModal: React.FC = () => {
 
       {isTodoLoading
         ? <Loader />
-        : (
+        : user && currentTodo && (
           <div className="modal-card">
             <header className="modal-card-head">
               <div
@@ -38,7 +38,7 @@ export const TodoModal: React.FC = () => {
                 data-cy="modal-header"
               >
                 Todo #
-                {currentTodo?.id}
+                {currentTodo.id}
               </div>
 
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -46,9 +46,7 @@ export const TodoModal: React.FC = () => {
                 type="button"
                 className="delete"
                 data-cy="modal-close"
-                onClick={() => {
-                  dispatch(actionsWithTodo.remove());
-                }}
+                onClick={() => dispatch(actionsWithTodo.remove())}
               />
             </header>
 
@@ -57,19 +55,19 @@ export const TodoModal: React.FC = () => {
                 className="block"
                 data-cy="modal-title"
               >
-                {currentTodo?.title}
+                {currentTodo.title}
               </p>
 
               <p
                 className="block"
                 data-cy="modal-user"
               >
-                {currentTodo?.completed
+                {currentTodo.completed
                   ? <strong className="has-text-success">Done</strong>
                   : <strong className="has-text-danger">Planned</strong>}
                 {' by '}
-                <a href={`mailto:${user?.email}`}>
-                  {user?.name}
+                <a href={`mailto:${user.email}`}>
+                  {user.name}
                 </a>
               </p>
             </div>

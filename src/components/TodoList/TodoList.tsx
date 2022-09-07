@@ -10,7 +10,7 @@ export const TodoList: React.FC = () => {
     const { query, status } = state.filter;
 
     todosToShow = todosToShow.filter(todo => {
-      const isIncludeQuery = todo.title.toLowerCase().includes(query.toLowerCase());
+      const isIncludeQuery = todo.title.toLowerCase().includes(query.toLowerCase().trim());
 
       switch (status) {
         case 'active':

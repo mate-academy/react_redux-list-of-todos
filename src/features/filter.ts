@@ -1,6 +1,6 @@
 import { Status } from '../types/Status';
 
-enum ActionsWithFilter {
+export enum ActionsWithFilter {
   ALL = 'filterStatus/ALL',
   COMPLETED = 'filterStatus/COMPLETED',
   ACTIVE = 'filterStatus/ACTIVE',
