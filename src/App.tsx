@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -10,35 +10,8 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { TODO_ACTIONS } from './features/todos';
-import { Todo } from './types/Todo';
 import { FILTER_SELECTOR, CURRENT_TODO_SELECT, TODOS_SELECTOR } from './features/selectors';
-
-const filtredByComleted = (nameFilter: string, todosList: Todo[]): Todo[] => {
-  switch (nameFilter) {
-    case 'completed':
-      return todosList.filter(todo => todo.completed === true);
-
-    case 'active':
-      return todosList.filter(todo => todo.completed === false);
-
-    case 'all':
-      return todosList;
-
-    default:
-      return todosList;
-  }
-};
-
-const filredByQuery = (searchQury: string, todosList: Todo[]): Todo[] => {
-  if (searchQury === '') {
-    return todosList;
-  }
-
-  return (todosList
-    .filter(
-      todo => todo.title.toLowerCase().includes(searchQury.toLowerCase()),
-    ));
-};
+import { filredByQuery, filtredByComleted } from './app/filterHelper';
 
 export const App: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -48,16 +21,12 @@ export const App: React.FC = () => {
 
   const selectTodo = useSelector(CURRENT_TODO_SELECT.currentTodo);
 
-  const [filteredArray, setFilteredArray] = useState<Todo[]>([]);
-
   const { status, query } = useSelector(FILTER_SELECTOR.filter);
 
-  useEffect(() => {
+  const filteredArray = useMemo(() => {
     const filteredBySelect = filtredByComleted(status, todos);
 
-    setFilteredArray(() => {
-      return filredByQuery(query, filteredBySelect);
-    });
+    return filredByQuery(query, filteredBySelect);
   }, [status, query, todos]);
 
   useEffect(() => {

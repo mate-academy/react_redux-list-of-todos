@@ -1,4 +1,3 @@
-// import { RootState } from '../app/store';
 import { Todo } from '../types/Todo';
 
 type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
@@ -35,11 +34,5 @@ export const currentTodoReducer = (
       return todoState;
   }
 };
-
-// const currentTodosSelector = (state: RootState) => state.currentTodo;
-
-// export const CURRENT_TODO_SELECT = {
-//   currentTodo: currentTodosSelector,
-// };
 
 export default currentTodoReducer;

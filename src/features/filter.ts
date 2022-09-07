@@ -1,5 +1,4 @@
 import { Action as ActionBase } from 'redux';
-// import { RootState } from '../app/store';
 
 interface Action<T, P> extends ActionBase<T> {
   payload: P,
@@ -33,6 +32,11 @@ interface FilterStateInterface {
   query: string;
 }
 
+type State = {
+  status: string;
+  query: string;
+};
+
 const initState: FilterStateInterface = {
   status: 'all',
   query: '',
@@ -41,10 +45,7 @@ const initState: FilterStateInterface = {
 export const filterReducer = (
   state: FilterStateInterface = { ...initState },
   actions: FiltersAction,
-): {
-  status: string;
-  query: string;
-} => {
+): State => {
   switch (actions.type) {
     case FiltersActionsTypes.SetStatus:
       return {
@@ -62,11 +63,5 @@ export const filterReducer = (
       return state;
   }
 };
-
-// const filterSelector = (state: RootState) => state.filter;
-
-// export const FILTER_SELECTOR = {
-//   filter: filterSelector,
-// };
 
 export default filterReducer;

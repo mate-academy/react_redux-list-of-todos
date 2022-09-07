@@ -1,5 +1,4 @@
 import { Action as ActionBase } from 'redux';
-// import { RootState } from '../app/store';
 import { Todo } from '../types/Todo';
 
 interface Action<T, P> extends ActionBase<T> {
@@ -35,11 +34,5 @@ export const todosReducer = (
       return todosState;
   }
 };
-
-// const todosSelector = (state: RootState) => state.todos;
-
-// export const TODOS_SELECTOR = {
-//   todos: todosSelector,
-// };
 
 export default todosReducer;

@@ -1,16 +1,11 @@
-import {
-  useState,
-} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FILTER_ACTIONS } from '../../features/filter';
 import { FILTER_SELECTOR } from '../../features/selectors';
 
 export const TodoFilter: React.FC = () => {
-  const { status } = useSelector(FILTER_SELECTOR.filter);
+  const { status, query } = useSelector(FILTER_SELECTOR.filter);
 
   const dispach = useDispatch();
-
-  const [query, setQuery] = useState('');
 
   const handelSelectFiter = (statusPayload: string) => {
     dispach(FILTER_ACTIONS.setStatus(statusPayload));
@@ -20,12 +15,10 @@ export const TodoFilter: React.FC = () => {
     queryPayload: string,
   ) => {
     dispach(FILTER_ACTIONS.setQuery(queryPayload));
-    setQuery(queryPayload);
   };
 
   const handelCloseSearch = () => {
     dispach(FILTER_ACTIONS.setQuery(''));
-    setQuery('');
   };
 
   return (
