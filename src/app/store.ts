@@ -4,12 +4,14 @@ import thunk from 'redux-thunk';
 
 import currentTodoReducer from '../features/currentTodo';
 import filterReducer from '../features/filter';
+import loadingReducer from '../features/loading';
 import todosReducer from '../features/todos';
 
 const rootReducer = combineReducers({
   currentTodo: currentTodoReducer,
   filter: filterReducer,
   todos: todosReducer,
+  loading: loadingReducer,
 });
 
 // The `store` is passed to the Provider in `/src/index.tsx`
