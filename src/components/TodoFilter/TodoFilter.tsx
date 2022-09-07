@@ -2,22 +2,23 @@ import React, { ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { FILTER_SELECTORS } from '../../app/selectors';
-import { FILTER_ACTIONS } from '../../features/filter';
+import { FILTER_ACTION_CREATORS } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const { query, status } = useAppSelector(FILTER_SELECTORS.filter);
+  const query = useAppSelector(FILTER_SELECTORS.query);
+  const status = useAppSelector(FILTER_SELECTORS.status);
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(FILTER_ACTIONS.setStatus(event.target.value));
+    dispatch(FILTER_ACTION_CREATORS.setStatus(event.target.value));
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    dispatch(FILTER_ACTIONS.setQuery(event.target.value));
+    dispatch(FILTER_ACTION_CREATORS.setQuery(event.target.value));
   };
 
   const handleClearButton = () => {
-    dispatch(FILTER_ACTIONS.removeQuery());
+    dispatch(FILTER_ACTION_CREATORS.removeQuery());
   };
 
   return (
@@ -52,15 +53,17 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={handleClearButton}
-          />
-        </span>
+        {query !== '' && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleClearButton}
+            />
+          </span>
+        )}
       </p>
     </form>
   );

@@ -15,6 +15,7 @@ import { TODOS_ACTIONS } from './features/todos';
 export const App: React.FC = () => {
   const dispatch = useDispatch();
   const filteredTodos = useAppSelector(TODOS_SELECTORS.filteredTodos);
+  const isLoading = useAppSelector(TODOS_SELECTORS.isLoading);
   const currentTodo = useAppSelector(CURRENT_TODOS_SELECTORS.currentTodo);
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {filteredTodos.length === 0
+              {isLoading
                 ? (
                   <Loader />
                 ) : (

@@ -1,6 +1,11 @@
 import { Action as BaseAction } from 'redux';
 
-const initialState = {
+interface State {
+  query: string,
+  status: string,
+}
+
+const initialState: State = {
   query: '',
   status: 'all',
 };
@@ -13,18 +18,15 @@ export enum FilterActionType {
   SetQuery = 'query/SET',
   RemoveQuery = 'query/REMOVE',
   SetStatus = 'status/SET',
-  RemoveStatus = 'status/REMOVE',
 }
 
 type SetQueryAction = Action<FilterActionType.SetQuery, string>;
 type RemoveQueryAction = BaseAction<FilterActionType.RemoveQuery>;
 type SetStatusAction = Action<FilterActionType.SetStatus, string>;
-type RemoveStatusAction = BaseAction<FilterActionType.RemoveStatus>;
 
 type FilterActions = SetQueryAction
 | RemoveQueryAction
-| SetStatusAction
-| RemoveStatusAction;
+| SetStatusAction;
 
 const setQuery = (query: string): SetQueryAction => ({
   type: FilterActionType.SetQuery,
@@ -40,21 +42,16 @@ const setStatus = (status: string): SetStatusAction => ({
   payload: status,
 });
 
-const removeStatus = (): RemoveStatusAction => ({
-  type: FilterActionType.RemoveStatus,
-});
-
-export const FILTER_ACTIONS = {
+export const FILTER_ACTION_CREATORS = {
   setQuery,
   removeQuery,
   setStatus,
-  removeStatus,
 };
 
 const filterReducer = (
-  state = initialState,
+  state: State = initialState,
   action: FilterActions,
-) => {
+): State => {
   switch (action.type) {
     case FilterActionType.SetQuery:
       return {
@@ -72,12 +69,6 @@ const filterReducer = (
       return {
         ...state,
         status: action.payload,
-      };
-
-    case FilterActionType.RemoveStatus:
-      return {
-        ...state,
-        status: 'all',
       };
 
     default:

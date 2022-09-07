@@ -2,30 +2,37 @@ import { Dispatch } from 'redux';
 import { getTodos } from '../api';
 import { Todo } from '../types/Todo';
 
-// const initialState = {
-//   todos: [],
-//   isLoading: false,
-// };
+interface State {
+  todos: Todo[],
+  isLoading: boolean,
+  error: string | null,
+}
 
-// type StartLoadingAction = {
-//   type: 'loading/START'
-//   payload: boolean,
-// };
+const initialState: State = {
+  todos: [],
+  isLoading: false,
+  error: null,
+};
 
-// type FinishLoadingAction = {
-//   type: 'loading/FINISH'
-//   payload: boolean,
-// };
+type IsLoadingAction = {
+  type: 'todos/LOAD'
+  payload: boolean,
+};
 
-// const startLoadingActionCreator = ():StartLoadingAction => ({
-//   type: 'loading/START',
-//   payload: true,
-// });
+const isLoadingActionCreator = (isLoading: boolean):IsLoadingAction => ({
+  type: 'todos/LOAD',
+  payload: isLoading,
+});
 
-// const finishLoadingActionCreator = ():FinishLoadingAction => ({
-//   type: 'loading/FINISH',
-//   payload: false,
-// });
+type ErrorAction = {
+  type: 'todos/ERROR'
+  payload: string,
+};
+
+const errorActionCreator = (errorMessage: string): ErrorAction => ({
+  type: 'todos/ERROR',
+  payload: errorMessage,
+});
 
 type GetTodosAction = {
   type: 'todos/GET',
@@ -38,11 +45,19 @@ const getTodosActionCreator = (todos: Todo[]): GetTodosAction => ({
 });
 
 const loadTodosFromServerAction = async (
-  dispatch: Dispatch<GetTodosAction>,
+  dispatch: Dispatch<Action>,
 ) => {
-  const todos = await getTodos();
+  try {
+    dispatch(isLoadingActionCreator(true));
 
-  dispatch(getTodosActionCreator(todos));
+    const todos = await getTodos();
+
+    dispatch(getTodosActionCreator(todos));
+  } catch (error) {
+    dispatch(errorActionCreator(`${error}`));
+  } finally {
+    dispatch(isLoadingActionCreator(false));
+  }
 };
 
 export const TODOS_ACTIONS = {
@@ -50,16 +65,32 @@ export const TODOS_ACTIONS = {
   loadTodos: loadTodosFromServerAction,
 };
 
-type State = Todo[];
-type Action = GetTodosAction;
+type Action = GetTodosAction
+| IsLoadingAction
+| ErrorAction;
 
 const todosReducer = (
-  todosState: State = [],
+  todosState: State = initialState,
   action: Action,
-): Todo[] => {
+): State => {
   switch (action.type) {
     case 'todos/GET':
-      return action.payload;
+      return {
+        ...todosState,
+        todos: [...action.payload],
+      };
+
+    case 'todos/LOAD':
+      return {
+        ...todosState,
+        isLoading: action.payload,
+      };
+
+    case 'todos/ERROR':
+      return {
+        ...todosState,
+        error: action.payload,
+      };
 
     default:
       return todosState;

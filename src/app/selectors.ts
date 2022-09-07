@@ -12,16 +12,20 @@ export const USER_SELECTORS = {
   user: userSelector,
 };
 
-const filterSelector = (state: RootState) => state.filter;
+const querySelector = (state: RootState) => state.filter.query;
+const statusSelector = (state: RootState) => state.filter.status;
 
 export const FILTER_SELECTORS = {
-  filter: filterSelector,
+  query: querySelector,
+  status: statusSelector,
 };
 
-const todosSelector = (state: RootState) => state.todos;
+const todosSelector = (state: RootState) => state.todos.todos;
+const isLoadingTodosSelector = (state: RootState) => state.todos.isLoading;
+const errorTodosSelector = (state: RootState) => state.todos.error;
 
 const filteredTodosSelector = (state: RootState) => {
-  const { todos } = state;
+  const { todos } = state.todos;
   const { query, status } = state.filter;
 
   const filterTodosByStatus = () => {
@@ -37,16 +41,20 @@ const filteredTodosSelector = (state: RootState) => {
     }
   };
 
+  const todosFilteredByStatus = filterTodosByStatus();
+
   const filteredTodosByQuery = query !== ''
-    ? todos.filter(todo => (
+    ? todosFilteredByStatus.filter(todo => (
       todo.title.toLowerCase().includes(query.toLowerCase())
     ))
-    : filterTodosByStatus();
+    : todosFilteredByStatus;
 
   return filteredTodosByQuery;
 };
 
 export const TODOS_SELECTORS = {
   todos: todosSelector,
+  isLoading: isLoadingTodosSelector,
+  error: errorTodosSelector,
   filteredTodos: filteredTodosSelector,
 };
