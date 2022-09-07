@@ -50,77 +50,80 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+      {visibleTodos.length === 0 ? (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      ) : (
 
-      <table className="table is-narrow is-fullwidth">
-        <thead>
-          <tr>
-            <th>#</th>
+        <table className="table is-narrow is-fullwidth">
+          <thead>
+            <tr>
+              <th>#</th>
 
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
+              <th>
+                <span className="icon">
+                  <i className="fas fa-check" />
+                </span>
+              </th>
 
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
+              <th>Title</th>
+              <th> </th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {visibleTodos.map(todo => {
-            return (
-              <tr
-                data-cy="todo"
-                key={todo.id}
-              >
-                <td className="is-vcentered">{todo.id}</td>
-                <td className="is-vcentered">
-                  {todo.completed && (
-                    <span className="icon" data-cy="iconCompleted">
-                      <i className="fas fa-check" />
-                    </span>
-                  )}
-                </td>
-                <td className="is-vcentered">
-                  <p className={classnames({
-                    'has-text-danger': !todo.completed,
-                    'has-text-success': todo.completed,
-                  })}
-                  >
-                    {todo.title}
-                  </p>
-                </td>
-                <td className="has-text-right is-vcentered">
-                  <button
-                    data-cy="selectButton"
-                    className="button"
-                    type="button"
-                    onClick={() => {
-                      if (selectedTodo === null) {
-                        store.dispatch(actions.setTodo(todo));
-                      } else {
-                        store.dispatch(actions.removeTodo());
-                      }
-                    }}
-                  >
-                    <span className="icon">
-                      <i className={classnames('far', {
-                        'fa-eye-slash': todo.id === selectedTodo?.id,
-                        'fa-eye': todo.id !== selectedTodo?.id,
-                      })}
-                      />
-                    </span>
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          <tbody>
+            {visibleTodos.map(todo => {
+              return (
+                <tr
+                  data-cy="todo"
+                  key={todo.id}
+                >
+                  <td className="is-vcentered">{todo.id}</td>
+                  <td className="is-vcentered">
+                    {todo.completed && (
+                      <span className="icon" data-cy="iconCompleted">
+                        <i className="fas fa-check" />
+                      </span>
+                    )}
+                  </td>
+                  <td className="is-vcentered">
+                    <p className={classnames({
+                      'has-text-danger': !todo.completed,
+                      'has-text-success': todo.completed,
+                    })}
+                    >
+                      {todo.title}
+                    </p>
+                  </td>
+                  <td className="has-text-right is-vcentered">
+                    <button
+                      data-cy="selectButton"
+                      className="button"
+                      type="button"
+                      onClick={() => {
+                        if (selectedTodo === null) {
+                          store.dispatch(actions.setTodo(todo));
+                        } else {
+                          store.dispatch(actions.removeTodo());
+                        }
+                      }}
+                    >
+                      <span className="icon">
+                        <i className={classnames('far', {
+                          'fa-eye-slash': todo.id === selectedTodo?.id,
+                          'fa-eye': todo.id !== selectedTodo?.id,
+                        })}
+                        />
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
