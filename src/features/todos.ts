@@ -1,10 +1,5 @@
-import { Action as BaseAction } from 'redux';
-import { RootState } from '../app/store';
+import { Action } from '../types/Action';
 import { Todo } from '../types/Todo';
-
-export interface Action<T, P> extends BaseAction<T> {
-  payload: P,
-}
 
 export enum TodosActionType {
   LoadTodos = 'todos/load_todos',
@@ -35,12 +30,6 @@ const todosReducer = (
     default:
       return todosState;
   }
-};
-
-const todosSelector = (state: RootState): Todo[] => state.todos;
-
-export const TODOS_SELECTORS = {
-  todos: todosSelector,
 };
 
 export default todosReducer;

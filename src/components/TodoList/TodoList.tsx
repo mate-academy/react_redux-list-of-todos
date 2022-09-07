@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
-import { TODOS_SELECTORS } from '../../features/todos';
+import { SELECTORS } from '../../features/Selectors';
 
 export const TodoList: React.FC = () => {
-  const todos = useAppSelector(TODOS_SELECTORS.todos);
+  const filteredTodos = useAppSelector(SELECTORS.filteredTodos);
 
   return (
     <>
@@ -29,7 +29,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {todos.length > 0 && todos.map(todo => (
+          {filteredTodos.length > 0 && filteredTodos.map(todo => (
             <tr data-cy="todo">
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">
