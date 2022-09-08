@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-enum FilterType {
+export enum FilterType {
   All = 'all',
   Active = 'active',
   Completed = 'completed',
@@ -15,6 +15,10 @@ type SetAppliedQueryAction = {
   type: 'filter/SET_APPLIEDQUERY';
   payload: string,
 };
+
+// type setFilteredList = {
+//   type: 'filter/SET_FILTEREDLIST',
+// };
 
 type Action = SetFilterType | SetAppliedQueryAction;
 
@@ -67,10 +71,12 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-const filterSelector = (state: RootState) => state.filter;
+const getFilterQuerySelector = (state: RootState) => state.filter.appliedQuery;
+const getFilterTypeSelector = (state: RootState) => state.filter.filterType;
 
-export const FILTER_SELECTOR = {
-  filter: filterSelector,
+export const FilterSelector = {
+  getFilterQuery: getFilterQuerySelector,
+  getFilterType: getFilterTypeSelector,
 };
 
 export default filterReducer;

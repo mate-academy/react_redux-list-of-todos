@@ -1,17 +1,18 @@
 /* eslint-disable max-len */
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { actions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { selector } from '../../app/store';
 
-interface Props {
-  setTodoSelect: (id: number) => void,
-  todoSelect: number,
-  filteredTodos: Todo[],
-}
+export const TodoList: React.FC = () => {
+  const dispatch = useDispatch();
+  const todos: Todo[] = useSelector(selector.getTodos);
+  const selectedTodo = useSelector(selector.getSelectedTodo);
 
-export const TodoList: React.FC<Props> = ({ setTodoSelect, todoSelect, filteredTodos }) => {
   return (
     <>
-      {filteredTodos.length < 0
+      {todos.length < 0
        && (
          <p className="notification is-warning">
            There are no todos matching current filter criteria
@@ -35,7 +36,7 @@ export const TodoList: React.FC<Props> = ({ setTodoSelect, todoSelect, filteredT
         </thead>
 
         <tbody>
-          {filteredTodos.map((todo) => (
+          {todos.map((todo) => (
             <tr data-cy="todo" className="" key={todo.id}>
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">
@@ -59,10 +60,10 @@ export const TodoList: React.FC<Props> = ({ setTodoSelect, todoSelect, filteredT
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => setTodoSelect(todo.id)}
+                  onClick={() => (dispatch(actions.setTodo(todo)))}
                 >
                   <span className="icon">
-                    {todoSelect === todo.id
+                    {selectedTodo?.id === todo.id
                       ? (<i className="far fa-eye-slash" />)
                       : (<i className="far fa-eye" />)}
                   </span>

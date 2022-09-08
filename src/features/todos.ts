@@ -1,10 +1,9 @@
 import {
-  Dispatch, Action as BaseAction,
+  Action as BaseAction,
   combineReducers, createStore, applyMiddleware,
 } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
-import { getTodos } from '../api';
 import { Todo } from '../types/Todo';
 
 interface Action<T, P> extends BaseAction<T> {
@@ -24,16 +23,8 @@ const setTodosActionCreator = (todos: Todo[]): SetTodosAction => ({
   payload: todos,
 });
 
-export const fetchTodos = () => {
-  return (dispatch: Dispatch) => {
-    getTodos().then(todosFromServer => dispatch(
-      setTodosActionCreator(todosFromServer),
-    ));
-  };
-};
-
 export const TODO_ACTIONS_CREATOR = {
-  set: setTodosActionCreator,
+  setTodoList: setTodosActionCreator,
 };
 
 const todosReducer = (

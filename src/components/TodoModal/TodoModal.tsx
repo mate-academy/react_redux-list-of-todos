@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../api';
-import { Todo } from '../../types/Todo';
+import { actions } from '../../features/currentTodo';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
+import { selector } from '../../app/store';
 
-interface Props {
-  todo: Todo | null
-  onClose: () => void
-}
-
-export const TodoModal: React.FC<Props> = ({
-  todo, onClose,
-}) => {
+export const TodoModal: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const dispatch = useDispatch();
+  const selectedTodo = useSelector(selector.getSelectedTodo);
 
   useEffect(() => {
-    getUser(todo?.userId || 0)
-      .then(user => setSelectedUser(user));
-  }, []);
+    if (selectedTodo) {
+      getUser(selectedTodo.userId).then(user => setSelectedUser(user));
+    }
+  }, [selectedTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -32,7 +30,7 @@ export const TodoModal: React.FC<Props> = ({
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${todo?.id}`}
+              {`Todo #${selectedTodo?.id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -40,17 +38,19 @@ export const TodoModal: React.FC<Props> = ({
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={onClose}
+              onClick={() => {
+                dispatch(actions.removeTodo());
+              }}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {todo?.title}
+              {selectedTodo?.title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {todo?.completed ? (
+              {selectedTodo?.completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>

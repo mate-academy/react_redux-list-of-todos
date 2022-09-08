@@ -1,9 +1,8 @@
 /* eslint-disable max-len */
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
@@ -14,62 +13,18 @@ import {
   TODO_ACTIONS_CREATOR,
 } from './features/todos';
 import { getTodos } from './api';
-import { Todo } from './types/Todo';
-import { FILTER_SELECTOR } from './features/filter';
+import { selector } from './app/store';
 
 export const App: React.FC = () => {
-  const [todoSelect, setTodoSelect] = useState(0);
   const dispatch = useDispatch();
   const todos = useSelector(TODOS_SELECTORS.todosBySearchQuery(''));
-
-  const { filterType, appliedQuery } = useSelector(FILTER_SELECTOR.filter);
+  const selectedTodo = useSelector(selector.getSelectedTodo);
 
   useEffect(() => {
-    getTodos().then(res => dispatch(TODO_ACTIONS_CREATOR.set(res)));
+    getTodos().then(res => dispatch(TODO_ACTIONS_CREATOR.setTodoList(res)));
   }, []);
 
-  const todo = todos.find(element => element.id === todoSelect) || null;
-  const onClose = () => {
-    setTodoSelect(0);
-  };
-
-  const filtredByComleted = (
-    nameFilter: string,
-    todosList: Todo[],
-  ): Todo[] => {
-    switch (nameFilter) {
-      case 'completed':
-        return todosList.filter(item => item.completed === true);
-
-      case 'active':
-        return todosList.filter(item => item.completed === false);
-
-      case 'all':
-        return todosList;
-
-      default:
-        return todosList;
-    }
-  };
-
-  const filredByQuery = (
-    searchQury: string, todosList: Todo[],
-  ): Todo[] => {
-    if (searchQury === '') {
-      return todosList;
-    }
-
-    return (todosList
-      .filter(
-        item => item.title.toLowerCase().includes(searchQury.toLowerCase()),
-      ));
-  };
-
-  const filteredArray = useMemo(() => {
-    const filteredBySelect = filtredByComleted(filterType, todos);
-
-    return filredByQuery(appliedQuery, filteredBySelect);
-  }, [filterType, appliedQuery, todos]);
+  // const todo = todos.find(element => element.id === selectedTodo?.id) || null;
 
   return (
     <>
@@ -85,11 +40,7 @@ export const App: React.FC = () => {
             <div className="block">
               {todos.length
                 ? (
-                  <TodoList
-                    setTodoSelect={setTodoSelect}
-                    todoSelect={todoSelect}
-                    filteredTodos={filteredArray}
-                  />
+                  <TodoList />
                 )
                 : <Loader />}
             </div>
@@ -97,12 +48,9 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {todoSelect !== 0
+      {selectedTodo
         && (
-          <TodoModal
-            todo={todo}
-            onClose={onClose}
-          />
+          <TodoModal />
         )}
     </>
   );

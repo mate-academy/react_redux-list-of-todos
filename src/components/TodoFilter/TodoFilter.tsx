@@ -1,6 +1,6 @@
 import { FC, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions, FILTER_SELECTOR } from '../../features/filter';
+import { actions, FilterSelector } from '../../features/filter';
 
 enum FilterType {
   All = 'all',
@@ -9,7 +9,8 @@ enum FilterType {
 }
 
 export const TodoFilter: FC = memo(() => {
-  const { filterType, appliedQuery } = useSelector(FILTER_SELECTOR.filter);
+  const appliedQuery: string = useSelector(FilterSelector.getFilterQuery);
+  const filterType: string = useSelector(FilterSelector.getFilterType);
 
   const dispach = useDispatch();
 
