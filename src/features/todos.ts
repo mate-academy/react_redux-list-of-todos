@@ -3,7 +3,6 @@ import { Todo } from '../types/Todo';
 
 export enum TodosActionType {
   LoadTodos = 'todos/load_todos',
-  // AddTodo = 'todos/add_todo',
 }
 
 type LoadTodosAction = Action<TodosActionType.LoadTodos, Todo[]>;

@@ -2,12 +2,12 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import currentTodoReducer from '../features/currentTodo';
+import currentTodoIdReducer from '../features/currentTodoId';
 import filterReducer from '../features/filter';
 import todosReducer from '../features/todos';
 
 const rootReducer = combineReducers({
-  currentTodo: currentTodoReducer,
+  currentTodoId: currentTodoIdReducer,
   filter: filterReducer,
   todos: todosReducer,
 });
