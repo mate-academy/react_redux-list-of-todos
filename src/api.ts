@@ -20,7 +20,5 @@ function get<T>(url: string): Promise<T> {
 }
 
 export const getTodos = () => get<Todo[]>('/todos');
-// eslint-disable-next-line no-console
-console.log(getTodos);
 
 export const getUser = (userId: number) => get<User>(`/users/${userId}`);

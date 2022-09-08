@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import currentTodoReducer from '../features/currentTodo';
 import filterReducer from '../features/filter';
 import todosReducer from '../features/todos';
+import { Todo } from '../types/Todo';
 
 const rootReducer = combineReducers({
   currentTodo: currentTodoReducer,
@@ -22,3 +23,15 @@ export const store = createStore(
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+const todosSelector = (state: RootState): Todo[] => state.todos;
+
+const todosBySearchQuery = (query: string) => (state: RootState) => {
+  return state.todos.filter((t: Todo) => t.title.toLowerCase()
+    .includes(query.toLowerCase()));
+};
+
+export const TODOS_SELECTOR = {
+  todos: todosSelector,
+  todosBySearchQuery,
+};

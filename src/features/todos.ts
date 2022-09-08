@@ -18,10 +18,12 @@ const setTodos = (todos: Todo[]): SetTodosAction => ({
   payload: todos,
 });
 
+const initialState: State = [];
+
 export const actions = { setTodos };
 
 const todosReducer = (
-  state: State,
+  state: State = initialState,
   action: Action,
 ): Todo[] => {
   switch (action.type) {
