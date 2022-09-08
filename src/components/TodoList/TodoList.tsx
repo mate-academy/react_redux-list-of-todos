@@ -1,41 +1,13 @@
 import classNames from 'classnames';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TODO_ID_ACTIONS_CREATOR } from '../../features/currentTodoId';
 import { SELECTORS } from '../../selectors/selectors';
-import { FilterTypes } from '../../types/FilterTypes';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
-  const { todos } = useSelector(SELECTORS.todosSelector);
-  const currentTodoId = useSelector(SELECTORS.currentTodoIdSelector);
-  const filters = useSelector(SELECTORS.filterSelector);
-
-  const currentTodo = useMemo(() => (
-    todos.find(todo => todo.id === currentTodoId)
-  ), [currentTodoId]);
-
-  const filteredTodos = useMemo(() => {
-    return todos.filter(({ title, completed }) => {
-      const filteringByTitle = title.toLowerCase().includes(
-        filters.query.toLowerCase(),
-      );
-
-      switch (filters.status) {
-        case FilterTypes.All:
-          return filteringByTitle;
-
-        case FilterTypes.Active:
-          return filteringByTitle && !completed;
-
-        case FilterTypes.Completed:
-          return filteringByTitle && completed;
-
-        default:
-          return filteringByTitle;
-      }
-    });
-  }, [filters.query, todos, filters.status]);
+  const currentTodo = useSelector(SELECTORS.currentTodoSelector);
+  const filteredTodos = useSelector(SELECTORS.filterTodosSelector);
 
   return (
     <>

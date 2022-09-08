@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import './App.scss';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -12,11 +11,12 @@ import { Loader } from './components/Loader';
 import { TodosApi } from './api';
 import { TODOS_ACTIONS_CREATOR } from './features/todos';
 import { SELECTORS } from './selectors/selectors';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
-  const dispatch = useDispatch();
-  const currentTodo = useSelector(SELECTORS.currentTodoIdSelector);
-  const { isLoading } = useSelector(SELECTORS.todosSelector);
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(SELECTORS.currentTodoSelector);
+  const { isLoading } = useAppSelector(SELECTORS.todosSelector);
 
   useEffect(() => {
     dispatch(TODOS_ACTIONS_CREATOR.setIsLoading(true));

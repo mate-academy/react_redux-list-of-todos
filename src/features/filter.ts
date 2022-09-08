@@ -11,7 +11,7 @@ export enum FilterActionsTypes {
 }
 
 export type SetQueryType = Action<FilterActionsTypes.SetQuery, string>;
-export type SetFilterType = Action<FilterActionsTypes.SetFilter, string>;
+export type SetFilterType = Action<FilterActionsTypes.SetFilter, FilterTypes>;
 
 type FilterActions = SetQueryType | SetFilterType;
 
@@ -44,7 +44,7 @@ const initialState = {
 const filterReducer = (
   state: StateFilter = initialState,
   action: FilterActions,
-) => {
+): StateFilter => {
   switch (action.type) {
     case FilterActionsTypes.SetQuery:
       return {

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
@@ -8,13 +8,8 @@ import { USER_ACTIONS_CREATOR } from '../../features/currentUser';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
-  const { todos } = useSelector(SELECTORS.todosSelector);
-  const currentTodoId = useSelector(SELECTORS.currentTodoIdSelector);
+  const currentTodo = useSelector(SELECTORS.currentTodoSelector);
   const { user, isLoading } = useSelector(SELECTORS.currentUserSelector);
-
-  const currentTodo = useMemo(() => (
-    todos.find((todo) => todo.id === currentTodoId)
-  ), [currentTodoId]);
 
   useEffect(() => {
     if (currentTodo) {
