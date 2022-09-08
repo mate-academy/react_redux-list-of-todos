@@ -9,18 +9,28 @@ type SetTodoAction = {
   payload: Todo;
 };
 
+type SetIsLoadingAction = {
+  type: 'currentTodo/SET_loading';
+  payload: boolean;
+};
+
 // Action creator return type protect us from a mistype
-export const removeTodo = (): RemoveTodoAction => (
+const removeTodo = (): RemoveTodoAction => (
   { type: 'currentTodo/REMOVE' }
 );
 
-export const setTodo = (todo: Todo): SetTodoAction => ({
+const setTodo = (todo: Todo): SetTodoAction => ({
   type: 'currentTodo/SET',
   payload: todo,
 });
 
+const setIsTodoLoading = (isLoading: boolean): SetIsLoadingAction => ({
+  type: 'currentTodo/SET_loading',
+  payload: isLoading,
+});
+
 // These actions will be used in the application
-export const actions = { setTodo, removeTodo };
+export const actions = { setTodo, removeTodo, setIsTodoLoading };
 
 interface State {
   todo: Todo | null,
@@ -32,7 +42,7 @@ const initialState: State = {
   isTodoLoading: false,
 };
 
-type Action = SetTodoAction | RemoveTodoAction;
+type Action = SetTodoAction | RemoveTodoAction | SetIsLoadingAction;
 
 const currentTodoReducer = (
   state = initialState,
@@ -48,6 +58,11 @@ const currentTodoReducer = (
       return {
         ...state,
         todo: action.payload,
+      };
+    case 'currentTodo/SET_loading':
+      return {
+        ...state,
+        isTodoLoading: action.payload,
       };
     default:
       return state;
