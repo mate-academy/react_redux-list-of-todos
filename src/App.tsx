@@ -33,7 +33,7 @@ export const App: React.FC = () => {
       .includes(state.filter.query.toLowerCase()));
   });
 
-  const reduxCurrentTodo = useSelector((state: RootState) => state.currentTodo);
+  const currentTodo = useSelector((state: RootState) => state.currentTodo);
 
   useEffect(() => {
     getTodos()
@@ -57,7 +57,7 @@ export const App: React.FC = () => {
                 : (
                   <TodoList
                     todos={todos}
-                    currentTodo={reduxCurrentTodo}
+                    currentTodo={currentTodo}
                   />
                 )}
             </div>
@@ -65,8 +65,8 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {reduxCurrentTodo && (
-        <TodoModal reduxCurrentTodo={reduxCurrentTodo} />
+      {currentTodo && (
+        <TodoModal currentTodo={currentTodo} />
       )}
     </>
   );

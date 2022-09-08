@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { RootState } from '../../app/store';
+import { getUser } from '../../api';
 import { Todo } from '../../types/Todo';
+import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 interface Props {
-  reduxCurrentTodo: Todo;
+  currentTodo: Todo;
 }
 
 export const TodoModal: React.FC<Props> = (props) => {
-  const { reduxCurrentTodo: currentTodo } = props;
+  const { currentTodo } = props;
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+
+    getUser(currentTodo.userId)
+      .then((userFromServer) => setUser(userFromServer))
+      .finally(() => setLoading(false));
+  }, [currentTodo]);
 
   const dispatch = useDispatch();
 
@@ -17,7 +28,7 @@ export const TodoModal: React.FC<Props> = (props) => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {!currentTodo
+      {loading
         ? (
           <Loader />
         )
@@ -58,7 +69,9 @@ export const TodoModal: React.FC<Props> = (props) => {
                 )}
                 {' by '}
 
-                <a href="mailto:Sincere@april.biz">{' '}</a>
+                <a href={`mailto:${user?.email}`}>
+                  {user?.name}
+                </a>
               </p>
             </div>
           </div>
