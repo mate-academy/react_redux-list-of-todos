@@ -5,23 +5,51 @@ type SetTodosAction = {
   payload: Todo[];
 };
 
+type SetTodosIsLoadingAction = {
+  type: 'todos/SET_TODOS_IS_LOADING';
+  payload: boolean;
+};
+
+const setTodosIsLoading = (value: boolean): SetTodosIsLoadingAction => ({
+  type: 'todos/SET_TODOS_IS_LOADING',
+  payload: value,
+});
+
 const setTodos = (todos: Todo[]): SetTodosAction => ({
   type: 'todos/SET',
   payload: todos,
 });
 
-export const actions = { setTodos };
+export const actions = { setTodos, setTodosIsLoading };
 
-type State = Todo[];
-type Action = SetTodosAction;
+type State = {
+  todos: Todo[],
+  isLoading: boolean,
+};
+
+type Action = SetTodosAction | SetTodosIsLoadingAction;
+
+const initialState: State = {
+  todos: [],
+  isLoading: false,
+};
 
 const todosReducer = (
-  state: State = [],
+  state: State = initialState,
   action: Action,
-): Todo[] => {
+): State => {
   switch (action.type) {
     case 'todos/SET':
-      return action.payload;
+      return {
+        ...state,
+        todos: action.payload,
+      };
+
+    case 'todos/SET_TODOS_IS_LOADING':
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
 
     default:
       return state;

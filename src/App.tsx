@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { useDispatch } from 'react-redux';
@@ -13,7 +13,7 @@ import { Loader } from './components/Loader';
 import { RootState } from './app/store';
 
 const filteredTodosSelector = (state: RootState) => {
-  const { todos } = state;
+  const { todos } = state.todos;
   const { query, status } = state.filter;
 
   return todos.filter(todo => {
@@ -36,18 +36,17 @@ const filteredTodosSelector = (state: RootState) => {
 };
 
 export const App: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const dispatch = useDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const preparedTodos = useAppSelector(filteredTodosSelector);
+  const isLoading = useAppSelector(state => state.todos.isLoading);
 
   useEffect(() => {
-    setIsLoading(true);
+    dispatch(todosActions.setTodosIsLoading(true));
 
     getTodos()
       .then(todos => dispatch(todosActions.setTodos(todos)))
-      .finally(() => setIsLoading(false));
+      .finally(() => dispatch(todosActions.setTodosIsLoading(false)));
   }, []);
 
   return (
