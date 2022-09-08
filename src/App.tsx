@@ -1,14 +1,31 @@
 /* eslint-disable max-len */
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
+import {
+  TODOS_SELECTORS,
+  TODO_ACTIONS_CREATOR,
+} from './features/todos';
+import { getTodos } from './api';
+import { selector } from './app/store';
+
 export const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector(TODOS_SELECTORS.todosBySearchQuery(''));
+  const selectedTodo = useSelector(selector.getSelectedTodo);
+
+  useEffect(() => {
+    getTodos().then(res => dispatch(TODO_ACTIONS_CREATOR.setTodoList(res)));
+  }, []);
+
+  // const todo = todos.find(element => element.id === selectedTodo?.id) || null;
+
   return (
     <>
       <div className="section">
@@ -21,14 +38,20 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {todos.length
+                ? (
+                  <TodoList />
+                )
+                : <Loader />}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {selectedTodo
+        && (
+          <TodoModal />
+        )}
     </>
   );
 };
