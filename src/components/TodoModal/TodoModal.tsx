@@ -13,6 +13,7 @@ export const TodoModal: React.FC = () => {
     id,
     title,
     completed,
+    userId,
   } = useAppSelector(SELECTORS.currentTodo(currentTodoId));
 
   const [user, setUser] = useState<User | null>(null);
@@ -21,7 +22,7 @@ export const TodoModal: React.FC = () => {
   useEffect(() => {
     setIsUserLoading(true);
 
-    getUser(id)
+    getUser(userId)
       .then((userFromServer) => setUser(userFromServer))
       .finally(() => setIsUserLoading(false));
   }, []);
