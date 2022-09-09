@@ -10,9 +10,11 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { actions } from './features/todos';
+import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
+  const todos = useAppSelector(state => state.todos)
 
   useEffect(() => {
     getTodos().then(res => dispatch(actions.set(res)));
@@ -30,7 +32,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {false && <Loader />}
+              {!todos.length && <Loader />}
               <TodoList />
             </div>
           </div>

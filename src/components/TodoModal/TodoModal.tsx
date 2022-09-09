@@ -32,7 +32,7 @@ export const TodoModal: React.FC = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {curToDo.id}
+              {`Todo #${curToDo.id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -42,7 +42,8 @@ export const TodoModal: React.FC = () => {
               data-cy="modal-close"
               onClick={() => {
                 setUser(null);
-                dispatch(actions.removeTodo())}}
+                dispatch(actions.removeTodo());
+              }}
             />
           </header>
 
@@ -58,7 +59,10 @@ export const TodoModal: React.FC = () => {
               {curToDo.completed
                 && <strong className="has-text-success">Done</strong>}
               {' by '}
-              <a href={`mailto:${user?.email}`}>{user?.name}</a>
+              {user
+                ? <a href={`mailto:${user?.email}`}>{user?.name}</a>
+                : <Loader />
+              }
             </p>
           </div>
         </div>
