@@ -1,10 +1,13 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import {
+  legacy_createStore as createStore, applyMiddleware, combineReducers,
+} from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import currentTodoReducer from '../features/currentTodo';
-import filterReducer from '../features/filter';
+import filterReducer, { State } from '../features/filter';
 import todosReducer from '../features/todos';
+import { Todo } from '../types/Todo';
 
 const rootReducer = combineReducers({
   currentTodo: currentTodoReducer,
@@ -22,3 +25,11 @@ export const store = createStore(
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+const todosSelector = (state: RootState): Todo[] => state.todos;
+const filterSelector = (state: RootState): State => state.filter;
+
+export const STORE_SELECTOR = {
+  todos: todosSelector,
+  filter: filterSelector,
+};
