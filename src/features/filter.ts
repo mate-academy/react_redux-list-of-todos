@@ -6,7 +6,7 @@ export enum FilterMethods {
   ACTIVE = 'active',
 }
 
-export enum ActionsWithFilter {
+export enum FiltersActionType {
   ALL = 'filterStatus/ALL',
   COMPLETED = 'filterStatus/COMPLETED',
   ACTIVE = 'filterStatus/ACTIVE',
@@ -14,39 +14,39 @@ export enum ActionsWithFilter {
 }
 
 type SetFilterStatusAll = {
-  type: ActionsWithFilter.ALL;
+  type: FiltersActionType.ALL;
   payload: Status;
 };
 type SetFilterStatusDone = {
-  type: ActionsWithFilter.COMPLETED;
+  type: FiltersActionType.COMPLETED;
   payload: Status;
 };
 type SetFilterStatusActive = {
-  type: ActionsWithFilter.ACTIVE;
+  type: FiltersActionType.ACTIVE;
   payload: Status;
 };
 type SetFilterByQuery = {
-  type: ActionsWithFilter.QUERY;
+  type: FiltersActionType.QUERY;
   payload: string;
 };
 
 const filteredAll = (): SetFilterStatusAll => ({
-  type: ActionsWithFilter.ALL,
+  type: FiltersActionType.ALL,
   payload: FilterMethods.ALL,
 });
 
 const filteredByCompleted = (): SetFilterStatusDone => ({
-  type: ActionsWithFilter.COMPLETED,
+  type: FiltersActionType.COMPLETED,
   payload: FilterMethods.COMPLETED,
 });
 
 const filteredByActive = (): SetFilterStatusActive => ({
-  type: ActionsWithFilter.ACTIVE,
+  type: FiltersActionType.ACTIVE,
   payload: FilterMethods.ACTIVE,
 });
 
 const filteredByQuery = (query: string): SetFilterByQuery => ({
-  type: ActionsWithFilter.QUERY,
+  type: FiltersActionType.QUERY,
   payload: query,
 });
 
@@ -75,25 +75,25 @@ const filterReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    case ActionsWithFilter.ALL:
+    case FiltersActionType.ALL:
       return {
         ...state,
         status: FilterMethods.ALL,
       };
 
-    case ActionsWithFilter.ACTIVE:
+    case FiltersActionType.ACTIVE:
       return {
         ...state,
         status: FilterMethods.ACTIVE,
       };
 
-    case ActionsWithFilter.COMPLETED:
+    case FiltersActionType.COMPLETED:
       return {
         ...state,
         status: FilterMethods.COMPLETED,
       };
 
-    case ActionsWithFilter.QUERY:
+    case FiltersActionType.QUERY:
       return {
         ...state,
         query: action.payload,

@@ -15,7 +15,7 @@ import { useAppSelector } from './app/hooks';
 export const App: React.FC = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodoID);
 
   useEffect(() => {
     setIsLoading(true);

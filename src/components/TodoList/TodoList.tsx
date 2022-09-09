@@ -2,15 +2,15 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { actionsWithTodo } from '../../features/currentTodo';
+import { actionsWithTodoID } from '../../features/currentTodoID';
 import { FilterMethods } from '../../features/filter';
 
 export const TodoList: React.FC = () => {
-  const todos = useAppSelector(state => {
-    let { todos: todosToShow } = state;
+  const todosToShow = useAppSelector(state => {
+    const { todos } = state;
     const { query, status } = state.filter;
 
-    todosToShow = todosToShow.filter(todo => {
+    const todosToReturn = todos.filter(todo => {
       const isIncludeQuery = todo.title.toLowerCase().includes(query.toLowerCase().trim());
 
       switch (status) {
@@ -26,14 +26,15 @@ export const TodoList: React.FC = () => {
       }
     });
 
-    return todosToShow;
+    return todosToReturn;
   });
-  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  const currentTodoID = useAppSelector(state => state.currentTodoID);
   const dispatch = useDispatch();
 
   return (
     <>
-      {todos.length === 0 && (
+      {todosToShow.length === 0 && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -56,11 +57,11 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {todos.map(todo => (
+          {todosToShow.map(todo => (
             <tr
               data-cy="todo"
               key={todo.id}
-              className={todo === currentTodo ? 'has-background-info-light' : ''}
+              className={todo.id === currentTodoID ? 'has-background-info-light' : ''}
             >
               <td className="is-vcentered">
                 {todo.id}
@@ -94,11 +95,11 @@ export const TodoList: React.FC = () => {
                   className="button"
                   type="button"
                   onClick={() => {
-                    dispatch(actionsWithTodo.set(todo));
+                    dispatch(actionsWithTodoID.set(todo.id));
                   }}
                 >
                   <span className="icon">
-                    <i className={currentTodo === todo
+                    <i className={currentTodoID === todo.id
                       ? 'far fa-eye-slash'
                       : 'far fa-eye'}
                     />
