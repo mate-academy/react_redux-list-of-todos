@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { 
+import {
   setQueryActionCreator, setStatusActionCreator,
 } from '../../features/filter';
 import { Status } from '../../types/Status';
