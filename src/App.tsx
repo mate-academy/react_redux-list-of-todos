@@ -1,29 +1,44 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { setTodos } from './features/todos';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import './App.scss';
 
-import { Start } from './components/Start';
-import { Finish } from './components/Finish';
-
-import { selectors } from './store';
+import { getTodos } from './api';
+import { Loader } from './components/Loader';
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+import { RootState } from './app/store';
 
 export const App = () => {
-  // `useSelector` connects our component to the Redux store
-  // and rerenders it after every dispatched action
-  const loading = useSelector(selectors.isLoading);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const selectedTodo = useSelector((state: RootState) => state.selectTodo.todo);
 
-  // we do not call a selector with (), just pass a link to it
-  const message = useSelector(selectors.getMessage) || 'Ready!';
+  useEffect(() => {
+    setIsLoading(true);
+    getTodos().then(todosData => {
+      if (todosData && todosData.length) {
+        dispatch(setTodos(todosData));
+        setIsLoading(false);
+      }
+    });
+  }, []);
 
   return (
     <div className="App">
-      <h1>Redux list of todos</h1>
-      <h2>{loading ? 'Loading...' : message}</h2>
-
-      {/* these buttons are used only for the demo */}
-      <Start title="Start loading" />
-      <Finish title="Succeed" message="Loaded successfully!" />
-      <Finish title="Fail" message="Error occurred." />
+      <div className="section">
+        <div className="box">
+          <h1 className="title">Redux list of todos</h1>
+          <TodoFilter />
+          {isLoading ? <Loader /> : (
+            <TodoList />
+          )}
+          {selectedTodo && <TodoModal />}
+        </div>
+      </div>
     </div>
   );
 };
