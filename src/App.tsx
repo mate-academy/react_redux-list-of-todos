@@ -14,7 +14,7 @@ import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const todos = useAppSelector(state => state.todos)
+  const todos = useAppSelector(state => state.todos);
 
   useEffect(() => {
     getTodos().then(res => dispatch(actions.set(res)));
