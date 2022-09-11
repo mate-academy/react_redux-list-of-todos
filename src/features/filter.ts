@@ -6,7 +6,7 @@ type SetQueryAction = {
 };
 
 type SetFilterAction = {
-  type: 'filter/SET_FILTER',
+  type: 'filter/SET_STATUS',
   payload: Status,
 };
 
@@ -16,7 +16,7 @@ const setQuery = (query: string): SetQueryAction => ({
 });
 
 const setFilter = (status: Status): SetFilterAction => ({
-  type: 'filter/SET_FILTER',
+  type: 'filter/SET_STATUS',
   payload: status,
 });
 
@@ -26,12 +26,12 @@ type Action = SetQueryAction | SetFilterAction;
 
 type State = {
   query: string;
-  filter: Status;
+  status: Status;
 };
 
 const initialState: State = {
   query: '',
-  filter: 'all',
+  status: 'all',
 };
 
 const filterReducer = (
@@ -45,10 +45,10 @@ const filterReducer = (
         query: action.payload,
       };
 
-    case 'filter/SET_FILTER':
+    case 'filter/SET_STATUS':
       return {
         ...state,
-        filter: action.payload,
+        status: action.payload,
       };
 
     default:

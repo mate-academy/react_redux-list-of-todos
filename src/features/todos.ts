@@ -13,7 +13,7 @@ const setTodos = (todos: Todo[]): SetTodosAction => ({
 export const actions = { setTodos };
 
 const todosReducer = (
-  state: Todo[],
+  state: Todo[] = [],
   action: SetTodosAction,
 ): Todo[] => {
   switch (action.type) {
