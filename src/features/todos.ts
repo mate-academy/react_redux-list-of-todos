@@ -10,7 +10,7 @@ const setTodos = (todos: Todo[]): SetTodosAction => ({
   payload: todos,
 });
 
-export const actions = { setTodos };
+export const todosActions = { setTodos };
 
 const todosReducer = (
   todosState: Todo[] = [],

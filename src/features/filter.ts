@@ -20,7 +20,7 @@ const setQuery = (query: string): SetQueryAction => ({
   payload: query,
 });
 
-export const actions = { setStatus, setQuery };
+export const filterActions = { setStatus, setQuery };
 
 interface State {
   query: string;
