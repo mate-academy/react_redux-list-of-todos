@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../api';
-import { Todo } from '../../types/Todo';
+import { RootState } from '../../app/store';
+import { removeTodo } from '../../features/currentTodo';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
-interface Props {
-  currentTodo: Todo;
-}
-
-export const TodoModal: React.FC<Props> = (props) => {
-  const { currentTodo } = props;
+export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const currentTodo = useSelector((state: RootState) => state.currentTodo);
 
   useEffect(() => {
     setLoading(true);
 
-    getUser(currentTodo.userId)
-      .then((userFromServer) => setUser(userFromServer))
-      .finally(() => setLoading(false));
+    if (currentTodo) {
+      getUser(currentTodo.userId)
+        .then((userFromServer) => setUser(userFromServer))
+
+        .finally(() => setLoading(false));
+    }
   }, [currentTodo]);
 
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ export const TodoModal: React.FC<Props> = (props) => {
                 data-cy="modal-header"
               >
                 Todo #
-                {currentTodo.id}
+                {currentTodo?.id}
               </div>
 
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -48,23 +49,21 @@ export const TodoModal: React.FC<Props> = (props) => {
                 type="button"
                 className="delete"
                 data-cy="modal-close"
-                onClick={() => dispatch({
-                  type: 'currentTodo/REMOVE',
-                })}
+                onClick={() => dispatch(removeTodo())}
               />
             </header>
 
             <div className="modal-card-body">
               <p className="block" data-cy="modal-title">
-                {currentTodo.title}
+                {currentTodo?.title}
               </p>
 
               <p className="block" data-cy="modal-user">
-                {!currentTodo.completed && (
+                {!currentTodo?.completed && (
                   <strong className="has-text-danger">Planned</strong>
                 )}
 
-                {currentTodo.completed && (
+                {currentTodo?.completed && (
                   <strong className="has-text-success">Done</strong>
                 )}
                 {' by '}

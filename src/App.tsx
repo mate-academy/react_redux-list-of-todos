@@ -1,22 +1,21 @@
 /* eslint-disable max-len */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-// import { actions as todoActions} from './features/currentTodo';
 import { actions as todosAction } from './features/todos';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
 import { RootState } from './app/store';
-// import { Status } from './types/Status';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-// import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
   const todos: Todo[] = useSelector((state: RootState) => {
     if (state.filter.status === 'active') {
@@ -36,8 +35,11 @@ export const App: React.FC = () => {
   const currentTodo = useSelector((state: RootState) => state.currentTodo);
 
   useEffect(() => {
+    setIsLoading(true);
+
     getTodos()
-      .then(todosFromServer => dispatch(todosAction.setTodos(todosFromServer)));
+      .then(todosFromServer => dispatch(todosAction.setTodos(todosFromServer)))
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -52,8 +54,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!todos.length
-                ? <Loader />
+              {isLoading ? <Loader />
                 : (
                   <TodoList
                     todos={todos}
@@ -66,7 +67,7 @@ export const App: React.FC = () => {
       </div>
 
       {currentTodo && (
-        <TodoModal currentTodo={currentTodo} />
+        <TodoModal />
       )}
     </>
   );

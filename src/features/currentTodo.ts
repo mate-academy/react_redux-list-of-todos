@@ -15,7 +15,9 @@ export enum TodosActionType {
 }
 
 // Action creator return type protect us from a mistype
-const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
+export const removeTodo = (): RemoveTodoAction => ({
+  type: 'currentTodo/REMOVE',
+});
 
 const setTodo = (todo: Todo): SetTodoAction => ({
   type: 'currentTodo/SET',

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 
 export const TodoFilter:React.FC = () => {
-  const reduxQuery = useSelector((state: RootState) => state.filter.query);
-  const reduxStatus = useSelector((state: RootState) => state.filter.query);
+  const query = useSelector((state: RootState) => state.filter.query);
+  const status = useSelector((state: RootState) => state.filter.status);
   const dispatch = useDispatch();
 
   return (
@@ -16,7 +16,7 @@ export const TodoFilter:React.FC = () => {
         <span className="select">
           <select
             name="filterGoods"
-            value={reduxStatus}
+            value={status}
             data-cy="statusSelect"
             onChange={(event) => dispatch({
               type: 'filter/set-status', payload: event.target.value,
@@ -35,7 +35,7 @@ export const TodoFilter:React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={reduxQuery}
+          value={query}
           onChange={(event) => dispatch({
             type: 'filter/set-query', payload: event.target.value,
           })}
@@ -45,13 +45,13 @@ export const TodoFilter:React.FC = () => {
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {reduxQuery !== '' && (
+          {query !== '' && (
             // eslint-disable-next-line jsx-a11y/control-has-associated-label
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onChange={() => dispatch({
+              onClick={() => dispatch({
                 type: 'filter/set-query', payload: '',
               })}
             />
