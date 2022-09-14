@@ -30,6 +30,12 @@ export const TodoFilter: React.FC<Props> = ({
     }
   };
 
+  const handleFilterByValue = (event: ChangeEvent<HTMLInputElement>) => (
+    setFilterByContent(event.target.value)
+  );
+
+  const handleFilterClear = () => setFilterByContent('');
+
   return (
     <form className="field has-addons">
       <p className="control">
@@ -53,9 +59,7 @@ export const TodoFilter: React.FC<Props> = ({
           className="input"
           placeholder="Search..."
           value={filterByContent}
-          onChange={event => (
-            setFilterByContent(event.target.value)
-          )}
+          onChange={handleFilterByValue}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -68,7 +72,7 @@ export const TodoFilter: React.FC<Props> = ({
               type="button"
               className="delete"
               aria-label="Clear search query"
-              onClick={() => setFilterByContent('')}
+              onClick={handleFilterClear}
             />
           )}
         </span>
