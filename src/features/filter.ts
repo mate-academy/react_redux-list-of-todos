@@ -22,8 +22,6 @@ type setStatusAction = {
 };
 type Actions = setQueryAction | setStatusAction;
 
-// export const actions = { setQueryAction, setStatusAction };
-
 const filterReducer = (
   state: State = initialState,
   action: Actions,
