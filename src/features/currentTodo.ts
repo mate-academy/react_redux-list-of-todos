@@ -1,9 +1,7 @@
 import { Todo } from '../types/Todo';
 
-// we use string literal as a type to avoid mistype in future
 type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
 
-// payload is a typical name for an action data
 type SetTodoAction = {
   type: 'currentTodo/SET';
   payload: Todo;
@@ -28,7 +26,11 @@ const currentTodoReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    // Implement all actions here
+    case 'currentTodo/REMOVE':
+      return null;
+
+    case 'currentTodo/SET':
+      return action.payload;
 
     default:
       return state;
