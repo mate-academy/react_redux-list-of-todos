@@ -15,7 +15,7 @@ export const TodoList: React.FC = () => {
 
   const queriedTodos = useMemo(() => (
     todos.filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()))
-  ), [query]);
+  ), [todos, query]);
 
   const filteredTodos = useMemo(() => queriedTodos.filter(todo => {
     switch (status) {
@@ -27,7 +27,7 @@ export const TodoList: React.FC = () => {
       default:
         return true;
     }
-  }), [status]);
+  }), [queriedTodos, status]);
 
   return (
     <>
