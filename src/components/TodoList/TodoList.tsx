@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { actions } from '../../features/currentTodo';
@@ -13,20 +13,21 @@ export const TodoList: React.FC = () => {
   const { query, status } = useAppSelector((state: RootState) => state.filter);
   const [isButtonActive, setIsButtonActive] = useState(false);
 
-  const queriedTodos = todos.filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
+  const queriedTodos = useMemo(() => (
+    todos.filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()))
+  ), [query]);
 
-  const filteredTodos = queriedTodos.filter(todo => {
+  const filteredTodos = useMemo(() => queriedTodos.filter(todo => {
     switch (status) {
-      case 'all':
-        return true;
       case 'active':
         return !todo.completed;
       case 'completed':
         return todo.completed;
+      case 'all':
       default:
         return true;
     }
-  });
+  }), [status]);
 
   return (
     <>

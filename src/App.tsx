@@ -22,7 +22,7 @@ export const App: React.FC = () => {
     dispatch(setTodosIsLoadingAction(true));
     getTodos()
       .then(gottenTodos => dispatch(setTodosActionCreator(gottenTodos)))
-      .catch((e) => dispatch(setTodosErrorAction(e)))
+      .catch((error) => dispatch(setTodosErrorAction(error)))
       .finally(() => dispatch(setTodosIsLoadingAction(false)));
   }, []);
 
