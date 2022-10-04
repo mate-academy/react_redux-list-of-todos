@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { actions as filterActions } from '../../features/filter';
+import { actions as filterActions, FilterStatus } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const [selectValue, setSelectValue] = useState('all');
   const [inputValue, setInputValue] = useState('');
   const filter = useAppSelector(state => state.filter);
   const dispatch = useDispatch();
+
+  const handleSelect = useCallback((e) => {
+    setSelectValue(e.currentTarget.value);
+
+    if (e.currentTarget.value === 'ALL') {
+      dispatch(filterActions.setFilter('ALL', inputValue));
+    }
+
+    if (e.currentTarget.value === 'ACTIVE') {
+      dispatch(filterActions.setFilter('ACTIVE', inputValue));
+    }
+
+    if (e.currentTarget.value === 'COMPLETED') {
+      dispatch(filterActions.setFilter('COMPLETED', inputValue));
+    }
+  }, [selectValue]);
 
   return (
     <form
@@ -19,21 +35,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={selectValue}
-            onChange={(e) => {
-              setSelectValue(e.currentTarget.value);
-
-              if (e.currentTarget.value === 'ALL') {
-                dispatch(filterActions.setFilter('ALL', inputValue));
-              }
-
-              if (e.currentTarget.value === 'ACTIVE') {
-                dispatch(filterActions.setFilter('ACTIVE', inputValue));
-              }
-
-              if (e.currentTarget.value === 'COMPLETED') {
-                dispatch(filterActions.setFilter('COMPLETED', inputValue));
-              }
-            }}
+            onChange={handleSelect}
           >
             <option value="ALL">All</option>
             <option value="ACTIVE">Active</option>
@@ -69,7 +71,9 @@ export const TodoFilter: React.FC = () => {
                 className="delete"
                 onClick={() => {
                   setInputValue('');
-                  dispatch(filterActions.setFilter(selectValue, inputValue));
+                  setSelectValue('ALL');
+                  dispatch(filterActions.setFilter('ALL', 'ALL'));
+                  dispatch(filterActions.setQuery('', FilterStatus.ALL));
                 }}
               />
             </span>

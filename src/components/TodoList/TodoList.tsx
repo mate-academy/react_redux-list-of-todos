@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
@@ -39,7 +39,7 @@ export const TodoList: React.FC = () => {
     return todosByQuery;
   };
 
-  const visibleTodos = getVisibleTodos();
+  const visibleTodos = useMemo(getVisibleTodos, [filter]);
 
   return (
     <>

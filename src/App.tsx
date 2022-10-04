@@ -18,8 +18,8 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    getTodos().then(res => {
-      res.map(item => dispatch(todosActions.add(item)));
+    getTodos().then(todos => {
+      todos.map(item => dispatch(todosActions.add(item)));
 
       setIsLoading(false);
     });
