@@ -14,7 +14,7 @@ export const TodoModal: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       if (currentTodo) {
-        const userFromServer = await getUser(currentTodo?.id);
+        const userFromServer = await getUser(currentTodo?.userId);
 
         setUser(userFromServer);
         setIsLoading(false);
