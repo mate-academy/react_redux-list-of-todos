@@ -1,10 +1,13 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
 import React, { useMemo } from 'react';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Status } from '../../types/Status';
+import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
+  const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const status = useAppSelector(state => state.filter.status);
@@ -35,6 +38,10 @@ export const TodoList: React.FC = () => {
 
     return tempTodos;
   }, [todos, status, query]);
+
+  const changeCurrentTodo = (todo: Todo) => {
+    dispatch(currentTodoActions.setTodo(todo));
+  };
 
   if (visibleTodos.length === 0) {
     return (
@@ -89,7 +96,12 @@ export const TodoList: React.FC = () => {
             </td>
 
             <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
+              <button
+                data-cy="selectButton"
+                className="button"
+                type="button"
+                onClick={() => changeCurrentTodo(todo)}
+              >
                 <span className="icon">
                   <i className="far fa-eye" />
                 </span>
