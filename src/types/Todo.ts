@@ -6,14 +6,12 @@ export interface Todo {
 }
 
 export enum TodoTypes {
-  FETCH_TODOS = 'FETCH_TODOS',
+  START_LOADING = 'START_LOADING',
+  FINISH_LOADING = 'FINISH_LOADING',
   FETCH_TODOS_SUCCESS = 'FETCH_TODOS_SUCCESS',
   FETCH_TODOS_ERROR = 'FETCH_TODOS_ERROR',
+  SET_TODO = 'SET_TODO',
 }
-
-type FetchTodoAction = {
-  type: TodoTypes.FETCH_TODOS,
-};
 
 export type TodoSuccessAction = {
   type: TodoTypes.FETCH_TODOS_SUCCESS,
@@ -25,4 +23,18 @@ type TodoErrorAction = {
   payload: string,
 };
 
-export type TodoAction = FetchTodoAction | TodoSuccessAction | TodoErrorAction;
+export type CurrentTodoAction = {
+  type: TodoTypes.SET_TODO,
+  payload: number,
+};
+
+export type StartLoading = {
+  type: TodoTypes.START_LOADING,
+};
+
+export type FinishLoading = {
+  type: TodoTypes.FINISH_LOADING,
+};
+
+// eslint-disable-next-line max-len
+export type TodoAction = TodoSuccessAction | TodoErrorAction | CurrentTodoAction | StartLoading | FinishLoading;

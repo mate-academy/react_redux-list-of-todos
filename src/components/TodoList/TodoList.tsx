@@ -54,7 +54,7 @@ export const TodoList: React.FC<Props> = ({ todos, selectUser }) => (
                 selectUser(todo.userId, todo.id);
               }}
             >
-              {`Show ${todo.userId}`}
+              {`Show ${todo.id}`}
             </button>
           </td>
         </tr>

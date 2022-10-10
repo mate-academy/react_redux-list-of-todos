@@ -1,34 +1,28 @@
 /* eslint-disable max-len */
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Filter } from './types/Filter';
-import { actions as loadingActions } from './store/loadingReducer';
-import { actions as currentTodoReducer } from './store/currentTodoReducer';
-import { actions } from './store/TodosReducer';
+import { actions as TodosReducer } from './store/TodosReducer';
 import { useTypedSelector } from './components/hooks/useTypedSelector';
 import {
   Loader, TodoFilter, TodoList, TodoModal,
 } from './components/index';
+import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
-  const todos = useTypedSelector(state => state.todo);
+  const todos = useTypedSelector<Todo[]>(state => state.todos.todos);
   const [userId, setUserId] = useState(0);
-  const [visibleTodos, setVisibleTodos] = useState(todos);
   const [filteredBy, setFilteredBy] = useState('all');
   const [query, setQuery] = useState('');
 
-  const isLoading = useTypedSelector(state => state.loading);
-  const selectedTodo = useTypedSelector(state => state.todoId);
+  const isLoading = useTypedSelector(state => state.todos.isLoading);
+  const selectedTodo = useTypedSelector(state => state.todos.selectedTodoId);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadingActions.startLoading());
-
-    dispatch(actions.getTodos());
-
-    dispatch(loadingActions.finishLoading());
+    dispatch(TodosReducer.getTodos());
   }, []);
 
   const changeFilteredBy = (filterType: string) => {
@@ -43,28 +37,25 @@ export const App: React.FC = () => {
     return title.toLowerCase().includes(query.toLowerCase());
   };
 
-  useEffect(() => {
+  const visibleTodos = useMemo(() => {
     switch (filteredBy) {
       case Filter.ALL:
-        setVisibleTodos(todos.filter(todo => handleQueryFiltering(todo.title)));
-        break;
+        return todos.filter(todo => handleQueryFiltering(todo.title));
 
       case Filter.ACTIVE:
-        setVisibleTodos(todos.filter(todo => !todo.completed && handleQueryFiltering(todo.title)));
-        break;
+        return todos.filter(todo => !todo.completed && handleQueryFiltering(todo.title));
 
       case Filter.COMPLETED:
-        setVisibleTodos(todos.filter(todo => todo.completed && handleQueryFiltering(todo.title)));
-        break;
+        return todos.filter(todo => todo.completed && handleQueryFiltering(todo.title));
 
       default:
-        break;
+        return todos;
     }
   }, [filteredBy, query, todos]);
 
   const selectUser = (id: number, todoId: number) => {
     setUserId(id);
-    dispatch(currentTodoReducer.setTodo(todoId));
+    dispatch(TodosReducer.setTodo(todoId));
   };
 
   const usersTodo = todos.find(todo => todo.id === selectedTodo);

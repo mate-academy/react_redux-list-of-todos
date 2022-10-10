@@ -6,9 +6,11 @@ import {
 export const actions = {
 
   getTodos: () => {
-    return async (dispatch: Dispatch<TodoAction>) => {
+    return async (
+      dispatch: Dispatch<TodoAction>,
+    ) => {
       try {
-        dispatch({ type: TodoTypes.FETCH_TODOS });
+        dispatch({ type: TodoTypes.START_LOADING });
 
         // eslint-disable-next-line max-len
         const response = await fetch('https://jsonplaceholder.typicode.com/todos');
@@ -20,22 +22,40 @@ export const actions = {
           type: TodoTypes.FETCH_TODOS_ERROR,
           payload: 'Error data',
         });
+      } finally {
+        dispatch({ type: TodoTypes.FINISH_LOADING });
       }
     };
   },
+
+  setTodo: (todoId: number) => ({ type: TodoTypes.SET_TODO, payload: todoId }),
 };
 
 export const selectors = {
   getTodo: (todo: Todo[]) => todo,
+  setTodo: (todoId: number) => todoId,
 };
 
 const TodosReducer = (
-  state: Todo[] = [],
+  state: { todos: Todo[], selectedTodoId: number | null, isLoading: boolean }
+  = { todos: [], selectedTodoId: null, isLoading: false },
   action: TodoAction,
-): Todo[] => {
+) => {
   switch (action.type) {
+    case TodoTypes.START_LOADING:
+      return { ...state, isLoading: true };
+
+    case TodoTypes.FINISH_LOADING:
+      return { ...state, isLoading: false };
+
     case TodoTypes.FETCH_TODOS_SUCCESS:
-      return action.payload;
+      return { ...state, todos: action.payload };
+
+      // case TodoTypes.FETCH_TODOS_ERROR:
+      //   return action.payload;
+
+    case TodoTypes.SET_TODO:
+      return { ...state, selectedTodoId: action.payload };
 
     default:
       return state;
