@@ -16,15 +16,13 @@ export const TodoList: React.FC = () => {
   const visibleTodos = useMemo(() => {
     let tempTodos = todos.filter(todo => {
       switch (status) {
-        case Status.ALL:
-          return todo;
-
         case Status.ACTIVE:
           return !todo.completed;
 
         case Status.COMPLETED:
           return todo.completed;
 
+        case Status.ALL:
         default:
           return todo;
       }
@@ -85,11 +83,10 @@ export const TodoList: React.FC = () => {
             </td>
 
             <td className="is-vcentered is-expanded">
-              <p className={classNames(
-                !todo.completed
-                  ? 'has-text-danger'
-                  : 'has-text-success',
-              )}
+              <p className={classNames({
+                'has-text-danger': !todo.completed,
+                'has-text-success': todo.completed,
+              })}
               >
                 {todo.title}
               </p>
@@ -99,6 +96,7 @@ export const TodoList: React.FC = () => {
               <button
                 data-cy="selectButton"
                 className="button"
+                aria-label="Select todo button"
                 type="button"
                 onClick={() => changeCurrentTodo(todo)}
               >

@@ -8,16 +8,22 @@ export const TodoFilter: React.FC = () => {
   const status = useAppSelector(state => state.filter.status);
   const query = useAppSelector(state => state.filter.query);
 
-  const handleStatus = (value: Status) => {
-    dispatch(filterActions.status(value));
+  const handleStatus = (value: string) => {
+    switch (value) {
+      case Status.ACTIVE:
+        return dispatch(filterActions.status(Status.ACTIVE));
+
+      case Status.COMPLETED:
+        return dispatch(filterActions.status(Status.COMPLETED));
+
+      case Status.ALL:
+      default:
+        return dispatch(filterActions.status(Status.ALL));
+    }
   };
 
   const handleQuery = (value: string) => {
-    if (!value.trim()) {
-      dispatch(filterActions.query(''));
-    } else {
-      dispatch(filterActions.query(value));
-    }
+    dispatch(filterActions.query(value));
   };
 
   return (
@@ -30,11 +36,11 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={status}
-            onChange={event => handleStatus(event.target.value as Status)}
+            onChange={event => handleStatus(event.target.value)}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Status.ALL}>All</option>
+            <option value={Status.ACTIVE}>Active</option>
+            <option value={Status.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>
@@ -57,7 +63,7 @@ export const TodoFilter: React.FC = () => {
             <button
               data-cy="clearSearchButton"
               type="button"
-              aria-label="clearSearchButton"
+              aria-label="Clear search"
               className="delete"
               onClick={() => handleQuery('')}
             />

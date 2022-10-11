@@ -11,22 +11,25 @@ export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (currentTodo) {
-        const userFromServer = await getUser(currentTodo?.userId);
-
-        setUser(userFromServer);
-        setIsLoading(false);
-      }
-    };
-
+  const fetchUser = async (id: number) => {
     try {
-      fetchUser();
+      const userFromServer = await getUser(id);
+
+      setUser(userFromServer);
     } catch {
       setUser(null);
+    } finally {
+      setIsLoading(false);
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    if (!currentTodo) {
+      return;
+    }
+
+    fetchUser(currentTodo.userId);
+  }, [currentTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -63,8 +66,12 @@ export const TodoModal: React.FC = () => {
                 ) : (
                   <strong className="has-text-danger">Planned</strong>
                 )}
-                {' by '}
-                <a href={`mailto:${user?.email}`}>{user?.name}</a>
+                {user && (
+                  <>
+                    {' by '}
+                    <a href={`mailto:${user.email}`}>{user.name}</a>
+                  </>
+                )}
               </p>
             </div>
           </div>

@@ -16,19 +16,20 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async () => {
+    try {
       const todos = await getTodos();
 
       dispatch(todoActions.add(todos));
-      setIsLoading(false);
-    };
-
-    try {
-      fetchData();
     } catch {
       dispatch(todoActions.add([]));
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (
