@@ -2,7 +2,6 @@ import React from 'react';
 import { actions as filtersActions } from '../../features/filter';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
-// import { actions as filtersActions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
