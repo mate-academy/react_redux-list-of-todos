@@ -1,25 +1,33 @@
 import React from 'react';
 import className from 'classnames';
 import { Todo } from '../../types/Todo';
-import { Loader } from '../Loader';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
-type Props = {
-  filteredTodos: Todo[]
-  loading: boolean
-};
 
-export const TodoList: React.FC<Props> = (props) => {
+export const TodoList: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+  const { status, query } = useAppSelector(state => state.filter);
+
+  const filteredTodos = todos.filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()))
+  .filter(todo => {
+    switch (status) {
+      case 'active':
+        return !todo.completed;
+
+      case 'completed':
+        return todo.completed;
+
+      default:
+        return todo;
+    }
+  });
+
+
   const dispatch = useAppDispatch();
 
   const setTodo = (todo: Todo) => dispatch(currentTodoActions.setTodo(todo));
-
-  const {
-    filteredTodos,
-    loading,
-  } = props;
 
   return (
 
@@ -40,9 +48,6 @@ export const TodoList: React.FC<Props> = (props) => {
       <tbody>
         {filteredTodos.map((todo) => {
           return (
-            loading
-              ? <Loader />
-              : (
                 <tr
                   key={todo.id}
                   data-cy="todo"
@@ -74,15 +79,15 @@ export const TodoList: React.FC<Props> = (props) => {
                       onClick={() => setTodo(todo)}
                     >
                       <span className="icon">
-                        <i className={className(currentTodo?.id === todo.id
-                          ? 'far fa-eye-slash'
-                          : 'far fa-eye')}
+                        <i
+                          className={className(
+                            currentTodo?.id === todo.id ? 'far fa-eye-slash' : 'far fa-eye'
+                          )}
                         />
                       </span>
                     </button>
                   </td>
                 </tr>
-              )
           );
         })}
       </tbody>

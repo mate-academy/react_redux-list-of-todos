@@ -1,5 +1,6 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as FilterActions } from '../../features/filter';
+import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
@@ -7,15 +8,15 @@ export const TodoFilter: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(FilterActions.setQuery((event.target.value)));
+    dispatch(filterActions.setQuery((event.target.value)));
   };
 
   const handleFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(FilterActions.setFilter((event.target.value as Status)));
+    dispatch(filterActions.setFilter((event.target.value as Status)));
   };
 
   const handleClear = () => {
-    dispatch(FilterActions.setQuery(''));
+    dispatch(filterActions.setQuery(''));
   };
 
   return (
@@ -50,7 +51,6 @@ export const TodoFilter: React.FC = () => {
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
 
           {query.length > 0 && (
-            // eslint-disable-next-line jsx-a11y/control-has-associated-label
             <button
               onClick={handleClear}
               data-cy="clearSearchButton"

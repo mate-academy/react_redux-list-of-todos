@@ -15,29 +15,16 @@ import { actions as AddTodosAction } from './features/todos';
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const { query, status } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const todos = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
 
-  const filteredTodos = todos.filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()))
-    .filter(todo => {
-      switch (status) {
-        case 'active':
-          return !todo.completed;
-
-        case 'completed':
-          return todo.completed;
-
-        default:
-          return todo;
-      }
-    });
-
   useEffect(() => {
-    getTodos()
-      .then((todosFromServer: Todo[]) => dispatch(AddTodosAction.addTodos(todosFromServer)))
-      .finally(() => setIsLoading(false));
+    (async () => {
+      const todosFromServer: Todo[] = await getTodos();
+
+      dispatch(AddTodosAction.addTodos(todosFromServer));
+      setIsLoading(false);
+    })();
   }, [setIsLoading, AddTodosAction.addTodos]);
 
   return (
@@ -52,11 +39,11 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <TodoList
-                filteredTodos={filteredTodos}
-                loading={isLoading}
-              />
-              {isLoading && <Loader />}
+              {isLoading
+                ? <Loader />
+                : (
+                  <TodoList />
+                )}
             </div>
           </div>
         </div>

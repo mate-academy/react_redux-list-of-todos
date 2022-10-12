@@ -16,17 +16,15 @@ export const TodoModal: React.FC = () => {
   };
 
   useEffect(() => {
-    if (currentTodo !== undefined) {
-      getUser(currentTodo?.userId || 0)
-        .then(setUser);
-    }
+    getUser(currentTodo?.userId || 0)
+      .then(setUser);
   }, []);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {currentTodo === null || user === null ? (
+      {!currentTodo || !user ? (
         <Loader />
       ) : (
         <div className="modal-card">
