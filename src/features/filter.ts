@@ -13,19 +13,19 @@ type FilterAction = {
 
 type Actions = QueryAction | FilterAction;
 
-const SetQuery = (query: string): QueryAction => (
+const setQuery = (query: string): QueryAction => (
   {
     type: 'filter/Query',
     payload: query,
   }
 );
 
-const SetFilter = (status: Status): FilterAction => ({
+const setFilter = (status: Status): FilterAction => ({
   type: 'filter/Filter',
   playload: status,
 });
 
-export const actions = { SetQuery, SetFilter };
+export const actions = { setQuery, setFilter };
 
 const initialState = {
   query: '',

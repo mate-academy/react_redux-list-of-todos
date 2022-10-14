@@ -10,14 +10,14 @@ interface Props {
 export const TodoItem: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
 
-  const IscurrentTodo = useAppSelector(state => (
+  const iscurrentTodo = useAppSelector(state => (
     todo.id === state.currentTodo?.id
   ));
 
   return (
     <tr
       data-cy="todo"
-      className={ClassNames({ 'has-background-info-light': IscurrentTodo })}
+      className={ClassNames({ 'has-background-info-light': iscurrentTodo })}
     >
       <td className="is-vcentered">{todo.id}</td>
       <td className="is-vcentered">
@@ -47,7 +47,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           <span className="icon">
             <i
               className={ClassNames('far',
-                IscurrentTodo
+                iscurrentTodo
                   ? 'fa-eye-slash'
                   : 'fa-eye')}
             />
