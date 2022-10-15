@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import className from 'classnames';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
@@ -15,9 +15,14 @@ export const TodoModal: React.FC = () => {
     dispatch(currentTodoActions.removeTodo());
   };
 
+  const getUserFromServer = useCallback(async () => {
+    const userFromServer = await getUser(currentTodo?.userId || 0);
+
+    setUser(userFromServer);
+  }, []);
+
   useEffect(() => {
-    getUser(currentTodo?.userId || 0)
-      .then(setUser);
+    getUserFromServer();
   }, []);
 
   return (

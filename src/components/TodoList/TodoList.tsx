@@ -10,19 +10,20 @@ export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const { status, query } = useAppSelector(state => state.filter);
 
-  const filteredTodos = todos.filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()))
-  .filter(todo => {
-    switch (status) {
-      case 'active':
-        return !todo.completed;
+  const filteredTodos = todos. filter(todo =>
+    todo.title.toLowerCase().includes(query.toLowerCase())).filter(todo => {
+      switch (status) {
+        case 'active':
+          return !todo.completed;
 
-      case 'completed':
-        return todo.completed;
+        case 'completed':
+          return todo.completed;
 
-      default:
-        return todo;
+        default:
+          return todo;
+      }
     }
-  });
+  );
 
 
   const dispatch = useAppDispatch();

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -18,14 +18,16 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    (async () => {
-      const todosFromServer: Todo[] = await getTodos();
+  const getTodosFromServer = useCallback(async () => {
+    const todosFromServer: Todo[] = await getTodos();
 
-      dispatch(AddTodosAction.addTodos(todosFromServer));
-      setIsLoading(false);
-    })();
-  }, [setIsLoading, AddTodosAction.addTodos]);
+    dispatch(AddTodosAction.addTodos(todosFromServer));
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getTodosFromServer();
+  }, [getTodosFromServer()]);
 
   return (
     <>
