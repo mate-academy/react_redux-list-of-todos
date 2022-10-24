@@ -1,18 +1,16 @@
 /* eslint-disable max-len */
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+
 import classNames from 'classnames';
 import { useAppSelector } from '../../app/hooks';
 import { getTodos } from '../../api';
+
 import { actions as todosActions } from '../../features/todos';
 import { actions as currentTodoActions } from '../../features/currentTodo';
-import { Todo } from '../../types/Todo';
-import { Status } from '../../types/Status';
 
-type Filter = {
-  status?: Status,
-  query?: string,
-};
+import { Todo } from '../../types/Todo';
+import { Filter } from '../../types/Filter';
 
 type Props = {
   isLoading: boolean,
@@ -23,6 +21,7 @@ export const TodoList: React.FC<Props> = ({ isLoading, setIsLoading }) => {
   const todos: Todo[] = useAppSelector(state => state.todos);
   const filter: Filter = useAppSelector(state => state.filter);
   const currentTodo: Todo | null = useAppSelector(state => state.currentTodo);
+
   const dispatch = useDispatch();
 
   const visibleTodos = todos.filter(todo => {
@@ -38,7 +37,8 @@ export const TodoList: React.FC<Props> = ({ isLoading, setIsLoading }) => {
           return !todo.completed;
         case 'completed':
           return todo.completed;
-        default: return todo;
+        default:
+          return todo;
       }
     }
 

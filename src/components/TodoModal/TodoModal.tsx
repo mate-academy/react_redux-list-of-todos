@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Loader } from '../Loader';
-import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+
+import { Loader } from '../Loader';
 import { getUser } from '../../api';
+
 import { User } from '../../types/User';
+import { Todo } from '../../types/Todo';
 
 type Props = {
   currentTodo: Todo,
@@ -68,6 +70,7 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
               ) : (
                 <strong className="has-text-danger">Planned</strong>
               )}
+
               {' by '}
               <a href={`mailto:${currentUser?.email}`}>{currentUser?.name}</a>
             </p>

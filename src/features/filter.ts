@@ -1,31 +1,28 @@
-// import { Status } from '../types/Status';
-// import { Todo } from '../types/Todo';
-
-type setStatusAction = {
+type SetStatusAction = {
   type: 'filter/SET_STATUS',
   payload: string,
 };
 
-type setQweryAction = {
+type SetQweryAction = {
   type: 'filter/SET_QWERY',
   payload: string,
 };
 
-type deleteQweryAction = {
+type DeleteQweryAction = {
   type: 'filter/DELETE_QWERY',
 };
 
-const setStatus = (status: string): setStatusAction => ({
+const setStatus = (status: string): SetStatusAction => ({
   type: 'filter/SET_STATUS',
   payload: status,
 });
 
-const setQwery = (qwery: string): setQweryAction => ({
+const setQwery = (qwery: string): SetQweryAction => ({
   type: 'filter/SET_QWERY',
   payload: qwery,
 });
 
-const deleteQwery = (): deleteQweryAction => ({
+const deleteQwery = (): DeleteQweryAction => ({
   type: 'filter/DELETE_QWERY',
 });
 
@@ -40,7 +37,7 @@ type State = {
   query: string | null,
 } | null;
 
-type Action = setStatusAction | setQweryAction | deleteQweryAction;
+type Action = SetStatusAction | SetQweryAction | DeleteQweryAction;
 
 const filterReducer = (
   state: State = null,
@@ -67,11 +64,6 @@ const filterReducer = (
     default:
       return state;
   }
-
-  // return {
-  //   query: '',
-  //   status: 'all',
-  // };
 };
 
 export default filterReducer;

@@ -1,8 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { actions as filterActions } from '../../features/filter';
+import { useAppSelector } from '../../app/hooks';
+import { Filter } from '../../types/Filter';
 
 export const TodoFilter: React.FC = () => {
+  const filters: Filter = useAppSelector(state => state.filter);
+
   const dispatch = useDispatch();
 
   const onSetStatus = (newStatus: string) => (
@@ -41,6 +45,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={filters?.query || ''}
           onChange={(e) => onSetQwery(e.target.value)}
         />
         <span className="icon is-left">
@@ -48,13 +53,17 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={onDeleteQwery}
-          />
+          {filters?.query && (
+            <>
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+              <button
+                data-cy="clearSearchButton"
+                type="button"
+                className="delete"
+                onClick={onDeleteQwery}
+              />
+            </>
+          )}
         </span>
       </p>
     </form>

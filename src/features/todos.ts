@@ -1,13 +1,12 @@
 import { Todo } from '../types/Todo';
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
-type setTodosAction = {
-  type: 'SET_TODOS',
+type SetTodosAction = {
+  type: 'todos/SET',
   payload: Todo[],
 };
 
-const setTodos = (Todos: Todo[]): setTodosAction => ({
-  type: 'SET_TODOS',
+const setTodos = (Todos: Todo[]): SetTodosAction => ({
+  type: 'todos/SET',
   payload: Todos,
 });
 
@@ -15,10 +14,10 @@ export const actions = { setTodos };
 
 const todosReducer = (
   state: Todo[] = [],
-  action: setTodosAction,
+  action: SetTodosAction,
 ): Todo[] => {
   switch (action.type) {
-    case 'SET_TODOS':
+    case 'todos/SET':
       return action.payload;
     default:
       return state;
