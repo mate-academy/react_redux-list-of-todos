@@ -54,6 +54,7 @@ export const TodoModal: React.FC = () => {
               `close modal button`
             </button>
           </header>
+
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
               {selectedTodo.title}

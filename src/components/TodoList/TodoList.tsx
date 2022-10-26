@@ -50,6 +50,7 @@ export const TodoList: React.FC = () => {
                     </span>
                   )}
                 </td>
+
                 <td className="is-vcentered is-expanded">
                   <p className={todo.completed
                     ? 'has-text-success'
@@ -58,6 +59,7 @@ export const TodoList: React.FC = () => {
                     {todo.title}
                   </p>
                 </td>
+
                 <td className="has-text-right is-vcentered">
                   <button
                     data-cy="selectButton"
@@ -76,6 +78,7 @@ export const TodoList: React.FC = () => {
               </tr>
             ))}
           </tbody>
+
         </table>
       )}
     </>
