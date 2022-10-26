@@ -18,14 +18,14 @@ export const TodoModal: React.FC = () => {
 
   const handleDeselectTodo = () => dispatch(TODO_ACTIONS.removeTodo());
 
-  const [foundUser, setFoundUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
 
     if (selectedTodo) {
       getUser(selectedTodo.userId)
-        .then(setFoundUser)
+        .then(setUser)
         .finally(() => setIsLoading(false));
     }
   }, []);
@@ -33,7 +33,7 @@ export const TodoModal: React.FC = () => {
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
-      {isLoading || !selectedTodo || !foundUser ? (
+      {isLoading || !selectedTodo || !user ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -45,19 +45,20 @@ export const TodoModal: React.FC = () => {
               Todo #
               {selectedTodo.id}
             </div>
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"
               data-cy="modal-close"
               onClick={() => handleDeselectTodo()}
-            />
+            >
+              `close modal button`
+            </button>
           </header>
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
               {selectedTodo.title}
             </p>
-            {foundUser && (
+            {user && (
               <p className="block" data-cy="modal-user">
                 {selectedTodo.completed ? (
                   <strong className="has-text-success">Done</strong>
@@ -65,8 +66,8 @@ export const TodoModal: React.FC = () => {
                   <strong className="has-text-danger">Planned</strong>
                 )}
                 {' by '}
-                <a href={`mailto:${foundUser.email}`}>
-                  {foundUser.name}
+                <a href={`mailto:${user.email}`}>
+                  {user.name}
                 </a>
               </p>
             )}

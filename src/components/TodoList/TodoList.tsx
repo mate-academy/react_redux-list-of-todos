@@ -10,14 +10,13 @@ export const TodoList: React.FC = () => {
   const todos = useSelector(TODOS_SELECTORS.getPreparedTodos);
   const selectedTodo = useSelector(TODO_SELECTORS.getCurrentTodo);
   const selectedTodoId = selectedTodo?.id;
-  const isLoading = false;
   const handleSetSelectedTodo = (todo: Todo) => dispatch(
     TODO_ACTIONS.setTodo(todo),
   );
 
   return (
     <>
-      {todos.length <= 0 && !isLoading ? (
+      {todos.length <= 0 ? (
         <div>There is no todos</div>
       ) : (
         <table className="table is-narrow is-fullwidth">
