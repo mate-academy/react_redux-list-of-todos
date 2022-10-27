@@ -1,30 +1,37 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { actions as filterActions, Payload } from '../../features/filter';
 
 import { Filter } from '../../types/Filter';
 
-type Props = {
-  setSelectedFilter: React.Dispatch<React.SetStateAction<Filter>>;
-  setSelectedQuery: React.Dispatch<React.SetStateAction<string>>;
-  selectedQuery: string;
-};
+export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const currentFilter: Payload = useSelector<RootState, Payload>(
+    state => state.filter,
+  );
 
-export const TodoFilter: React.FC<Props> = ({
-  setSelectedFilter,
-  setSelectedQuery,
-  selectedQuery,
-}) => {
   const handleFilterChange = (filterValue: string) => {
     switch (filterValue) {
       case 'all':
-        setSelectedFilter(Filter.all);
+        dispatch(filterActions.setFilter({
+          ...currentFilter,
+          status: Filter.all,
+        }));
         break;
 
       case 'active':
-        setSelectedFilter(Filter.active);
+        dispatch(filterActions.setFilter({
+          ...currentFilter,
+          status: Filter.active,
+        }));
         break;
 
       case 'completed':
-        setSelectedFilter(Filter.completed);
+        dispatch(filterActions.setFilter({
+          ...currentFilter,
+          status: Filter.completed,
+        }));
         break;
 
       default:
@@ -53,21 +60,27 @@ export const TodoFilter: React.FC<Props> = ({
           type="text"
           className="input"
           placeholder="Search..."
-          value={selectedQuery}
-          onChange={e => setSelectedQuery(e.target.value)}
+          value={currentFilter.query}
+          onChange={e => dispatch(filterActions.setFilter({
+            ...currentFilter,
+            query: e.target.value,
+          }))}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {selectedQuery && (
+        {currentFilter.query && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => setSelectedQuery('')}
+              onClick={() => dispatch(filterActions.setFilter({
+                ...currentFilter,
+                query: '',
+              }))}
             />
           </span>
         )}
