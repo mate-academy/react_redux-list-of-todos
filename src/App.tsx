@@ -45,11 +45,11 @@ export const App: React.FC = () => {
                 ? <Loader />
                 : (
                   <>
-                    {!!allTodos.length && !isLoading && (
+                    {!!allTodos.length && (
                       <TodoList />
                     )}
 
-                    {!isLoading && !allTodos.length && (
+                    {!allTodos.length && (
                       'There are no todos on server or other error'
                     )}
                   </>

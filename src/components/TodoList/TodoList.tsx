@@ -22,9 +22,6 @@ export const TodoList: React.FC = () => {
 
   const filterList = (filterProp: string) => {
     switch (filterProp) {
-      case Filter.all:
-        return todosByQuery.filter(todo => todo.completed || !todo.completed);
-
       case Filter.completed:
         return todosByQuery.filter(todo => todo.completed);
 
