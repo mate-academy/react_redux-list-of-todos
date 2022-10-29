@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
 
 import { User } from '../../types/User';
 import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
-import { RootState } from '../../app/store';
 import { actions as todoActions } from '../../features/currentTodo';
 import { actions as userActions } from '../../features/user';
+import { useAppSelector } from '../../app/hooks';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
-  const currentTodo: Todo | null = useSelector<RootState, Todo | null>(
+  const currentTodo: Todo | null = useAppSelector<Todo | null>(
     state => state.currentTodo,
   );
-  const currentUser: User | null = useSelector<RootState, User | null>(
+  const currentUser: User | null = useAppSelector<User | null>(
     state => state.user,
   );
 

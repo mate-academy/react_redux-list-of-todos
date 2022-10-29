@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
@@ -11,16 +11,22 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 
 import { Todo } from './types/Todo';
-import { RootState } from './app/store';
 import { actions as todosActions } from './features/todos';
+import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
-  const currentTodo: Todo | null = useSelector<RootState, Todo | null>(state => state.currentTodo);
-  const allTodos: Todo[] | [] = useSelector<RootState, Todo[] | []>(state => state.todos);
+  const currentTodo: Todo | null = useAppSelector<Todo | null>(state => state.currentTodo);
+  const allTodos: Todo[] | [] = useAppSelector<Todo[] | []>(state => state.todos);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    getTodos().then(fetchTodos => dispatch(todosActions.setAllTodos(fetchTodos)));
+    setIsLoading(true);
+    getTodos()
+      .then(fetchTodos => {
+        dispatch(todosActions.setAllTodos(fetchTodos));
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -35,10 +41,18 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {allTodos.length === 0
+              {isLoading
                 ? <Loader />
                 : (
-                  <TodoList />
+                  <>
+                    {!!allTodos.length && !isLoading && (
+                      <TodoList />
+                    )}
+
+                    {!isLoading && !allTodos.length && (
+                      'There are no todos on server or other error'
+                    )}
+                  </>
                 )}
             </div>
           </div>

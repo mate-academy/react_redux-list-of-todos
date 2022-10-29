@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Todo } from '../../types/Todo';
-import { RootState } from '../../app/store';
 import { actions } from '../../features/currentTodo';
+import { useAppSelector } from '../../app/hooks';
 
 type Props = {
   todo: Todo,
@@ -14,7 +14,7 @@ export const TodoItem: React.FC<Props> = ({
   todo,
 }) => {
   const dispatch = useDispatch();
-  const currentTodo: Todo | null = useSelector<RootState, Todo | null>(
+  const currentTodo: Todo | null = useAppSelector<Todo | null>(
     state => state.currentTodo,
   );
 

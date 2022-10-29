@@ -1,30 +1,47 @@
-export interface Payload {
-  status: string;
-  query: string;
-}
-
-type SetFilterAction = {
-  type: 'filter/SET';
-  payload: Payload;
+type SetStatusAction = {
+  type: 'status/SET';
+  payload: string;
 };
 
-const setFilter = (filter: Payload): SetFilterAction => ({
-  type: 'filter/SET',
-  payload: filter,
+type SetQueryAction = {
+  type: 'query/SET';
+  payload: string;
+};
+
+const setStatus = (status: string): SetStatusAction => ({
+  type: 'status/SET',
+  payload: status,
 });
 
-export const actions = { setFilter };
+const setQuery = (query: string): SetQueryAction => ({
+  type: 'query/SET',
+  payload: query,
+});
 
-type State = Payload;
-type Action = SetFilterAction;
+export const actions = { setStatus, setQuery };
+
+export type FilterState = {
+  status: string;
+  query: string;
+};
+type Action = SetStatusAction | SetQueryAction;
 
 const filterReducer = (
-  state: State = { status: 'all', query: '' },
+  state: FilterState = { status: 'all', query: '' },
   action: Action,
 ) => {
   switch (action.type) {
-    case 'filter/SET':
-      return action.payload;
+    case 'status/SET':
+      return {
+        ...state,
+        status: action.payload,
+      };
+
+    case 'query/SET':
+      return {
+        ...state,
+        query: action.payload,
+      };
     default:
       return state;
   }

@@ -1,42 +1,20 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
-import { actions as filterActions, Payload } from '../../features/filter';
-
-import { Filter } from '../../types/Filter';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
+import { actions as filterActions, FilterState } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const currentFilter: Payload = useSelector<RootState, Payload>(
+  const currentFilter: FilterState = useAppSelector<FilterState>(
     state => state.filter,
   );
 
-  const handleFilterChange = (filterValue: string) => {
-    switch (filterValue) {
-      case 'all':
-        dispatch(filterActions.setFilter({
-          ...currentFilter,
-          status: Filter.all,
-        }));
-        break;
+  const handleFilterChange = (statusValue: string) => {
+    dispatch(filterActions.setStatus(statusValue));
+  };
 
-      case 'active':
-        dispatch(filterActions.setFilter({
-          ...currentFilter,
-          status: Filter.active,
-        }));
-        break;
-
-      case 'completed':
-        dispatch(filterActions.setFilter({
-          ...currentFilter,
-          status: Filter.completed,
-        }));
-        break;
-
-      default:
-        break;
-    }
+  const handleQueryChange = (queryValue: string) => {
+    dispatch(filterActions.setQuery(queryValue));
   };
 
   return (
@@ -61,10 +39,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={currentFilter.query}
-          onChange={e => dispatch(filterActions.setFilter({
-            ...currentFilter,
-            query: e.target.value,
-          }))}
+          onChange={e => handleQueryChange(e.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -77,10 +52,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(filterActions.setFilter({
-                ...currentFilter,
-                query: '',
-              }))}
+              onClick={() => handleQueryChange('')}
             />
           </span>
         )}
