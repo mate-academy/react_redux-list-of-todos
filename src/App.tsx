@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useEffect, useMemo, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -59,7 +58,8 @@ export const App: React.FC = () => {
     }
 
     filterValues = filterValues.filter(toDo => (
-      toDo.title.toLowerCase().includes(inputVal.toLowerCase())));
+      toDo.title.toLowerCase().includes(inputVal.toLowerCase())
+    ));
 
     return filterValues;
   };
@@ -80,7 +80,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {todos.length === 0 && <Loader />}
+              {!todos.length && <Loader />}
               <TodoList
                 todos={visibleTodos}
                 showTodo={showTodo}

@@ -14,7 +14,7 @@ export const TodoModal: React.FC<Props> = ({ closeModal }) => {
 
   const loadUser = useCallback(
     async () => {
-      if (todo !== null) {
+      if (todo) {
         const userData = await getUser(todo.userId);
 
         setUser(userData);

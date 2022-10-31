@@ -1,26 +1,27 @@
 import { Select } from '../types/Select';
+import { Filter } from '../types/Filter';
 
-type FilterSelectAction = { type: 'filter/Select', payload: Select };
-type FilterInputAction = { type: 'filter/Input', payload: string };
+type FilterSelectAction = { type: Filter.SELECT, payload: Select };
+type FilterInputAction = { type: Filter.INPUT, payload: string };
 
 type Action = FilterSelectAction | FilterInputAction;
 
 const setFilterSelect = (filter: Select): FilterSelectAction => (
-  { type: 'filter/Select', payload: filter }
+  { type: Filter.SELECT, payload: filter }
 );
 
 const setFilterInput = (filter: string): FilterInputAction => (
-  { type: 'filter/Input', payload: filter }
+  { type: Filter.INPUT, payload: filter }
 );
 
 const defaultFilter = { query: '', status: Select.All };
 
 const filterReducer = (filter = defaultFilter, action: Action) => {
   switch (action.type) {
-    case 'filter/Select':
+    case Filter.SELECT:
       return { ...filter, status: action.payload };
 
-    case 'filter/Input':
+    case Filter.INPUT:
       return { ...filter, query: action.payload };
 
     default:

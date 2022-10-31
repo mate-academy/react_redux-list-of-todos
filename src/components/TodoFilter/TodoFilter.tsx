@@ -71,9 +71,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => {
-                clearState();
-              }}
+              onClick={clearState}
             >
               &nbsp
             </button>
