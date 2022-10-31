@@ -1,17 +1,52 @@
-import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
+import { Select } from '../../types/Select';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const inputValue = useAppSelector(state => state.filter.query);
+
+  const handlerFilter = (
+    e: React.ChangeEvent<HTMLSelectElement>
+    | React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const { value, nodeName } = e.target;
+
+    switch (nodeName) {
+      case 'INPUT':
+        dispatch(filterActions.setFilterInput(value));
+        break;
+
+      case 'SELECT':
+        dispatch(filterActions.setFilterSelect(value as Select));
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const clearState = () => {
+    dispatch(filterActions.setFilterInput(''));
+    dispatch(filterActions.setFilterSelect(Select.All));
+  };
+
   return (
     <form
       className="field has-addons"
-      onSubmit={event => event.preventDefault()}
+      onSubmit={(e) => e.preventDefault()}
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            name="select"
+            onChange={handlerFilter}
+          >
+            <option value={Select.All}>All</option>
+            <option value={Select.Active}>Active</option>
+            <option value={Select.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,19 +57,28 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          name="search"
+          value={inputValue}
+          onChange={handlerFilter}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {inputValue && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => {
+                clearState();
+              }}
+            >
+              &nbsp
+            </button>
+          </span>
+        )}
       </p>
     </form>
   );
