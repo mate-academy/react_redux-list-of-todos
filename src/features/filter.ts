@@ -5,8 +5,8 @@ export enum FilterStatus {
 }
 
 type Filter = {
-  query: string;
-  status: FilterStatus;
+  query: string,
+  status: FilterStatus,
 };
 
 type AllAction = {
@@ -61,7 +61,7 @@ const setQuery = (payload: string, type: FilterStatus) => {
   };
 };
 
-export const actions = { setQuery, setFilter };
+export const actions = { setFilter, setQuery };
 
 const defaultFilter = {
   query: '',

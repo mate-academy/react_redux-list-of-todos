@@ -1,8 +1,8 @@
 import { Todo } from '../types/Todo';
 
 type CreateAction = {
-  type: 'todos/CREATE';
-  payload: Todo[];
+  type: 'todos/CREATE',
+  payload: Todo[],
 };
 
 type AddAction = {
