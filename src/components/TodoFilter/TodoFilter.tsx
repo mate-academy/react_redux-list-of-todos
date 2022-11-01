@@ -37,13 +37,12 @@ export const TodoFilter: React.FC = () => {
             value={selectValue}
             onChange={handleSelect}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value="ALL">All</option>
+            <option value="ACTIVE">Active</option>
+            <option value="COMPLETED">Completed</option>
           </select>
         </span>
       </p>
-
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
           data-cy="searchInput"
@@ -53,7 +52,6 @@ export const TodoFilter: React.FC = () => {
           value={inputValue}
           onChange={(e) => {
             setInputValue(e.currentTarget.value);
-
             dispatch(filterActions
               .setQuery(e.currentTarget.value, filter.status));
           }}
