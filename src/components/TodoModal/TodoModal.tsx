@@ -1,73 +1,84 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { TODO_ACTIONS, TODO_SELECTORS } from '../../features/currentTodo';
 import { Loader } from '../Loader';
-import { actions as currentTodoActions } from '../../features/currentTodo';
-import { Todo } from '../../types/Todo';
-import { User } from '../../types/User';
 import { getUser } from '../../api';
+import { User } from '../../types/User';
+import { LOADING_ACTIONS, LOADING_SELECTORS } from '../../features/loading';
 
-type Props = {
-  todo: Todo,
-};
+export const TodoModal: React.FC = () => {
+  const selectedTodo = useSelector(TODO_SELECTORS.getCurrentTodo);
 
-export const TodoModal: React.FC<Props> = ({ todo }) => {
   const dispatch = useDispatch();
-  const [user, setUser] = useState<User>();
-  const [isLoading, setIsLoading] = useState(true);
+  const isLoading = useSelector(LOADING_SELECTORS.getTodoLoadingStatus);
+
+  const setIsLoading = (status: boolean) => {
+    dispatch(LOADING_ACTIONS.setTodoLoading(status));
+  };
+
+  const handleDeselectTodo = () => dispatch(TODO_ACTIONS.removeTodo());
+
+  const [foundUser, setFoundUser] = useState<User | null>(null);
 
   useEffect(() => {
-    getUser(todo.userId)
-      .then(res => {
-        setUser(res);
-        setIsLoading(false);
-      });
+    setIsLoading(true);
+
+    if (selectedTodo) {
+      getUser(selectedTodo.userId)
+        .then(setFoundUser)
+        .finally(() => setIsLoading(false));
+    }
   }, []);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading
-        && <Loader />}
-
-      {!isLoading && user
-        && (
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <div
-                className="modal-card-title has-text-weight-medium"
-                data-cy="modal-header"
-              >
-                {`Todo #${todo.id}`}
-              </div>
-
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-              <button
-                type="button"
-                className="delete"
-                data-cy="modal-close"
-                onClick={() => {
-                  dispatch(currentTodoActions.removeTodo());
-                }}
-              />
-            </header>
-
-            <div className="modal-card-body">
-              <p className="block" data-cy="modal-title">{todo.title}</p>
-
-              <p className="block" data-cy="modal-user">
-                {!todo.completed
-                && <strong className="has-text-danger">Planned</strong>}
-
-                {todo.completed
-                && <strong className="has-text-success">Done</strong>}
-                {' by '}
-                <a href={user.email}>{user.name}</a>
-              </p>
+      {isLoading || !selectedTodo || !foundUser ? (
+        <Loader />
+      ) : (
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <div
+              className="modal-card-title has-text-weight-medium"
+              data-cy="modal-header"
+            >
+              Todo #
+              {selectedTodo.id}
             </div>
-          </div>
-        )}
 
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              type="button"
+              className="delete"
+              data-cy="modal-close"
+              onClick={() => handleDeselectTodo()}
+            />
+          </header>
+
+          <div className="modal-card-body">
+            <p className="block" data-cy="modal-title">
+              {selectedTodo.title}
+            </p>
+
+            {foundUser && (
+              <p className="block" data-cy="modal-user">
+                {selectedTodo.completed ? (
+                  <strong className="has-text-success">Done</strong>
+                ) : (
+                  <strong className="has-text-danger">Planned</strong>
+                )}
+
+                {' by '}
+
+                <a href={`mailto:${foundUser.email}`}>
+                  {foundUser.name}
+                </a>
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

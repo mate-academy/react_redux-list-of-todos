@@ -1,39 +1,60 @@
+import type { RootState } from '../app/store';
 import { Todo } from '../types/Todo';
 
-type CreateAction = {
-  type: 'todos/CREATE',
+export enum TodosActionType {
+  SetTodos = 'todos/SET',
+}
+
+type SetTodosAction = {
+  type: TodosActionType.SetTodos,
   payload: Todo[],
 };
 
-type AddAction = {
-  type: 'todos/ADD',
-  payload: Todo,
-};
-
-type Action = CreateAction | AddAction;
-
-const create = (todos: Todo[]): CreateAction => ({
-  type: 'todos/CREATE',
+const setTodos = (todos: Todo[]): SetTodosAction => ({
+  type: TodosActionType.SetTodos,
   payload: todos,
 });
 
-const add = (todo: Todo): AddAction => ({
-  type: 'todos/ADD',
-  payload: todo,
-});
+export const TODOS_ACTIONS = { setTodos };
 
-export const actions = { create, add };
+export const TODOS_SELECTORS = {
+  getTodos: (state: RootState) => state.todos,
+  getPreparedTodos: (state: RootState) => {
+    const { todos, filter } = state;
+    const { query, status } = filter;
 
-const todosReducer = (todos: Todo[] = [], action: Action): Todo[] => {
+    let preparedTodos: Todo[];
+
+    switch (status) {
+      case 'completed':
+        preparedTodos = [...todos].filter(todo => todo.completed);
+        break;
+      case 'active':
+        preparedTodos = [...todos].filter(todo => !todo.completed);
+        break;
+      case 'all':
+      default:
+        preparedTodos = [...todos];
+        break;
+    }
+
+    return preparedTodos
+      .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
+  },
+};
+
+type State = Todo[];
+type TodosActions = SetTodosAction;
+
+const todosReducer = (
+  state: State = [],
+  action: TodosActions,
+): Todo[] => {
   switch (action.type) {
-    case 'todos/CREATE':
-      return [...todos];
-
-    case 'todos/ADD':
-      return [...todos, action.payload];
-
+    case TodosActionType.SetTodos:
+      return [...action.payload];
     default:
-      return todos;
+      return state;
   }
 };
 
