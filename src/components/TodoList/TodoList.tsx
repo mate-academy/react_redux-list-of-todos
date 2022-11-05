@@ -1,18 +1,24 @@
-/* eslint-disable max-len */
 import React from 'react';
 import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
 import { Todo } from '../../types/Todo';
+import { actions } from '../../features/currentTodo';
+import { useAppSelector } from '../../app/hooks';
+import { getFilteredTodoList } from '../../utils/getFilteredTodoList';
 
-interface Props {
-  todoList: Todo[];
-  selectedTodo: Todo | null;
-  setSelectedTodo: (value: Todo) => void;
-}
+export const TodoList: React.FC = () => {
+  const dispatch = useDispatch();
+  const { todos, currentTodo, filter } = useAppSelector(state => state);
 
-export const TodoList: React.FC<Props> = ({ todoList, selectedTodo, setSelectedTodo }) => {
+  const filteredTodoList = getFilteredTodoList(todos, filter);
+
+  const onSelectTodo = (todo: Todo) => {
+    dispatch(actions.setTodo(todo));
+  };
+
   return (
     <>
-      {todoList.length === 0 ? (
+      {filteredTodoList.length === 0 ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -34,7 +40,7 @@ export const TodoList: React.FC<Props> = ({ todoList, selectedTodo, setSelectedT
           </thead>
 
           <tbody>
-            {todoList.map((todo) => (
+            {filteredTodoList.map((todo) => (
               <tr
                 data-cy="todo"
                 key={todo.id}
@@ -63,12 +69,12 @@ export const TodoList: React.FC<Props> = ({ todoList, selectedTodo, setSelectedT
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => setSelectedTodo(todo)}
+                    onClick={() => onSelectTodo(todo)}
                   >
                     <span className="icon">
                       <i className={classNames('fas', {
-                        'fa-eye': selectedTodo?.id !== todo.id,
-                        'fa-eye-slash': selectedTodo?.id === todo.id,
+                        'fa-eye': currentTodo?.id !== todo.id,
+                        'fa-eye-slash': currentTodo?.id === todo.id,
                       })}
                       />
                     </span>

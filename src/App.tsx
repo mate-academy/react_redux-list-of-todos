@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -6,35 +5,37 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { Loader } from './components/Loader';
-import { Todo } from './types/Todo';
 import { getTodos, getUser } from './api';
 import { TodoModal } from './components/TodoModal';
 import { User } from './types/User';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
-  const [queryTodoList, setQueryTodoList] = useState<Todo[]>([]);
-  const [todoList, setTodoList] = useState<Todo[]>([]);
   const [isTodoListLoading, setIsTodoListLoading] = useState(true);
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
 
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const filteredTodos = useAppSelector(state => state.filter);
+
   useEffect(() => {
-    getTodos().then(res => {
-      setQueryTodoList(res);
-      setTodoList(res);
-      setIsTodoListLoading(false);
-    });
+    getTodos()
+      .then(res => {
+        dispatch(todosActions.setTodos(res));
+      })
+      .finally(() => setIsTodoListLoading(false));
   }, []);
 
   useEffect(() => {
-    if (!selectedTodo) {
+    if (!currentTodo) {
       return;
     }
 
-    getUser(selectedTodo.userId).then(res => {
+    getUser(currentTodo.userId).then(res => {
       setCurrentUser(res);
     });
-  }, [selectedTodo]);
+  }, [currentTodo]);
 
   return (
     <>
@@ -46,35 +47,22 @@ export const App: React.FC = () => {
                 <h1 className="title">Todos:</h1>
 
                 <div className="block">
-                  <TodoFilter
-                    queryTodoList={queryTodoList}
-                    setTodoList={setTodoList}
-                  />
+                  <TodoFilter />
                 </div>
               </>
             )}
 
             <div className="block">
-              {isTodoListLoading
+              {isTodoListLoading || !filteredTodos
                 ? (<Loader />)
-                : (
-                  <TodoList
-                    todoList={todoList}
-                    selectedTodo={selectedTodo}
-                    setSelectedTodo={setSelectedTodo}
-                  />
-                )}
+                : (<TodoList />)}
             </div>
           </div>
         </div>
       </div>
 
-      {selectedTodo && (
-        <TodoModal
-          todo={selectedTodo}
-          user={currentUser}
-          setSelectedTodo={setSelectedTodo}
-        />
+      {currentTodo && (
+        <TodoModal user={currentUser} setUser={setCurrentUser} />
       )}
     </>
   );

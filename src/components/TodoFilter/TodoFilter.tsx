@@ -1,33 +1,22 @@
 import React, { useState } from 'react';
-import { Todo } from '../../types/Todo';
+import { useDispatch } from 'react-redux';
 import { Status } from '../../types/Status';
+import { actions } from '../../features/filter';
+import { useAppSelector } from '../../app/hooks';
 
-interface Props {
-  queryTodoList: Todo[];
-  setTodoList: (todos: Todo[]) => void;
-}
-
-export const TodoFilter: React.FC<Props> = ({ queryTodoList, setTodoList }) => {
+export const TodoFilter: React.FC = () => {
   const [searchText, setSearchText] = useState('');
 
+  const dispatch = useDispatch();
+  const currentStatus = useAppSelector(state => state.filter.status);
+
   const todoListFilter = (status: Status) => {
-    switch (status) {
-      case 'active':
-        setTodoList(queryTodoList.filter(t => !t.completed));
-        break;
-
-      case 'completed':
-        setTodoList(queryTodoList.filter(t => t.completed));
-        break;
-
-      default:
-        setTodoList(queryTodoList);
-    }
+    dispatch(actions.filterStatus(status));
   };
 
-  const onSearch = (value: string) => {
-    setSearchText(value);
-    setTodoList(queryTodoList.filter(t => t.title.includes(value)));
+  const onSearch = (query: string) => {
+    setSearchText(query);
+    dispatch(actions.filterQuery(query));
   };
 
   return (
@@ -39,15 +28,16 @@ export const TodoFilter: React.FC<Props> = ({ queryTodoList, setTodoList }) => {
         <span className="select">
           <select
             data-cy="statusSelect"
+            value={currentStatus}
             onChange={e => todoListFilter(e.target.value as Status)}
           >
-            <option value="all">
+            <option value={Status.All}>
               All
             </option>
-            <option value="active">
+            <option value={Status.Active}>
               Active
             </option>
-            <option value="completed">
+            <option value={Status.Completed}>
               Completed
             </option>
           </select>
