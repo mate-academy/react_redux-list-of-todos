@@ -29,6 +29,8 @@ const currentTodoReducer = (
 ): State => {
   switch (action.type) {
     // Implement all actions here
+    case 'currentTodo/SET':
+      return state;
 
     default:
       return state;
