@@ -3,7 +3,7 @@ import { State as FilterState } from '../features/filter';
 import { Status } from '../types/Status';
 
 const isTodoIncludesQuery = (todo: Todo, query: string): boolean => {
-  return todo.title.includes(query);
+  return todo.title.toLowerCase().includes(query.toLowerCase());
 };
 
 export const getFilteredTodoList = (
