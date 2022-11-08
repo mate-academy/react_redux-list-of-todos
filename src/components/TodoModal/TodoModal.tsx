@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { getUser } from '../../api';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 type Props = {
-  todo: Todo | undefined,
-  selectedUser: number | 0,
+  todo: Todo | undefined;
+  selectedUser: number | 0;
   selectUser: (id: number, todoId: number) => void;
 };
 
@@ -17,15 +17,13 @@ export const TodoModal: React.FC<Props> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const loadUser = async () => {
-      const userFromServer = await getUser(selectedUser);
+  const loadUser = async () => {
+    const userFromServer = await getUser(selectedUser);
 
-      setUser(userFromServer);
-    };
+    setUser(userFromServer);
+  };
 
-    loadUser();
-  }, []);
+  loadUser();
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -58,17 +56,15 @@ export const TodoModal: React.FC<Props> = ({
             </p>
 
             <p className="block" data-cy="modal-user">
-              {
-                todo?.completed
-                  ? <strong className="has-text-success">Done</strong>
-                  : <strong className="has-text-danger">Planned</strong>
-              }
+              {todo?.completed ? (
+                <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>
+              )}
 
               {' by '}
 
-              <a href={`mailto:${user?.email}`}>
-                {user?.name}
-              </a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>

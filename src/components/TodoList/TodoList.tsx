@@ -8,6 +8,7 @@ type Props = {
 };
 
 export const TodoList: React.FC<Props> = ({ todos, selectUser }) => (
+
   <table className="table is-narrow is-fullwidth">
     <thead>
       <tr>

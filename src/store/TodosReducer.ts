@@ -51,9 +51,6 @@ const TodosReducer = (
     case TodoTypes.FETCH_TODOS_SUCCESS:
       return { ...state, todos: action.payload };
 
-      // case TodoTypes.FETCH_TODOS_ERROR:
-      //   return action.payload;
-
     case TodoTypes.SET_TODO:
       return { ...state, selectedTodoId: action.payload };
 
