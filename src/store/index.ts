@@ -1,7 +1,7 @@
 import { createStore, AnyAction } from 'redux';
 import { State, Todo } from '../react-app-env';
 import {
-  LOAD_TODOS, SET_STATUS, SET_QUERY, TODOS_BY_QUERY,
+  LOAD_TODOS, SET_STATUS, SET_QUERY, TODOS_BY_QUERY, CHECKBOX_STATUS,
 } from './todo/actions';
 import { LOAD_USER, CLEAR_USER } from './user/actions';
 
@@ -31,6 +31,18 @@ const reducer = (state: State = initialState, action: AnyAction) => {
 
       return { ...state, todos: [...todos] };
     }
+
+    case CHECKBOX_STATUS:
+      return {
+        ...state,
+        todos: [
+          ...state.todos.map((todo) => (
+            todo.id !== action.todoId
+              ? todo
+              : { ...todo, completed: !todo.completed }
+          )),
+        ],
+      };
 
     default:
       break;

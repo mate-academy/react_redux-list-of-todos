@@ -14,7 +14,7 @@ export const CurrentUser: React.FC = () => {
 
   return (
     <>
-      {user && (
+      {user ? (
         <div className="CurrentUser">
           <h2 className="CurrentUser__title">
             <span>{`Selected user: ${user.id}`}</span>
@@ -30,7 +30,7 @@ export const CurrentUser: React.FC = () => {
             Clear
           </button>
         </div>
-      )}
+      ) : 'No user selected'}
     </>
   );
 };

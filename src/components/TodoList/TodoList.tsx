@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getTodosByStatus, getUserById, remove } from '../../api/api';
 
 import {
-  setStatus, setQuery, getTodosByQuery, loadTodos,
+  setStatus, setQuery, getTodosByQuery, loadTodos, changeCheckBoxStatus,
 } from '../../store/todo/actions';
 
 import { loadUser } from '../../store/user/actions';
@@ -97,7 +97,8 @@ export const TodoList: React.FC = () => {
               <label>
                 <input
                   type="checkbox"
-                  checked={todo.completed}
+                  defaultChecked={todo.completed}
+                  onChange={() => dispatch(changeCheckBoxStatus(todo.id))}
                 />
                 <p>{todo.title}</p>
               </label>
