@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
+import { NoTodosMessege } from '../NoTodosMessege';
 import { TodoItem } from '../TodoItem';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos.todos);
   const status = useAppSelector(state => state.filter.status);
-  const query = useAppSelector(state => state.filter.query).toLowerCase();
+  const query = useAppSelector(state => state.filter.query);
 
   const visibleTodos = useMemo(() => {
     const filteredTodos = todos.filter(todo => {
@@ -21,18 +22,16 @@ export const TodoList: React.FC = () => {
         default:
           return todo;
       }
-    }).filter(todo => todo.title.includes(query));
+    }).filter(({ title }) => (
+      title.toLowerCase().includes(query.toLowerCase())
+    ));
 
     return filteredTodos;
   }, [status, todos, query]);
 
   return (
     <>
-      {!visibleTodos.length && (
-        <p className="notification is-warning">
-          There are no todos matching current filter criteria
-        </p>
-      )}
+      {(!visibleTodos.length && query) && <NoTodosMessege />}
 
       <table className="table is-narrow is-fullwidth">
         <thead>
