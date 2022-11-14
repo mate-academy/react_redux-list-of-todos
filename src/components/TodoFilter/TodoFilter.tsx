@@ -1,22 +1,32 @@
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { SortType } from '../../types/Todo';
+import { actions as filterActions } from '../../features/filter';
 
 type Props = {
-  filterBy: string,
-  setFilterBy: (value: SortType) => void;
   query: string;
   setQuery: (value: string) => void;
 };
 
 export const TodoFilter: React.FC<Props> = ({
-  filterBy,
-  setFilterBy,
   query,
   setQuery,
 }) => {
+  const dispatch = useAppDispatch();
+  const filter = useAppSelector(state => state.filter);
+
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newSortType = event.target.value as SortType;
 
-    setFilterBy(newSortType);
+    switch (newSortType) {
+      case SortType.ACTIVE:
+        return dispatch(filterActions.active(SortType.ACTIVE));
+
+      case SortType.COMPLETED:
+        return dispatch(filterActions.completed(SortType.COMPLETED));
+
+      default:
+        return dispatch(filterActions.all(SortType.ALL));
+    }
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +41,7 @@ export const TodoFilter: React.FC<Props> = ({
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={filterBy}
+            value={filter}
             onChange={handleSelect}
           >
             <option value={SortType.ALL}>All</option>

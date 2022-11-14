@@ -1,17 +1,22 @@
 import classNames from 'classnames';
+// import { useAppSelector } from '../../app/hooks';
+// import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 
 type Props = {
-  todos: Todo[];
+  filteredTodos: Todo[];
   selectTodo: (id: number) => void;
   selectedTodoId: number
 };
 
 export const TodoList: React.FC<Props> = ({
-  todos,
   selectTodo,
   selectedTodoId,
+  filteredTodos,
 }) => {
+  // const dispatch = useAppDispatch();
+  // const selectedTodo = useAppSelector(state => state.currentTodo);
+
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -28,7 +33,7 @@ export const TodoList: React.FC<Props> = ({
       </thead>
 
       <tbody>
-        {todos.map(({ id, title, completed }) => (
+        {filteredTodos.map(({ id, title, completed }) => (
           <tr
             data-cy="todo"
             key={id}

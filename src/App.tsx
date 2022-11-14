@@ -21,10 +21,10 @@ export const App: React.FC = () => {
   // const [todos, setTodos] = useState<Todo[]>([]);
   const [todoId, setTodoId] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [filterBy, setFilterBy] = useState(SortType.ALL);
   const [query, setQuery] = useState('');
   const dispatch = useAppDispatch();
   const todos:Todo[] = useAppSelector(state => state.todos);
+  const filter = useAppSelector(state => state.filter);
 
   const loadTodos = async () => {
     const todosFromServer = await getTodos();
@@ -40,7 +40,7 @@ export const App: React.FC = () => {
 
   const filteredTodos = todos
     .filter(({ completed, title }) => {
-      switch (filterBy) {
+      switch (filter) {
         case SortType.ACTIVE:
           return !completed && checkQuery(query, title);
 
@@ -61,8 +61,6 @@ export const App: React.FC = () => {
 
             <div className="block">
               <TodoFilter
-                filterBy={filterBy}
-                setFilterBy={setFilterBy}
                 query={query}
                 setQuery={setQuery}
               />
@@ -73,7 +71,7 @@ export const App: React.FC = () => {
                   ? <Loader />
                   : (
                     <TodoList
-                      todos={filteredTodos}
+                      filteredTodos={filteredTodos}
                       selectedTodoId={todoId}
                       selectTodo={setTodoId}
                     />
@@ -87,7 +85,7 @@ export const App: React.FC = () => {
       {!!todoId && (
         <TodoModal
           todoId={todoId}
-          todos={filteredTodos}
+          filteredTodos={filteredTodos}
           setTodoId={setTodoId}
         />
       )}

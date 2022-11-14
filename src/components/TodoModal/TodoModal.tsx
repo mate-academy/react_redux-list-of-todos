@@ -4,21 +4,28 @@ import { Loader } from '../Loader';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { Todo } from '../../types/Todo';
+// import { useAppDispatch, useAppSelector } from '../../app/hooks';
+// import { actions as currentTodo } from '../../features/currentTodo';
 
 type Props = {
   todoId: number;
-  todos: Todo[];
+  filteredTodos: Todo[];
   setTodoId: (id: number) => number | void;
 };
 
 export const TodoModal: React.FC<Props> = ({
   todoId,
-  todos,
+  filteredTodos,
   setTodoId,
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isModalCardOpen, setIsModalCardOpen] = useState(true);
-  const selectedTodo = todos.find(({ id }) => id === todoId);
+  const selectedTodo = filteredTodos.find(({ id }) => id === todoId);
+
+  // const dispatch = useAppDispatch();
+  // const selectedTodo = useAppSelector(state => state.currentTodo);
+
+  // dispatch(currentTodo.setTodo(todos.find(({ id }) => id === todoId)));
 
   const loadUsers = async () => {
     if (selectedTodo) {
