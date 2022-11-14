@@ -4,3 +4,9 @@ export interface Todo {
   completed: boolean;
   userId: number;
 }
+
+export enum SortType {
+  ACTIVE = 'active',
+  COMPLETED = 'completed',
+  ALL = 'all',
+}
