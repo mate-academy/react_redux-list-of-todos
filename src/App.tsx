@@ -8,7 +8,8 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
-import { SortType, Todo } from './types/Todo';
+import { Todo } from './types/Todo';
+import { SortType } from './types/Status';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions } from './features/todos';
 
@@ -18,20 +19,18 @@ export function checkQuery(query:string, content:string) {
 }
 
 export const App: React.FC = () => {
-  // const [todos, setTodos] = useState<Todo[]>([]);
   const [todoId, setTodoId] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [query, setQuery] = useState('');
   const dispatch = useAppDispatch();
   const todos:Todo[] = useAppSelector(state => state.todos);
-  const filter = useAppSelector(state => state.filter);
+  const filter = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
 
   const loadTodos = async () => {
     const todosFromServer = await getTodos();
 
     setIsLoaded(true);
     dispatch(actions.load(todosFromServer));
-    // setTodos(todosFromServer);
   };
 
   useEffect(() => {
@@ -60,10 +59,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                query={query}
-                setQuery={setQuery}
-              />
+              <TodoFilter />
             </div>
             <div className="block">
               {

@@ -1,54 +1,44 @@
-// export const actions = { /* put action creators here */};
+import { SortType } from '../types/Status';
 
-// const filterReducer = () => {
-//   return {
-//     query: '',
-//     status: 'all',
-//   };
-// };
+type SetVisibilityFilter = { type: 'filter/SORTTYPE'; payload: SortType };
+type SetQuery = { type: 'filter/QUERY'; payload: string };
 
-/* eslint-disable max-len */
-export function checkQuery(query:string, content:string) {
-  return (content.toLowerCase())
-    .includes(query.toLowerCase());
-}
+type Action = SetVisibilityFilter | SetQuery;
+type State = { query: string; status: SortType };
 
-type ActiveAction = { type: 'todo/ACTIVE'; payload: string };
-type CompletedAction = { type: 'todo/COMPLETED'; payload: string };
-type AlldAction = { type: 'todo/ALL'; payload: string };
-
-type Action = ActiveAction | CompletedAction | AlldAction;
-
-const active = (status: string): ActiveAction => ({
-  type: 'todo/ACTIVE', payload: status,
+const setFilter = (payload:SortType):SetVisibilityFilter => ({
+  type: 'filter/SORTTYPE',
+  payload,
 });
 
-const completed = (status: string): CompletedAction => ({
-  type: 'todo/COMPLETED', payload: status,
+const setQuery = (payload:string):SetQuery => ({
+  type: 'filter/QUERY',
+  payload,
 });
 
-const all = (status: string): AlldAction => ({
-  type: 'todo/ALL', payload: status,
-});
+const initialState: State = {
+  query: '',
+  status: SortType.ALL,
+};
 
-const initialState = 'all';
-
-export const actions = { active, completed, all };
-
-const filterReducer = (state = initialState, action: Action) => {
+const filterReducer = (
+  state: State = initialState,
+  action:Action,
+): State => {
   switch (action.type) {
-    case 'todo/ACTIVE':
-      return 'active';
+    case 'filter/SORTTYPE':
+      return { ...state, status: action.payload };
 
-    case 'todo/COMPLETED':
-      return 'completed';
-
-    case 'todo/ALL':
-      return 'all';
+    case 'filter/QUERY':
+      return { ...state, query: action.payload };
 
     default:
       return state;
   }
+};
+
+export const actions = {
+  setFilter, setQuery,
 };
 
 export default filterReducer;

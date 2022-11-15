@@ -2,38 +2,34 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { SortType } from '../../types/Todo';
 import { actions as filterActions } from '../../features/filter';
 
-type Props = {
-  query: string;
-  setQuery: (value: string) => void;
-};
-
-export const TodoFilter: React.FC<Props> = ({
-  query,
-  setQuery,
-}) => {
+export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const filter = useAppSelector(state => state.filter);
+  const filter = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newSortType = event.target.value as SortType;
+    const pushAction = (type:SortType) => {
+      dispatch(filterActions.setFilter(type));
+    };
 
     switch (newSortType) {
       case SortType.ACTIVE:
-        return dispatch(filterActions.active(SortType.ACTIVE));
+        return pushAction(SortType.ACTIVE);
 
       case SortType.COMPLETED:
-        return dispatch(filterActions.completed(SortType.COMPLETED));
+        return pushAction(SortType.COMPLETED);
 
       default:
-        return dispatch(filterActions.all(SortType.ALL));
+        return pushAction(SortType.ALL);
     }
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    return dispatch(filterActions.setQuery(event.target.value));
   };
 
-  const handleReset = () => setQuery('');
+  const handleReset = () => dispatch(filterActions.setQuery(''));
 
   return (
     <form className="field has-addons">
