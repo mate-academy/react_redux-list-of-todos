@@ -1,1 +1,5 @@
-export type Status = 'all' | 'active' | 'completed';
+export enum SortType {
+  ACTIVE = 'active',
+  COMPLETED = 'completed',
+  ALL = 'all',
+}
