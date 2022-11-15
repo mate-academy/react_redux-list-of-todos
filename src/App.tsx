@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -19,12 +18,12 @@ export function checkQuery(query:string, content:string) {
 }
 
 export const App: React.FC = () => {
-  const [todoId, setTodoId] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useAppDispatch();
   const todos:Todo[] = useAppSelector(state => state.todos);
   const filter = useAppSelector(state => state.filter.status);
   const query = useAppSelector(state => state.filter.query);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const loadTodos = async () => {
     const todosFromServer = await getTodos();
@@ -68,8 +67,6 @@ export const App: React.FC = () => {
                   : (
                     <TodoList
                       filteredTodos={filteredTodos}
-                      selectedTodoId={todoId}
-                      selectTodo={setTodoId}
                     />
                   )
               }
@@ -78,12 +75,8 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {!!todoId && (
-        <TodoModal
-          todoId={todoId}
-          filteredTodos={filteredTodos}
-          setTodoId={setTodoId}
-        />
+      {currentTodo && (
+        <TodoModal />
       )}
 
     </>

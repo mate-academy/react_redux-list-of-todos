@@ -9,19 +9,19 @@ export const TodoFilter: React.FC = () => {
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newSortType = event.target.value as SortType;
-    const pushAction = (type:SortType) => {
+    const dispatchAction = (type:SortType) => {
       dispatch(filterActions.setFilter(type));
     };
 
     switch (newSortType) {
       case SortType.ACTIVE:
-        return pushAction(SortType.ACTIVE);
+        return dispatchAction(SortType.ACTIVE);
 
       case SortType.COMPLETED:
-        return pushAction(SortType.COMPLETED);
+        return dispatchAction(SortType.COMPLETED);
 
       default:
-        return pushAction(SortType.ALL);
+        return dispatchAction(SortType.ALL);
     }
   };
 

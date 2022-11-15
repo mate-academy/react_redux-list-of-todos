@@ -1,21 +1,25 @@
 import classNames from 'classnames';
-// import { useAppSelector } from '../../app/hooks';
-// import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
+import { actions as currentTodoActions } from '../../features/currentTodo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 type Props = {
   filteredTodos: Todo[];
-  selectTodo: (id: number) => void;
-  selectedTodoId: number
 };
 
 export const TodoList: React.FC<Props> = ({
-  selectTodo,
-  selectedTodoId,
   filteredTodos,
 }) => {
-  // const dispatch = useAppDispatch();
-  // const selectedTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  const setTodo = (todo: Todo) => {
+    dispatch(currentTodoActions.setTodo(todo));
+  };
+
+  const removeTodo = () => {
+    dispatch(currentTodoActions.removeTodo());
+  };
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -33,14 +37,14 @@ export const TodoList: React.FC<Props> = ({
       </thead>
 
       <tbody>
-        {filteredTodos.map(({ id, title, completed }) => (
+        {filteredTodos.map(todo => (
           <tr
             data-cy="todo"
-            key={id}
+            key={todo.id}
           >
-            <td className="is-vcentered">{id}</td>
+            <td className="is-vcentered">{todo.id}</td>
             <td className="is-vcentered">
-              {completed && (
+              {todo.completed && (
                 <span className="icon" data-cy="iconCompleted">
                   <i className="fas fa-check" />
                 </span>
@@ -50,22 +54,22 @@ export const TodoList: React.FC<Props> = ({
               <p className={classNames(
                 'has-text-success',
                 {
-                  'has-text-danger': !completed,
+                  'has-text-danger': !todo.completed,
                 },
               )}
               >
-                {title}
+                {todo.title}
               </p>
             </td>
             <td className="has-text-right is-vcentered">
-              {selectedTodoId === id
+              {currentTodo?.id === todo.id
                 ? (
                   <button
                     data-cy="selectButton"
                     className="button is-link"
                     type="button"
                     onClick={() => {
-                      selectTodo(0);
+                      removeTodo();
                     }}
                   >
                     <span className="icon">
@@ -78,7 +82,7 @@ export const TodoList: React.FC<Props> = ({
                     className="button"
                     type="button"
                     onClick={() => {
-                      selectTodo(id);
+                      setTodo(todo);
                     }}
                   >
                     <span className="icon">

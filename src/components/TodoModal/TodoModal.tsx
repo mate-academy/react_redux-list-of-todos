@@ -3,33 +3,22 @@ import { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
-import { Todo } from '../../types/Todo';
-// import { useAppDispatch, useAppSelector } from '../../app/hooks';
-// import { actions as currentTodo } from '../../features/currentTodo';
+import { actions as currentTodoActions } from '../../features/currentTodo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-type Props = {
-  todoId: number;
-  filteredTodos: Todo[];
-  setTodoId: (id: number) => number | void;
-};
-
-export const TodoModal: React.FC<Props> = ({
-  todoId,
-  filteredTodos,
-  setTodoId,
-}) => {
+export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isModalCardOpen, setIsModalCardOpen] = useState(true);
-  const selectedTodo = filteredTodos.find(({ id }) => id === todoId);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
 
-  // const dispatch = useAppDispatch();
-  // const selectedTodo = useAppSelector(state => state.currentTodo);
-
-  // dispatch(currentTodo.setTodo(todos.find(({ id }) => id === todoId)));
+  const removeTodo = () => {
+    dispatch(currentTodoActions.removeTodo());
+  };
 
   const loadUsers = async () => {
-    if (selectedTodo) {
-      const usersFromServer = await getUser(selectedTodo.userId);
+    if (currentTodo) {
+      const usersFromServer = await getUser(currentTodo.userId);
 
       setUser(usersFromServer);
     }
@@ -56,7 +45,7 @@ export const TodoModal: React.FC<Props> = ({
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${todoId}`}
+              {`Todo #${currentTodo?.id}`}
             </div>
 
             <button
@@ -66,7 +55,7 @@ export const TodoModal: React.FC<Props> = ({
               data-cy="modal-close"
               onClick={() => {
                 setIsModalCardOpen(false);
-                setTodoId(0);
+                removeTodo();
               }}
             />
 
@@ -74,19 +63,19 @@ export const TodoModal: React.FC<Props> = ({
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {selectedTodo?.title}
+              {currentTodo?.title}
             </p>
 
             <p className="block" data-cy="modal-user">
               <strong className={classNames(
                 'has-text-success',
                 {
-                  'has-text-danger': !selectedTodo?.completed,
+                  'has-text-danger': !currentTodo?.completed,
                 },
               )}
               >
                 {
-                  selectedTodo?.completed
+                  currentTodo?.completed
                     ? 'Done'
                     : 'Planned'
                 }
