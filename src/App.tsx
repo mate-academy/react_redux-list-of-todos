@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -16,23 +16,10 @@ export const App: React.FC = () => {
   const [todosFromServer, setTodosFromServer] = useState<Todo[]>([]);
   const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
   const [todoListLoaded, setTodolistLoaded] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [selectValue, setSelectValue] = useState('all');
-  // const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+
+  const { query, select } = useAppSelector(state => state.filter);
 
   const selectedTodo = useAppSelector(state => state.currentTodo);
-
-  const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
-  };
-
-  const handleClearSearchInput = () => {
-    setSearchValue('');
-  };
-
-  const handleSelectInput = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectValue(event.target.value);
-  };
 
   useEffect(() => {
     (async () => {
@@ -42,8 +29,8 @@ export const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setVisibleTodos(getFilteredTodos(todosFromServer, searchValue, selectValue));
-  }, [searchValue, selectValue, todosFromServer]);
+    setVisibleTodos(getFilteredTodos(todosFromServer, query, select));
+  }, [query, select, todosFromServer]);
 
   return (
     <>
@@ -53,13 +40,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                searchValue={searchValue}
-                selectValue={selectValue}
-                onSearchInput={handleSearchInput}
-                onSelectInput={handleSelectInput}
-                onClearSearch={handleClearSearchInput}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
