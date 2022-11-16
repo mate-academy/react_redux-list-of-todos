@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getUser } from '../../api';
-import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/currentTodo';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
-type Props = {
-  selectedTodo: Todo;
-  setSelectedTodo: (clearTodo: null) => void;
-};
+export const TodoModal = () => {
+  const dispatch = useAppDispatch();
+  const selectedTodo = useAppSelector(state => state.currentTodo);
 
-export const TodoModal: React.FC<Props> = (props) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const { selectedTodo, setSelectedTodo } = props;
-
   const {
-    id,
-    userId,
-    title,
-    completed,
-  } = selectedTodo;
+    id = 0,
+    userId = 0,
+    title = '',
+    completed = false,
+  } = selectedTodo || {};
+
+  const handleRemoveSelectedTodo = () => {
+    dispatch(actions.removeTodo());
+  };
 
   useEffect(() => {
     (async () => {
@@ -43,12 +44,12 @@ export const TodoModal: React.FC<Props> = (props) => {
               {`Todo #${id}`}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => setSelectedTodo(null)}
+              onClick={handleRemoveSelectedTodo}
+              aria-label="delete"
             />
           </header>
 

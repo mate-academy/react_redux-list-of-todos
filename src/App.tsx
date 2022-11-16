@@ -10,6 +10,7 @@ import { Loader } from './components/Loader';
 import { Todo } from './types/Todo';
 import { getTodos } from './api';
 import { getFilteredTodos } from './components/helpers/getFilteredTodos';
+import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const [todosFromServer, setTodosFromServer] = useState<Todo[]>([]);
@@ -17,7 +18,9 @@ export const App: React.FC = () => {
   const [todoListLoaded, setTodolistLoaded] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [selectValue, setSelectValue] = useState('all');
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  // const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+
+  const selectedTodo = useAppSelector(state => state.currentTodo);
 
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -64,8 +67,6 @@ export const App: React.FC = () => {
                 ? (
                   <TodoList
                     todos={visibleTodos}
-                    selectedTodoId={selectedTodo?.id}
-                    onSetSelectedTodo={setSelectedTodo}
                   />
                 )
                 : <Loader />}
@@ -75,7 +76,7 @@ export const App: React.FC = () => {
       </div>
 
       {selectedTodo
-      && <TodoModal selectedTodo={selectedTodo} setSelectedTodo={setSelectedTodo} />}
+      && <TodoModal />}
     </>
   );
 };
