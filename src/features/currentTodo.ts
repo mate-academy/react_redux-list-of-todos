@@ -28,8 +28,6 @@ const currentTodoReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    // Implement all actions here
-
     default:
       return state;
   }
