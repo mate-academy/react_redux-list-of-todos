@@ -1,14 +1,33 @@
-import React from 'react';
+import { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
-export const TodoFilter: React.FC = () => {
+export const TodoFilter = () => {
+  const dispatch = useAppDispatch();
+  const { query, select } = useAppSelector(state => state.filter);
+
+  const handleSearchInput = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(actions.setQuery(event.target.value));
+  };
+
+  const handleClearSearchInput = () => {
+    dispatch(actions.setQuery(''));
+  };
+
+  const handleSelectInput = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(actions.setSelect(event.target.value as Status));
+  };
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={select}
+            onChange={handleSelectInput}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,18 +41,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleSearchInput}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {!!query.length
+          && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleClearSearchInput}
+              aria-label="clearSearch"
+            />
+          )}
         </span>
       </p>
     </form>
