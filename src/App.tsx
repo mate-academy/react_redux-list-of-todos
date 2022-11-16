@@ -10,16 +10,17 @@ import { Loader } from './components/Loader';
 import { Todo } from './types/Todo';
 import { getTodos } from './api';
 import { getFilteredTodos } from './components/helpers/getFilteredTodos';
-import { useAppSelector } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions } from './features/todos';
 
 export const App: React.FC = () => {
   const [todosFromServer, setTodosFromServer] = useState<Todo[]>([]);
-  const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
   const [todoListLoaded, setTodolistLoaded] = useState(false);
 
+  const dispatch = useAppDispatch();
   const { query, select } = useAppSelector(state => state.filter);
-
   const selectedTodo = useAppSelector(state => state.currentTodo);
+  const visibleTodos = useAppSelector(state => state.todos);
 
   useEffect(() => {
     (async () => {
@@ -29,7 +30,7 @@ export const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setVisibleTodos(getFilteredTodos(todosFromServer, query, select));
+    dispatch(actions.setTodos(getFilteredTodos(todosFromServer, query, select)));
   }, [query, select, todosFromServer]);
 
   return (

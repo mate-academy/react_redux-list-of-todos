@@ -52,7 +52,7 @@ const filterReducer = (
       };
 
     default:
-      return state;
+      return { ...state };
   }
 };
 
