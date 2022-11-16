@@ -66,6 +66,7 @@ export const TodoFilter: React.FC = () => {
               type="button"
               className="delete"
               aria-label="button"
+              onClick={() => handleQuery('')}
             />
           </span>
         )}
