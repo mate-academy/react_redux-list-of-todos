@@ -24,12 +24,12 @@ export const TodoList: React.FC = () => {
   const filteredTodos = todos.filter(({ completed, title }) => {
     switch (status) {
       case Status.ACTIVE:
-        return !completed && title.includes(query);
+        return !completed && title.toLowerCase().includes(query.toLowerCase());
       case Status.COMPLETED:
-        return completed && title.includes(query);
+        return completed && title.toLowerCase().includes(query.toLowerCase());
       case Status.ALL:
       default:
-        return title.includes(query);
+        return title.toLowerCase().includes(query.toLowerCase());
     }
   });
 
