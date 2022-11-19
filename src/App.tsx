@@ -5,15 +5,16 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-// import { TodoModal } from './components/TodoModal';
+import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { useAppDispatch } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions } from './features/todos';
 import { getTodos } from './api';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(true);
+  const selected = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     const loadTodos = async () => {
@@ -44,7 +45,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {/* <TodoModal /> */}
+      {selected && <TodoModal />}
     </>
   );
 };
