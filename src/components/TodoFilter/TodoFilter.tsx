@@ -1,50 +1,32 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const [option, setOption] = useState('All');
-  const [query, setQuery] = useState('');
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
+  const status = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setOption(event.target.value);
+    switch (event.target.value) {
+      case Status.ACTIVE:
+        return dispatch(actions.status(Status.ACTIVE));
+      case Status.COMPLETED:
+        return dispatch(actions.status(Status.COMPLETED));
+      case Status.ALL:
+        return dispatch(actions.status(Status.ALL));
+      default:
+        return event.target.value;
+    }
   };
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    dispatch(actions.query(event.target.value));
   };
 
-  useEffect(() => {
-    dispatch(actions.filterAll(todos));
-  }, [todos]);
-
-  useEffect(() => {
-    const newTodo = todos.filter(
-      todo => todo.title.toLowerCase().includes(query.toLocaleLowerCase()),
-    );
-
-    dispatch(actions.filterQuery(newTodo));
-
-    switch (option) {
-      case 'completed':
-        dispatch(actions.filterCompleted(newTodo));
-        break;
-      case 'active':
-        dispatch(actions.filterActive(newTodo));
-        break;
-      case 'all':
-        dispatch(actions.filterAll(newTodo));
-        break;
-
-      default:
-        break;
-    }
-  }, [option, query]);
-
   const handleClearQuery = () => {
-    setQuery('');
+    dispatch(actions.query(''));
   };
 
   return (
@@ -56,12 +38,12 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={option}
+            value={status}
             onChange={handleSelectChange}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Status.ALL}>All</option>
+            <option value={Status.ACTIVE}>Active</option>
+            <option value={Status.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>

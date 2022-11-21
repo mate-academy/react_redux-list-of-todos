@@ -1,66 +1,50 @@
-import { Todo } from '../types/Todo';
+import { Status } from '../types/Status';
 
-type OnlyCompleted = {
-  type: 'filter/COMPLETED',
-  payload: Todo[],
+type StatusType = {
+  type: 'filter/STATUS';
+  payload: Status;
 };
 
-const filterCompleted = (value: Todo[]): OnlyCompleted => ({
-  type: 'filter/COMPLETED',
+const status = (value: Status): StatusType => ({
+  type: 'filter/STATUS',
   payload: value,
 });
 
-type OnlyActive = {
-  type: 'filter/ACTIVE',
-  payload: Todo[],
+type QueryType = {
+  type: 'filter/QUERY';
+  payload: string;
 };
 
-const filterActive = (value: Todo[]): OnlyActive => ({
-  type: 'filter/ACTIVE',
-  payload: value,
-});
-
-type ShowAll = {
-  type: 'filter/ALL',
-  payload: Todo[],
-};
-
-const filterAll = (value: Todo[]): ShowAll => ({
-  type: 'filter/ALL',
-  payload: value,
-});
-
-type Query = {
-  type: 'filter/QUERY',
-  payload: Todo[],
-};
-
-const filterQuery = (value: Todo[]): Query => ({
+const query = (value: string): QueryType => ({
   type: 'filter/QUERY',
   payload: value,
 });
 
 export const actions = {
-  filterCompleted,
-  filterActive,
-  filterAll,
-  filterQuery,
+  status,
+  query,
 };
 
-type Action = OnlyCompleted | OnlyActive | ShowAll | Query;
+type State = {
+  status: Status;
+  query: string;
+};
 
-const filterReducer = (todos: Todo[] = [], action: Action): Todo[] => {
+const startState: State = {
+  status: Status.ALL,
+  query: '',
+};
+
+type Action = StatusType | QueryType;
+
+const filterReducer = (filters: State = startState, action: Action): State => {
   switch (action.type) {
-    case 'filter/COMPLETED':
-      return action.payload.filter(todo => todo.completed);
-    case 'filter/ACTIVE':
-      return action.payload.filter(todo => !todo.completed);
-    case 'filter/ALL':
-      return action.payload;
+    case 'filter/STATUS':
+      return { ...filters, status: action.payload };
     case 'filter/QUERY':
-      return action.payload;
+      return { ...filters, query: action.payload };
     default:
-      return todos;
+      return filters;
   }
 };
 
