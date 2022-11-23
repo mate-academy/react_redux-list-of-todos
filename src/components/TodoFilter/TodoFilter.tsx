@@ -1,4 +1,5 @@
 import React from 'react';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   return (
@@ -9,9 +10,9 @@ export const TodoFilter: React.FC = () => {
       <p className="control">
         <span className="select">
           <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value="all">{Status.ALL}</option>
+            <option value="active">{Status.ACTIVE}</option>
+            <option value="completed">{Status.COMPLETED}</option>
           </select>
         </span>
       </p>
