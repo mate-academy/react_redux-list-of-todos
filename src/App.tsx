@@ -19,12 +19,56 @@ export const App: React.FC = () => {
   // eslint-disable-next-line no-console
   console.log(statusSelect);
 
+  // что нужно сделать чтобы по несколько раз мой statusSelect не генерился useCallback useMemo?
   useEffect(() => {
-    getTodos().then((item) => {
-      setTodos(item);
+    (async () => {
+      const allTodos = await getTodos();
+
+      setTodos(allTodos);
       setIsLoading(true);
-    });
-  }, []);
+
+      if (statusSelect === 'active') {
+        // console.log('its active');
+        // setTodos(item);
+        setTodos(allTodos.filter((todo) => todo.completed !== false));
+        // todos.filter((todo) => todo.completed !== false);
+      }
+
+      if (statusSelect === 'completed') {
+        // console.log('its completed');
+        // setTodos(item);
+        setTodos(allTodos.filter((todo) => todo.completed === false));
+        // todos.filter((todo) => todo.completed !== false);
+      }
+    })();
+  }, [statusSelect]);
+  // useEffect(() => {
+  //   getTodos().then((item) => {
+  //     setTodos(item);
+  //     setIsLoading(true);
+
+  //     // норм ли это что я всегда тяну данные с сервера чтобы не делать доп стейт с пустым масивом для тодушек
+  //     // котрый должен был бы обновлять тудушки которые фильтр бы срезал?
+  //     // так как сейчас то у нас не будет копии тудушек и если сервер накроется то и селекты перестанут работать
+  //     if (statusSelect === 'active') {
+  //       console.log('its active');
+  //       // setTodos(item);
+  //       setTodos(item.filter((todo) => todo.completed !== false));
+  //       // todos.filter((todo) => todo.completed !== false);
+  //     }
+
+  //     if (statusSelect === 'completed') {
+  //       console.log('its completed');
+  //       // setTodos(item);
+  //       setTodos(item.filter((todo) => todo.completed === false));
+  //       // todos.filter((todo) => todo.completed !== false);
+  //     }
+
+  //     // setTodos(item);
+
+  //     console.log(todos);
+  //   });
+  // }, [statusSelect]);
 
   return (
     <>
@@ -38,15 +82,15 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoading
-                ? (
-                  <TodoList
-                    todos={todos}
-                    setSelectedTodo={setSelectedTodo}
-                    selectedTodo={selectedTodo}
-                  />
-                )
-                : <Loader /> }
+              {isLoading ? (
+                <TodoList
+                  todos={todos}
+                  setSelectedTodo={setSelectedTodo}
+                  selectedTodo={selectedTodo}
+                />
+              ) : (
+                <Loader />
+              )}
             </div>
           </div>
         </div>
