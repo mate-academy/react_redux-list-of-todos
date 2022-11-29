@@ -3,7 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
 import currentTodoReducer from '../features/currentTodo';
-import filterReducer from '../features/filter';
+import filterReducer from '../features/filterParams';
 import todosReducer from '../features/todos';
 
 const rootReducer = combineReducers({
