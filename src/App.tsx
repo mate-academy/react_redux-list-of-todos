@@ -20,6 +20,10 @@ export const App: React.FC = () => {
   // eslint-disable-next-line no-console
   console.log(query);
 
+  const sortBySearch = (todoTitle: string, queryText: string) => {
+    return todoTitle.toLowerCase().includes(queryText);
+  };
+
   // что нужно сделать чтобы по несколько раз мой statusSelect не генерился useCallback useMemo?
   useEffect(() => {
     (async () => {
@@ -28,19 +32,13 @@ export const App: React.FC = () => {
       setTodos(
         allTodos.filter((todo) => {
           switch (statusSelect) {
-            // case 'all':
-            //   return todo;
-            // сделай функцию для ввода текста
             case 'active':
-              return todo.completed && todo.title.toLowerCase().includes(query);
+              return todo.completed && sortBySearch(todo.title, query);
 
             case 'completed':
-              return (
-                !todo.completed && todo.title.toLowerCase().includes(query)
-              );
+              return !todo.completed && sortBySearch(todo.title, query);
 
             default:
-              // return '';
               return todo && todo.title.toLowerCase().includes(query);
           }
         }),
