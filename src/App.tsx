@@ -14,8 +14,10 @@ export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [statusSelect, setStatusSelect] = useState('all');
 
-  // console.log(selectedTodo);
+  // eslint-disable-next-line no-console
+  console.log(statusSelect);
 
   useEffect(() => {
     getTodos().then((item) => {
@@ -32,7 +34,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter />
+              <TodoFilter setStatusSelect={setStatusSelect} />
             </div>
 
             <div className="block">

@@ -14,7 +14,7 @@ export const TodoList: React.FC<Props> = ({ todos, selectedTodo, setSelectedTodo
   // const [modal, setModal] = useState(false);
   // const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
 
-  console.log(todos);
+  // console.log(todos);
   //  console.log(selectedTodo);
 
   const showModal = (todo: Todo) => {
