@@ -15,33 +15,60 @@ export const App: React.FC = () => {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [statusSelect, setStatusSelect] = useState('all');
+  const [query, setQuery] = useState<string>('');
 
   // eslint-disable-next-line no-console
-  console.log(statusSelect);
+  console.log(query);
 
   // что нужно сделать чтобы по несколько раз мой statusSelect не генерился useCallback useMemo?
   useEffect(() => {
     (async () => {
       const allTodos = await getTodos();
 
-      setTodos(allTodos);
+      setTodos(
+        allTodos.filter((todo) => {
+          switch (statusSelect) {
+            // case 'all':
+            //   return todo;
+
+            case 'active':
+              return todo.completed;
+
+            case 'completed':
+              return !todo.completed;
+
+            default:
+              // return '';
+              return todo;
+          }
+        }),
+      );
+
       setIsLoading(true);
-
-      if (statusSelect === 'active') {
-        // console.log('its active');
-        // setTodos(item);
-        setTodos(allTodos.filter((todo) => todo.completed !== false));
-        // todos.filter((todo) => todo.completed !== false);
-      }
-
-      if (statusSelect === 'completed') {
-        // console.log('its completed');
-        // setTodos(item);
-        setTodos(allTodos.filter((todo) => todo.completed === false));
-        // todos.filter((todo) => todo.completed !== false);
-      }
     })();
   }, [statusSelect]);
+  // useEffect(() => {
+  //   (async () => {
+  //     const allTodos = await getTodos();
+
+  //     setTodos(allTodos);
+  //     setIsLoading(true);
+
+  //     if (statusSelect === 'active') {
+  //       // console.log('its active');
+  //       // setTodos(item);
+  //       setTodos(allTodos.filter((todo) => todo.completed !== false));
+  //       // todos.filter((todo) => todo.completed !== false);
+  //     }
+
+  //     if (statusSelect === 'completed') {
+  //       // console.log('its completed');
+  //       // setTodos(item);
+  //       setTodos(allTodos.filter((todo) => todo.completed === false));
+  //       // todos.filter((todo) => todo.completed !== false);
+  //     }
+  //   })();
+  // }, [statusSelect]);
   // useEffect(() => {
   //   getTodos().then((item) => {
   //     setTodos(item);
@@ -78,7 +105,11 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter setStatusSelect={setStatusSelect} />
+              <TodoFilter
+                setStatusSelect={setStatusSelect}
+                setQuery={setQuery}
+                query={query}
+              />
             </div>
 
             <div className="block">

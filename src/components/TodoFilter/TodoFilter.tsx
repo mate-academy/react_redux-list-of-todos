@@ -2,17 +2,31 @@ import React from 'react';
 
 type Props = {
   setStatusSelect: (item: string) => void;
+  setQuery: (item: string) => void;
+  query: string;
 };
 
-export const TodoFilter: React.FC<Props> = ({ setStatusSelect }) => {
+export const TodoFilter: React.FC<Props> = ({
+  setStatusSelect,
+  setQuery,
+  query,
+}) => {
   const handleStatusSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setStatusSelect(event.target.value);
+  };
+
+  const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const clearSearchBar = () => {
+    setQuery('');
   };
 
   return (
     <form
       className="field has-addons"
-      onSubmit={event => event.preventDefault()}
+      onSubmit={(event) => event.preventDefault()}
     >
       <p className="control">
         <span className="select">
@@ -30,19 +44,24 @@ export const TodoFilter: React.FC<Props> = ({ setStatusSelect }) => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={handleQuery}
+          value={query}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={clearSearchBar}
+            />
+          </span>
+        )}
       </p>
     </form>
   );

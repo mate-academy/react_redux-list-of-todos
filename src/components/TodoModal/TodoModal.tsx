@@ -5,8 +5,8 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 
 type Props = {
-  selectedTodo: Todo
-  setSelectedTodo: (empty: null) => void
+  selectedTodo: Todo;
+  setSelectedTodo: (empty: null) => void;
 };
 
 export const TodoModal: React.FC<Props> = ({
@@ -14,20 +14,18 @@ export const TodoModal: React.FC<Props> = ({
   setSelectedTodo,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  // const [modal, setModal] = useState(false);
 
   useEffect(() => {
-    getUser(selectedTodo?.userId).then(users => {
-      // console.log(users);
-      setUser(users);
-    });
+    (async () => {
+      const selectedUser = await getUser(selectedTodo?.userId);
+
+      setUser(selectedUser);
+    })();
   }, []);
 
   const closeModal = () => {
     setSelectedTodo(null);
   };
-
-  // console.log(modal);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -53,7 +51,9 @@ export const TodoModal: React.FC<Props> = ({
           </header>
 
           <div className="modal-card-body">
-            <p className="block" data-cy="modal-title">{selectedTodo?.title}</p>
+            <p className="block" data-cy="modal-title">
+              {selectedTodo?.title}
+            </p>
 
             <p className="block" data-cy="modal-user">
               {selectedTodo?.completed ? (
@@ -62,13 +62,13 @@ export const TodoModal: React.FC<Props> = ({
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={`mailto:${user?.email}`}>
-                {user?.name}
-              </a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>
-      ) : (<Loader />)}
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };

@@ -1,22 +1,19 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
 import React from 'react';
-// import { getTodos } from '../../api';
 import { Todo } from '../../types/Todo';
 
 type Props = {
-  todos: Todo[]
-  selectedTodo: Todo | null,
-  setSelectedTodo: (todo: Todo) => void
+  todos: Todo[];
+  selectedTodo: Todo | null;
+  setSelectedTodo: (todo: Todo) => void;
 };
 
-export const TodoList: React.FC<Props> = ({ todos, selectedTodo, setSelectedTodo }) => {
-  // const [modal, setModal] = useState(false);
-  // const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
-
-  // console.log(todos);
-  //  console.log(selectedTodo);
-
+export const TodoList: React.FC<Props> = ({
+  todos,
+  selectedTodo,
+  setSelectedTodo,
+}) => {
   const showModal = (todo: Todo) => {
     setSelectedTodo(todo);
   };
@@ -53,7 +50,7 @@ export const TodoList: React.FC<Props> = ({ todos, selectedTodo, setSelectedTodo
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
-                  ) }
+                  )}
                 </td>
 
                 <td className="is-vcentered is-expanded">
