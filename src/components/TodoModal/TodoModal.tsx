@@ -18,6 +18,7 @@ export const TodoModal: React.FC<Props> = ({
 
   useEffect(() => {
     getUser(selectedTodo?.userId).then(users => {
+      // console.log(users);
       setUser(users);
     });
   }, []);

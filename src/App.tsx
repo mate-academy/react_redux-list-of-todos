@@ -13,12 +13,14 @@ import { getTodos } from './api';
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   // console.log(selectedTodo);
 
   useEffect(() => {
     getTodos().then((item) => {
       setTodos(item);
+      setIsLoading(true);
     });
   }, []);
 
@@ -34,12 +36,15 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList
-                todos={todos}
-                setSelectedTodo={setSelectedTodo}
-                selectedTodo={selectedTodo}
-              />
+              {isLoading
+                ? (
+                  <TodoList
+                    todos={todos}
+                    setSelectedTodo={setSelectedTodo}
+                    selectedTodo={selectedTodo}
+                  />
+                )
+                : <Loader /> }
             </div>
           </div>
         </div>
