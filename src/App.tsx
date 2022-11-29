@@ -30,23 +30,25 @@ export const App: React.FC = () => {
           switch (statusSelect) {
             // case 'all':
             //   return todo;
-
+            // сделай функцию для ввода текста
             case 'active':
-              return todo.completed;
+              return todo.completed && todo.title.toLowerCase().includes(query);
 
             case 'completed':
-              return !todo.completed;
+              return (
+                !todo.completed && todo.title.toLowerCase().includes(query)
+              );
 
             default:
               // return '';
-              return todo;
+              return todo && todo.title.toLowerCase().includes(query);
           }
         }),
       );
 
       setIsLoading(true);
     })();
-  }, [statusSelect]);
+  }, [statusSelect, query]);
   // useEffect(() => {
   //   (async () => {
   //     const allTodos = await getTodos();
