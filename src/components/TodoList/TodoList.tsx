@@ -1,24 +1,23 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
-import { getTodos } from '../../api';
+import React from 'react';
+// import { getTodos } from '../../api';
 import { Todo } from '../../types/Todo';
 
-export const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  // const [modal, setModal] = useState(false);
-  const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
+type Props = {
+  todos: Todo[]
+  selectedTodo: Todo | null,
+  setSelectedTodo: (todo: Todo) => void
+};
 
-  useEffect(() => {
-    getTodos().then((item) => {
-      setTodos(item);
-    });
-  }, []);
+export const TodoList: React.FC<Props> = ({ todos, selectedTodo, setSelectedTodo }) => {
+  // const [modal, setModal] = useState(false);
+  // const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
 
   // console.log(todos);
 
-  const showModal = (id: number) => {
-    setSelectedTodo(id);
+  const showModal = (todo: Todo) => {
+    setSelectedTodo(todo);
   };
 
   return (
@@ -72,13 +71,13 @@ export const TodoList: React.FC = () => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => showModal(todo.id)}
+                    onClick={() => showModal(todo)}
                   >
                     <span className="icon">
                       <i
                         className={classNames('far', {
-                          'fa-eye-slash': selectedTodo === todo.id,
-                          'fa-eye': selectedTodo !== todo.id,
+                          'fa-eye-slash': selectedTodo?.id === todo.id,
+                          'fa-eye': selectedTodo?.id !== todo.id,
                         })}
                       />
                     </span>
