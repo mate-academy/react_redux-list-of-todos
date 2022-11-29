@@ -6,7 +6,8 @@ import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [modal, setModal] = useState(false);
+  // const [modal, setModal] = useState(false);
+  const [selectedTodo, setSelectedTodo] = useState<number | null>(null);
 
   useEffect(() => {
     getTodos().then((item) => {
@@ -16,12 +17,9 @@ export const TodoList: React.FC = () => {
 
   // console.log(todos);
 
-  const showModal = (args: boolean, id: number) => {
-    // console.log(args, id);
-    setModal(args);
+  const showModal = (id: number) => {
+    setSelectedTodo(id);
   };
-
-  // console.log(modal);
 
   return (
     <>
@@ -51,11 +49,11 @@ export const TodoList: React.FC = () => {
               <tr key={todo.id} data-cy="todo">
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
-                  {todo.completed ? (
+                  {todo.completed && (
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
-                  ) : null}
+                  ) }
                 </td>
 
                 <td className="is-vcentered is-expanded">
@@ -74,13 +72,13 @@ export const TodoList: React.FC = () => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => showModal(!modal, todo.id)}
+                    onClick={() => showModal(todo.id)}
                   >
                     <span className="icon">
                       <i
                         className={classNames('far', {
-                          'fa-eye': !modal,
-                          'fa-eye-slash': modal,
+                          'fa-eye-slash': selectedTodo === todo.id,
+                          'fa-eye': selectedTodo !== todo.id,
                         })}
                       />
                     </span>
