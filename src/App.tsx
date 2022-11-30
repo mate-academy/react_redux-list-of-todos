@@ -17,29 +17,32 @@ export const App: React.FC = () => {
   const [statusSelect, setStatusSelect] = useState('all');
   const [query, setQuery] = useState<string>('');
 
-  // eslint-disable-next-line no-console
-  console.log(query);
-
-  const sortBySearch = (todoTitle: string, queryText: string) => {
+  const filterBySearch = (todoTitle: string, queryText: string) => {
     return todoTitle.toLowerCase().includes(queryText);
   };
 
   // что нужно сделать чтобы по несколько раз мой statusSelect не генерился useCallback useMemo?
+  // надо ли трай кетч сюда ставить?
   useEffect(() => {
     (async () => {
       const allTodos = await getTodos();
 
+      // норм ли это что я всегда тяну данные с сервера чтобы не делать доп стейт с пустым масивом для тодушек
+      // котрый должен был бы обновлять тудушки которые фильтр бы срезал?
+      // так как сейчас то у нас не будет копии тудушек и если сервер накроется то и селекты перестанут работать
       setTodos(
         allTodos.filter((todo) => {
+          const { title, completed } = todo;
+
           switch (statusSelect) {
             case 'active':
-              return todo.completed && sortBySearch(todo.title, query);
+              return completed && filterBySearch(title, query);
 
             case 'completed':
-              return !todo.completed && sortBySearch(todo.title, query);
+              return !completed && filterBySearch(title, query);
 
             default:
-              return todo && todo.title.toLowerCase().includes(query);
+              return todo && title.toLowerCase().includes(query);
           }
         }),
       );
@@ -47,55 +50,6 @@ export const App: React.FC = () => {
       setIsLoading(true);
     })();
   }, [statusSelect, query]);
-  // useEffect(() => {
-  //   (async () => {
-  //     const allTodos = await getTodos();
-
-  //     setTodos(allTodos);
-  //     setIsLoading(true);
-
-  //     if (statusSelect === 'active') {
-  //       // console.log('its active');
-  //       // setTodos(item);
-  //       setTodos(allTodos.filter((todo) => todo.completed !== false));
-  //       // todos.filter((todo) => todo.completed !== false);
-  //     }
-
-  //     if (statusSelect === 'completed') {
-  //       // console.log('its completed');
-  //       // setTodos(item);
-  //       setTodos(allTodos.filter((todo) => todo.completed === false));
-  //       // todos.filter((todo) => todo.completed !== false);
-  //     }
-  //   })();
-  // }, [statusSelect]);
-  // useEffect(() => {
-  //   getTodos().then((item) => {
-  //     setTodos(item);
-  //     setIsLoading(true);
-
-  //     // норм ли это что я всегда тяну данные с сервера чтобы не делать доп стейт с пустым масивом для тодушек
-  //     // котрый должен был бы обновлять тудушки которые фильтр бы срезал?
-  //     // так как сейчас то у нас не будет копии тудушек и если сервер накроется то и селекты перестанут работать
-  //     if (statusSelect === 'active') {
-  //       console.log('its active');
-  //       // setTodos(item);
-  //       setTodos(item.filter((todo) => todo.completed !== false));
-  //       // todos.filter((todo) => todo.completed !== false);
-  //     }
-
-  //     if (statusSelect === 'completed') {
-  //       console.log('its completed');
-  //       // setTodos(item);
-  //       setTodos(item.filter((todo) => todo.completed === false));
-  //       // todos.filter((todo) => todo.completed !== false);
-  //     }
-
-  //     // setTodos(item);
-
-  //     console.log(todos);
-  //   });
-  // }, [statusSelect]);
 
   return (
     <>
