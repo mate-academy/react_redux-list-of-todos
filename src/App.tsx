@@ -5,57 +5,59 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 // import { useDispatch } from 'react-redux';
 
+import { useDispatch } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { Todo } from './types/Todo';
 import { getTodos } from './api';
+import { actions } from './features/todos';
 
 // local test and no users server copy
 // import { dataFromServer } from './myLocalServer';
-// import { useDispatch } from 'react-redux';
 // import { useAppSelector } from './app/hooks';
 
 // console.log(dataFromServer);
 
 export const App: React.FC = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // const todos = useAppSelector((state) => state);
-  const [todos, setTodos] = useState<Todo[]>([]);
+  // const todos = useAppSelector((state) => state.todos);
+  // const [todos, setTodos] = useState<Todo[]>([]);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [statusSelect, setStatusSelect] = useState('all');
   const [query, setQuery] = useState<string>('');
 
-  const filterBySearch = (todoTitle: string, queryText: string) => {
-    return todoTitle.toLowerCase().includes(queryText);
-  };
+  // const filterBySearch = (todoTitle: string, queryText: string) => {
+  //   return todoTitle.toLowerCase().includes(queryText);
+  // };
 
   // что нужно сделать чтобы по несколько раз мой statusSelect не генерился useCallback useMemo?
   useEffect(() => {
     (async () => {
       try {
         const allTodos = await getTodos();
+
         // const allTodos = dataFromServer;
+        dispatch(actions.setTodos(allTodos));
+        // setTodos(
+        //   todos.filter((todo) => {
+        //     const { title, completed } = todo;
 
-        setTodos(
-          allTodos.filter((todo) => {
-            const { title, completed } = todo;
+        //     switch (statusSelect) {
+        //       case 'active':
+        //         return completed && filterBySearch(title, query);
 
-            switch (statusSelect) {
-              case 'active':
-                return completed && filterBySearch(title, query);
+        //       case 'completed':
+        //         return !completed && filterBySearch(title, query);
 
-              case 'completed':
-                return !completed && filterBySearch(title, query);
-
-              default:
-                return todo && filterBySearch(title, query);
-            }
-          }),
-        );
+        //       default:
+        //         return todo && filterBySearch(title, query);
+        //     }
+        //   }),
+        // );
 
         setIsLoading(true);
       } catch {
@@ -83,7 +85,7 @@ export const App: React.FC = () => {
             <div className="block">
               {isLoading ? (
                 <TodoList
-                  todos={todos}
+                  // todos={todos}
                   setSelectedTodo={setSelectedTodo}
                   selectedTodo={selectedTodo}
                 />

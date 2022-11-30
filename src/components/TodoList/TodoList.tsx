@@ -1,17 +1,17 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
 import React from 'react';
-// import { useAppSelector } from '../../app/hooks';
+import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 
 type Props = {
-  todos: Todo[];
+  // todos: Todo[];
   selectedTodo: Todo | null;
   setSelectedTodo: (todo: Todo) => void;
 };
 
 export const TodoList: React.FC<Props> = ({
-  todos,
+  // todos,
   selectedTodo,
   setSelectedTodo,
 }) => {
@@ -19,7 +19,7 @@ export const TodoList: React.FC<Props> = ({
     setSelectedTodo(todo);
   };
 
-  // const todos = useAppSelector((state) => state.todos);
+  const todos = useAppSelector((state) => state.todos);
 
   // console.log(todos);
 
