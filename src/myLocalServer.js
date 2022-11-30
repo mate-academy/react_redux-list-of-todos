@@ -1,5 +1,10 @@
-const dataFromServer = [
-  { userId: 1, id: 1, title: 'delectus aut autem', completed: false },
+export const dataFromServer = [
+  {
+    userId: 1,
+    id: 1,
+    title: 'delectus aut autem',
+    completed: false,
+  },
 
   {
     userId: 1,
@@ -8,9 +13,19 @@ const dataFromServer = [
     completed: false,
   },
 
-  { userId: 1, id: 3, title: 'fugiat veniam minus', completed: false },
+  {
+    userId: 1,
+    id: 3,
+    title: 'fugiat veniam minus',
+    completed: false,
+  },
 
-  { userId: 1, id: 4, title: 'et porro tempora', completed: true },
+  {
+    userId: 1,
+    id: 4,
+    title: 'et porro tempora',
+    completed: true,
+  },
 
   {
     userId: 1,
@@ -33,9 +48,19 @@ const dataFromServer = [
     completed: false,
   },
 
-  { userId: 1, id: 8, title: 'quo adipisci enim quam ut ab', completed: true },
+  {
+    userId: 1,
+    id: 8,
+    title: 'quo adipisci enim quam ut ab',
+    completed: true,
+  },
 
-  { userId: 1, id: 9, title: 'molestiae perspiciatis ipsa', completed: false },
+  {
+    userId: 1,
+    id: 9,
+    title: 'molestiae perspiciatis ipsa',
+    completed: false,
+  },
 
   {
     userId: 1,
@@ -57,7 +82,12 @@ const dataFromServer = [
     completed: true,
   },
 
-  { userId: 1, id: 15, title: 'ab voluptatum amet voluptas', completed: true },
+  {
+    userId: 1,
+    id: 15,
+    title: 'ab voluptatum amet voluptas',
+    completed: true,
+  },
 
   {
     userId: 1,
@@ -129,9 +159,19 @@ const dataFromServer = [
     completed: true,
   },
 
-  { userId: 2, id: 26, title: 'aliquam aut quasi', completed: true },
+  {
+    userId: 2,
+    id: 26,
+    title: 'aliquam aut quasi',
+    completed: true,
+  },
 
-  { userId: 2, id: 27, title: 'veritatis pariatur delectus', completed: true },
+  {
+    userId: 2,
+    id: 27,
+    title: 'veritatis pariatur delectus',
+    completed: true,
+  },
 
   {
     userId: 2,
@@ -140,7 +180,12 @@ const dataFromServer = [
     completed: false,
   },
 
-  { userId: 2, id: 29, title: 'laborum aut in quam', completed: false },
+  {
+    userId: 2,
+    id: 29,
+    title: 'laborum aut in quam',
+    completed: false,
+  },
 
   {
     userId: 2,

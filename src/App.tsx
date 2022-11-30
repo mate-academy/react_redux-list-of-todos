@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+// import { useDispatch } from 'react-redux';
+
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
@@ -10,7 +12,17 @@ import { Loader } from './components/Loader';
 import { Todo } from './types/Todo';
 import { getTodos } from './api';
 
+// local test and no users server copy
+// import { dataFromServer } from './myLocalServer';
+// import { useDispatch } from 'react-redux';
+// import { useAppSelector } from './app/hooks';
+
+// console.log(dataFromServer);
+
 export const App: React.FC = () => {
+  // const dispatch = useDispatch();
+
+  // const todos = useAppSelector((state) => state);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,32 +34,34 @@ export const App: React.FC = () => {
   };
 
   // что нужно сделать чтобы по несколько раз мой statusSelect не генерился useCallback useMemo?
-  // надо ли трай кетч сюда ставить?
   useEffect(() => {
     (async () => {
-      const allTodos = await getTodos();
+      try {
+        const allTodos = await getTodos();
+        // const allTodos = dataFromServer;
 
-      // норм ли это что я всегда тяну данные с сервера чтобы не делать доп стейт с пустым масивом для тодушек
-      // котрый должен был бы обновлять тудушки которые фильтр бы срезал?
-      // так как сейчас то у нас не будет копии тудушек и если сервер накроется то и селекты перестанут работать
-      setTodos(
-        allTodos.filter((todo) => {
-          const { title, completed } = todo;
+        setTodos(
+          allTodos.filter((todo) => {
+            const { title, completed } = todo;
 
-          switch (statusSelect) {
-            case 'active':
-              return completed && filterBySearch(title, query);
+            switch (statusSelect) {
+              case 'active':
+                return completed && filterBySearch(title, query);
 
-            case 'completed':
-              return !completed && filterBySearch(title, query);
+              case 'completed':
+                return !completed && filterBySearch(title, query);
 
-            default:
-              return todo && title.toLowerCase().includes(query);
-          }
-        }),
-      );
+              default:
+                return todo && filterBySearch(title, query);
+            }
+          }),
+        );
 
-      setIsLoading(true);
+        setIsLoading(true);
+      } catch {
+        // eslint-disable-next-line no-console
+        console.log('Check your internnet connection');
+      }
     })();
   }, [statusSelect, query]);
 

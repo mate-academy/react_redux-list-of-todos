@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
 import React from 'react';
+// import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 
 type Props = {
@@ -17,6 +18,10 @@ export const TodoList: React.FC<Props> = ({
   const showModal = (todo: Todo) => {
     setSelectedTodo(todo);
   };
+
+  // const todos = useAppSelector((state) => state.todos);
+
+  // console.log(todos);
 
   return (
     <>

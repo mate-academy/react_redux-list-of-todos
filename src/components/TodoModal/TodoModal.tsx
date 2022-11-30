@@ -10,12 +10,11 @@ type Props = {
 };
 
 export const TodoModal: React.FC<Props> = ({
-  //  про деструктуризацию тут спроси
   selectedTodo,
   setSelectedTodo,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  // про деструктууризацию юзера спроси и линтер
+
   const {
     id,
     userId,
