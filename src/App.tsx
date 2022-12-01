@@ -10,15 +10,14 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 // import { TodoModal } from './components/TodoModal';
 // import { Loader } from './components/Loader';
-// import { TodoInfo } from './components/TodoInfo';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
     getTodos()
-      .then(phones => {
-        setTodos(phones);
+      .then(todo => {
+        setTodos(todo);
       });
   }, []);
 
