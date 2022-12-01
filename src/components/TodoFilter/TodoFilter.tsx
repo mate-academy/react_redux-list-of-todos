@@ -1,45 +1,81 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
 // import { useAppDispatch } from '../../app/hooks';
 import { actions } from '../../features/filter';
 
 type Props = {
-  setStatusSelect: (item: string) => void;
+  // setStatusSelect: (item: string) => void;
   // setQuery: (item: string) => void;
   // query: string;
 };
 
-export const TodoFilter: React.FC<Props> = ({
-  setStatusSelect,
-  // setQuery,
-  // query,
-}) => {
-  const [query, setQuery] = useState<string>('');
+// export const TodoFilter: React.FC<Props> = ({
+//   // setStatusSelect,
+//   // setQuery,
+//   // query,
+// }) => {
 
+export const TodoFilter: React.FC<Props> = () => {
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
+  // const [query, setQuery] = useState<string>('');
+
+  // тест для функции
+  // const filterBySearch = (todoTitle: string, queryText: string) => {
+  //   return todoTitle.toLowerCase().includes(queryText);
+  // };
+
+  console.log(query);
   const dispatch = useDispatch();
   // const query
   // dispatch(actions.setActiveStatus)
 
   const handleStatusSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setStatusSelect(event.target.value);
+    // setStatusSelect(event.target.value);
     // dispatch(actions.setActiveStatus(event.target.value));
     switch (event.target.value) {
       case 'completed':
-        return dispatch(actions.setCompletedStatus(event.target.value));
+        return dispatch(actions.status(event.target.value));
       case 'active':
-        return dispatch(actions.setActiveStatus(event.target.value));
+        return dispatch(actions.status(event.target.value));
         // походу нужен екшен и для ол чтобы это можно было задиспачить
+
+      case 'all':
+        return dispatch(actions.status(event.target.value));
+
       default:
         return event.target.value;
     }
+
+    // const handleStatusSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //   // setStatusSelect(event.target.value);
+    //   // dispatch(actions.setActiveStatus(event.target.value));
+    //   switch (event.target.value) {
+    //     case 'completed':
+    //       return dispatch(actions.setCompletedStatus(event.target.value));
+    //     case 'active':
+    //       return dispatch(actions.setActiveStatus(event.target.value));
+    //       // походу нужен екшен и для ол чтобы это можно было задиспачить
+
+    //     case 'all':
+    //       return dispatch(actions.setAllStatus(event.target.value));
+
+  //     default:
+  //       return event.target.value;
+  //   }
   };
 
   const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    // setQuery(event.target.value);
+    // dispatch(actions.setQuery(event.target.value));
+    dispatch(actions.query(event.target.value));
   };
 
   const clearSearchBar = () => {
-    setQuery('');
+    // setQuery('');
+    // dispatch(actions.clearQuery());
+    dispatch(actions.query(''));
   };
 
   return (
@@ -50,9 +86,9 @@ export const TodoFilter: React.FC<Props> = ({
       <p className="control">
         <span className="select">
           <select data-cy="statusSelect" onChange={handleStatusSelect}>
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={status}>All</option>
+            <option value={status}>Active</option>
+            <option value={status}>Completed</option>
           </select>
         </span>
       </p>

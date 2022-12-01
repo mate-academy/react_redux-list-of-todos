@@ -22,6 +22,7 @@ export const TodoList: React.FC<Props> = () => {
   const todos = useAppSelector((state) => state.todos);
   const selectedTodo = useAppSelector((state => state.currentTodo));
 
+  // console.log(todos);
   const showModal = (todo: Todo) => {
     // setSelectedTodo(todo);
     dispatch(actions.setTodo(todo));
@@ -54,6 +55,8 @@ export const TodoList: React.FC<Props> = () => {
           </thead>
 
           <tbody>
+            {/* как вообще работает мап если  todos это объект */}
+            {/* todos то ключ и в нем массив а переменная с именем todos уже имеет массив который вытащили по ключю todos из стейта */}
             {todos.map((todo) => {
               const { id, title, completed } = todo;
 

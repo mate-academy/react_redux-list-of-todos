@@ -28,7 +28,7 @@ export const App: React.FC = () => {
   // const [todos, setTodos] = useState<Todo[]>([]);
   // const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [statusSelect, setStatusSelect] = useState('all');
+  // const [statusSelect, setStatusSelect] = useState('all');
   // const [query, setQuery] = useState<string>('');
 
   // const filterBySearch = (todoTitle: string, queryText: string) => {
@@ -70,7 +70,7 @@ export const App: React.FC = () => {
         console.log('Check your internnet connection');
       }
     })();
-  }, [statusSelect]);
+  }, []);
   // }, [statusSelect, query]);
 
   return (
@@ -81,11 +81,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                setStatusSelect={setStatusSelect}
-                // setQuery={setQuery}
-                // query={query}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
