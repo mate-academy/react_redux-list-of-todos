@@ -10,13 +10,14 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { Todo } from './types/Todo';
+// import { Todo } from './types/Todo';
 import { getTodos } from './api';
-import { actions } from './features/todos';
+import { actions as todosActions } from './features/todos';
+// import { actions as currentTodo } from './features/currentTodo';
 
 // local test and no users server copy
 // import { dataFromServer } from './myLocalServer';
-// import { useAppSelector } from './app/hooks';
+import { useAppSelector } from './app/hooks';
 
 // console.log(dataFromServer);
 
@@ -25,7 +26,7 @@ export const App: React.FC = () => {
 
   // const todos = useAppSelector((state) => state.todos);
   // const [todos, setTodos] = useState<Todo[]>([]);
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  // const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [statusSelect, setStatusSelect] = useState('all');
   // const [query, setQuery] = useState<string>('');
@@ -33,6 +34,8 @@ export const App: React.FC = () => {
   // const filterBySearch = (todoTitle: string, queryText: string) => {
   //   return todoTitle.toLowerCase().includes(queryText);
   // };
+
+  const selectedTodo = useAppSelector(state => state.currentTodo);
 
   // что нужно сделать чтобы по несколько раз мой statusSelect не генерился useCallback useMemo?
   // возможно это прийдется перенести в туду лист так как нет в нем смысла тут кроме лоудера
@@ -42,7 +45,8 @@ export const App: React.FC = () => {
         const allTodos = await getTodos();
 
         // const allTodos = dataFromServer;
-        dispatch(actions.setTodos(allTodos));
+        // имея екшен из конкретного файла оно понимает что надо к конкретному редюсеру подключится?
+        dispatch(todosActions.setTodos(allTodos));
         // setTodos(
         //   todos.filter((todo) => {
         //     const { title, completed } = todo;
@@ -86,11 +90,12 @@ export const App: React.FC = () => {
 
             <div className="block">
               {isLoading ? (
-                <TodoList
-                  // todos={todos}
-                  setSelectedTodo={setSelectedTodo}
-                  selectedTodo={selectedTodo}
-                />
+                <TodoList />
+                // <TodoList
+                //   // todos={todos}
+                //   // setSelectedTodo={setSelectedTodo}
+                //   // selectedTodo={selectedTodo}
+                // />
               ) : (
                 <Loader />
               )}
@@ -100,10 +105,11 @@ export const App: React.FC = () => {
       </div>
 
       {selectedTodo && (
-        <TodoModal
-          selectedTodo={selectedTodo}
-          setSelectedTodo={setSelectedTodo}
-        />
+        // <TodoModal
+        //   // selectedTodo={selectedTodo}
+        //   // setSelectedTodo={setSelectedTodo}
+        // />
+        <TodoModal />
       )}
     </>
   );

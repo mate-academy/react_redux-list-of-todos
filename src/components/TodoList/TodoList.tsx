@@ -1,25 +1,31 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
 import React from 'react';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
+import { actions } from '../../features/currentTodo';
 
 type Props = {
   // todos: Todo[];
-  selectedTodo: Todo | null;
-  setSelectedTodo: (todo: Todo) => void;
+  // selectedTodo: Todo | null;
+  // setSelectedTodo: (todo: Todo) => void;
 };
 
-export const TodoList: React.FC<Props> = ({
-  // todos,
-  selectedTodo,
-  setSelectedTodo,
-}) => {
-  const showModal = (todo: Todo) => {
-    setSelectedTodo(todo);
-  };
+// export const TodoList: React.FC<Props> = ({
+//   // todos,
+//   // selectedTodo,
+//   // setSelectedTodo,
+// }) => {
+export const TodoList: React.FC<Props> = () => {
+  const dispatch = useAppDispatch();
 
   const todos = useAppSelector((state) => state.todos);
+  const selectedTodo = useAppSelector((state => state.currentTodo));
+
+  const showModal = (todo: Todo) => {
+    // setSelectedTodo(todo);
+    dispatch(actions.setTodo(todo));
+  };
 
   // console.log(todos);
 

@@ -17,7 +17,7 @@ export const TodoFilter: React.FC<Props> = ({
   const [query, setQuery] = useState<string>('');
 
   const dispatch = useDispatch();
-
+  // const query
   // dispatch(actions.setActiveStatus)
 
   const handleStatusSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
