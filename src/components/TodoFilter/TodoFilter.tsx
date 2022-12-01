@@ -1,18 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+// import { useAppDispatch } from '../../app/hooks';
+import { actions } from '../../features/filter';
 
 type Props = {
   setStatusSelect: (item: string) => void;
-  setQuery: (item: string) => void;
-  query: string;
+  // setQuery: (item: string) => void;
+  // query: string;
 };
 
 export const TodoFilter: React.FC<Props> = ({
   setStatusSelect,
-  setQuery,
-  query,
+  // setQuery,
+  // query,
 }) => {
+  const [query, setQuery] = useState<string>('');
+
+  const dispatch = useDispatch();
+
+  // dispatch(actions.setActiveStatus)
+
   const handleStatusSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setStatusSelect(event.target.value);
+    // dispatch(actions.setActiveStatus(event.target.value));
+    switch (event.target.value) {
+      case 'completed':
+        return dispatch(actions.setCompletedStatus(event.target.value));
+      case 'active':
+        return dispatch(actions.setActiveStatus(event.target.value));
+        // походу нужен екшен и для ол чтобы это можно было задиспачить
+      default:
+        return event.target.value;
+    }
   };
 
   const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => {

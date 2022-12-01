@@ -22,20 +22,6 @@ type SetCompletedStatus = {
   payload: Status
 };
 
-// почему нельзя сразу тип поставить чтобы три разных статуса не писать
-// const setAllStatus = (status: Status): SetStatus => ({
-//   // type: Status,
-//   type: '',
-//   payload: status,
-// });
-
-// почему нельзя сразу тип поставить чтобы три разных статуса не писать
-const setAllStatus = (status: Status): SetAllStatus => ({
-  // type: Status,
-  type: 'statusAll/SET',
-  payload: status,
-});
-
 const setActiveStatus = (status: Status): SetActiveStatus => ({
   // type: Status,
   type: 'statusActive/SET',
@@ -73,5 +59,5 @@ const filterReducer = (state: Todo[], action: Actions) => {
   // };
 };
 
-export const actions = { setAllStatus, setActiveStatus, setCompletedStatus };
+export const actions = { setActiveStatus, setCompletedStatus };
 export default filterReducer;
