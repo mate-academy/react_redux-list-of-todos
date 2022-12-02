@@ -1,33 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-// import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/currentTodo';
 
-type Props = {
-  // selectedTodo: Todo;
-  // setSelectedTodo: (empty: null) => void;
-};
-
-// export const TodoModal: React.FC<Props> = ({
-//   // selectedTodo,
-//   // setSelectedTodo,
-// }) => {
-
-export const TodoModal: React.FC<Props> = () => {
+export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
-
-  // const {
-  //   id,
-  //   userId,
-  //   title,
-  //   completed,
-  // } = selectedTodo;
 
   useEffect(() => {
     (async () => {
@@ -36,24 +18,14 @@ export const TodoModal: React.FC<Props> = () => {
       if (selectedTodo?.userId === undefined) {
         return;
       }
-      // const selectedUser = await getUser(userId);
 
       const selectedUser = await getUser(selectedTodo?.userId);
-
-      // if (selectedUser !== undefined) {
-      //   return selectedUser;
-      // }
-
-      // if (selectedTodo?.userId !== undefined) {
-      //   return selectedUser;
-      // }
 
       setUser(selectedUser);
     })();
   }, []);
 
   const closeModal = () => {
-    // setSelectedTodo(null);
     dispatch(actions.removeTodo());
   };
 

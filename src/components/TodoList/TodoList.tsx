@@ -1,18 +1,11 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
-import React from 'react';
-// import React, { useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
 
-type Props = {
-  // todos: Todo[];
-  // selectedTodo: Todo | null;
-  // setSelectedTodo: (todo: Todo) => void;
-};
-
-export const TodoList: React.FC<Props> = () => {
+export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const todos = useAppSelector((state) => state.todos);
@@ -24,39 +17,23 @@ export const TodoList: React.FC<Props> = () => {
     return todoTitle.toLowerCase().includes(queryText.toLowerCase());
   };
 
-  // useEffect(() => {
-  //   todos.filter(({ completed, title }) => {
-  //     switch (status) {
-  //       case 'active':
-  //         return !completed && filterBySearch(title, query);
-  //       case 'completed':
-  //         return completed && filterBySearch(title, query);
-  //       case 'all':
-  //       default:
-  //         return filterBySearch(title, query);
-  //     }
-  //   });
-  // }, [todos, status, query]);
+  const filteredTodos = useMemo(() => {
+    return todos.filter(({ completed, title }) => {
+      switch (status) {
+        case 'active':
+          return !completed && filterBySearch(title, query);
+        case 'completed':
+          return completed && filterBySearch(title, query);
+        case 'all':
+        default:
+          return filterBySearch(title, query);
+      }
+    });
+  }, [todos, status, query]);
 
-  const filteredTodos = todos.filter(({ completed, title }) => {
-    switch (status) {
-      case 'active':
-        return !completed && filterBySearch(title, query);
-      case 'completed':
-        return completed && filterBySearch(title, query);
-      case 'all':
-      default:
-        return filterBySearch(title, query);
-    }
-  });
-
-  // console.log(todos);
   const showModal = (todo: Todo) => {
-    // setSelectedTodo(todo);
     dispatch(actions.setTodo(todo));
   };
-
-  // console.log(todos);
 
   return (
     <>

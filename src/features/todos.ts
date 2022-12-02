@@ -1,5 +1,4 @@
 import { Todo } from '../types/Todo';
-// import { dataFromServer } from '../myLocalServer';
 
 type SetTodos = {
   type: 'todos/SET',
