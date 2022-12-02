@@ -14,27 +14,31 @@ export enum TodoTypes {
 }
 
 export type TodoSuccessAction = {
-  type: TodoTypes.FETCH_TODOS_SUCCESS,
-  payload: Todo[],
+  type: TodoTypes.FETCH_TODOS_SUCCESS;
+  payload: Todo[];
 };
 
 type TodoErrorAction = {
-  type: TodoTypes.FETCH_TODOS_ERROR,
-  payload: string,
+  type: TodoTypes.FETCH_TODOS_ERROR;
+  payload: string;
 };
 
 export type CurrentTodoAction = {
-  type: TodoTypes.SET_TODO,
-  payload: number,
+  type: TodoTypes.SET_TODO;
+  payload: number;
 };
 
 export type StartLoading = {
-  type: TodoTypes.START_LOADING,
+  type: TodoTypes.START_LOADING;
 };
 
 export type FinishLoading = {
-  type: TodoTypes.FINISH_LOADING,
+  type: TodoTypes.FINISH_LOADING;
 };
 
-// eslint-disable-next-line max-len
-export type TodoAction = TodoSuccessAction | TodoErrorAction | CurrentTodoAction | StartLoading | FinishLoading;
+export type TodoAction =
+  | TodoSuccessAction
+  | TodoErrorAction
+  | CurrentTodoAction
+  | StartLoading
+  | FinishLoading;
