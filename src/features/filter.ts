@@ -103,6 +103,7 @@ const defaultState: DefaultState = {
 const filterReducer = (state = defaultState, action: Actions): DefaultState => {
   switch (action.type) {
     case 'query/SET':
+      // query: action.payload мы постоянно переписывам квери и поэтому в нем не накопляються клики по селекту и его значения
       return { ...state, query: action.payload };
 
     case 'status/SET':

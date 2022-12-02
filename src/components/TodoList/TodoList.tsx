@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
 import React from 'react';
+// import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
@@ -11,16 +12,43 @@ type Props = {
   // setSelectedTodo: (todo: Todo) => void;
 };
 
-// export const TodoList: React.FC<Props> = ({
-//   // todos,
-//   // selectedTodo,
-//   // setSelectedTodo,
-// }) => {
 export const TodoList: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
 
   const todos = useAppSelector((state) => state.todos);
   const selectedTodo = useAppSelector((state => state.currentTodo));
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
+
+  const filterBySearch = (todoTitle: string, queryText: string) => {
+    return todoTitle.toLowerCase().includes(queryText.toLowerCase());
+  };
+
+  // useEffect(() => {
+  //   todos.filter(({ completed, title }) => {
+  //     switch (status) {
+  //       case 'active':
+  //         return !completed && filterBySearch(title, query);
+  //       case 'completed':
+  //         return completed && filterBySearch(title, query);
+  //       case 'all':
+  //       default:
+  //         return filterBySearch(title, query);
+  //     }
+  //   });
+  // }, [todos, status, query]);
+
+  const filteredTodos = todos.filter(({ completed, title }) => {
+    switch (status) {
+      case 'active':
+        return !completed && filterBySearch(title, query);
+      case 'completed':
+        return completed && filterBySearch(title, query);
+      case 'all':
+      default:
+        return filterBySearch(title, query);
+    }
+  });
 
   // console.log(todos);
   const showModal = (todo: Todo) => {
@@ -32,12 +60,12 @@ export const TodoList: React.FC<Props> = () => {
 
   return (
     <>
-      {todos.length === 0 && (
+      {filteredTodos.length === 0 && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
-      {todos.length > 0 && (
+      {filteredTodos.length > 0 && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -57,7 +85,7 @@ export const TodoList: React.FC<Props> = () => {
           <tbody>
             {/* как вообще работает мап если  todos это объект */}
             {/* todos то ключ и в нем массив а переменная с именем todos уже имеет массив который вытащили по ключю todos из стейта */}
-            {todos.map((todo) => {
+            {filteredTodos.map((todo: Todo) => {
               const { id, title, completed } = todo;
 
               return (
