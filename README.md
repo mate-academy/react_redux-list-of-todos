@@ -11,8 +11,9 @@ using the Redux. It should look and work identically, so use the same markup.
 - implement `features/todos` storing an array of todos;
 - load the todos in the `App` on page load (don't use Redux Thunk for now);
 - `useAppSelector` already aware of `RootState` so you can write selectors in your
-components (no need to write them in the store file)
+  components (no need to write them in the store file)
 
 ## Instructions
-- Replace `<your_account>` with your Github username in the [DEMO LINK](https://<your_account>.github.io/react_redux-list-of-todos/)
+
+- Replace `<your_account>` with your Github username in the [DEMO LINK](https://DimaKobzar7.github.io/react_redux-list-of-todos/)
 - Follow the [React task guideline](https://github.com/mate-academy/react_task-guideline#react-tasks-guideline)
