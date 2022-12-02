@@ -17,8 +17,6 @@ export const App: React.FC = () => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const [isLoading, setIsLoading] = useState(false);
 
-  // что нужно сделать чтобы по несколько раз мой statusSelect не генерился useCallback useMemo?
-  // возможно это прийдется перенести в туду лист так как нет в нем смысла тут кроме лоудера
   useEffect(() => {
     (async () => {
       try {

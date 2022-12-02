@@ -13,8 +13,6 @@ export const TodoModal: React.FC = () => {
 
   useEffect(() => {
     (async () => {
-      // хак для норм работы selectedUser
-      // без него влетает в типы либо число либо андефайнд
       if (selectedTodo?.userId === undefined) {
         return;
       }

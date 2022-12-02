@@ -22,8 +22,10 @@ export const TodoList: React.FC = () => {
       switch (status) {
         case 'active':
           return !completed && filterBySearch(title, query);
+
         case 'completed':
           return completed && filterBySearch(title, query);
+
         case 'all':
         default:
           return filterBySearch(title, query);
@@ -42,6 +44,7 @@ export const TodoList: React.FC = () => {
           There are no todos matching current filter criteria
         </p>
       )}
+
       {filteredTodos.length > 0 && (
         <table className="table is-narrow is-fullwidth">
           <thead>
@@ -60,8 +63,6 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {/* как вообще работает мап если  todos это объект */}
-            {/* todos то ключ и в нем массив а переменная с именем todos уже имеет массив который вытащили по ключю todos из стейта */}
             {filteredTodos.map((todo: Todo) => {
               const { id, title, completed } = todo;
 

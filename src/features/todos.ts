@@ -10,8 +10,6 @@ const setTodos = (todos: Todo[]): SetTodos => ({
   payload: todos,
 });
 
-// почему на : Todo[] ругается если в state тоже Todo[] и в payload тоже Todo[]
-// когда пытался вернуть   return [...state, action.payload]; хотел все разом в один масив ставить
 const todosReducer = (state: Todo[] = [], action: SetTodos): Todo[] => {
   switch (action.type) {
     case 'todos/SET':
