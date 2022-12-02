@@ -18,7 +18,7 @@ type Props = {
 
 export const TodoFilter: React.FC<Props> = () => {
   const query = useAppSelector(state => state.filter.query);
-  const status = useAppSelector(state => state.filter.status);
+  // const status = useAppSelector(state => state.filter.status);
   // const [query, setQuery] = useState<string>('');
 
   // тест для функции
@@ -26,7 +26,8 @@ export const TodoFilter: React.FC<Props> = () => {
   //   return todoTitle.toLowerCase().includes(queryText);
   // };
 
-  console.log(query);
+  // console.log(query);
+  // console.log(status);
   const dispatch = useDispatch();
   // const query
   // dispatch(actions.setActiveStatus)
@@ -86,9 +87,9 @@ export const TodoFilter: React.FC<Props> = () => {
       <p className="control">
         <span className="select">
           <select data-cy="statusSelect" onChange={handleStatusSelect}>
-            <option value={status}>All</option>
-            <option value={status}>Active</option>
-            <option value={status}>Completed</option>
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
           </select>
         </span>
       </p>

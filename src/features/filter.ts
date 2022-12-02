@@ -62,22 +62,22 @@ import { Status } from '../types/Status';
 //   payload: status,
 // });
 
-type State = {
+type StatusType = {
   type: 'status/SET',
   payload: Status,
 };
 
-type Query = {
+type QueryType = {
   type: 'query/SET',
   payload: string,
 };
 
-const status = (value: Status): State => ({
+const status = (value: Status): StatusType => ({
   type: 'status/SET',
   payload: value,
 });
 
-const query = (value: string): Query => ({
+const query = (value: string): QueryType => ({
   type: 'query/SET',
   payload: value,
 });
@@ -91,7 +91,7 @@ type DefaultState = {
   status: Status,
 };
 
-type Actions = Status | Query;
+type Actions = StatusType | QueryType;
 
 const defaultState: DefaultState = {
   query: '',
