@@ -13,13 +13,13 @@ export const TodoFilter: React.FC = () => {
   const handleStatus = (value: string) => {
     switch (value) {
       case 'completed':
-        return completed;
+        return completed();
 
       case 'active':
-        return active;
+        return active();
 
       default:
-        return all;
+        return all();
     }
   };
 

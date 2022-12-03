@@ -1,23 +1,26 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { getTodos } from './api';
-import { Todo } from './types/Todo';
+// import { Todo } from './types/Todo';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 // import { TodoModal } from './components/TodoModal';
 // import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  // const [todos, setTodos] = useState<Todo[]>([]);
+  const todos = useAppSelector(state => state.todos);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     getTodos()
       .then(todo => {
-        setTodos(todo);
+        dispatch(todo);
       });
   }, []);
 
