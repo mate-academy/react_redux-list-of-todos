@@ -40,7 +40,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               {/* <Loader /> */}
-              <TodoList todos={todos} />
+              <TodoList />
             </div>
           </div>
         </div>
