@@ -1,13 +1,17 @@
 /* eslint-disable max-len */
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const query = useAppSelector(state => state.filter.query);
   const status = useAppSelector(state => state.filter.status);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  const dispatch = useAppDispatch();
 
   const queryFilter = (todoTitle: string, queryText: string) => {
     return todoTitle.toLowerCase().includes(queryText.toLowerCase());
@@ -27,6 +31,8 @@ export const TodoList: React.FC = () => {
       }
     });
   }, [todos, status, query]);
+
+  const modalTodo = (todo: Todo) => dispatch(currentTodoActions.setTodo(todo));
 
   return (
     <>
@@ -81,9 +87,19 @@ export const TodoList: React.FC = () => {
                   </td>
 
                   <td className="has-text-right is-vcentered">
-                    <button data-cy="selectButton" className="button" type="button">
+                    <button
+                      data-cy="selectButton"
+                      className="button"
+                      type="button"
+                      onClick={() => modalTodo(todo)}
+                    >
                       <span className="icon">
-                        <i className="far fa-eye-slash" />
+                        <i
+                          className={classNames('far', {
+                            'fa-eye-slash': currentTodo?.id === id,
+                            'fa-eye': currentTodo?.id !== id,
+                          })}
+                        />
                       </span>
                     </button>
                   </td>
