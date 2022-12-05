@@ -1,36 +1,56 @@
-import { Todo } from '../types/Todo';
+import { Status } from '../types/Status';
 
-type AllFilter = { type: 'all' };
-type ActiveFilter = { type: 'active' };
-type CompletedFilter = { type: 'completed' };
+type StateType = {
+  query: string,
+  status: Status,
+};
 
-type Action = AllFilter | ActiveFilter | CompletedFilter;
+const initialState: StateType = {
+  query: '',
+  status: 'all',
+};
 
-const all = (): AllFilter => ({ type: 'all' });
-const active = (): ActiveFilter => ({ type: 'active' });
-const completed = (): CompletedFilter => ({ type: 'completed' });
+type QueryType = {
+  type: 'SET_QUERY',
+  payload: string,
+};
 
-export const actions = { all, active, completed };
+type StatusType = {
+  type: 'SET_STATUS',
+  payload: Status,
+};
 
-const filterReducer = (todos: Todo[], action: Action) => {
+type Action = QueryType | StatusType;
+
+const query = (value: string): QueryType => ({
+  type: 'SET_QUERY',
+  payload: value,
+});
+
+const status = (value: Status): StatusType => ({
+  type: 'SET_STATUS',
+  payload: value,
+});
+
+export const actions = { query, status };
+
+const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case 'active':
-      return todos.filter(todo => todo.completed === false);
+    case 'SET_QUERY':
+      return {
+        ...state,
+        query: action.payload,
+      };
 
-    case 'completed':
-      return todos.filter(todo => todo.completed === true);
-
-    case 'all':
-      return todos;
+    case 'SET_STATUS':
+      return {
+        ...state,
+        status: action.payload,
+      };
 
     default:
-      return [];
+      return state;
   }
-
-  // return {
-  //   query: '',
-  //   status: 'all',
-  // };
 };
 
 export default filterReducer;

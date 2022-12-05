@@ -9,18 +9,18 @@ import { getTodos } from './api';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as TodoActions } from './features/todos';
 // import { TodoModal } from './components/TodoModal';
 // import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
-  // const [todos, setTodos] = useState<Todo[]>([]);
   const todos = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     getTodos()
       .then(todo => {
-        dispatch(todo);
+        dispatch(TodoActions.getTodos(todo));
       });
   }, []);
 
