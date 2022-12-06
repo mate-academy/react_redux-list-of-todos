@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -8,7 +8,27 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
+import { getTodos } from './api';
+import { useAppDispatch } from './app/hooks';
+import { actions as todoActions } from './features/todos';
+
 export const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const fetchTodos = async () => {
+    try {
+      const todos = await getTodos();
+
+      dispatch(todoActions.add(todos));
+    } catch {
+      dispatch(todoActions.add([]));
+    }
+  };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
   return (
     <>
       <div className="section">
