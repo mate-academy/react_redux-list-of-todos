@@ -6,14 +6,15 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
-import { Loader } from './components/Loader';
+// import { Loader } from './components/Loader';
 
 import { getTodos } from './api';
-import { useAppDispatch } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todoActions } from './features/todos';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const fetchTodos = async () => {
     try {
@@ -41,14 +42,14 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
+              {/* <Loader /> */}
               <TodoList />
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {currentTodo && <TodoModal />}
     </>
   );
 };
