@@ -36,7 +36,7 @@ export const TodoModal: React.FC = () => {
                 className="modal-card-title has-text-weight-medium"
                 data-cy="modal-header"
               >
-                {`Todo # ${currentTodo?.id}`}
+                {`Todo #${currentTodo?.id}`}
               </div>
 
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -54,18 +54,15 @@ export const TodoModal: React.FC = () => {
               </p>
 
               <p className="block" data-cy="modal-user">
-                <strong
-                  className={classNames(
-                    {
-                      'has-text-danger': currentTodo?.completed,
-                      'has-text-success': currentTodo?.completed,
-                    },
+                { currentTodo?.completed
+                  ? (
+                    <strong className="has-text-success">Done</strong>
+                  )
+                  : (
+                    <strong className="has-text-danger">Planned</strong>
                   )}
-                >
-                  { currentTodo?.completed ? 'Done' : 'Planned' }
-                </strong>
                 {' by '}
-                <a href="mailto:Sincere@april.biz">{user.name}</a>
+                <a href={`mailto:${user.name}`}>{user.name}</a>
               </p>
             </div>
           </div>

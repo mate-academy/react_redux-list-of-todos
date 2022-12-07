@@ -7,12 +7,13 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { useAppDispatch } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { getTodos } from './api';
 import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      <TodoModal />
+      { currentTodo && <TodoModal /> }
     </>
   );
 };

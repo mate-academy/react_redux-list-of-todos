@@ -26,7 +26,9 @@ export const TodoList: React.FC = () => {
         todosStatus = todos;
     }
 
-    return todosStatus.filter(todo => todo.title.includes(query));
+    return todosStatus.filter(
+      todo => todo.title.toLowerCase().includes(query.toLowerCase()),
+    );
   };
 
   useEffect(() => {
