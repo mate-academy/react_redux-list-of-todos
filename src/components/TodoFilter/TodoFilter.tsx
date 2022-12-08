@@ -1,6 +1,25 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
+  const status = useAppSelector(state => state.filter.status);
+  const dispatch = useAppDispatch();
+
+  const handleStatus = (value: string) => {
+    switch (value) {
+      case 'active':
+        return dispatch(actions.setStatus('active'));
+
+      case 'completed':
+        return dispatch(actions.setStatus('completed'));
+
+      case 'all':
+      default:
+        return dispatch(actions.setStatus('all'));
+    }
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +27,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={event => handleStatus(event.target.value)}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
