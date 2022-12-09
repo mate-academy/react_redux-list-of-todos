@@ -1,23 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Todo } from '../../types/Todo';
 
-export const TodoModal: React.FC = () => {
+type Props = {
+  todo: Todo;
+};
+
+export const TodoModal: React.FC<Props> = ({ todo }) => {
+  const {
+    id, title, userId, completed,
+  } = todo;
+
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    if (currentTodo) {
-      getUser(currentTodo.userId)
-        .then(setUser)
-        .finally(() => setIsLoading(false));
+    async function fetchUser() {
+      try {
+        const loadedUser = await getUser(userId);
+
+        setUser(loadedUser);
+      } catch (e) {
+        throw new Error('User not found');
+      } finally {
+        setIsLoading(false);
+      }
     }
-  }, []);
+
+    fetchUser();
+  }, [dispatch]);
 
   const closeModal = () => dispatch(currentTodoActions.removeTodo());
 
@@ -34,7 +50,7 @@ export const TodoModal: React.FC = () => {
                 className="modal-card-title has-text-weight-medium"
                 data-cy="modal-header"
               >
-                {`Todo #${currentTodo?.id}`}
+                {`Todo #${id}`}
               </div>
 
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -51,11 +67,11 @@ export const TodoModal: React.FC = () => {
                 className="block"
                 data-cy="modal-title"
               >
-                {currentTodo?.title}
+                {title}
               </p>
 
               <p className="block" data-cy="modal-user">
-                {!currentTodo?.completed ? (
+                {!completed ? (
                   <strong className="has-text-danger">Planned</strong>
                 ) : (
                   <strong className="has-text-success">Done</strong>

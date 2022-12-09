@@ -17,12 +17,21 @@ export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsLoading(true);
+    async function fetchTodos() {
+      try {
+        setIsLoading(true);
+        const loadedTodos = await getTodos();
 
-    getTodos()
-      .then(todos => dispatch(todoActions.todosAdd(todos)))
-      .finally(() => setIsLoading(false));
-  }, []);
+        dispatch(todoActions.getTodos(loadedTodos));
+      } catch (e) {
+        throw new Error('Todos not found');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchTodos();
+  }, [dispatch]);
 
   return (
     <>
@@ -46,7 +55,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {currentTodo && <TodoModal />}
+      {currentTodo && <TodoModal todo={currentTodo} />}
     </>
   );
 };
