@@ -1,7 +1,9 @@
 import { Action, State } from './types';
+import { FILTER_QUERY, FILTER_STATUS } from '../../types/types';
+import { Status } from '../../types/Status';
 
 const initialState: State = {
-  status: 'all',
+  status: Status.ALL,
   query: '',
 };
 
@@ -10,11 +12,11 @@ const filterReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    case 'filter/Status':
+    case FILTER_STATUS:
       return {
         ...filters, status: action.payload,
       };
-    case 'filter/Query':
+    case FILTER_QUERY:
       return {
         ...filters, query: action.payload,
       };

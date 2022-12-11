@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as actionsCurrentTodo } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -14,9 +15,9 @@ export const TodoList: React.FC = () => {
   const visibleTodos = useMemo(() => {
     let newTodos = todos.filter(todo => {
       switch (status) {
-        case 'active':
+        case Status.ACTIVE:
           return !todo.completed;
-        case 'completed':
+        case Status.COMPLETED:
           return todo.completed;
         default:
           return todo;

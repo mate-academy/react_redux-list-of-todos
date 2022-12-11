@@ -12,7 +12,10 @@ type Props = {
 
 export const TodoModal: React.FC<Props> = ({ todo }) => {
   const {
-    id, title, userId, completed,
+    id,
+    title,
+    userId,
+    completed,
   } = todo;
 
   const dispatch = useAppDispatch();
@@ -71,11 +74,10 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               </p>
 
               <p className="block" data-cy="modal-user">
-                {!completed ? (
-                  <strong className="has-text-danger">Planned</strong>
-                ) : (
-                  <strong className="has-text-success">Done</strong>
-                )}
+                {!completed
+                  ? <strong className="has-text-danger">Planned</strong>
+                  : <strong className="has-text-success">Done</strong>
+                }
                 {' by '}
                 <a href={`mailto:${user?.email}`}>{user?.name}</a>
               </p>
