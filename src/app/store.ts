@@ -1,6 +1,7 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import thunk from 'redux-thunk';
+// import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore, combineReducers } from 'redux';
+// import { createStore, applyMiddleware, combineReducers } from 'redux';
+// import thunk from 'redux-thunk';
 
 import currentTodoReducer from '../features/currentTodo';
 import filterReducer from '../features/filter';
@@ -15,9 +16,9 @@ const rootReducer = combineReducers({
 // The `store` is passed to the Provider in `/src/index.tsx`
 export const store = createStore(
   rootReducer,
-  composeWithDevTools(
-    applyMiddleware(thunk),
-  ),
+  // composeWithDevTools(
+  //   applyMiddleware(thunk),
+  // ),
 );
 
 export type RootState = ReturnType<typeof store.getState>;
