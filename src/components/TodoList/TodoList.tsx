@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { actions } from '../../features/currentTodo';
@@ -8,32 +8,36 @@ import { Todo } from '../../types/Todo';
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const status = useAppSelector(state => state.filter.status);
-  const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
+  const query = useAppSelector(state => state.filter.query);
   const dispatch = useAppDispatch();
 
   const handleAddCurrent = (todo: Todo) => {
     dispatch(actions.setTodo(todo));
   };
 
-  useEffect(() => {
-    setVisibleTodos(todos);
-  }, [todos]);
+  const visibleTodos = useMemo(() => {
+    let filteredTodos = todos.filter(todo => {
+      switch (status) {
+        case 'active':
+          return !todo.completed;
 
-  useEffect(() => {
-    const filteredTodos = [...todos];
+        case 'completed':
+          return todo.completed;
 
-    switch (status) {
-      case 'active':
-        setVisibleTodos(filteredTodos.filter(todo => !todo.completed));
-        break;
-      case 'completed':
-        setVisibleTodos(filteredTodos.filter(todo => todo.completed));
-        break;
-      case 'all':
-      default:
-        setVisibleTodos(filteredTodos);
+        case 'all':
+        default:
+          return todo;
+      }
+    });
+
+    if (query) {
+      filteredTodos = filteredTodos.filter(todo => {
+        return todo.title.toLowerCase().includes(query.toLowerCase());
+      });
     }
-  }, [status]);
+
+    return filteredTodos;
+  }, [todos, status, query]);
 
   return (
     <>
@@ -63,7 +67,13 @@ export const TodoList: React.FC = () => {
               {visibleTodos.map(todo => (
                 <tr data-cy="todo">
                   <td className="is-vcentered">{todo.id}</td>
-                  <td className="is-vcentered"> </td>
+                  <td className="is-vcentered">
+                    {todo.completed && (
+                      <span className="icon" data-cy="iconCompleted">
+                        <i className="fas fa-check" />
+                      </span>
+                    )}
+                  </td>
 
                   <td className="is-vcentered is-expanded">
                     <p

@@ -4,9 +4,10 @@ import { actions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const status = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
   const dispatch = useAppDispatch();
 
-  const handleStatus = (value: string) => {
+  const handleChangeStatus = (value: string) => {
     switch (value) {
       case 'active':
         return dispatch(actions.setStatus('active'));
@@ -20,6 +21,10 @@ export const TodoFilter: React.FC = () => {
     }
   };
 
+  const handleChangeQuery = (value: string) => {
+    dispatch(actions.setQuery(value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -30,7 +35,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={status}
-            onChange={event => handleStatus(event.target.value)}
+            onChange={event => handleChangeStatus(event.target.value)}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -45,6 +50,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={event => handleChangeQuery(event.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
