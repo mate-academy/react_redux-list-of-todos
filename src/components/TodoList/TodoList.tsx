@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from '../../app/store';
-import { TodoItem } from './TodoItem';
+import TodoItem from './TodoItem';
 import { Status } from '../../types/Status';
 import { Todo } from '../../types/Todo';
 
@@ -32,7 +32,7 @@ const getFilteredTodos = (todos: Todo[], status: Status, query: string): Todo[] 
       return true;
     }
 
-    return todo.title.includes(query);
+    return todo.title.toLowerCase().includes(query.toLowerCase());
   });
 };
 
