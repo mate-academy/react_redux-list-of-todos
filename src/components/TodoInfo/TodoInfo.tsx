@@ -6,9 +6,17 @@ import { Todo } from '../../types/Todo';
 
 type Props = {
   todo: Todo,
+  id: number,
+  title: string,
+  completed: boolean,
 };
 
-export const TodoInfo: FC<Props> = ({ todo }) => {
+export const TodoInfo: FC<Props> = ({
+  todo,
+  id,
+  title,
+  completed,
+}) => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
@@ -19,11 +27,11 @@ export const TodoInfo: FC<Props> = ({ todo }) => {
   return (
     <>
       <td className="is-vcentered">
-        {todo.id}
+        {id}
       </td>
 
       <td className="is-vcentered">
-        {todo.completed && (
+        {completed && (
           <span className="icon" data-cy="iconCompleted">
             <i className="fas fa-check" />
           </span>
@@ -33,12 +41,12 @@ export const TodoInfo: FC<Props> = ({ todo }) => {
       <td className="is-vcentered is-expanded">
         <p className={classNames(
           {
-            'has-text-danger': !todo.completed,
-            'has-text-success': todo.completed,
+            'has-text-danger': !completed,
+            'has-text-success': completed,
           },
         )}
         >
-          {todo.title}
+          {title}
         </p>
       </td>
 
@@ -53,8 +61,8 @@ export const TodoInfo: FC<Props> = ({ todo }) => {
             <i className={classNames(
               'far',
               {
-                'fa-eye': currentTodo?.id !== todo.id,
-                'fa-eye-slash': currentTodo?.id === todo.id,
+                'fa-eye': currentTodo?.id !== id,
+                'fa-eye-slash': currentTodo?.id === id,
               },
             )}
             />

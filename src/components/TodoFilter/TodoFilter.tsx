@@ -5,7 +5,7 @@ import { actions as actionsFilter } from '../../features/filter';
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const filter = useAppSelector(state => state.filter);
-  const getQueryFilter = (query: string) => {
+  const updateQueryFilter = (query: string) => {
     dispatch(actionsFilter.filterQueryTodos(query));
   };
 
@@ -13,7 +13,7 @@ export const TodoFilter: React.FC = () => {
     dispatch(actionsFilter.filterQueryTodos(''));
   };
 
-  const getFilterParam = (status: string) => {
+  const updateFilterParam = (status: string) => {
     switch (status) {
       case 'active':
         dispatch(actionsFilter.filterActiveTodos(status));
@@ -24,7 +24,7 @@ export const TodoFilter: React.FC = () => {
         break;
 
       case 'all':
-        dispatch(actionsFilter.filterCompletedTodos(status));
+        dispatch(actionsFilter.filterAllTodos(status));
         break;
 
       default:
@@ -41,7 +41,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={(event) => getFilterParam(event.target.value)}
+            onChange={(event) => updateFilterParam(event.target.value)}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -57,7 +57,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={filter.query}
-          onChange={(event) => getQueryFilter(event.target.value)}
+          onChange={(event) => updateQueryFilter(event.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

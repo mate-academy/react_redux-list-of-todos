@@ -19,8 +19,8 @@ const filterQueryTodos = (query: string): QueryTodosAction => ({
   payload: { ...currentPayload, query },
 });
 
-const filterAllTodos = (status: string): ActiveTodosAction => ({
-  type: 'filterTodo/ACTIVE',
+const filterAllTodos = (status: string): AllTodosAction => ({
+  type: 'filterTodo/ALL',
   payload: { ...currentPayload, status },
 });
 
@@ -46,24 +46,27 @@ const filterReducer = (
 ) => {
   switch (action.type) {
     case 'filterTodo/ACTIVE':
-      currentPayload = { ...action.payload };
-
-      return action.payload;
-
     case 'filterTodo/COMPLETED':
-      currentPayload = { ...action.payload };
-
-      return action.payload;
-
     case 'filterTodo/ALL':
-      currentPayload = { ...action.payload };
-
-      return action.payload;
-
     case 'filterTodo/QUERY':
       currentPayload = { ...action.payload };
 
       return action.payload;
+
+      // case 'filterTodo/COMPLETED':
+      //   currentPayload = { ...action.payload };
+
+      //   return action.payload;
+
+      // case 'filterTodo/ALL':
+      //   currentPayload = { ...action.payload };
+
+      //   return action.payload;
+
+      // case 'filterTodo/QUERY':
+      //   currentPayload = { ...action.payload };
+
+      //   return action.payload;
 
     default:
       return state;

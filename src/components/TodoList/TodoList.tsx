@@ -11,7 +11,7 @@ export const TodoList: React.FC = () => {
   const filterParams = useAppSelector(state => state.filter);
   const [visibleTodos, setVisibleTodos] = useState(todos);
 
-  const getVisibleTodos = () => {
+  const updateVisibleTodos = () => {
     const filteringTodos = todos.filter(
       todo => isContains(todo.title, filterParams.query),
     );
@@ -40,18 +40,12 @@ export const TodoList: React.FC = () => {
   };
 
   useEffect(() => {
-    getVisibleTodos();
+    updateVisibleTodos();
   }, [filterParams]);
 
   return (
     <>
-      {!visibleTodos.length && (
-        <p className="notification is-warning">
-          There are no todos matching current filter criteria
-        </p>
-      )}
-
-      {visibleTodos.length !== 0 && (
+      {visibleTodos.length ? (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -71,11 +65,20 @@ export const TodoList: React.FC = () => {
           <tbody>
             {visibleTodos.map(todo => (
               <tr data-cy="todo" key={todo.id}>
-                <TodoInfo todo={todo} />
+                <TodoInfo
+                  todo={todo}
+                  id={todo.id}
+                  completed={todo.completed}
+                  title={todo.title}
+                />
               </tr>
             ))}
           </tbody>
         </table>
+      ) : (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
       )}
     </>
   );
