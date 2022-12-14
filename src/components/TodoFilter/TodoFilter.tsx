@@ -1,6 +1,14 @@
 import React from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const setQuery = (query: string) => dispatch(filterActions.setQuery(query));
+  const setStatus = (status: string) => dispatch(
+    filterActions.setStatus(status),
+  );
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +16,10 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            onChange={(event) => setStatus(event.target.value)}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +33,9 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={(event) => {
+            setQuery(event.target.value);
+          }}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
