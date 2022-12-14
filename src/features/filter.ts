@@ -53,21 +53,6 @@ const filterReducer = (
 
       return action.payload;
 
-      // case 'filterTodo/COMPLETED':
-      //   currentPayload = { ...action.payload };
-
-      //   return action.payload;
-
-      // case 'filterTodo/ALL':
-      //   currentPayload = { ...action.payload };
-
-      //   return action.payload;
-
-      // case 'filterTodo/QUERY':
-      //   currentPayload = { ...action.payload };
-
-      //   return action.payload;
-
     default:
       return state;
   }

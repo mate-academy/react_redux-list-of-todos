@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-// import { useDispatch } from 'react-redux';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
