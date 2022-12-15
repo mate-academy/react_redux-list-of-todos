@@ -6,7 +6,7 @@ import { TodoItem } from '../TodoItem';
 
 const filterTodos = (todos: Todo[], query: string, status: string) => {
   return todos
-    .filter(({ title }) => title.includes(query.toLowerCase()))
+    .filter(({ title }) => title.toLowerCase().includes(query.toLowerCase()))
     .filter(({ completed }) => {
       switch (status) {
         case 'active':
