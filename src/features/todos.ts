@@ -1,9 +1,15 @@
+import { createSlice } from '@reduxjs/toolkit/dist';
 import { Todo } from '../types/Todo';
 
-export const actions = {};
+const initialState: Todo[] = [];
 
-const todosReducer = (): Todo[] => {
-  return [];
-};
+const todosSlice = createSlice({
+  name: 'todos',
+  initialState,
+  reducers: {
+    setTodos: (...arg) => arg[1].payload,
+  },
+});
 
-export default todosReducer;
+export default todosSlice.reducer;
+export const { actions } = todosSlice;
