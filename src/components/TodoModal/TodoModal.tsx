@@ -35,8 +35,13 @@ const TodoModal: React.FC<Props> = ({
       return;
     }
 
-    getUser(todo?.userId)
-      .then(res => setUserDetails(res))
+    const fetchUser = async () => {
+      const userFromServer = await getUser(todo.userId);
+
+      setUserDetails(userFromServer);
+    };
+
+    fetchUser()
       .catch(() => setError('Something went wrong'));
   }, []);
 

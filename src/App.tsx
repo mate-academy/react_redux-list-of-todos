@@ -19,10 +19,13 @@ export const App: React.FC = () => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    getTodos()
-      .then(res => {
-        dispatch(todosActions.setTodos(res));
-      })
+    const fetchTodos = async () => {
+      const todosFromServer = await getTodos();
+
+      dispatch(todosActions.setTodos(todosFromServer));
+    };
+
+    fetchTodos()
       .catch(() => setFecthFailed(true));
   }, []);
 
