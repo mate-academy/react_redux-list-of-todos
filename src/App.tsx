@@ -13,7 +13,7 @@ import { useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
-  const [fetchFailed, setFecthFailed] = useState(false);
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
   const todos = useAppSelector(state => state.todos);
   const selectedTodo = useAppSelector(state => state.currentTodo);
@@ -25,8 +25,11 @@ export const App: React.FC = () => {
       dispatch(todosActions.setTodos(todosFromServer));
     };
 
-    fetchTodos()
-      .catch(() => setFecthFailed(true));
+    try {
+      fetchTodos();
+    } catch {
+      setError('Something went wrong');
+    }
   }, []);
 
   return (
@@ -42,7 +45,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               {todos.length === 0 ? (<Loader />) : (<TodoList />)}
-              {fetchFailed && 'Something went wrong'}
+              {error}
             </div>
           </div>
         </div>

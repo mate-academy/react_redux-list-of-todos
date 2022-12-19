@@ -4,19 +4,20 @@ import { useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
-const convertValueToStatus = (value: string): Status => {
-  switch (value) {
-    case 'completed':
-    case 'active':
-      return value;
-    default:
-      return 'all';
-  }
-};
-
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
   const { query, status } = useAppSelector(state => state.filter);
+
+  const setStatus = (newStatus: Status) => {
+    switch (newStatus) {
+      case Status.Active:
+      case Status.Completed:
+        dispatch(filterActions.setStatus(newStatus));
+        break;
+      default:
+        dispatch(filterActions.setStatus(Status.All));
+    }
+  };
 
   return (
     <form
@@ -29,14 +30,12 @@ export const TodoFilter: React.FC = () => {
             data-cy="statusSelect"
             value={status}
             onChange={(event) => {
-              const value = convertValueToStatus(event.target.value);
-
-              dispatch(filterActions.setStatus(value));
+              setStatus(event.target.value as Status);
             }}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Status.All}>All</option>
+            <option value={Status.Active}>Active</option>
+            <option value={Status.Completed}>Completed</option>
           </select>
         </span>
       </p>

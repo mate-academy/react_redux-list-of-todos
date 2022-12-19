@@ -20,9 +20,9 @@ type Props = ConnectedProps<typeof connector>;
 const getFilteredTodos = (todos: Todo[], status: Status, query: string): Todo[] => {
   return todos.filter((todo) => {
     switch (status) {
-      case 'active':
+      case Status.Active:
         return !todo.completed;
-      case 'completed':
+      case Status.Completed:
         return todo.completed;
       default:
         return true;
@@ -67,7 +67,7 @@ const TodoList: React.FC<Props> = ({ todos, filter }) => {
           {visibleTodos.map((todo) => (
             <TodoItem
               key={todo.id}
-              {...todo}
+              todo={todo}
             />
           ))}
         </tbody>

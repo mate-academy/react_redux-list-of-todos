@@ -18,20 +18,25 @@ const mapDispatch = {
 
 const connector = connect(mapState, mapDispatch);
 
-type Props = ConnectedProps<typeof connector> & Todo;
+type Props = ConnectedProps<typeof connector> & {
+  todo: Todo,
+};
 
 const TodoItem: React.FC<Props> = (props) => {
+  const {
+    todo,
+    currentTodo,
+    setTodo,
+  } = props;
   const {
     completed,
     title,
     id,
-    currentTodo,
-    setTodo,
-  } = props;
+  } = todo;
   const dispatch = useDispatch();
 
   const handleShowDetails = () => {
-    dispatch(setTodo({ ...props }));
+    dispatch(setTodo({ ...todo }));
   };
 
   return (

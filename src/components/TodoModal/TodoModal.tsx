@@ -41,8 +41,11 @@ const TodoModal: React.FC<Props> = ({
       setUserDetails(userFromServer);
     };
 
-    fetchUser()
-      .catch(() => setError('Something went wrong'));
+    try {
+      fetchUser();
+    } catch {
+      setError('Something went wrong');
+    }
   }, []);
 
   return (
