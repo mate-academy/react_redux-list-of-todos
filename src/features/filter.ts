@@ -7,7 +7,7 @@ type FilterState = {
 
 const initialState: FilterState = {
   query: '',
-  status: 'all',
+  status: Status.ALL,
 };
 
 type SetQueryAction = { type: 'filter/SET_QUERY', payload: string };

@@ -44,17 +44,19 @@ export const App: React.FC = () => {
           <div className="box">
             <h1 className="title">Todos:</h1>
 
-            {loading ? <Loader /> : (
-              <>
-                <div className="block">
-                  <TodoFilter />
-                </div>
+            {loading
+              ? <Loader />
+              : (
+                <>
+                  <div className="block">
+                    <TodoFilter />
+                  </div>
 
-                <div className="block">
-                  <TodoList />
-                </div>
-              </>
-            )}
+                  <div className="block">
+                    <TodoList />
+                  </div>
+                </>
+              )}
           </div>
         </div>
       </div>

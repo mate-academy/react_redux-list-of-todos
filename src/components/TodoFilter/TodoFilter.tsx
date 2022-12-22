@@ -15,9 +15,9 @@ export const TodoFilter: React.FC = () => {
     dispatch(filterActions.setQuery(event.target.value))
   );
 
-  const handleStatus = (event: ChangeEvent<HTMLSelectElement>) => (
-    dispatch(filterActions.setStatus(event.target.value as Status))
-  );
+  const handleStatus = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.setStatus(event.target.value as Status));
+  };
 
   const clearQuery = () => dispatch(filterActions.clearQuery());
 
