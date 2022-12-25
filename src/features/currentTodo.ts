@@ -1,38 +1,47 @@
+/* eslint-disable no-param-reassign */
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
+import { User } from '../types/User';
 
-// we use string literal as a type to avoid mistype in future
-type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
-
-// payload is a typical name for an action data
-type SetTodoAction = {
-  type: 'currentTodo/SET';
-  payload: Todo;
+type TodoState = {
+  currentTodo: Todo | null;
+  user: User | null,
+  loading: boolean;
+  error: string;
 };
 
-// Action creator return type protect us from a mistype
-const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
+const initialState: TodoState = {
+  currentTodo: null,
+  user: null,
+  loading: false,
+  error: '',
+};
 
-const setTodo = (todo: Todo): SetTodoAction => ({
-  type: 'currentTodo/SET',
-  payload: todo,
+const currentTodoSlice = createSlice({
+  name: 'currentTodo',
+  initialState,
+  reducers: {
+    addTodo: (state, action: PayloadAction<Todo>) => {
+      state.currentTodo = action.payload;
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string>) => {
+      state.error = action.payload;
+    },
+    removeTodo: (state) => {
+      state.currentTodo = null;
+      state.user = null;
+      state.error = '';
+    },
+    addUser: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+    },
+  },
 });
 
-// These actions will be used in the application
-export const actions = { setTodo, removeTodo };
-
-type State = Todo | null;
-type Action = SetTodoAction | RemoveTodoAction;
-
-const currentTodoReducer = (
-  state: State = null,
-  action: Action,
-): State => {
-  switch (action.type) {
-    // Implement all actions here
-
-    default:
-      return state;
-  }
-};
-
-export default currentTodoReducer;
+export default currentTodoSlice.reducer;
+export const {
+  addTodo, removeTodo, addUser, setLoading, setError,
+} = currentTodoSlice.actions;
