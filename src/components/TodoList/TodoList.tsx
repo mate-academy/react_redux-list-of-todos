@@ -9,7 +9,7 @@ import { TodoItem } from './TodoItem';
 export const TodoList: FC = () => {
   const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
   const { todos } = useAppSelector(state => state.todos);
-  const isEmpty = useMemo(() => todos.length === 0, [todos]);
+  const isEmpty = useMemo(() => visibleTodos.length === 0, [visibleTodos]);
   const { status, query } = useAppSelector(state => state.filter);
 
   useEffect(() => {
@@ -43,15 +43,17 @@ export const TodoList: FC = () => {
         </p>
       )}
 
-      <table className="table is-narrow is-fullwidth">
-        <Thead />
+      {!isEmpty && (
+        <table className="table is-narrow is-fullwidth">
+          <Thead />
 
-        <tbody>
-          {visibleTodos.map(todo => (
-            <TodoItem todo={todo} key={todo.id} />
-          ))}
-        </tbody>
-      </table>
+          <tbody>
+            {visibleTodos.map(todo => (
+              <TodoItem todo={todo} key={todo.id} />
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
