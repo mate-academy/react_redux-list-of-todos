@@ -24,14 +24,18 @@ type State = Todo | null;
 type Action = SetTodoAction | RemoveTodoAction;
 
 const currentTodoReducer = (
-  state: State = null,
+  todo: State = null,
   action: Action,
 ): State => {
   switch (action.type) {
-    // Implement all actions here
+    case 'currentTodo/REMOVE':
+      return null;
+
+    case 'currentTodo/SET':
+      return action.payload;
 
     default:
-      return state;
+      return todo;
   }
 };
 
