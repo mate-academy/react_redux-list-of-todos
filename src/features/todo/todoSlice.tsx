@@ -8,8 +8,7 @@ import {
 import axios from 'axios';
 import { Todo } from '../../types/Todo';
 import { BASE_URL } from '../../APIendpoint';
-// eslint-disable-next-line import/no-cycle
-import { RootState } from '../../app/store';
+import type { RootState } from '../../app/store';
 
 type InitialState = {
   loading: boolean;
