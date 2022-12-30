@@ -1,6 +1,29 @@
-import React from 'react';
+import React, { useCallback, memo } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { searchFilter, optionFilter } from '../../features/filter/filterSlice';
 
-export const TodoFilter: React.FC = () => {
+export const TodoFilter: React.FC = memo(() => {
+  const dispatch = useAppDispatch();
+  const filterState = useAppSelector(state => state.filter);
+
+  const handleFilterOption = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      dispatch(optionFilter(e.target.value));
+    },
+    [dispatch],
+  );
+
+  const handleSearchTerm = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(searchFilter(e.target.value));
+    },
+    [dispatch],
+  );
+
+  const handleClear = useCallback(() => {
+    dispatch(searchFilter(''));
+  }, [dispatch]);
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +31,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={filterState.optionValue}
+            onChange={handleFilterOption}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +49,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={filterState.searchValue}
+          onChange={handleSearchTerm}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -33,9 +62,10 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={handleClear}
           />
         </span>
       </p>
     </form>
   );
-};
+});
