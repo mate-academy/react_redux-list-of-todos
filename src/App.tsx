@@ -1,5 +1,4 @@
-/* eslint-disable max-len */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -8,17 +7,27 @@ import { TodoFilter } from './components/TodoFilter';
 // import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
-import { actions } from './features/todos';
-import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as todosActions } from './features/todos';
+import { useAppDispatch } from './app/hooks';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const loadTodos = async () => {
-    const todosFromServer = await getTodos();
+    setIsLoading(true);
 
-    dispatch(actions.loadTodos(todosFromServer));
+    try {
+      const todosFromServer = await getTodos();
+
+      dispatch(todosActions.loadTodos(todosFromServer));
+      setIsLoading(false);
+    } catch {
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -37,8 +46,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {isLoading ? <Loader /> : <TodoList />}
             </div>
           </div>
         </div>
