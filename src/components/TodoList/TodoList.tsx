@@ -1,14 +1,15 @@
 import React from 'react';
 import cn from 'classnames';
 
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const filter = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const handleSelectTodo = (todo: Todo) => {
     dispatch(currentTodoActions.setTodo(todo));
@@ -78,7 +79,12 @@ export const TodoList: React.FC = () => {
                     onClick={() => handleSelectTodo(todo)}
                   >
                     <span className="icon">
-                      <i className="far fa-eye" />
+                      <i className={cn('far',
+                        {
+                          'fa-eye': currentTodo !== todo,
+                          'fa-eye-slash': currentTodo === todo,
+                        })}
+                      />
                     </span>
                   </button>
                 </td>
