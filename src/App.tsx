@@ -4,14 +4,15 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-// import { TodoModal } from './components/TodoModal';
+import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { actions as todosActions } from './features/todos';
-import { useAppDispatch } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -52,7 +53,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {/* <TodoModal /> */}
+      {currentTodo && <TodoModal />}
     </>
   );
 };

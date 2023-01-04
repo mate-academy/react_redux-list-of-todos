@@ -1,11 +1,39 @@
-/* eslint-disable max-len */
 import React from 'react';
 import cn from 'classnames';
 
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Todo } from '../../types/Todo';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
+  const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
+  const filter = useAppSelector(state => state.filter);
+
+  const handleSelectTodo = (todo: Todo) => {
+    dispatch(currentTodoActions.setTodo(todo));
+  };
+
+  const visibleTodos: Todo[] = todos.filter(todo => {
+    switch (filter.status) {
+      case 'all':
+        return todo;
+
+      case 'active':
+        return !todo.completed;
+
+      case 'completed':
+        return todo.completed;
+
+      default:
+        return todo;
+    }
+  }).filter(todo => {
+    const titleToLower = todo.title.toLowerCase();
+    const queryToLower = filter.query.toLowerCase();
+
+    return titleToLower.includes(queryToLower);
+  });
 
   return (
     <>
@@ -27,8 +55,8 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {todos.map(todo => (
-              <tr data-cy="todo">
+            {visibleTodos.map(todo => (
+              <tr key={todo.id} data-cy="todo">
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered"> </td>
 
@@ -43,7 +71,12 @@ export const TodoList: React.FC = () => {
                 </td>
 
                 <td className="has-text-right is-vcentered">
-                  <button data-cy="selectButton" className="button" type="button">
+                  <button
+                    data-cy="selectButton"
+                    className="button"
+                    type="button"
+                    onClick={() => handleSelectTodo(todo)}
+                  >
                     <span className="icon">
                       <i className="far fa-eye" />
                     </span>
