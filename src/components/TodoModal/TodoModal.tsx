@@ -17,19 +17,13 @@ export const TodoModal: React.FC = () => {
   });
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(currentTodo);
-
     if (currentTodo?.id) {
-      // eslint-disable-next-line no-console
-      console.log(currentTodo.id);
-
       getUser(currentTodo.id).then((result: User) => setUser(result))
         .catch(() => setUser({
-          id: 15,
-          name: 'User wasn\'t found',
-          email: 'User wasn\'t found',
-          phone: 'User wasn\'t found',
+          id: currentTodo.userId,
+          name: '',
+          email: '',
+          phone: '',
         }));
     }
   }, [currentTodo]);
@@ -42,7 +36,7 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {user?.name
+      {user?.id
         ? (
           <div className="modal-card">
             <header className="modal-card-head">
@@ -58,7 +52,7 @@ export const TodoModal: React.FC = () => {
                 type="button"
                 className="delete"
                 data-cy="modal-close"
-                onClick={() => removeCurrentTodo()}
+                onClick={removeCurrentTodo}
               />
             </header>
 
@@ -67,18 +61,20 @@ export const TodoModal: React.FC = () => {
                 {currentTodo?.title}
               </p>
 
-              <p className="block" data-cy="modal-user">
-                {/* For not completed */}
-                {currentTodo?.completed
-                  ? <strong className="has-text-success">Done</strong>
-                  : <strong className="has-text-danger">Planned</strong>}
+              {user?.name
+                && (
+                  <p className="block" data-cy="modal-user">
+                    {currentTodo?.completed
+                      ? <strong className="has-text-success">Done</strong>
+                      : <strong className="has-text-danger">Planned</strong>}
 
-                {' by '}
+                    {' by '}
 
-                <a href={`mailto:${user.email}`}>
-                  {user?.name}
-                </a>
-              </p>
+                    <a href={`mailto:${user.email}`}>
+                      {user?.name}
+                    </a>
+                  </p>
+                )}
             </div>
           </div>
         )

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
+import { Statuses } from '../../features/filter';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -19,10 +20,10 @@ export const TodoList: React.FC = () => {
     let filteredTodos = [];
 
     switch (curStatus) {
-      case 'completed':
+      case Statuses.Completed:
         filteredTodos = todosFromDb.filter((todo: Todo) => todo.completed);
         break;
-      case 'active':
+      case Statuses.Active:
         filteredTodos = todosFromDb.filter((todo: Todo) => !todo.completed);
         break;
       default:
@@ -67,7 +68,10 @@ export const TodoList: React.FC = () => {
                     <td className="is-vcentered">
                       {todo.id}
                     </td>
-                    <td className="is-vcentered"> </td>
+                    <td className="is-vcentered">
+                      {todo.completed
+                        && <i className="fas fa-check" />}
+                    </td>
 
                     <td className="is-vcentered is-expanded">
                       <p className={todo.completed ? 'has-text-success' : 'has-text-danger'}>

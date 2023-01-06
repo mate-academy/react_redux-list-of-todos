@@ -26,8 +26,7 @@ export const App: React.FC = () => {
       setIsLoaded(true);
       setTodos(result);
     }).catch(error => {
-      // eslint-disable-next-line no-console
-      console.log(error);
+      throw error;
     });
   }, []);
 
@@ -44,23 +43,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               {isLoaded
-                ? (
-                  <>
-                    <TodoList />
-                    {/* eslint-disable-next-line react/button-has-type */}
-                    {/* <button */}
-                    {/*   onClick={() => { */}
-                    {/*     // eslint-disable-next-line no-console */}
-                    {/*     console.log('clicked'); */}
-
-                    {/*     // eslint-disable-next-line no-console */}
-                    {/*     console.log(currentTodo); */}
-                    {/*   }} */}
-                    {/* > */}
-                    {/*   Check current */}
-                    {/* </button> */}
-                  </>
-                )
+                ? <TodoList />
                 : <Loader />}
             </div>
           </div>
