@@ -61,20 +61,19 @@ export const TodoModal: React.FC = () => {
                 {currentTodo?.title}
               </p>
 
-              {user?.name
-                && (
-                  <p className="block" data-cy="modal-user">
-                    {currentTodo?.completed
-                      ? <strong className="has-text-success">Done</strong>
-                      : <strong className="has-text-danger">Planned</strong>}
+              {user?.name && (
+                <p className="block" data-cy="modal-user">
+                  {currentTodo?.completed
+                    ? <strong className="has-text-success">Done</strong>
+                    : <strong className="has-text-danger">Planned</strong>}
 
-                    {' by '}
+                  {' by '}
 
-                    <a href={`mailto:${user.email}`}>
-                      {user?.name}
-                    </a>
-                  </p>
-                )}
+                  <a href={`mailto:${user.email}`}>
+                    {user?.name}
+                  </a>
+                </p>
+              )}
             </div>
           </div>
         )

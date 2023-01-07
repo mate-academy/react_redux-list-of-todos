@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
@@ -16,7 +15,11 @@ export const TodoList: React.FC = () => {
 
   const setCurrentTodo = (todo: Todo) => dispatch(actions.setTodo(todo));
 
-  const getTodosToDisplay = (todosFromDb: Todo [], curQuery: string, curStatus: string) : Todo [] => {
+  const getTodosToDisplay = (
+    todosFromDb: Todo [],
+    curQuery: string,
+    curStatus: string,
+  ) : Todo [] => {
     let filteredTodos = [];
 
     switch (curStatus) {
@@ -33,7 +36,8 @@ export const TodoList: React.FC = () => {
     let searchTodos = [];
 
     if (query) {
-      searchTodos = filteredTodos.filter((todo: Todo) => todo.title.includes(curQuery));
+      searchTodos = filteredTodos
+        .filter((todo: Todo) => todo.title.includes(curQuery));
     } else {
       searchTodos = filteredTodos;
     }
@@ -41,9 +45,11 @@ export const TodoList: React.FC = () => {
     return searchTodos;
   };
 
+  const todosToDisplay = getTodosToDisplay(todos, query, status);
+
   return (
     <>
-      {getTodosToDisplay(todos, query, status).length > 0
+      {todosToDisplay.length > 0
         ? (
           <table className="table is-narrow is-fullwidth">
             <thead>
@@ -62,9 +68,13 @@ export const TodoList: React.FC = () => {
             </thead>
 
             <tbody>
-              {getTodosToDisplay(todos, query, status).map(todo => (
+              {todosToDisplay.map(todo => (
                 <React.Fragment key={todo.id}>
-                  <tr data-cy="todo" className={todo.id === currentTodo?.id ? 'has-background-info-light' : ''}>
+                  <tr
+                    data-cy="todo"
+                    className={todo.id === currentTodo?.id
+                      ? 'has-background-info-light' : ''}
+                  >
                     <td className="is-vcentered">
                       {todo.id}
                     </td>
@@ -74,7 +84,10 @@ export const TodoList: React.FC = () => {
                     </td>
 
                     <td className="is-vcentered is-expanded">
-                      <p className={todo.completed ? 'has-text-success' : 'has-text-danger'}>
+                      <p
+                        className={todo.completed ? 'has-text-success'
+                          : 'has-text-danger'}
+                      >
                         {todo.title}
                       </p>
                     </td>
@@ -87,7 +100,11 @@ export const TodoList: React.FC = () => {
                         onClick={() => setCurrentTodo(todo)}
                       >
                         <span className="icon">
-                          <i className={todo.id === currentTodo?.id ? 'far fa-eye-slash' : 'far fa-eye'} />
+                          <i
+                            className={todo.id === currentTodo?.id
+                              ? 'far fa-eye-slash'
+                              : 'far fa-eye'}
+                          />
                         </span>
                       </button>
                     </td>

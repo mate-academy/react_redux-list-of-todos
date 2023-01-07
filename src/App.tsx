@@ -50,8 +50,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {currentTodo?.title
-        && <TodoModal />}
+      {currentTodo?.title && <TodoModal />}
     </>
   );
 };

@@ -1,3 +1,6 @@
+// eslint-disable-next-line import/no-cycle
+import { FilterActions } from '../app/store';
+
 export enum Statuses {
   All = 'all',
   Completed = 'completed',
@@ -5,22 +8,22 @@ export enum Statuses {
 }
 
 type SetQueryAction = {
-  type: 'filter/SET_QUERY';
+  type: FilterActions.SetQuery;
   payload: string;
 };
 
 type SetStatusAction = {
-  type: 'filter/SET_STATUS';
+  type: FilterActions.SetStatus;
   payload: string;
 };
 
 const setQuery = (query: string): SetQueryAction => ({
-  type: 'filter/SET_QUERY',
+  type: FilterActions.SetQuery,
   payload: query,
 });
 
 const setStatus = (status: string): SetStatusAction => ({
-  type: 'filter/SET_STATUS',
+  type: FilterActions.SetStatus,
   payload: status,
 });
 
@@ -41,14 +44,14 @@ const filterReducer = (
   action: Action,
 ) : State => {
   switch ((action.type)) {
-    case 'filter/SET_QUERY': {
+    case FilterActions.SetQuery: {
       return {
         ...state,
         query: action.payload,
       };
     }
 
-    case 'filter/SET_STATUS': {
+    case FilterActions.SetStatus: {
       return <State>{
         ...state,
         status: action.payload,

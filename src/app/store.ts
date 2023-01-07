@@ -2,9 +2,26 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
+// eslint-disable-next-line import/no-cycle
 import currentTodoReducer from '../features/currentTodo';
+// eslint-disable-next-line import/no-cycle
 import filterReducer from '../features/filter';
+// eslint-disable-next-line import/no-cycle
 import todosReducer from '../features/todos';
+
+export enum TodosActions {
+  Set = 'todos/SET',
+}
+
+export enum FilterActions {
+  SetQuery = 'filter/SET_QUERY',
+  SetStatus = 'filter/SET_STATUS',
+}
+
+export enum TodoActions {
+  Remove = 'currentTodo/REMOVE',
+  Set = 'currentTodo/SET',
+}
 
 const rootReducer = combineReducers({
   currentTodo: currentTodoReducer,
@@ -12,7 +29,6 @@ const rootReducer = combineReducers({
   todos: todosReducer,
 });
 
-// The `store` is passed to the Provider in `/src/index.tsx`
 export const store = createStore(
   rootReducer,
   composeWithDevTools(

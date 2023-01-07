@@ -1,12 +1,14 @@
 import { Todo } from '../types/Todo';
+// eslint-disable-next-line import/no-cycle
+import { TodosActions } from '../app/store';
 
 type SetTodosAction = {
-  type: 'todos/SET';
+  type: TodosActions.Set;
   payload: Todo [];
 };
 
 const setTodos = (todos: Todo []): SetTodosAction => ({
-  type: 'todos/SET',
+  type: TodosActions.Set,
   payload: todos,
 });
 
@@ -20,7 +22,7 @@ const todosReducer = (
   action: Action,
 ): State => {
   switch ((action.type)) {
-    case 'todos/SET': {
+    case TodosActions.Set: {
       return action.payload;
     }
 
