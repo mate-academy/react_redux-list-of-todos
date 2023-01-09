@@ -1,10 +1,28 @@
-export const actions = { /* put action creators here */};
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Status } from '../types/Status';
 
-const filterReducer = () => {
-  return {
-    query: '',
-    status: 'all',
-  };
+type State = {
+  query: string;
+  status: Status;
 };
 
-export default filterReducer;
+const initialState: State = {
+  query: '',
+  status: Status.ALL,
+};
+
+const filterSlice = createSlice({
+  name: 'filter',
+  initialState,
+  reducers: {
+    status: (state, action: PayloadAction<Status>) => (
+      { ...state, status: action.payload }
+    ),
+    query: (state, action: PayloadAction<string>) => (
+      { ...state, query: action.payload }
+    ),
+  },
+});
+
+export default filterSlice.reducer;
+export const { actions } = filterSlice;
