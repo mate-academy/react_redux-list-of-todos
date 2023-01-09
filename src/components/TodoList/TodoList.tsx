@@ -37,7 +37,8 @@ export const TodoList: React.FC = () => {
 
     if (query) {
       searchTodos = filteredTodos
-        .filter((todo: Todo) => todo.title.includes(curQuery));
+        .filter((todo: Todo) => todo.title.toLowerCase()
+          .includes(curQuery?.toLowerCase()));
     } else {
       searchTodos = filteredTodos;
     }
