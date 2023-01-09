@@ -1,0 +1,11 @@
+.not-found-page {
+  &__image {
+    display: flex;
+    align-items: center;
+    height: 400px;
+
+    background-image: url(../../img/not_found.gif);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
