@@ -8,7 +8,7 @@ type State = {
 
 const initialState: State = {
   query: '',
-  status: 'all',
+  status: Status.ALL,
 };
 
 const filterSlice = createSlice({

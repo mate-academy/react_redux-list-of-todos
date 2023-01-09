@@ -1,32 +1,30 @@
 import { useEffect, useState } from 'react';
-import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { Loader } from '../Loader';
 
-type Props = {
-  todos: Todo[],
-  selectTodo: (todo: null) => void,
-  selectedTodoId: number,
-};
-
-export const TodoModal: React.FC<Props> = ({
-  todos,
-  selectTodo,
-  selectedTodoId,
-}) => {
+export const TodoModal: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
-  const selectedTodo = todos.find(todo => todo.id === selectedTodoId);
+
+  const fetchUser = async (id: number) => {
+    try {
+      setUser(await getUser(id));
+    } catch {
+      setUser(null);
+    }
+  };
 
   useEffect(() => {
-    if (selectedTodo) {
-      const fetchUser = async () => {
-        setUser(await getUser(selectedTodo.userId));
-      };
-
-      fetchUser();
+    if (!currentTodo) {
+      return;
     }
-  }, []);
+
+    fetchUser(currentTodo.userId);
+  }, [currentTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -41,7 +39,7 @@ export const TodoModal: React.FC<Props> = ({
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${selectedTodoId}`}
+              {`Todo #${currentTodo?.id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -49,17 +47,17 @@ export const TodoModal: React.FC<Props> = ({
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => selectTodo(null)}
+              onClick={() => dispatch(currentTodoActions.removeTodo())}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {selectedTodo?.title}
+              {currentTodo?.title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {selectedTodo?.completed
+              {currentTodo?.completed
                 ? <strong className="has-text-success">Done</strong>
                 : <strong className="has-text-danger">Planned</strong>}
 
