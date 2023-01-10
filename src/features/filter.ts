@@ -27,7 +27,7 @@ type Action = SetQueryAction | SetStatusAction;
 
 const initialState: State = {
   query: '',
-  status: 'all',
+  status: Status.ALL,
 };
 
 const filterReducer = (

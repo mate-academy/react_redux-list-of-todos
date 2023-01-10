@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -10,9 +9,11 @@ import { Loader } from './components/Loader';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { getTodos } from './api';
 import { actions as todosActions } from './features/todos';
+import { Status } from './types/Status';
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useAppDispatch();
   const query = useAppSelector(state => state.filter.query);
   const status = useAppSelector(state => state.filter.status);
@@ -21,39 +22,41 @@ export const App: React.FC = () => {
 
   const getTodosFromServer = async () => {
     setIsLoading(true);
-    let allTodos;
 
     try {
-      allTodos = await getTodos();
+      setErrorMessage('');
+      let allTodos = await getTodos();
+
+      switch (status) {
+        case Status.ALL:
+          break;
+
+        case Status.ACTIVE:
+          allTodos = allTodos.filter(todo => !todo.completed);
+          break;
+
+        case Status.COMPLETED:
+          allTodos = allTodos.filter(todo => todo.completed);
+          break;
+
+        default:
+          break;
+      }
+
+      const lowerQuery = query.toLowerCase();
+
+      allTodos = allTodos.filter(todo => {
+        const lowerTitle = todo.title.toLowerCase();
+
+        return lowerTitle.includes(lowerQuery);
+      });
+
+      dispatch(todosActions.setTodos(allTodos));
     } catch (error) {
+      setErrorMessage('Data loading error');
       throw new Error('Data loading error');
     }
 
-    switch (status) {
-      case 'all':
-        break;
-
-      case 'active':
-        allTodos = allTodos.filter(todo => !todo.completed);
-        break;
-
-      case 'completed':
-        allTodos = allTodos.filter(todo => todo.completed);
-        break;
-
-      default:
-        break;
-    }
-
-    const lowerQuery = query.toLowerCase();
-
-    allTodos = allTodos.filter(todo => {
-      const lowerTitle = todo.title.toLowerCase();
-
-      return lowerTitle.includes(lowerQuery);
-    });
-
-    dispatch(todosActions.setTodos(allTodos));
     setIsLoading(false);
   };
 
@@ -73,7 +76,13 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoading ? <Loader /> : <TodoList />}
+              {isLoading && <Loader />}
+              {!isLoading && !errorMessage && <TodoList />}
+              {!isLoading && errorMessage && (
+                <p className="notification is-warning">
+                  {errorMessage}
+                </p>
+              )}
             </div>
           </div>
         </div>

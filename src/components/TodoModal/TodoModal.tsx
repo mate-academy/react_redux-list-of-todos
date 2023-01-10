@@ -6,17 +6,22 @@ import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
+  const [errorMessage, setErrorMessage] = useState('');
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
   const getUserFromServer = async () => {
-    if (currentTodo?.userId === undefined) {
+    if (!currentTodo?.userId) {
       return;
     }
 
     try {
-      setUser(await getUser(currentTodo?.userId));
+      setErrorMessage('');
+      const currentUser = await getUser(currentTodo?.userId);
+
+      setUser(currentUser);
     } catch (error) {
+      setErrorMessage('User loading error');
       throw new Error('User loading error');
     }
   };
@@ -29,9 +34,8 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {!user ? (
-        <Loader />
-      ) : (
+      {!user && !errorMessage && <Loader />}
+      {user && !errorMessage && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
@@ -41,8 +45,8 @@ export const TodoModal: React.FC = () => {
               {`Todo #${currentTodo?.id}`}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
+              aria-label="Close"
               type="button"
               className="delete"
               data-cy="modal-close"
@@ -63,6 +67,32 @@ export const TodoModal: React.FC = () => {
               <a href={`mailto:${user?.email}`}>
                 {user?.name}
               </a>
+            </p>
+          </div>
+        </div>
+      )}
+      {errorMessage && (
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <div
+              className="modal-card-title has-text-weight-medium"
+              data-cy="modal-header"
+            >
+              Error
+            </div>
+
+            <button
+              aria-label="Close"
+              type="button"
+              className="delete"
+              data-cy="modal-close"
+              onClick={() => dispatch(currentTodoActions.removeTodo())}
+            />
+          </header>
+
+          <div className="modal-card-body">
+            <p className="block" data-cy="modal-user">
+              {errorMessage}
             </p>
           </div>
         </div>
