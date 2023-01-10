@@ -69,21 +69,20 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {query.length > 0
-          && (
-            <span
-              className="icon is-right"
-              style={{ pointerEvents: 'all' }}
-            >
-              <button
-                data-cy="clearSearchButton"
-                type="button"
-                className="delete"
-                aria-label="delete"
-                onClick={() => handleQueryChange()}
-              />
-            </span>
-          )}
+        {query.length > 0 && (
+          <span
+            className="icon is-right"
+            style={{ pointerEvents: 'all' }}
+          >
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              aria-label="delete"
+              onClick={() => handleQueryChange()}
+            />
+          </span>
+        )}
       </p>
     </form>
   );

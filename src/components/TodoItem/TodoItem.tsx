@@ -11,8 +11,13 @@ type Props = {
 };
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
-  const dispatch = useAppDispatch();
+  const {
+    id,
+    completed,
+    title,
+  } = todo;
 
+  const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const handleSelectTodo = (item: Todo) => {
@@ -22,18 +27,16 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   return (
     <tr
       className={classNames(
-        currentTodo?.id === todo.id
-          ? 'has-background-info-light'
-          : '',
+        { 'has-background-info-light': currentTodo?.id === id },
       )}
       data-cy="todo"
     >
       <td className="is-vcentered">
-        {todo.id}
+        {id}
       </td>
 
       <td className="is-vcentered">
-        {todo.completed && (
+        {completed && (
           <span className="icon" data-cy="iconCompleted">
             <i className="fas fa-check" />
           </span>
@@ -43,12 +46,12 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
       <td className="is-vcentered is-expanded">
         <p
           className={classNames(
-            !todo.completed
+            !completed
               ? 'has-text-danger'
               : 'has-text-success',
           )}
         >
-          {todo.title}
+          {title}
         </p>
       </td>
 
@@ -60,7 +63,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           onClick={() => handleSelectTodo(todo)}
         >
           <span className="icon">
-            {currentTodo?.id === todo.id
+            {currentTodo?.id === id
               ? <i className="far fa-eye-slash" />
               : <i className="far fa-eye" />}
           </span>
