@@ -5,7 +5,7 @@ import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const matchStatus = (value: string) => {
+  const setStatus = (value: string) => {
     switch (true) {
       case value === 'all':
         return Status.ALL;
@@ -22,7 +22,7 @@ export const TodoFilter: React.FC = () => {
   };
 
   const onChangeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(filterActions.setStatus(matchStatus(event.target.value)));
+    dispatch(filterActions.setStatus(setStatus(event.target.value)));
   };
 
   const onInputQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
