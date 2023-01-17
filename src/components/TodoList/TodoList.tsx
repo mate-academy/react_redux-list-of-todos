@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { TodoInfo } from '../TodoInfo/TodoInfo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(store => store.todos);
@@ -8,27 +9,33 @@ export const TodoList: React.FC = () => {
   const [filteredTodos, setFilteredTodos] = useState(todos);
   const [downloadingTodos, setDownloadingTodos] = useState(false);
 
-  const filtrationHandler = () => {
+  const filtrationHandler = useCallback(() => {
     switch (filteration.status) {
-      case 'completed':
+      case Status.completed:
         return todos.filter(todo => todo.completed)
           .filter(todo => todo.title.includes(filteration.query));
-      case 'active':
+      case Status.active:
         return todos.filter(todo => !todo.completed)
           .filter(todo => todo.title.includes(filteration.query));
       default:
         return todos.filter(todo => todo.title.includes(filteration.query));
     }
-  };
+  }, [[], filteration]);
 
   useEffect(() => {
-    setFilteredTodos(filtrationHandler());
-  }, [filteration, todos]);
+    const filtrationResult = filtrationHandler();
+
+    setFilteredTodos(filtrationResult);
+  }, [filtrationHandler]);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeoutID = setTimeout(() => {
       setDownloadingTodos(true);
     }, 500);
+
+    return () => {
+      clearTimeout(timeoutID);
+    };
   }, []);
 
   return (

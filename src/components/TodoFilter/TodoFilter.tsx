@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { actions as filtrationAction } from '../../features/filter';
 
@@ -7,9 +7,9 @@ export const TodoFilter: React.FC = () => {
   const [input, setInput] = useState('');
   const dispatch = useAppDispatch();
 
-  const queryHandler = () => {
+  const queryHandler = useCallback(() => {
     dispatch(filtrationAction.setQuery(input, selectedOption));
-  };
+  }, [input, selectedOption]);
 
   const selectHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
@@ -25,7 +25,7 @@ export const TodoFilter: React.FC = () => {
 
   useEffect(() => {
     queryHandler();
-  }, [input, selectHandler]);
+  }, [queryHandler]);
 
   return (
     <form
@@ -57,13 +57,14 @@ export const TodoFilter: React.FC = () => {
 
         {input && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
               onClick={clearInputButton}
-            />
+            >
+              <span />
+            </button>
           </span>
         )}
       </p>
