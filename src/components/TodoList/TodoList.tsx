@@ -7,9 +7,10 @@ import { Loader } from '../Loader';
 
 type Props = {
   openModal: () => void;
+  isOpen: boolean;
 };
 
-export const TodoList: React.FC<Props> = ({ openModal }) => {
+export const TodoList: React.FC<Props> = ({ openModal, isOpen }) => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const status = useAppSelector(state => state.filter.status);
@@ -74,7 +75,13 @@ export const TodoList: React.FC<Props> = ({ openModal }) => {
             {filteredTodos.map(todo => (
               <tr key={todo.id} data-cy="todo">
                 <td className="is-vcentered">{todo.id}</td>
-                <td className="is-vcentered"> </td>
+                <td className="is-vcentered">
+                  {todo.completed && (
+                    <span className="icon" data-cy="iconCompleted">
+                      <i className="fas fa-check" />
+                    </span>
+                  )}
+                </td>
 
                 <td className="is-vcentered is-expanded">
                   <p
@@ -101,7 +108,12 @@ export const TodoList: React.FC<Props> = ({ openModal }) => {
                     }}
                   >
                     <span className="icon">
-                      <i className="far fa-eye" />
+                      <i
+                        className={cn('far', {
+                          'fa-eye': !isOpen,
+                          'fa-eye-slash': isOpen,
+                        })}
+                      />
                     </span>
                   </button>
                 </td>

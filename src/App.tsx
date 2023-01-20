@@ -30,13 +30,13 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <TodoList openModal={openModal} />
+              <TodoList openModal={openModal} isOpen={isOpen} />
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal close={closeModal} isOpen={isOpen} />
+      {isOpen && <TodoModal close={closeModal} isOpen={isOpen} />}
     </>
   );
 };
