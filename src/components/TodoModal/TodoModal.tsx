@@ -22,7 +22,6 @@ export const TodoModal: React.FC = () => {
       setUser(currentUser);
     } catch (error) {
       setErrorMessage('User loading error');
-      throw new Error('User loading error');
     }
   };
 

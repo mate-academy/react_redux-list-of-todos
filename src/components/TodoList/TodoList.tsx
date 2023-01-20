@@ -76,8 +76,8 @@ export const TodoList: React.FC = () => {
                     >
                       <span className="icon">
                         <i className={classNames({
-                          'far fa-eye-slash': currentTodo,
-                          'far fa-eye': !currentTodo,
+                          'far fa-eye-slash': isCurrentTodo,
+                          'far fa-eye': !isCurrentTodo,
                         })}
                         />
                       </span>

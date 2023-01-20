@@ -54,7 +54,6 @@ export const App: React.FC = () => {
       dispatch(todosActions.setTodos(allTodos));
     } catch (error) {
       setErrorMessage('Data loading error');
-      throw new Error('Data loading error');
     }
 
     setIsLoading(false);

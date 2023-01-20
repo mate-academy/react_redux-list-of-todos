@@ -5,24 +5,12 @@ import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const setStatus = (value: string) => {
-    switch (true) {
-      case value === 'all':
-        return Status.ALL;
-
-      case value === 'active':
-        return Status.ACTIVE;
-
-      case value === 'completed':
-        return Status.COMPLETED;
-
-      default:
-        return Status.ALL;
-    }
-  };
 
   const onChangeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(filterActions.setStatus(setStatus(event.target.value)));
+    const currentStatus: Status = Object.values(Status)
+      .find(status => status === event.target.value) || Status.ALL;
+
+    dispatch(filterActions.setStatus(currentStatus));
   };
 
   const onInputQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,9 +30,9 @@ export const TodoFilter: React.FC = () => {
             data-cy="statusSelect"
             onChange={onChangeStatus}
           >
-            <option value={Status.ALL}>All</option>
-            <option value={Status.ACTIVE}>Active</option>
-            <option value={Status.COMPLETED}>Completed</option>
+            {Object.values(Status).map(status => (
+              <option value={status}>{status}</option>
+            ))}
           </select>
         </span>
       </p>
