@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -7,8 +7,17 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 
-
 export const App: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
   return (
     <>
       <div className="section">
@@ -21,13 +30,13 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <TodoList />
+              <TodoList openModal={openModal} />
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      <TodoModal close={closeModal} isOpen={isOpen} />
     </>
   );
 };
