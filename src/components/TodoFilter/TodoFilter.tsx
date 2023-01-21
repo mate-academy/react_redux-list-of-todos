@@ -1,17 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setFilterTypeAction, setQueryAction } from '../../features/filter';
+import { FilterStatus } from '../../types/Filter';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const [query, setQuery] = useState('');
+
+  const handleFilterStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedFilterStatus = event.currentTarget.value;
+
+    dispatch(setFilterTypeAction(selectedFilterStatus));
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  useEffect(() => {
+    dispatch(setQueryAction(query));
+  }, [query]);
+
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
   return (
     <form
       className="field has-addons"
-      onSubmit={event => event.preventDefault()}
+      onSubmit={e => handleFormSubmit(e)}
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            onChange={(event) => handleFilterStatus(event)}
+          >
+            <option value={FilterStatus.All}>All</option>
+            <option value={FilterStatus.Active}>Active</option>
+            <option value={FilterStatus.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +49,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={(event) => handleOnChange(event)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
