@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
 import { setFilterTypeAction, setQueryAction } from '../../features/filter';
 import { FilterStatus } from '../../types/Filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const [query, setQuery] = useState('');
+  const query = useAppSelector(state => state.filter.query);
 
   const handleFilterStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedFilterStatus = event.currentTarget.value;
@@ -17,12 +18,12 @@ export const TodoFilter: React.FC = () => {
     e.preventDefault();
   };
 
-  useEffect(() => {
-    dispatch(setQueryAction(query));
-  }, [query]);
-
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
+    dispatch(setQueryAction(event.target.value));
+  };
+
+  const handleOnDelete = () => {
+    dispatch(setQueryAction(''));
   };
 
   return (
@@ -50,18 +51,22 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           onChange={(event) => handleOnChange(event)}
+          value={query}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {query.length > 0 && (
+            // eslint-disable-next-line jsx-a11y/control-has-associated-label
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleOnDelete}
+            />
+          )}
         </span>
       </p>
     </form>
