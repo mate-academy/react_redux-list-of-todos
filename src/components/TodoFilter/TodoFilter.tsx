@@ -6,6 +6,7 @@ import { TodoStatus } from '../../types/Status';
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const filter = useAppSelector(state => state.filter);
+  const { query } = filter;
 
   const handlStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
@@ -41,7 +42,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={filter.query}
+          value={query}
           onChange={(event) => dispatch(
             filterActions.setQuery(event.target.value),
           )}
@@ -50,7 +51,7 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {filter.query && (
+        {query && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             <button
               data-cy="clearSearchButton"
