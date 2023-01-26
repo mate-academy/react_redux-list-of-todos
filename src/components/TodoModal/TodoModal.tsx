@@ -47,8 +47,8 @@ export const TodoModal = () => {
                   {`Todo #${selectedTodo?.id}`}
                 </div>
 
-                {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <button
+                  aria-label="delete"
                   type="button"
                   className="delete"
                   data-cy="modal-close"
