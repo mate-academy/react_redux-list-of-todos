@@ -57,15 +57,17 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          <button
-            aria-label="clear"
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={handleOnClear}
-          />
-        </span>
+        {!!query.length && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              aria-label="clear"
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleOnClear}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
