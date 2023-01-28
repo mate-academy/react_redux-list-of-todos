@@ -19,52 +19,52 @@ export const TableList: FC<Props> = ({ renderedTodos }) => {
 
   return (
     <>
-      {!!renderedTodos.length
-        && renderedTodos.map((todo) => {
-          const { title, completed, id } = todo;
+      {!!renderedTodos.length && renderedTodos.map((todo) => {
+        const { title, completed, id } = todo;
 
-          return (
-            <tr data-cy="todo" key={id}>
-              <td className="is-vcentered">{id}</td>
-              <td className="is-vcentered">
-                {completed && (
-                  <span className="icon" data-cy="iconCompleted">
-                    <i className="fas fa-check" />
-                  </span>
+        return (
+          <tr data-cy="todo" key={id}>
+            <td className="is-vcentered">{id}</td>
+            <td className="is-vcentered">
+              {completed && (
+                <span className="icon" data-cy="iconCompleted">
+                  <i className="fas fa-check" />
+                </span>
+              )}
+            </td>
+
+            <td className="is-vcentered is-expanded">
+              <p
+                className={classNames(
+                  { 'has-text-success': completed },
+                  { 'has-text-danger': !completed },
                 )}
-              </td>
+              >
+                {title}
+              </p>
+            </td>
 
-              <td className="is-vcentered is-expanded">
-                <p
-                  className={classNames(
-                    { 'has-text-success': completed },
-                    { 'has-text-danger': !completed },
-                  )}
-                >
-                  {title}
-                </p>
-              </td>
-
-              <td className="has-text-right is-vcentered">
-                <button
-                  data-cy="selectButton"
-                  className="button"
-                  type="button"
-                  onClick={() => handleOnClick(todo)}
-                >
-                  <span className="icon">
-                    <i className={classNames(
+            <td className="has-text-right is-vcentered">
+              <button
+                data-cy="selectButton"
+                className="button"
+                type="button"
+                onClick={() => handleOnClick(todo)}
+              >
+                <span className="icon">
+                  <i
+                    className={classNames(
                       'far',
                       { 'fa-eye': id !== selectedTodo?.id || !selectedTodo },
                       { 'fa-eye-slash': id === selectedTodo?.id },
                     )}
-                    />
-                  </span>
-                </button>
-              </td>
-            </tr>
-          );
-        })}
+                  />
+                </span>
+              </button>
+            </td>
+          </tr>
+        );
+      })}
     </>
   );
 };

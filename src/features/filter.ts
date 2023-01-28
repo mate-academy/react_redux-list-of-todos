@@ -1,3 +1,5 @@
+import { FilterStatus } from '../types/Filter';
+
 type SetQueryAction = {
   type: 'filter/QUERY',
   payload: string,
@@ -22,9 +24,11 @@ export const setFilterTypeAction = ((type: string): SetFilterAction => ({
 
 export const actions = { setQueryAction, setFilterTypeAction };
 
+const startTodoFilterStatus: string = FilterStatus.All;
+
 const startTodoFilters = {
   query: '',
-  status: 'all',
+  status: startTodoFilterStatus,
 };
 
 const filterReducer = (todoFilters = startTodoFilters, action: Action) => {
