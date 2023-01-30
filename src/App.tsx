@@ -50,7 +50,6 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     getTodos()
-      // .then(todosAPI => setTodosFromAPI(todosAPI))
       .then((todosFromAPI) => setTodos(todosFromAPI))
       .finally(() => setIsLoading(false));
   }, []);
@@ -66,9 +65,9 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
+            {isLoading && <Loader />}
             <div className="block">
-              {isLoading && <Loader />}
-              {(!isLoading && todos.length) > 0 && (
+              {(!isLoading && visibleTodos.length) > 0 && (
                 <TodoList
                   todos={visibleTodos}
                   selectTodo={selectTodo}
@@ -76,6 +75,11 @@ export const App: React.FC = () => {
                 />
               )}
             </div>
+            {(visibleTodos.length === 0 && todos.length > 0) && (
+              <p className="notification is-warning">
+                There are no todos matching current filter criteria
+              </p>
+            )}
           </div>
         </div>
       </div>

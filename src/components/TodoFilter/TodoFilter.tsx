@@ -12,6 +12,8 @@ export const TodoFilter: React.FC = () => {
     dispatch(actions.setQuery(event.target.value));
   };
 
+  const clearQuery = () => dispatch(actions.setQuery(''));
+
   const setFilter = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(actions.setStatus(event.target.value as Status));
   };
@@ -47,14 +49,17 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        { query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={clearQuery}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
