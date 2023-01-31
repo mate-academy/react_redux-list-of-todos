@@ -1,6 +1,22 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
+import { Status, Statuses } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { status, query } = useAppSelector(state => state.filter);
+
+  const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => (
+    dispatch(filterActions.setStatusAction(e.target.value as Status))
+  );
+
+  const handleChangeQuery = (e: React.ChangeEvent<HTMLInputElement>) => (
+    dispatch(filterActions.setQueryAction(e.target.value.trimStart()))
+  );
+
+  const handleClearQuery = () => dispatch(filterActions.setQueryAction(''));
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +24,16 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleChangeStatus}
+          >
+            {Statuses.map(currStatus => (
+              <option key={currStatus} value={currStatus}>
+                {currStatus}
+              </option>
+            ))}
           </select>
         </span>
       </p>
@@ -21,7 +43,9 @@ export const TodoFilter: React.FC = () => {
           data-cy="searchInput"
           type="text"
           className="input"
+          value={query}
           placeholder="Search..."
+          onChange={handleChangeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -33,6 +57,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={handleClearQuery}
           />
         </span>
       </p>
