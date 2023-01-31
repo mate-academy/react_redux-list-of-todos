@@ -3,3 +3,5 @@ export enum Status {
   ACTIVE = 'Active',
   COMPLETED = 'Completed',
 }
+
+export const Statuses = [Status.ALL, Status.ACTIVE, Status.COMPLETED];

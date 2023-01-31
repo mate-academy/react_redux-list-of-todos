@@ -58,7 +58,8 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${id}`}
+              Todo #
+              {id}
             </div>
 
             <ButtonModal />

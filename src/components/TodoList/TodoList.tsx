@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currTodoActions } from '../../features/currentTodo';
 
@@ -9,8 +9,9 @@ import { Error } from '../Error';
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
+  const { filter, todos } = useAppSelector(state => state);
 
-  const sortedTodos = useAppSelector(({ filter, todos }) => {
+  const getSortedTodos = () => {
     const filteredByQuery = todos.filter(({ title }) => (
       title.toLowerCase().includes(filter.query.toLowerCase())
     ));
@@ -27,11 +28,15 @@ export const TodoList: React.FC = () => {
           return true;
       }
     });
-  });
+  };
+
+  const sortedTodos = useMemo(
+    getSortedTodos, [filter, todos],
+  );
 
   return (
     <>
-      {sortedTodos.length === 0
+      {!sortedTodos.length
         ? (
           <Error>
             There are no todos matching current filter criteria
@@ -52,52 +57,56 @@ export const TodoList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {sortedTodos.map((todo) => (
-                <tr
-                  data-cy="todo"
-                  className=""
-                  key={todo.id}
-                >
-                  <td className="is-vcentered">{todo.id}</td>
-                  <td className="is-vcentered">
-                    {todo.completed && (
-                      <span className="icon" data-cy="iconCompleted">
-                        <i className="fas fa-check" />
-                      </span>
-                    )}
-                  </td>
-                  <td className="is-vcentered is-expanded">
-                    <p className={classNames({
-                      'has-text-danger': !todo.completed,
-                      'has-text-success': todo.completed,
-                    })}
-                    >
-                      {todo.title}
-                    </p>
-                  </td>
-                  <td className="has-text-right is-vcentered">
-                    <button
-                      data-cy="selectButton"
-                      className="button"
-                      type="button"
-                      onClick={() => (
-                        dispatch(currTodoActions.setTodo(todo))
+              {sortedTodos.map((todo) => {
+                const isCurrentTodo = selectedTodo?.id === todo.id;
+
+                return (
+                  <tr
+                    data-cy="todo"
+                    className=""
+                    key={todo.id}
+                  >
+                    <td className="is-vcentered">{todo.id}</td>
+                    <td className="is-vcentered">
+                      {todo.completed && (
+                        <span className="icon" data-cy="iconCompleted">
+                          <i className="fas fa-check" />
+                        </span>
                       )}
-                    >
-                      <span className="icon">
-                        <i className={classNames(
-                          'far',
-                          {
-                            'fa-eye': selectedTodo?.id !== todo.id,
-                            'fa-eye-slash': selectedTodo?.id === todo.id,
-                          },
+                    </td>
+                    <td className="is-vcentered is-expanded">
+                      <p className={classNames({
+                        'has-text-danger': !todo.completed,
+                        'has-text-success': todo.completed,
+                      })}
+                      >
+                        {todo.title}
+                      </p>
+                    </td>
+                    <td className="has-text-right is-vcentered">
+                      <button
+                        data-cy="selectButton"
+                        className="button"
+                        type="button"
+                        onClick={() => (
+                          dispatch(currTodoActions.setTodo(todo))
                         )}
-                        />
-                      </span>
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                      >
+                        <span className="icon">
+                          <i className={classNames(
+                            'far',
+                            {
+                              'fa-eye': !isCurrentTodo,
+                              'fa-eye-slash': isCurrentTodo,
+                            },
+                          )}
+                          />
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}

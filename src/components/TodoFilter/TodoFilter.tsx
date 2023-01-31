@@ -1,9 +1,7 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
-import { Status } from '../../types/Status';
-
-const statuses = [Status.ALL, Status.ACTIVE, Status.COMPLETED];
+import { Status, Statuses } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +29,7 @@ export const TodoFilter: React.FC = () => {
             value={status}
             onChange={handleChangeStatus}
           >
-            {statuses.map(currStatus => (
+            {Statuses.map(currStatus => (
               <option key={currStatus} value={currStatus}>
                 {currStatus}
               </option>
