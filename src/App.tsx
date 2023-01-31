@@ -7,11 +7,15 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+
 import { getTodos } from './api';
 import { actions as todosActions } from './reducers/todosReducer';
+import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
+  const todo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     getTodos()
@@ -30,14 +34,15 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {/* <Loader /> */}
               <TodoList />
             </div>
           </div>
         </div>
       </div>
 
-      {/* <TodoModal /> */}
+      {todo && (
+        <TodoModal />
+      )}
     </>
   );
 };
