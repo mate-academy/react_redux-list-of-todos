@@ -3,13 +3,18 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../reducers/filterReducer';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const query = useAppSelector(state => state.filter);
+  const query = useAppSelector(state => state.filter.query);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(filterActions.filter(event.target.value));
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterActions.filterByQuery(event.target.value));
+  };
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.filterByStatus(event.target.value as Status));
   };
 
   return (
@@ -19,10 +24,13 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            onChange={(e) => handleStatusChange(e)}
+          >
+            <option value={Status.All}>All</option>
+            <option value={Status.Active}>Active</option>
+            <option value={Status.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -34,7 +42,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleQueryChange(e)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -47,7 +55,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(filterActions.filter(''))}
+              onClick={() => dispatch(filterActions.filterByQuery(''))}
             />
           )}
         </span>

@@ -1,24 +1,18 @@
 /* eslint-disable max-len */
-import React from 'react';
+import cn from 'classnames';
+import React, { useMemo } from 'react';
 import { useAppSelector } from '../../app/hooks';
-import { Todo } from '../../types/Todo';
+import { filterTodos } from '../../utils/filterTodos';
 import { Loader } from '../Loader';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
-  const query = useAppSelector(state => state.filter);
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
 
-  const filteredTodos = (initialTodos: Todo[], initialQuery: string) => {
-    if (!query) {
-      return initialTodos;
-    }
-
-    return initialTodos.filter(
-      todo => todo.title.toLowerCase().includes(initialQuery.toLowerCase().trim()),
-    );
-  };
-
-  const visibleTodos = filteredTodos(todos, query);
+  const visibleTodos = useMemo(() => {
+    return filterTodos(todos, query, status);
+  }, [todos, query, status]);
 
   return (
     <>
@@ -59,7 +53,14 @@ export const TodoList: React.FC = () => {
                 <td className="is-vcentered"> </td>
 
                 <td className="is-vcentered is-expanded">
-                  <p className="has-text-danger">{todo.title}</p>
+                  <p
+                    className={cn({
+                      'has-text-success': todo.completed,
+                      'has-text-danger': !todo.completed,
+                    })}
+                  >
+                    {todo.title}
+                  </p>
                 </td>
 
                 <td className="has-text-right is-vcentered">
