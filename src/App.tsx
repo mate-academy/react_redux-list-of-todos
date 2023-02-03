@@ -45,18 +45,14 @@ export const App: FC = () => {
               <TodoFilter />
             </div>
             <div className="block">
-              {
-                isLoading && <Loader />
-              }
+              { isLoading && <Loader /> }
 
-              {
-                !hasErrorHappened && !isLoading && <TodoList />
-              }
+              { !hasErrorHappened && !isLoading && <TodoList /> }
 
               {
                 hasErrorHappened && !isLoading && (
                   <p className="notification is-danger">
-                    There are no todos matching current filter criteria
+                    Unable to load todos
                   </p>
                 )
               }
@@ -65,9 +61,7 @@ export const App: FC = () => {
         </div>
       </div>
 
-      {
-        !!selectedTodo && <TodoModal />
-      }
+      { !!selectedTodo && <TodoModal /> }
     </>
   );
 };

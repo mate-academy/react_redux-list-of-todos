@@ -27,7 +27,7 @@ export const TodoList: FC = () => {
   return (
     <>
       {
-        todos.length === 0 && (
+        visibleTodos.length === 0 && (
           <p className="notification is-warning">
             There are no todos matching current filter criteria
           </p>
@@ -35,7 +35,7 @@ export const TodoList: FC = () => {
       }
 
       {
-        todos.length !== 0 && (
+        visibleTodos.length !== 0 && (
           <table className="table is-narrow is-fullwidth">
             <thead>
               <tr>
