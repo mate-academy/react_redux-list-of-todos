@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
-import { Status } from '../../types/Status';
+
+enum Option {
+  ALL = 'all',
+  ACTIVE = 'active',
+  COMPLETED = 'completed',
+}
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query } = useAppSelector(state => state.filter);
+
+  const changeSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    if (event.target.value === Option.ALL
+        || event.target.value === Option.ACTIVE
+        || event.target.value === Option.COMPLETED
+    ) {
+      dispatch(actions.setStatus(event.target.value));
+    }
+  };
+
+  const changeQuery = (event: ChangeEvent<HTMLInputElement>) => (
+    dispatch(actions.setQuery(event.target.value)));
 
   return (
     <form
@@ -16,15 +33,11 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={
-              (event) => dispatch(
-                actions.setStatus(event.target.value as Status),
-              )
-            }
+            onChange={(event) => changeSelect(event)}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Option.ALL}>All</option>
+            <option value={Option.ACTIVE}>Active</option>
+            <option value={Option.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>
@@ -36,7 +49,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={(event) => dispatch(actions.setQuery(event.target.value))}
+          onChange={(event) => changeQuery(event)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
