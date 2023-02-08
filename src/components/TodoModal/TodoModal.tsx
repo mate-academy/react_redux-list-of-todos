@@ -16,8 +16,9 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    getUser(todo.userId)
-      .then(setUser);
+    if (todo.userId) {
+      getUser(todo.userId).then(setUser);
+    }
   }, []);
 
   return (
@@ -60,7 +61,9 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               </strong>
 
               {' by '}
-              <a href="mailto:Sincere@april.biz">Leanne Graham</a>
+              <a href={`mailto:${user.email}`}>
+                {user.name}
+              </a>
             </p>
           </div>
         </div>
