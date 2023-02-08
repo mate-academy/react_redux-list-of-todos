@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 import { useAppDispatch } from '../../app/hooks';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
@@ -32,7 +33,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo
+              Todo #
               {todo.id}
             </div>
 
@@ -49,11 +50,15 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
             <p className="block" data-cy="modal-title">fugiat veniam minus</p>
 
             <p className="block" data-cy="modal-user">
-              {/* For not completed */}
-              <strong className="has-text-danger">Planned</strong>
+              <strong
+                className={classNames({
+                  'has-text-success': todo.completed,
+                  'has-text-danger': !todo.completed,
+                })}
+              >
+                {todo.completed ? 'Done' : 'Planned'}
+              </strong>
 
-              {/* For completed */}
-              <strong className="has-text-success">Done</strong>
               {' by '}
               <a href="mailto:Sincere@april.biz">Leanne Graham</a>
             </p>

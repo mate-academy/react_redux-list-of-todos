@@ -5,7 +5,7 @@ type State = {
   status: Status;
 };
 
-export type SetQueryAction = {
+type SetQueryAction = {
   type: 'query/SET';
   payload: string;
 };
