@@ -1,6 +1,23 @@
 import React from 'react';
+import { Status } from '../../types/Status';
+import { actions } from '../../features/filter';
 
-export const TodoFilter: React.FC = () => {
+import { useAppDispatch } from '../../app/hooks';
+
+type Props = {
+  query: string;
+  status: string;
+};
+
+export const TodoFilter: React.FC<Props> = ({ query, status }) => {
+  const dispatch = useAppDispatch();
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    dispatch(actions.setQuery(value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +25,13 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={event => dispatch(
+              actions.setStatus(event.target.value as Status),
+            )}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +45,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleInputChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
