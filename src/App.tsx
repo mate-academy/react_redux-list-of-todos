@@ -10,12 +10,10 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { RootState } from './app/store';
-import { Todo } from './types/Todo';
 import { actions as currentTodoActions } from './features/currentTodo';
 import { actions as todosActions } from './features/todos';
-import { actions as filterActions } from './features/filter';
 import { getTodos } from './api';
-import { Status } from './types/Status';
+import { Todo } from './types/Todo';
 
 const setVisibleTodos = createSelector(
   (state: RootState) => state.todos,
@@ -45,15 +43,12 @@ export const App: React.FC = () => {
 
   const visibleTodos = useAppSelector(setVisibleTodos);
   const currentTodo = useAppSelector((state) => state.currentTodo);
-  const { query, status } = useAppSelector(state => state.filter);
+  const { query } = useAppSelector(state => state.filter);
 
   const handleTodoSelect = (todo: Todo) => dispatch(currentTodoActions.setTodo(todo));
 
-  const handleTodoRemove = () => dispatch(currentTodoActions.removeTodo());
-
-  const handleQueryChange = (value: string) => dispatch(filterActions.setQuery(value));
-
-  const handleStatusChange = (value: Status) => dispatch(filterActions.setStatus(value));
+  const isLoaderShown = !visibleTodos.length && !query && !isError;
+  const isNotFoundMessageShown = !visibleTodos.length && query && !isError;
 
   useEffect(() => {
     getTodos()
@@ -70,12 +65,7 @@ export const App: React.FC = () => {
 
             {!isError && (
               <div className="block">
-                <TodoFilter
-                  selectValue={status}
-                  query={query}
-                  onQueryChange={handleQueryChange}
-                  onFilterSelect={handleStatusChange}
-                />
+                <TodoFilter />
               </div>
             )}
 
@@ -88,11 +78,11 @@ export const App: React.FC = () => {
                 />
               )}
 
-              {!visibleTodos.length && !query && !isError && (
+              {isLoaderShown && (
                 <Loader />
               )}
 
-              {!visibleTodos.length && query && !isError && (
+              {isNotFoundMessageShown && (
                 <p className="notification is-warning">
                   There are no todos matching current filter criteria
                 </p>
@@ -109,10 +99,7 @@ export const App: React.FC = () => {
       </div>
 
       {currentTodo && (
-        <TodoModal
-          selectedTodo={currentTodo}
-          onDeleteSelection={handleTodoRemove}
-        />
+        <TodoModal />
       )}
     </>
   );

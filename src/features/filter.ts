@@ -10,11 +10,19 @@ type SetStatusAction = {
   payload: Status;
 };
 
-type Action = SetQueryAction | SetStatusAction;
+type ClearQueryAction = {
+  type: 'filter/CLEAR_QUERY';
+};
+
+type Action = SetQueryAction | SetStatusAction | ClearQueryAction;
 
 const setQuery = (query: string): SetQueryAction => ({
   type: 'filter/SET_QUERY',
   payload: query,
+});
+
+export const clearQuery = (): ClearQueryAction => ({
+  type: 'filter/CLEAR_QUERY',
 });
 
 const setStatus = (status: Status): SetStatusAction => ({
@@ -40,6 +48,9 @@ const filterReducer = (
     case 'filter/SET_QUERY':
       return { ...state, query: action.payload };
 
+    case 'filter/CLEAR_QUERY':
+      return { ...state, query: '' };
+
     case 'filter/SET_STATUS':
       return { ...state, status: action.payload };
 
@@ -48,6 +59,6 @@ const filterReducer = (
   }
 };
 
-export const actions = { setQuery, setStatus };
+export const actions = { setQuery, setStatus, clearQuery };
 
 export default filterReducer;
