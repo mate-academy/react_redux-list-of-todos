@@ -48,7 +48,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
           </header>
 
           <div className="modal-card-body">
-            <p className="block" data-cy="modal-title">fugiat veniam minus</p>
+            <p className="block" data-cy="modal-title">{todo.title}</p>
 
             <p className="block" data-cy="modal-user">
               <strong
