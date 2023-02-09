@@ -41,8 +41,7 @@ export const App: FC = () => {
           </div>
         </div>
       </div>
-      {selectedTodo
-        && <TodoModal />}
+      {selectedTodo && <TodoModal />}
     </>
   );
 };
