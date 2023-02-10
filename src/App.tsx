@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { useAppDispatch, useAppSelector } from './app/hooks';
@@ -13,9 +13,8 @@ import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  const todos = useAppSelector((state => state.todos));
-  const { query } = useAppSelector(state => state.filter);
-  const { status } = useAppSelector(state => state.filter);
+  const todos = useAppSelector(state => state.todos);
+  const { query, status } = useAppSelector(state => state.filter);
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
@@ -30,17 +29,17 @@ export const App: React.FC = () => {
 
   const lowerQuery = query.toLowerCase();
 
-  const visibleTodos = todos.filter(todo => {
-    if (status === 'active' && todo.completed) {
-      return false;
-    }
+  const getVisibleTodos = () => {
+    return todos.filter(todo => {
+      if ((status === 'active' && todo.completed) || (status === 'completed' && !todo.completed)) {
+        return false;
+      }
 
-    if (status === 'completed' && !todo.completed) {
-      return false;
-    }
+      return todo.title.toLowerCase().includes(lowerQuery);
+    });
+  };
 
-    return todo.title.toLowerCase().includes(lowerQuery);
-  });
+  const visibleTodos = useMemo(getVisibleTodos, [todos, status, query]);
 
   return (
     <>

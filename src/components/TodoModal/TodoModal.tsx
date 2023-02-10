@@ -14,10 +14,11 @@ type Props = {
 export const TodoModal: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<User | null>(null);
+  const { userId } = todo;
 
   useEffect(() => {
-    if (todo.userId) {
-      getUser(todo.userId).then(setUser);
+    if (userId) {
+      getUser(userId).then(setUser);
     }
   }, []);
 

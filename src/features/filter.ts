@@ -29,7 +29,7 @@ export const actions = { setQuery, setStatus };
 
 const initialState: State = {
   query: '',
-  status: 'all',
+  status: Status.all,
 };
 
 const filterReducer = (state: State = initialState, action: Action): State => {
