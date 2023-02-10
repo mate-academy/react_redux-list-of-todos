@@ -62,13 +62,15 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            aria-label="Delete"
-            onClick={() => dispatch(filterActions.setQuery(''))}
-          />
+          {query && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              aria-label="Delete"
+              onClick={() => dispatch(filterActions.setQuery(''))}
+            />
+          )}
         </span>
       </p>
     </form>
