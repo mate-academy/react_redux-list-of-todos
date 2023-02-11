@@ -10,6 +10,7 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { actions as todosActions } from './features/todos';
+import { Status } from './types/Status';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -27,15 +28,13 @@ export const App: React.FC = () => {
     fetchTodos();
   }, []);
 
-  const lowerQuery = query.toLowerCase();
-
   const getVisibleTodos = () => {
     return todos.filter(todo => {
-      if ((status === 'active' && todo.completed) || (status === 'completed' && !todo.completed)) {
+      if ((status === Status.active && todo.completed) || (status === Status.completed && !todo.completed)) {
         return false;
       }
 
-      return todo.title.toLowerCase().includes(lowerQuery);
+      return todo.title.toLowerCase().includes(query.toLowerCase());
     });
   };
 
@@ -56,7 +55,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {todos.length > 0 ? (
+              {todos.length ? (
                 <TodoList
                   todos={visibleTodos}
                 />

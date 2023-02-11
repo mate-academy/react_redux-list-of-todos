@@ -14,7 +14,7 @@ type Props = {
 export const TodoModal: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<User | null>(null);
-  const { userId } = todo;
+  const { userId, id: todoId, completed } = todo;
 
   useEffect(() => {
     if (userId) {
@@ -36,7 +36,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               data-cy="modal-header"
             >
               Todo #
-              {todo.id}
+              {todoId}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -54,11 +54,11 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
             <p className="block" data-cy="modal-user">
               <strong
                 className={classNames({
-                  'has-text-success': todo.completed,
-                  'has-text-danger': !todo.completed,
+                  'has-text-success': completed,
+                  'has-text-danger': !completed,
                 })}
               >
-                {todo.completed ? 'Done' : 'Planned'}
+                {completed ? 'Done' : 'Planned'}
               </strong>
 
               {' by '}

@@ -11,19 +11,20 @@ type Props = {
 
 const TodoListItem: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
-  const todoId = useAppSelector(state => state.currentTodo?.id);
+  const currentTodoId = useAppSelector(state => state.currentTodo?.id);
+  const { id: todoId, completed } = todo;
 
   return (
     <tr
-      key={todo.id}
+      key={todoId}
       data-cy="todo"
       className={classNames({
-        'has-background-info-light': todoId === todo.id,
+        'has-background-info-light': currentTodoId === todoId,
       })}
     >
-      <td className="is-vcentered">{todo.id}</td>
+      <td className="is-vcentered">{todoId}</td>
       <td className="is-vcentered">
-        {todo.completed && (
+        {completed && (
           <span className="icon" data-cy="iconCompleted">
             <i className="fas fa-check" />
           </span>
@@ -32,8 +33,8 @@ const TodoListItem: React.FC<Props> = ({ todo }) => {
       <td className="is-vcentered is-expanded">
         <p
           className={classNames({
-            'has-text-success': todo.completed,
-            'has-text-danger': !todo.completed,
+            'has-text-success': completed,
+            'has-text-danger': !completed,
           })}
         >
           {todo.title}
@@ -47,11 +48,7 @@ const TodoListItem: React.FC<Props> = ({ todo }) => {
           onClick={() => dispatch(actions.setTodo(todo))}
         >
           <span className="icon">
-            {todoId === todo.id ? (
-              <i className="far fa-eye-slash" />
-            ) : (
-              <i className="far fa-eye" />
-            )}
+            <i className={`far ${currentTodoId === todoId ? 'fa-eye-slash' : 'fa-eye'}`} />
           </span>
         </button>
       </td>
