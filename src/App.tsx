@@ -12,6 +12,7 @@ import { getTodos } from './api';
 import { addTodos } from './features/todos';
 import { Todo } from './types/Todo';
 import { useAppSelector } from './app/hooks';
+import { FilterType } from './features/filter';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,10 +24,10 @@ export const App: React.FC = () => {
     let filteredTodos = [...todos];
 
     switch (filter.status) {
-      case 'active':
+      case FilterType.ACTIVE:
         filteredTodos = filteredTodos.filter(todo => !todo.completed);
         break;
-      case 'completed':
+      case FilterType.COMPLETED:
         filteredTodos = filteredTodos.filter(todo => todo.completed);
         break;
       default:

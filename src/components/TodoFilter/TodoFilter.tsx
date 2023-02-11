@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { actions as filterActions } from '../../features/filter';
+import { actions as filterActions, FilterType } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
@@ -11,16 +11,16 @@ export const TodoFilter: React.FC = () => {
   };
 
   const handlerStatusSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    switch (event.target.value) {
-      case 'all':
+    switch (+event.target.value) {
+      case FilterType.ALL:
         dispatch(filterActions.getAllTodos());
         break;
 
-      case 'active':
+      case FilterType.ACTIVE:
         dispatch(filterActions.getActiveTodos());
         break;
 
-      case 'completed':
+      case FilterType.COMPLETED:
         dispatch(filterActions.getCompletedTodos());
         break;
 
@@ -41,9 +41,9 @@ export const TodoFilter: React.FC = () => {
             value={status}
             onChange={handlerStatusSelect}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={FilterType.ALL}>All</option>
+            <option value={FilterType.ACTIVE}>Active</option>
+            <option value={FilterType.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>

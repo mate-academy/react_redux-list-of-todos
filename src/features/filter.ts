@@ -10,6 +10,12 @@ type Actions = SetAllFilter
 | SetQuery
 | RemoveQuery;
 
+export enum FilterType {
+  ALL,
+  ACTIVE,
+  COMPLETED,
+}
+
 const getAllTodos = (): SetAllFilter => (
   { type: 'filter/ALL' }
 );
@@ -37,24 +43,24 @@ export const actions = {
 
 const initialState = {
   query: '',
-  status: 'all',
+  status: FilterType.ALL,
 };
 
 type State = {
   query: string,
-  status: string,
+  status: FilterType,
 };
 
 const filterReducer = (state: State = initialState, action: Actions): State => {
   switch (action.type) {
     case 'filter/ALL':
-      return { ...state, status: 'all' };
+      return { ...state, status: FilterType.ALL };
 
     case 'filter/ACTIVE':
-      return { ...state, status: 'active' };
+      return { ...state, status: FilterType.ACTIVE };
 
     case 'filter/COMPLETED':
-      return { ...state, status: 'completed' };
+      return { ...state, status: FilterType.COMPLETED };
 
     case 'query/SET':
       return { ...state, query: action.payload };
