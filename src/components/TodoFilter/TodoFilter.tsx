@@ -15,13 +15,13 @@ export const TodoFilter: React.FC = () => {
 
   const handleStatusChange = (value: Status) => dispatch(filterActions.setStatus(value));
 
-  const handleformSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
 
   return (
     <form
-      onSubmit={handleformSubmit}
+      onSubmit={handleFormSubmit}
       className="field has-addons"
     >
       <p className="control">

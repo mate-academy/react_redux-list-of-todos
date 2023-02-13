@@ -14,6 +14,7 @@ import { actions as currentTodoActions } from './features/currentTodo';
 import { actions as todosActions } from './features/todos';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
+import { Status } from './types/Status';
 
 const setVisibleTodos = createSelector(
   (state: RootState) => state.todos,
@@ -23,10 +24,10 @@ const setVisibleTodos = createSelector(
 
     return todos.filter(({ title, completed }) => {
       switch (filter.status) {
-        case 'active':
+        case Status.Active:
           return !completed && isMatch(title);
 
-        case 'completed':
+        case Status.Completed:
           return completed && isMatch(title);
 
         default:
