@@ -14,7 +14,7 @@ export const TodoModal: React.FC = () => {
     async () => {
       try {
         if (currentTodo) {
-          setUser(await getUser(currentTodo.id));
+          setUser(await getUser(currentTodo.userId));
         }
       } catch {
         throw new Error('Loading is falied');
@@ -33,7 +33,7 @@ export const TodoModal: React.FC = () => {
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
-      {!user
+      {user === null
         ? (<Loader />)
         : (
           <div className="modal-card">
