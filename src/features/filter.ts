@@ -1,6 +1,6 @@
 import { Status } from '../types/Status';
 
-type FilterOption = {
+export type FilterOption = {
   query: string,
   status: Status | string,
 };
