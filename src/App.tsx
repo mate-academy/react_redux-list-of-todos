@@ -15,8 +15,7 @@ import { addTodos } from './features/todos';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const { todos, filter } = useAppSelector(state => state);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const { todos, filter, currentTodo } = useAppSelector(state => state);
   const [isLoadingTodos, setIsLoadingTodos] = useState<boolean>(false);
 
   const getFilteredTodos = () => {
