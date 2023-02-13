@@ -10,7 +10,6 @@ import { Loader } from '../Loader';
 export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
   const {
@@ -21,15 +20,12 @@ export const TodoModal: React.FC = () => {
   } = currentTodo as Todo;
 
   const loadUser = async () => {
-    setLoading(true);
-
     try {
       const loadedUser = await getUser(userId);
 
       setUser(loadedUser);
-      setLoading(false);
     } catch {
-      throw new Error('error');
+      throw new Error('Something was wrong with your internet connection');
     }
   };
 
@@ -45,9 +41,10 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {loading ? (
+      {!user ? (
         <Loader />
       ) : (
+
         <div className="modal-card">
           <header className="modal-card-head">
             <div
@@ -77,11 +74,9 @@ export const TodoModal: React.FC = () => {
                 : (<strong className="has-text-danger">Planned</strong>)}
               {' by '}
 
-              {user && (
-                <a href={`mailto:${user?.email}`}>
-                  {user?.name}
-                </a>
-              )}
+              <a href={`mailto:${user.email}`}>
+                {user.name}
+              </a>
 
             </p>
           </div>

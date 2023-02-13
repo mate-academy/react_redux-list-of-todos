@@ -27,7 +27,7 @@ export const App: React.FC = () => {
       dispatch(todosActions(loadedTodos));
       setLoading(false);
     } catch (error) {
-      throw new Error('error');
+      throw new Error('Something was wrong with your internet connection');
     }
   };
 
