@@ -36,7 +36,7 @@ export const App: React.FC = () => {
   }, []);
 
   const areTodosReady = !isLoading && !isLoadingFailed;
-  const showModal = currentTodo;
+  const isModalVisible = currentTodo;
 
   return (
     <>
@@ -67,7 +67,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {showModal && <TodoModal /> }
+      {isModalVisible && <TodoModal /> }
     </>
   );
 };

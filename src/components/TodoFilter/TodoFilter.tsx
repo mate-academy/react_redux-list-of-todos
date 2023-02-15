@@ -20,7 +20,7 @@ export const TodoFilter: React.FC = () => {
     setQuery(event.target.value);
   };
 
-  const handleSelectClick = (
+  const onStatusChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     dispatch(setFilterStatus(event.target.value as Status));
@@ -41,7 +41,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={status}
-            onChange={handleSelectClick}
+            onChange={onStatusChange}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
