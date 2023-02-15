@@ -77,15 +77,12 @@ export const TodoModal: React.FC = () => {
             </p>
 
             <p className="block" data-cy="modal-user">
-              {completed
-                ? (
-                  <strong className="has-text-success">Done</strong>
-                ) : (
-                  <strong className="has-text-danger">Planned</strong>)}
+              {completed ? (
+                <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>)}
               {' by '}
-              <a
-                href={`mailto:${user?.email}`}
-              >
+              <a href={`mailto:${user?.email}`}>
                 {user?.name}
               </a>
             </p>
