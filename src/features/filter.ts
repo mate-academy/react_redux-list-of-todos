@@ -5,39 +5,32 @@ type Filter = {
 
 type FilterStatus = {
   type: 'filter/STATUS';
-  query: string;
-  status: string,
+  payload: string,
 };
+
 type FilterQuery = {
   type: 'filter/QUERY';
-  query: string;
-  status: string,
+  payload: string;
 };
-type FilterClear = {
-  type: 'filter/CLEAR';
-  query: string;
-  status: string,
-};
+
+type FilterClear = { type: 'filter/CLEAR' };
 
 type Action = FilterStatus
 | FilterQuery
 | FilterClear;
 
-const filterStatus = (status: string, query = ''): FilterStatus => ({
+const filterStatus = (status: string): FilterStatus => ({
   type: 'filter/STATUS',
-  query,
-  status,
-});
-const filterQuery = (query: string, status = 'all'): FilterQuery => ({
-  type: 'filter/QUERY',
-  query,
-  status,
+  payload: status,
 });
 
-const filterClear = (status = 'all', query = ''): FilterClear => ({
+const filterQuery = (query: string): FilterQuery => ({
+  type: 'filter/QUERY',
+  payload: query,
+});
+
+const filterClear = (): FilterClear => ({
   type: 'filter/CLEAR',
-  query,
-  status,
 });
 
 export const actions = { filterStatus, filterQuery, filterClear };
@@ -48,10 +41,10 @@ const filterReducer = (
 ) => {
   switch (action.type) {
     case 'filter/STATUS':
-      return { ...filter, status: action.status };
+      return { ...filter, status: action.payload };
 
     case 'filter/QUERY':
-      return { ...filter, query: action.query };
+      return { ...filter, query: action.payload };
 
     case 'filter/CLEAR':
       return { ...filter, query: '' };
