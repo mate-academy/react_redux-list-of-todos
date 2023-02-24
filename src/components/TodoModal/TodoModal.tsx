@@ -28,13 +28,13 @@ export const TodoModal: React.FC = () => {
     };
 
     loadData();
-  }, [openedTodo]);
+  }, []);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {!selectedUser && !error
+      {!selectedUser && openedTodo && !error
         ? (
           <Loader />
         ) : (
@@ -45,7 +45,7 @@ export const TodoModal: React.FC = () => {
               </p>
             )}
 
-            {openedTodo && selectedUser && (
+            {openedTodo && (
               <div className="modal-card">
                 <header className="modal-card-head">
                   <div
@@ -60,7 +60,7 @@ export const TodoModal: React.FC = () => {
                     className="delete"
                     data-cy="modal-close"
                     aria-label="modal-close"
-                    onClick={() => remove()}
+                    onClick={remove}
                   />
                 </header>
 
@@ -82,9 +82,11 @@ export const TodoModal: React.FC = () => {
 
                     {' by '}
 
-                    <a href={`mailto:${selectedUser.email}`}>
-                      {selectedUser.name}
-                    </a>
+                    {selectedUser && (
+                      <a href={`mailto:${selectedUser.email}`}>
+                        {selectedUser.name}
+                      </a>
+                    )}
                   </p>
                 </div>
               </div>

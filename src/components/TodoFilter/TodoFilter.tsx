@@ -39,7 +39,7 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {query && (
+        {query.length > 0 && (
           <span className="icon is-right isClickable">
             <button
               data-cy="clearSearchButton"

@@ -35,31 +35,27 @@ export const App: React.FC = () => {
       <div className="section">
         <div className="container">
           <div className="box">
-            {error
-              ? (
-                <p className="notification is-warning">
-                  Something went wrong!
-                </p>
-              )
-              : (
-                <>
-                  <h1 className="title">Todos:</h1>
+            {error ? (
+              <p className="notification is-warning">
+                Something went wrong!
+              </p>
+            ) : (
+              <>
+                <h1 className="title">Todos:</h1>
 
-                  <div className="block">
-                    <TodoFilter />
-                  </div>
+                <div className="block">
+                  <TodoFilter />
+                </div>
 
-                  <div className="block">
-                    {
-                      todoList.length > 0
-                        ? (
-                          <TodoList />
-                        )
-                        : <Loader />
-                    }
-                  </div>
-                </>
-              )}
+                <div className="block">
+                  {
+                    todoList.length > 0
+                      ? <TodoList />
+                      : <Loader />
+                  }
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
