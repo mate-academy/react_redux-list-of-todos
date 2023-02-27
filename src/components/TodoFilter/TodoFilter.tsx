@@ -2,15 +2,23 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const query = useAppSelector(state => state.filter.query);
-  const status = useAppSelector(state => state.filter.status);
+  const { query, status } = useAppSelector(state => state.filter);
   const {
     setQuery,
     setStatus,
   } = actions;
+
+  const handlerSetStatus = (value: string) => {
+    dispatch(setStatus(value));
+  };
+
+  const handlerSetQuery = (value: string) => {
+    dispatch(setQuery(value));
+  };
 
   return (
     <form
@@ -21,12 +29,12 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={(event) => dispatch(setStatus(event.target.value))}
+            onChange={(event) => handlerSetStatus(event.target.value)}
             value={status}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Status.ALL}>All</option>
+            <option value={Status.ACTIVE}>Active</option>
+            <option value={Status.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>
@@ -38,7 +46,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={(event) => dispatch(setQuery(event.target.value))}
+          onChange={(event) => handlerSetQuery(event.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -50,7 +58,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(setQuery(''))}
+              onClick={() => handlerSetQuery('')}
               aria-label="clear"
             />
           </span>

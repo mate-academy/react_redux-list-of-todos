@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../api';
-import { actions } from '../../features/currentTodo';
+import { useAppSelector } from '../../app/hooks';
+import { actions as currentTodoActions } from '../../features/currentTodo';
+import { actions as userActions } from '../../features/user';
 import { Todo } from '../../types/Todo';
-import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 type Props = {
@@ -11,18 +12,33 @@ type Props = {
 };
 
 export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const user = useAppSelector(state => state.user);
   const dispatch = useDispatch();
+  const { setUser, removeUser } = userActions;
+
+  const {
+    id,
+    title,
+    completed,
+  } = selectedTodo;
 
   useEffect(() => {
     const loadUser = async () => {
       const response = await getUser(selectedTodo.userId);
 
-      setUser(response);
+      dispatch(setUser(response));
     };
 
     loadUser();
+
+    return () => {
+      dispatch(removeUser());
+    };
   }, []);
+
+  const handlerRemoveTodo = () => {
+    dispatch(currentTodoActions.removeTodo());
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -35,7 +51,7 @@ export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${selectedTodo.id}`}
+              {`Todo #${id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -43,17 +59,17 @@ export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(actions.removeTodo())}
+              onClick={() => handlerRemoveTodo()}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {selectedTodo.title}
+              {title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {selectedTodo.completed ? (
+              {completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>

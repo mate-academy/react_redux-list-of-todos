@@ -1,3 +1,5 @@
+import { Status } from '../types/Status';
+
 type AddQueryAction = {
   type: 'filter/setQuery',
   payload: string,
@@ -29,7 +31,7 @@ type Action = AddQueryAction | AddStatusAction;
 
 const defaultState = {
   query: '',
-  status: 'all',
+  status: Status.ALL,
 };
 
 const filterReducer = (
