@@ -1,6 +1,21 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
+
+  const handleQuery = (value: string) => {
+    dispatch(filterActions.setQuery(value));
+  };
+
+  const handleStatus = (value: string) => {
+    dispatch(filterActions.setStatus(value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +23,14 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            value={status}
+            onChange={({ target }) => handleStatus(target.value)}
+            data-cy="statusSelect"
+          >
+            <option value={Status.All}>All</option>
+            <option value={Status.Active}>Active</option>
+            <option value={Status.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +41,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={({ target }) => handleQuery(target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -33,6 +54,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={() => handleQuery('')}
           />
         </span>
       </p>
