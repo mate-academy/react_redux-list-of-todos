@@ -4,5 +4,5 @@ export const getVisibleTodos = (
   todos: Todo[],
   query: string,
 ) => todos.filter(({ title }) => (
-  title.toLowerCase().trim().includes(query.trim())
+  title.toLowerCase().trim().includes(query.trim().toLowerCase())
 ));

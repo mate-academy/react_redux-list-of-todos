@@ -52,7 +52,13 @@ export const TodoList: React.FC<PropTypes> = ({ todos }) => {
             return (
               <tr data-cy="todo" key={id}>
                 <td className="is-vcentered">{id}</td>
-                <td className="is-vcentered"> </td>
+                <td className="is-vcentered">
+                  {completed && (
+                    <span className="icon" data-cy="iconCompleted">
+                      <i className="fas fa-check" />
+                    </span>
+                  )}
+                </td>
 
                 <td className="is-vcentered is-expanded">
                   <p className={
