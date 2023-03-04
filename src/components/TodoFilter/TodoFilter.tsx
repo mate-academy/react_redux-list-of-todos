@@ -7,6 +7,14 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const query = useAppSelector(state => state.filter.query);
 
+  const handleStatus = (value: string) => {
+    dispatch(filterActions.setStatus(value as Status));
+  };
+
+  const handleQuery = (value: string) => {
+    dispatch(filterActions.setQuery(value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -16,9 +24,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={(event) => {
-              dispatch(filterActions.setStatus(event.target.value as Status));
-            }}
+            onChange={(event) => handleStatus(event.target.value)}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -34,9 +40,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={(event) => {
-            dispatch(filterActions.setQuery(event.target.value.trim()));
-          }}
+          onChange={(event) => handleQuery(event.target.value.trim())}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
