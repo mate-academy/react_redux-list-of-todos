@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as todoActions } from '../../features/currentTodo';
@@ -8,8 +8,8 @@ import { Loader } from '../Loader';
 export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [user, setUser] = React.useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   const loadUser = async () => {
     setIsLoading(true);
@@ -19,14 +19,12 @@ export const TodoModal: React.FC = () => {
 
         setUser(userFromServer);
       }
-    } catch (error) {
-      Promise.reject();
     } finally {
       setIsLoading(false);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadUser();
   }, []);
 

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -14,7 +14,7 @@ import { actions as todosActions } from './features/todos';
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const loadTodos = async () => {
     setIsLoading(true);
@@ -22,14 +22,12 @@ export const App: React.FC = () => {
       const todosFromServer = await getTodos();
 
       dispatch(todosActions.setTodos(todosFromServer));
-    } catch {
-      Promise.reject();
     } finally {
       setIsLoading(false);
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadTodos();
   }, []);
 

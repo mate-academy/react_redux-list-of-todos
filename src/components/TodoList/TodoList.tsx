@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as TodoActions } from '../../features/currentTodo';
 
@@ -10,7 +10,7 @@ export const TodoList: React.FC = () => {
   const query = useAppSelector(state => state.filter.query);
   const status = useAppSelector(state => state.filter.status);
 
-  const filteredTodos = React.useMemo(() => {
+  const filteredTodos = useMemo(() => {
     const todosToFilter = todos.filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
 
     switch (status) {
@@ -27,7 +27,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {(todos.length > 0 && filteredTodos.length === 0) && (
+      {(todos.length && !filteredTodos.length) && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
