@@ -20,7 +20,7 @@ export const TodoModal: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const selectedUser = await getUser(selectedTodo.id);
+      const selectedUser = await getUser(selectedTodo.userId);
 
       setUser(selectedUser);
     } catch (error) {
