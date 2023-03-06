@@ -46,8 +46,10 @@ export const App: React.FC = () => {
       switch (status) {
         case FilterOption.Active:
           return !completed && searchQuery;
+
         case FilterOption.Completed:
           return completed && searchQuery;
+
         default:
           return searchQuery;
       }
@@ -71,9 +73,7 @@ export const App: React.FC = () => {
               )}
 
               {todos.length > 0 && (
-                <TodoList
-                  todos={visibleTodos}
-                />
+                <TodoList todos={visibleTodos} />
               )}
             </div>
           </div>

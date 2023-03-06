@@ -7,14 +7,20 @@ export const TodoFilter: React.FC = () => {
   const query = useAppSelector(state => state.filter.query);
   const dispatch = useDispatch();
 
+  const handleSelectChange = (e:React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(actions.setStatus(e.target.value as FilterOption));
+  };
+
+  const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(actions.setQuery(e.currentTarget.value));
+  };
+
   return (
     <form className="field has-addons">
       <p className="control">
         <span className="select">
           <select
-            onChange={(e) => {
-              dispatch(actions.setStatus(e.target.value as FilterOption));
-            }}
+            onChange={handleSelectChange}
             data-cy="statusSelect"
           >
             <option value={FilterOption.All}>All</option>
@@ -31,9 +37,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={(e) => {
-            dispatch(actions.setQuery(e.currentTarget.value));
-          }}
+          onChange={handleInputChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -41,9 +45,9 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right">
           {query && (
-            /* eslint-disable-next-line jsx-a11y/control-has-associated-label */
             <button
               data-cy="clearSearchButton"
+              aria-label="clearSearchButton"
               type="button"
               className="delete"
               onClick={() => dispatch(actions.setQuery(''))}

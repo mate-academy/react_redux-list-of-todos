@@ -1,4 +1,4 @@
-import cn from 'classnames';
+import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { actions } from '../../features/currentTodo';
@@ -17,7 +17,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   return (
     <tr
       data-cy="todo"
-      className={cn({ 'has-background-info-light': isTodoSelected })}
+      className={classnames({ 'has-background-info-light': isTodoSelected })}
     >
       <td className="is-vcentered">{id}</td>
       <td className="is-vcentered">
@@ -29,7 +29,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
       </td>
       <td className="is-vcentered is-expanded">
         <p
-          className={cn({
+          className={classnames({
             'has-text-danger': !completed, 'has-text-success': completed,
           })}
         >
@@ -46,7 +46,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           }}
         >
           <span className="icon">
-            <i className={cn('far', {
+            <i className={classnames('far', {
               'fa-eye-slash': isTodoSelected,
               'fa-eye': !isTodoSelected,
             })}
