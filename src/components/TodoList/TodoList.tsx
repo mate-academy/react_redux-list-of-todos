@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
+import { filterTypes } from '../../constants';
 import { TodoItem } from '../TodoItem';
 
 export const TodoList: React.FC = () => {
@@ -11,11 +12,11 @@ export const TodoList: React.FC = () => {
     let result;
 
     switch (filter.status) {
-      case 'active':
+      case filterTypes.active:
         result = todos.filter(todo => !todo.completed);
         break;
 
-      case 'completed':
+      case filterTypes.completed:
         result = todos.filter(todo => todo.completed);
         break;
 
@@ -23,7 +24,7 @@ export const TodoList: React.FC = () => {
         result = todos;
     }
 
-    return result.filter(todo => todo.title.toLowerCase().includes(filter.quary.toLowerCase()));
+    return result.filter(todo => todo.title.toLowerCase().includes(filter.query.toLowerCase()));
   };
 
   const visibleTodos = getVisibleTodos();

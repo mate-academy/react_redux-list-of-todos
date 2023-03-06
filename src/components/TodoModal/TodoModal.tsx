@@ -27,9 +27,9 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading && <Loader />}
-
-      {(!isLoading && user) && (
+      {isLoading || !user ? (
+        <Loader />
+      ) : (
         <div className="modal-card">
           <header className="modal-card-head">
             <div

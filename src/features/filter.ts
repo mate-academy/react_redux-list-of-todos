@@ -1,31 +1,31 @@
 import { Status } from '../types/Status';
 
-type SetQuaryAction = { type: 'filter/SET_QUARY', payload: string };
+type SetQueryAction = { type: 'filter/SET_QUARY', payload: string };
 type SetStatusAction = { type: 'filter/SET_STATUS', payload: Status };
 
-type Action = SetQuaryAction | SetStatusAction;
+type Action = SetQueryAction | SetStatusAction;
 
 const setStatus = (status: Status): SetStatusAction => ({
   type: 'filter/SET_STATUS',
   payload: status,
 });
 
-const setQuary = (quary: string): SetQuaryAction => ({
+const setQuery = (query: string): SetQueryAction => ({
   type: 'filter/SET_QUARY',
-  payload: quary,
+  payload: query,
 });
 
 type Filter = {
   status: Status;
-  quary: string;
+  query: string;
 };
 
-const initialValue: Filter = { status: 'all', quary: '' };
+const initialValue: Filter = { status: 'all', query: '' };
 
 const filterReducer = (filter: Filter = initialValue, action: Action) => {
   switch (action.type) {
     case 'filter/SET_QUARY':
-      return { ...filter, quary: action.payload };
+      return { ...filter, query: action.payload };
 
     case 'filter/SET_STATUS':
       return { ...filter, status: action.payload };
@@ -35,5 +35,5 @@ const filterReducer = (filter: Filter = initialValue, action: Action) => {
   }
 };
 
-export const actions = { setStatus, setQuary };
+export const actions = { setStatus, setQuery };
 export default filterReducer;
