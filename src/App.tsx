@@ -12,24 +12,12 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions } from './features/todos';
 
 export const App: React.FC = () => {
-  // const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const { query, status } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
-
-  // async function loadTodosFromServer() {
-  //   const getTodosFromServer = await getTodos();
-
-  //   setTodos(getTodosFromServer);
-  //   setIsLoading(false);
-  // }
-
-  // useEffect(() => {
-  //   loadTodosFromServer();
-  // }, []);
 
   const getFilteredTodos = useMemo(() => {
     const toFilter = todos.filter((item) => {

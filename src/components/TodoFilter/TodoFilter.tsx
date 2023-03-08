@@ -7,11 +7,11 @@ export const TodoFilter: React.FC = () => {
   const query = useAppSelector(state => state.filter.query);
 
   const handleSetStatus = (value: string) => {
-    dispatch(filterActions.setStatus(value))
+    dispatch(filterActions.setStatus(value));
   };
 
   const handleSetQuery = (value: string) => {
-    dispatch(filterActions.setQuery(value))
+    dispatch(filterActions.setQuery(value));
   };
 
   return (
