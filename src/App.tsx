@@ -72,7 +72,7 @@ export const App: React.FC = () => {
                 <Loader />
               )}
 
-              {todos.length > 0 && (
+              {todos.length && (
                 <TodoList todos={visibleTodos} />
               )}
             </div>

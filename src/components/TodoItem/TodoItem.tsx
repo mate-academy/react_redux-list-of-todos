@@ -17,7 +17,9 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   return (
     <tr
       data-cy="todo"
-      className={classnames({ 'has-background-info-light': isTodoSelected })}
+      className={classnames(
+        { 'has-background-info-light': isTodoSelected },
+      )}
     >
       <td className="is-vcentered">{id}</td>
       <td className="is-vcentered">

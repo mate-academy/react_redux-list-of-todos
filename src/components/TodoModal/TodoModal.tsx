@@ -18,13 +18,12 @@ export const TodoModal: React.FC = () => {
     }
 
     setIsLoading(true);
-
     try {
       const selectedUser = await getUser(selectedTodo.userId);
 
       setUser(selectedUser);
-    } catch (error) {
-      Promise.reject(error);
+    } catch {
+      throw new Error('Unable to load a User!');
     } finally {
       setIsLoading(false);
     }
