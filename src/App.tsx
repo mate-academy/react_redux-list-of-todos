@@ -14,7 +14,7 @@ import { Loader } from './components/Loader';
 import { actions as TodosActions } from './features/todos';
 
 export const App: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
@@ -22,13 +22,13 @@ export const App: React.FC = () => {
   const setTodos = (currentTodos: Todo[]) => dispatch(TodosActions.setTodos(currentTodos));
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
 
     getTodos()
       .then(result => {
         setTodos(result);
-        setLoading(false);
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -43,7 +43,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loading
+              {isLoading
                 ? <Loader />
                 : <TodoList />}
             </div>
