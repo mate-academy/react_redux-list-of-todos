@@ -1,23 +1,16 @@
-import React, { useMemo } from 'react';
-import { useDispatch } from 'react-redux';
-import classNames from 'classnames';
-import { Todo } from '../../types/Todo';
+import React, { useCallback, useMemo } from 'react';
 import { useAppSelector } from '../../app/hooks';
-import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Status } from '../../types/Status';
+import { TodoItem } from '../TodoItem';
 
 export const TodoList: React.FC = () => {
-  const dispatch = useDispatch();
   const todos = useAppSelector(state => state.todos);
-  const currentTodo = useAppSelector(state => state.currentTodo);
   const {
     query,
     status,
   } = useAppSelector<{ query: string, status: Status }>(state => state.filter);
 
-  const selectTodo = (todo: Todo) => dispatch(currentTodoActions.setTodo(todo));
-
-  const getFilteredTodos = () => {
+  const getFilteredTodos = useCallback(() => {
     let filteredTodos = todos;
 
     switch (status) {
@@ -35,9 +28,12 @@ export const TodoList: React.FC = () => {
     }
 
     return filteredTodos.filter(todo => {
-      return todo.title.toLowerCase().includes(query.toLowerCase());
+      const lowerCaseTitle = todo.title.toLowerCase();
+      const lowerCaseQuery = query.toLowerCase();
+
+      return lowerCaseTitle.includes(lowerCaseQuery);
     });
-  };
+  }, [todos, status, query]);
 
   const filteredTodos = useMemo(getFilteredTodos, [todos, status, query]);
 
@@ -67,47 +63,7 @@ export const TodoList: React.FC = () => {
 
             <tbody>
               {filteredTodos.map(todo => (
-                <tr data-cy="todo" key={todo.id}>
-                  <td className="is-vcentered">{todo.id}</td>
-                  {!todo.completed
-                    ? <td className="is-vcentered" />
-                    : (
-                      <td className="is-vcentered">
-                        <span className="icon" data-cy="iconCompleted">
-                          <i className="fas fa-check" />
-                        </span>
-                      </td>
-                    )}
-                  <td className="is-vcentered is-expanded">
-                    <p
-                      className={
-                        classNames({
-                          'has-text-danger': !todo.completed,
-                          'has-text-success': todo.completed,
-                        })
-                      }
-                    >
-                      {todo.title}
-                    </p>
-                  </td>
-
-                  <td className="has-text-right is-vcentered">
-                    <button
-                      data-cy="selectButton"
-                      className="button"
-                      type="button"
-                      onClick={() => selectTodo(todo)}
-                    >
-                      <span className="icon">
-                        {
-                          currentTodo?.id === todo.id
-                            ? <i className="far fa-eye-slash" />
-                            : <i className="far fa-eye" />
-                        }
-                      </span>
-                    </button>
-                  </td>
-                </tr>
+                <TodoItem key={todo.id} todo={todo} />
               ))}
             </tbody>
           </table>
