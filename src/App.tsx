@@ -34,25 +34,25 @@ export const App: React.FC = () => {
 
   return (
     <>
-      {isLoading ? <Loader />
-        : (
-          <div className="section">
-            <div className="container">
-              <div className="box">
-                <h1 className="title">Todos:</h1>
-
-                <div className="block">
-                  <TodoFilter />
-                </div>
-
-                <div className="block">
-                  <TodoList />
-                </div>
-              </div>
-            </div>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            {isLoading ? <Loader />
+              : (
+                <>
+                  <h1 className="title">Todos:</h1>
+                  <div className="block">
+                    <TodoFilter />
+                  </div>
+                  <div className="block">
+                    <TodoList />
+                  </div>
+                </>
+              )}
           </div>
+        </div>
+      </div>
 
-        )}
       {currentTodo
         && (
           <TodoModal />
