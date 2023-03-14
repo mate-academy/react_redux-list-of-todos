@@ -16,20 +16,20 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    setIsLoading(true);
-    try {
-      const todosFetch = async () => {
+    const todosFetch = async () => {
+      try {
+        setIsLoading(true);
         const result = await getTodos();
 
         dispatch(actions.setTodos(result));
-      };
+      } catch (error) {
+        throw new Error(String(error));
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      todosFetch();
-    } catch (error) {
-      throw new Error(String(error));
-    } finally {
-      setIsLoading(false);
-    }
+    todosFetch();
   }, []);
 
   return (
@@ -54,9 +54,9 @@ export const App: React.FC = () => {
 
         )}
       {currentTodo
-      && (
-        <TodoModal />
-      )}
+        && (
+          <TodoModal />
+        )}
     </>
   );
 };
