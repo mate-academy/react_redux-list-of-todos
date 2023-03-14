@@ -9,7 +9,7 @@ export const TodoList: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
   const todos = useAppSelector(state => state.todos.filter(
     (todo: Todo) => {
-      return todo.title.includes(filter.query);
+      return todo.title.toLowerCase().includes(filter.query.toLowerCase());
     },
   ));
   const isSelected = (id: number) => currentTodo?.id === id;
@@ -62,15 +62,19 @@ export const TodoList: React.FC = () => {
                 data-cy="todo"
               >
                 <td className="is-vcentered">{todo.id}</td>
-                <td className="is-vcentered"> </td>
+                <td className="is-vcentered">
+                  {todo.completed && (
+                    <span className="icon" data-cy="iconCompleted">
+                      <i className="fas fa-check" />
+                    </span>
+                  )}
+                </td>
                 <td className="is-vcentered is-expanded">
                   <p className={
-                    todo.completed
-                      ? 'has-text-success' : 'has-text-danger'
+                    todo.completed ? 'has-text-success' : 'has-text-danger'
                   }
                   >
                     {todo.title}
-
                   </p>
                 </td>
 

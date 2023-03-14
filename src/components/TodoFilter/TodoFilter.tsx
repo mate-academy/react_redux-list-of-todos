@@ -18,7 +18,7 @@ export const TodoFilter: React.FC = () => {
   };
 
   const setInput = (value: string) => {
-    return dispatch(actions.input(value.toLowerCase()));
+    return dispatch(actions.input(value));
   };
 
   return (
