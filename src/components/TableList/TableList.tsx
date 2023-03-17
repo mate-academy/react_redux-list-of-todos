@@ -1,10 +1,9 @@
 import classNames from 'classnames';
-import React from 'react';
 import { FC } from 'react';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../app/hooks';
-import { setTodo } from '../features/currentTodo';
-import { Todo } from '../types/Todo';
+import { useAppSelector } from '../../app/hooks';
+import { setTodo } from '../../features/currentTodo';
+import { Todo } from '../../types/Todo';
 
 type Props = {
   renderedTodos: Todo[];
@@ -14,7 +13,7 @@ export const TableList: FC<Props> = ({ renderedTodos }) => {
   const dispatch = useDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
-  const handleOnClick = (clickedTodo: Todo) => {
+  const handleClick = (clickedTodo: Todo) => {
     dispatch(setTodo(clickedTodo));
   };
 
@@ -50,7 +49,7 @@ export const TableList: FC<Props> = ({ renderedTodos }) => {
                 data-cy="selectButton"
                 className="button"
                 type="button"
-                onClick={() => handleOnClick(todo)}
+                onClick={() => handleClick(todo)}
               >
                 <span className="icon">
                   <i

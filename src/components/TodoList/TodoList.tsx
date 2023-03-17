@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { filterTodos } from '../../utils/filterTodos';
-import { TableList } from '../TableList';
+import { TableList } from '../TableList/TableList';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
