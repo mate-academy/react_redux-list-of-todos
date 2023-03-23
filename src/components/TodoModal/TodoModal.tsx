@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { getUser } from '../../api';
+import { useAppDispatch } from '../../app/hooks';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 type Props = {
-  selectedItem: Todo
-  setSelectedItem: (todo: null) => void,
+  currentTodo: Todo
 };
 
 export const TodoModal: React.FC<Props> = ({
-  selectedItem,
-  setSelectedItem,
+  currentTodo,
 }) => {
   const [user, setUser] = useState<User | null>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getUser(selectedItem.userId).then(setUser);
+    getUser(currentTodo.userId).then(setUser);
   }, []);
 
   return (
@@ -32,7 +33,7 @@ export const TodoModal: React.FC<Props> = ({
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${selectedItem.id}`}
+              {`Todo #${currentTodo.id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -40,18 +41,18 @@ export const TodoModal: React.FC<Props> = ({
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => setSelectedItem(null)}
+              onClick={() => dispatch(currentTodoActions.removeTodo())}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {selectedItem.title}
+              {currentTodo.title}
             </p>
 
             <p className="block" data-cy="modal-user">
               {/* <strong className="has-text-success">Done</strong> */}
-              {selectedItem.completed
+              {currentTodo.completed
                 ? (
                   <strong
                     className="has-text-success"

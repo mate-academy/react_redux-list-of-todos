@@ -1,7 +1,5 @@
 /* eslint-disable max-len */
-import React, {
-  useCallback, useEffect, useMemo, useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -9,55 +7,24 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { Todo } from './types/Todo';
 import { getTodos } from './api';
-import { FilterType } from './types/FilterType';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState('all');
-  const [selectedItem, setSelectedItem] = useState<Todo | null>(null);
   const [hasError, setHasError] = useState(false);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoading(true);
 
     getTodos()
-      .then(result => {
-        setTodos(result);
-      })
-      .catch(() => {
-        setHasError(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .then(result => dispatch(todosActions.setTodos(result)))
+      .catch(() => setHasError(true))
+      .finally(() => setIsLoading(false));
   }, []);
-
-  const filterTodos = useCallback((
-    filterType: string,
-    queryValue: string,
-    allTodos: Todo[],
-  ) => {
-    const filteredQuery = allTodos.filter(todo => todo.title.toLocaleLowerCase().includes(queryValue.toLocaleLowerCase().trim()));
-    const active = filteredQuery.filter(todo => !todo.completed);
-    const completed = filteredQuery.filter(todo => todo.completed);
-
-    switch (filterType) {
-      case FilterType.all:
-        return !queryValue ? allTodos : filteredQuery;
-      case FilterType.active:
-        return active;
-      case FilterType.completed:
-        return completed;
-      default:
-        throw new Error('No filter type');
-    }
-  }, []);
-
-  const visibleTodos = useMemo(() => filterTodos(filter, query, todos), [filter, query, todos]);
 
   return (
     <>
@@ -67,12 +34,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                query={query}
-                filter={filter}
-                setQuery={setQuery}
-                setFilter={setFilter}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
@@ -84,9 +46,6 @@ export const App: React.FC = () => {
               {isLoading && <Loader />}
               {!isLoading && !hasError && (
                 <TodoList
-                  todos={visibleTodos}
-                  selectedItem={selectedItem}
-                  setSelectedItem={setSelectedItem}
                   isLoading={isLoading}
                 />
               )}
@@ -94,10 +53,9 @@ export const App: React.FC = () => {
           </div>
         </div>
       </div>
-      {selectedItem && (
+      {currentTodo && (
         <TodoModal
-          selectedItem={selectedItem}
-          setSelectedItem={setSelectedItem}
+          currentTodo={currentTodo}
         />
       )}
     </>

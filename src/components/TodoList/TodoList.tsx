@@ -1,78 +1,102 @@
 /* eslint-disable max-len */
 import classNames from 'classnames';
 import React from 'react';
-import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as currentTodoActions } from '../../features/currentTodo';
+import { FilterType } from '../../types/FilterType';
 
 type Props = {
-  todos: Todo[],
-  selectedItem: Todo | null,
-  setSelectedItem: (todo: Todo) => void,
   isLoading: boolean,
 };
 
 export const TodoList: React.FC<Props> = ({
-  todos,
-  selectedItem,
-  setSelectedItem,
   isLoading: loading,
-}) => (
-  <table className="table is-narrow is-fullwidth">
-    {!loading && (
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>
-            <span className="icon">
-              <i className="fas fa-check" />
-            </span>
-          </th>
-          <th>Title</th>
-          <th> </th>
-        </tr>
-      </thead>
-    )}
+}) => {
+  const todos = useAppSelector(state => state.todos);
+  const filter = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
 
-    <tbody>
-      {todos.map(todo => (
-        <tr
-          key={todo.id}
-          data-cy="todo"
-          className={classNames(
-            {
-              'has-background-info-light':
-              selectedItem?.id === todo.id,
-            },
-          )}
-        >
-          <td className="is-vcentered">{todo.id}</td>
-          <td className="is-vcentered">
-            {todo.completed && (
-              <span className="icon" data-cy="iconCompleted">
+  const getVisibleTodos = () => {
+    let statusFiltered;
+
+    switch (filter.status) {
+      case FilterType.active:
+        statusFiltered = todos.filter(todo => !todo.completed);
+        break;
+
+      case FilterType.completed:
+        statusFiltered = todos.filter(todo => todo.completed);
+        break;
+
+      default:
+        statusFiltered = todos;
+    }
+
+    return statusFiltered.filter(todo => todo.title.toLocaleLowerCase().includes(filter.query.toLocaleLowerCase().trim()));
+  };
+
+  const visibleTodos = getVisibleTodos();
+
+  return (
+    <table className="table is-narrow is-fullwidth">
+      {!loading && (
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>
+              <span className="icon">
                 <i className="fas fa-check" />
               </span>
+            </th>
+            <th>Title</th>
+            <th> </th>
+          </tr>
+        </thead>
+      )}
+
+      <tbody>
+        {visibleTodos.map(todo => (
+          <tr
+            key={todo.id}
+            data-cy="todo"
+            className={classNames(
+              {
+                'has-background-info-light':
+                currentTodo?.id === todo.id,
+              },
             )}
-          </td>
-          <td className="is-vcentered is-expanded">
-            {/* eslint-disable-next-line max-len */}
-            <p className={todo.completed ? 'has-text-success' : 'has-text-danger'}>
-              {todo.title}
-            </p>
-          </td>
-          <td className="has-text-right is-vcentered">
-            <button
-              data-cy="selectButton"
-              className="button"
-              type="button"
-              onClick={() => setSelectedItem(todo)}
-            >
-              <span className="icon">
-                {/* eslint-disable-next-line max-len */}
-                <i className={selectedItem?.id === todo.id ? 'far fa-eye-slash' : 'far fa-eye'} />
-              </span>
-            </button>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-);
+          >
+            <td className="is-vcentered">{todo.id}</td>
+            <td className="is-vcentered">
+              {todo.completed && (
+                <span className="icon" data-cy="iconCompleted">
+                  <i className="fas fa-check" />
+                </span>
+              )}
+            </td>
+            <td className="is-vcentered is-expanded">
+              {/* eslint-disable-next-line max-len */}
+              <p className={todo.completed ? 'has-text-success' : 'has-text-danger'}>
+                {todo.title}
+              </p>
+            </td>
+            <td className="has-text-right is-vcentered">
+              <button
+                data-cy="selectButton"
+                className="button"
+                type="button"
+                onClick={() => dispatch(currentTodoActions.setTodo(todo))}
+              >
+                <span className="icon">
+                  {/* eslint-disable-next-line max-len */}
+                  <i className={currentTodo?.id === todo.id ? 'far fa-eye-slash' : 'far fa-eye'} />
+                </span>
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
