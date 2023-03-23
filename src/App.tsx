@@ -9,39 +9,7 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
-import { Status } from './types/Status';
-import { Todo } from './types/Todo';
-
-const filterTodos = (
-  todos: Todo[],
-  filter: { query: string, status: Status },
-): Todo[] => {
-  let filteredTodos = [...todos];
-
-  const { query, status } = filter;
-
-  switch (status) {
-    case 'active':
-      filteredTodos = filteredTodos.filter(todo => !todo.completed);
-      break;
-    case 'completed':
-      filteredTodos = filteredTodos.filter(todo => todo.completed);
-      break;
-    default:
-      break;
-  }
-
-  if (query) {
-    const lowerCasedQuery = query.toLowerCase();
-
-    filteredTodos = filteredTodos
-      .filter(todo => todo.title
-        .toLowerCase()
-        .includes(lowerCasedQuery));
-  }
-
-  return filteredTodos;
-};
+import filterTodos from './functions/filterTodos';
 
 export const App: React.FC = () => {
   const [isLoaded, setLoaded] = useState(false);
