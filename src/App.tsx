@@ -43,11 +43,11 @@ export const App: React.FC = () => {
                   Todos loading error
                 </h3>
               )}
+
               {isLoading && <Loader />}
+
               {!isLoading && !hasError && (
-                <TodoList
-                  isLoading={isLoading}
-                />
+                <TodoList />
               )}
             </div>
           </div>

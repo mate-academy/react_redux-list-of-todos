@@ -1,3 +1,4 @@
+import { ChangeEventHandler } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
@@ -6,6 +7,10 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const filter = useAppSelector(state => state.filter);
 
+  const setFilter: ChangeEventHandler<HTMLSelectElement> = (e) => dispatch(
+    filterActions.setStatus(e.target.value as Status),
+  );
+
   return (
     <form className="field has-addons">
       <p className="control">
@@ -13,9 +18,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={filter.status}
-            onChange={e => dispatch(
-              filterActions.setStatus(e.target.value as Status),
-            )}
+            onChange={setFilter}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -39,11 +42,12 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {!!filter.query && (
-            // eslint-disable-next-line jsx-a11y/control-has-associated-label
+
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
+              aria-label="clear search"
               onClick={() => dispatch(filterActions.setQuery(''))}
             />
           )}

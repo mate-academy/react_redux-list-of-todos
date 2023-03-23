@@ -1,17 +1,10 @@
-/* eslint-disable max-len */
 import classNames from 'classnames';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { FilterType } from '../../types/FilterType';
 
-type Props = {
-  isLoading: boolean,
-};
-
-export const TodoList: React.FC<Props> = ({
-  isLoading: loading,
-}) => {
+export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const filter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
@@ -19,6 +12,7 @@ export const TodoList: React.FC<Props> = ({
 
   const getVisibleTodos = () => {
     let statusFiltered;
+    const lowerCaseQuerey = filter.query.toLocaleLowerCase().trim();
 
     switch (filter.status) {
       case FilterType.active:
@@ -33,27 +27,27 @@ export const TodoList: React.FC<Props> = ({
         statusFiltered = todos;
     }
 
-    return statusFiltered.filter(todo => todo.title.toLocaleLowerCase().includes(filter.query.toLocaleLowerCase().trim()));
+    return statusFiltered.filter(
+      todo => todo.title.toLocaleLowerCase().includes(lowerCaseQuerey),
+    );
   };
 
   const visibleTodos = getVisibleTodos();
 
   return (
     <table className="table is-narrow is-fullwidth">
-      {!loading && (
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
-      )}
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>
+            <span className="icon">
+              <i className="fas fa-check" />
+            </span>
+          </th>
+          <th>Title</th>
+          <th> </th>
+        </tr>
+      </thead>
 
       <tbody>
         {visibleTodos.map(todo => (
@@ -76,8 +70,10 @@ export const TodoList: React.FC<Props> = ({
               )}
             </td>
             <td className="is-vcentered is-expanded">
-              {/* eslint-disable-next-line max-len */}
-              <p className={todo.completed ? 'has-text-success' : 'has-text-danger'}>
+              <p className={todo.completed
+                ? 'has-text-success'
+                : 'has-text-danger'}
+              >
                 {todo.title}
               </p>
             </td>
@@ -89,8 +85,12 @@ export const TodoList: React.FC<Props> = ({
                 onClick={() => dispatch(currentTodoActions.setTodo(todo))}
               >
                 <span className="icon">
-                  {/* eslint-disable-next-line max-len */}
-                  <i className={currentTodo?.id === todo.id ? 'far fa-eye-slash' : 'far fa-eye'} />
+                  <i className={classNames(
+                    'far',
+                    { 'fa-eye-slash': currentTodo?.id === todo.id },
+                    { 'fa-eye': currentTodo?.id !== todo.id },
+                  )}
+                  />
                 </span>
               </button>
             </td>
