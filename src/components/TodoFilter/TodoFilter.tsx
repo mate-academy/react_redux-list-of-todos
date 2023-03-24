@@ -1,15 +1,17 @@
 import { ChangeEventHandler } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
+import { selectFilter } from '../../state/todos/selectors';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const filter = useAppSelector(state => state.filter);
+  const filter = useAppSelector(selectFilter);
 
   const setFilter: ChangeEventHandler<HTMLSelectElement> = (e) => dispatch(
     filterActions.setStatus(e.target.value as Status),
   );
+  const clearSearch = () => dispatch(filterActions.setQuery(''));
 
   return (
     <form className="field has-addons">
@@ -48,7 +50,7 @@ export const TodoFilter: React.FC = () => {
               type="button"
               className="delete"
               aria-label="clear search"
-              onClick={() => dispatch(filterActions.setQuery(''))}
+              onClick={clearSearch}
             />
           )}
         </span>

@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
@@ -10,20 +9,29 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
+import { selectCurrentTodo } from './state/todos/selectors';
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector(selectCurrentTodo);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
+    const fetchTodos = async () => {
+      try {
+        setIsLoading(true);
+        const todos = await getTodos();
 
-    getTodos()
-      .then(result => dispatch(todosActions.setTodos(result)))
-      .catch(() => setHasError(true))
-      .finally(() => setIsLoading(false));
+        dispatch(todosActions.setTodos(todos));
+      } catch (error) {
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTodos();
   }, []);
 
   return (

@@ -1,38 +1,38 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import {
+  selectCurrentTodo,
+  selectFilter,
+  selectTodos,
+} from '../../state/todos/selectors';
 import { FilterType } from '../../types/FilterType';
+import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
-  const todos = useAppSelector(state => state.todos);
-  const filter = useAppSelector(state => state.filter);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(selectTodos);
+  const filter = useAppSelector(selectFilter);
+  const currentTodo = useAppSelector(selectCurrentTodo);
   const dispatch = useAppDispatch();
 
-  const getVisibleTodos = () => {
-    let statusFiltered;
+  const selectTodo = (todo: Todo) => dispatch(currentTodoActions.setTodo(todo));
+
+  const visibleTodos = useMemo(() => {
     const lowerCaseQuerey = filter.query.toLocaleLowerCase().trim();
 
-    switch (filter.status) {
-      case FilterType.active:
-        statusFiltered = todos.filter(todo => !todo.completed);
-        break;
-
-      case FilterType.completed:
-        statusFiltered = todos.filter(todo => todo.completed);
-        break;
-
-      default:
-        statusFiltered = todos;
-    }
-
-    return statusFiltered.filter(
+    let queryFiltered = todos.filter(
       todo => todo.title.toLocaleLowerCase().includes(lowerCaseQuerey),
     );
-  };
 
-  const visibleTodos = getVisibleTodos();
+    if (filter.status === FilterType.active) {
+      queryFiltered = queryFiltered.filter(todo => !todo.completed);
+    } else if (filter.status === FilterType.completed) {
+      queryFiltered = queryFiltered.filter(todo => todo.completed);
+    }
+
+    return queryFiltered;
+  }, [todos, filter]);
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -82,7 +82,7 @@ export const TodoList: React.FC = () => {
                 data-cy="selectButton"
                 className="button"
                 type="button"
-                onClick={() => dispatch(currentTodoActions.setTodo(todo))}
+                onClick={() => selectTodo(todo)}
               >
                 <span className="icon">
                   <i className={classNames(

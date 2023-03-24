@@ -17,8 +17,20 @@ export const TodoModal: React.FC<Props> = ({
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getUser(currentTodo.userId).then(setUser);
+    const fetchUser = async () => {
+      try {
+        const userInfo = await getUser(currentTodo.userId);
+
+        setUser(userInfo);
+      } catch (error) {
+        throw new Error('User upload error');
+      }
+    };
+
+    fetchUser();
   }, []);
+
+  const removeSelectedTodo = () => dispatch(currentTodoActions.removeTodo());
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -41,7 +53,7 @@ export const TodoModal: React.FC<Props> = ({
               className="delete"
               data-cy="modal-close"
               aria-label="modal close"
-              onClick={() => dispatch(currentTodoActions.removeTodo())}
+              onClick={removeSelectedTodo}
             />
           </header>
 
