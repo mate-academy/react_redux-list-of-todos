@@ -27,13 +27,9 @@ export const TodoList: React.FC = () => {
 
     switch (statusForFilter) {
       case 'active':
-        return filteredByQuery.filter(
-          (todo) => !todo.completed && filteredByQuery,
-        );
+        return filteredByQuery.filter((todo) => !todo.completed);
       case 'completed':
-        return filteredByQuery.filter(
-          (todo) => todo.completed && filteredByQuery,
-        );
+        return filteredByQuery.filter((todo) => todo.completed);
 
       default:
         return filteredByQuery;
@@ -41,7 +37,7 @@ export const TodoList: React.FC = () => {
   };
 
   const visibleTodos = filteredTodos(todos, query, status);
-  const isVisible = visibleTodos.length === 0;
+  const isVisible = !visibleTodos.length;
 
   return (
     <>

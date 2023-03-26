@@ -16,12 +16,10 @@ export const TodoModal: React.FC = () => {
   const removeCurrentToto = () => dispatch(currentTodoActions.removeTodo());
 
   const loadUser = async () => {
-    let userFromServer;
-
     try {
       setIsLoading(true);
       if (currentTodo) {
-        userFromServer = await getUser(currentTodo?.userId);
+        const userFromServer = await getUser(currentTodo?.userId);
 
         setUser(userFromServer);
       }
@@ -73,10 +71,10 @@ export const TodoModal: React.FC = () => {
               className="block"
               data-cy="modal-user"
             >
-              {!currentTodo?.completed ? (
-                <strong className="has-text-danger">Planned</strong>
-              ) : (
+              {currentTodo?.completed ? (
                 <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
               <a href={`mailto:${user?.email}`}>{user?.name}</a>
