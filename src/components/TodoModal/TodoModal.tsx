@@ -12,7 +12,7 @@ export const TodoModal: React.FC = React.memo(() => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    if (currentTodo !== null) {
+    if (currentTodo) {
       getUser(currentTodo.userId).then((data) => setUserInfo(data));
     }
   }, []);

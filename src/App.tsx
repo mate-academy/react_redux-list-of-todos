@@ -9,30 +9,40 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 
 import { actionsTodos } from './features/todos';
-import { useAppDispatch, useAppSelector } from './app/hooks';
+import {
+  getLocalStorage,
+  setLocalStorage,
+  useAppDispatch,
+  useAppSelector,
+} from './app/hooks';
 import { actionsTodo } from './features/currentTodo';
+import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector((state) => state.todos);
+  const currentTodo = useAppSelector((state) => state.currentTodo);
+
+  const setTodos = (data: Todo[]) => {
+    dispatch(actionsTodos.setTodos(data));
+  };
+
+  const setTodo = (data: Todo) => {
+    dispatch(actionsTodo.setTodo(data));
+  };
 
   useEffect(() => {
-    if (localStorage.getItem('todos') !== null) {
-      dispatch(actionsTodos.setTodos(JSON.parse(localStorage.getItem('todos') || '')));
-    } else {
-      getTodos().then((data) => {
-        dispatch(actionsTodos.setTodos(data));
-        localStorage.setItem('todos', JSON.stringify(data));
-      });
+    if (getLocalStorage('todos') !== null) {
+      setTodos(getLocalStorage('todos'));
     }
 
-    if (localStorage.getItem('currentTodo') !== null) {
-      dispatch(
-        actionsTodo.setTodo(
-          JSON.parse(localStorage.getItem('currentTodo') || ''),
-        ),
-      );
+    getTodos().then((data) => {
+      setLocalStorage('todos', data);
+      setTodos(getLocalStorage('todos'));
+    });
+
+    if (getLocalStorage('currentTodo') !== null) {
+      setTodo(getLocalStorage('currentTodo'));
     }
   }, []);
 
@@ -48,19 +58,13 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {todos.length > 0 ? (
-                <TodoList />
-              ) : (
-                <Loader />
-              )}
+              {todos.length > 0 ? <TodoList /> : <Loader />}
             </div>
           </div>
         </div>
       </div>
 
-      {currentTodo !== null && (
-        <TodoModal />
-      )}
+      {currentTodo !== null && <TodoModal />}
     </>
   );
 };
