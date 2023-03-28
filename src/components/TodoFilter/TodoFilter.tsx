@@ -1,14 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actionsFilter } from '../../features/filter';
 
-export const TodoFilter: React.FC = () => {
+export const TodoFilter: React.FC = React.memo(() => {
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector((state) => state.filter);
+
+  useEffect(() => {
+    if (localStorage.getItem('todosStatus') !== null) {
+      dispatch(
+        actionsFilter.setStatus(
+          JSON.parse(localStorage.getItem('todosStatus') || ''),
+        ),
+      );
+    }
+
+    if (localStorage.getItem('todosQuery') !== null) {
+      dispatch(
+        actionsFilter.setQuery(
+          JSON.parse(localStorage.getItem('todosQuery') || ''),
+        ),
+      );
+    }
+  }, []);
+
+  const changeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(actionsFilter.setStatus(event.target.value));
+    localStorage.setItem('todosStatus', JSON.stringify(event.target.value));
+  };
+
+  const addQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(actionsFilter.setQuery(event.target.value));
+    localStorage.setItem('todosQuery', JSON.stringify(event.target.value));
+  };
+
   return (
     <form
       className="field has-addons"
-      onSubmit={event => event.preventDefault()}
+      onSubmit={(event) => event.preventDefault()}
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" value={status} onChange={changeStatus}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -20,6 +53,8 @@ export const TodoFilter: React.FC = () => {
         <input
           data-cy="searchInput"
           type="text"
+          value={query}
+          onChange={addQuery}
           className="input"
           placeholder="Search..."
         />
@@ -38,4 +73,4 @@ export const TodoFilter: React.FC = () => {
       </p>
     </form>
   );
-};
+});
