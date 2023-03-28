@@ -20,7 +20,6 @@ export const TodoFilter: React.FC = () => {
             value={filter.status}
             onChange={event => {
               filterDispatch(actions.setStatus(event.target.value as statusType))
-              console.log(event.target.value);
             }}
           >
             <option value={statusType.ALL}>
@@ -51,12 +50,16 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={() => filterDispatch(actions.clearQuery())}
-          />
+          {
+            filter.query.length > 0 && (
+              <button
+                data-cy="clearSearchButton"
+                type="button"
+                className="delete"
+                onClick={() => filterDispatch(actions.clearQuery())}
+              />
+            )
+          }
         </span>
       </p>
     </form>

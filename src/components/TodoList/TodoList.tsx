@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import cn from 'classnames';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
 import { useAppSelector } from '../../app/hooks';
@@ -55,6 +56,7 @@ export const TodoList: React.FC = () => {
             </th>
 
             <th>Title</th>
+            <th> </th>
           </tr>
         </thead>
 
@@ -68,16 +70,28 @@ export const TodoList: React.FC = () => {
               <>
                 {
                   visibleTodos.map((todo) => (
-                    <tr data-cy="todo">
+                    <tr data-cy="todo" key={todo.id}>
                       <td className="is-vcentered">
                         {todo.id}
                       </td>
                       <td className="is-vcentered">
-                        {todo.completed}
+                        <span className="icon">
+                          <i className={cn(
+                            'fas',
+                            {
+                              'fa-check': todo.completed,
+                            },
+                          )}
+                          />
+                        </span>
                       </td>
 
                       <td className="is-vcentered is-expanded">
-                        <p className="has-text-danger">
+                        <p className={cn({
+                          'has-text-danger': !todo.completed,
+                          'has-text-success': todo.completed,
+                        })}
+                        >
                           {todo.title}
                         </p>
                       </td>
