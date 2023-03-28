@@ -34,6 +34,11 @@ export const TodoFilter: React.FC = React.memo(() => {
     localStorage.setItem('todosQuery', JSON.stringify(event.target.value));
   };
 
+  const removeQuery = () => {
+    dispatch(actionsFilter.removeQuery());
+    localStorage.removeItem('todosQuery');
+  };
+
   return (
     <form
       className="field has-addons"
@@ -62,14 +67,17 @@ export const TodoFilter: React.FC = React.memo(() => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={removeQuery}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
