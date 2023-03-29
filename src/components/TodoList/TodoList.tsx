@@ -30,8 +30,8 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {(todos.length > 0
-        && filteredTodos.length === 0)
+      {(!!todos.length
+        && !filteredTodos.length)
         && (
           <p className="notification is-warning">
             There are no todos matching current filter criteria
