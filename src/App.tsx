@@ -50,7 +50,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               {isLoading && <Loader />}
-              {!isError && <TodoList />}
+              {(!isError && !isLoading) && <TodoList />}
             </div>
           </div>
         </div>
