@@ -1,27 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
-import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/currentTodo';
 
-type Prop = {
-  todo: Todo;
-  onClose: () => void;
-};
-
-export const TodoModal: React.FC<Prop> = (
-  {
-    todo,
-    onClose,
-  },
-) => {
+export const TodoModal = () => {
   const [user, setUser] = useState<User | null>(null);
+  const dispatch = useAppDispatch();
+  const todo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    getUser(todo.userId).then((res) => {
-      setUser(res);
-    });
+    if (todo !== null) {
+      getUser(todo.userId).then((res) => {
+        setUser(res);
+      });
+    }
   }, []);
+
+  const closeModalTodo = () => {
+    dispatch(actions.removeTodo());
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -36,7 +35,7 @@ export const TodoModal: React.FC<Prop> = (
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${todo.id}`}
+              {`Todo #${todo?.id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -44,17 +43,17 @@ export const TodoModal: React.FC<Prop> = (
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={onClose}
+              onClick={closeModalTodo}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {todo.title}
+              {todo?.title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              { todo.completed
+              { todo?.completed
                 ? <strong className="has-text-success">Done</strong>
                 : <strong className="has-text-danger">Planned</strong>}
 

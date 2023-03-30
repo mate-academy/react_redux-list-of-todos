@@ -1,27 +1,30 @@
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
+import { actions as filterAction } from '../../features/filter';
 
-type Prop = {
-  query: string;
-  onQuery: (query: string) => void;
-  onSelectOption: (option: Status) => void ;
-  onClear: () => void;
-};
+export const TodoFilter = () => {
+  const dispatch = useAppDispatch();
+  const filterQuery = useAppSelector(state => state.filter.query);
 
-export const TodoFilter: React.FC<Prop> = (
-  {
-    query,
-    onQuery,
-    onSelectOption,
-    onClear,
-  },
-) => {
+  const changeQuery = (value: string) => {
+    dispatch(filterAction.setQuery(value));
+  };
+
+  const changeOption = (value: Status) => {
+    dispatch(filterAction.setStatus(value));
+  };
+
+  const clearQuery = () => {
+    dispatch(filterAction.setQuery(''));
+  };
+
   return (
     <form className="field has-addons">
       <p className="control">
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={event => onSelectOption(event.target.value as Status)}
+            onChange={event => changeOption(event.target.value as Status)}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -36,8 +39,8 @@ export const TodoFilter: React.FC<Prop> = (
           type="text"
           className="input"
           placeholder="Search..."
-          value={query}
-          onChange={event => onQuery(event.target.value)}
+          value={filterQuery}
+          onChange={event => changeQuery(event.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -45,13 +48,13 @@ export const TodoFilter: React.FC<Prop> = (
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
 
-          {query && (
+          {filterQuery && (
             // eslint-disable-next-line jsx-a11y/control-has-associated-label
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={onClear}
+              onClick={clearQuery}
             />
           )}
         </span>

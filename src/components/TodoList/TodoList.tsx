@@ -1,19 +1,41 @@
-import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
+import { actions } from '../../features/currentTodo';
 
-type Prop = {
-  todos: Todo[],
-  onSelect: (value: Todo) => void;
-  selectedTodo: Todo | null;
-};
+export const TodoList = () => {
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+  const filterQuery = useAppSelector(state => state.filter.query);
+  const filterStatus = useAppSelector(state => state.filter.status);
 
-export const TodoList: React.FC<Prop> = (
-  {
-    todos,
-    onSelect,
-    selectedTodo,
-  },
-) => {
+  const cahngedSelectTodo = (value: Todo) => {
+    dispatch(actions.setTodo(value));
+  };
+
+  const filterTodo = (queryTodo: string, optionQuery: string) => {
+    switch (optionQuery) {
+      case 'active':
+        return todos.filter(todo => !todo.completed
+          && todo.title.toLowerCase().includes(queryTodo.toLowerCase()));
+
+      case 'completed':
+        return todos.filter(todo => todo.completed
+          && todo.title.toLowerCase().includes(queryTodo.toLowerCase()));
+
+      default:
+        if (filterQuery.length > 0) {
+          return todos.filter(
+            todo => todo.title.toLowerCase().includes(queryTodo.toLowerCase()),
+          );
+        }
+
+        return todos;
+    }
+  };
+
+  const filteredTodos = filterTodo(filterQuery, filterStatus);
+
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -30,7 +52,7 @@ export const TodoList: React.FC<Prop> = (
       </thead>
 
       <tbody>
-        {todos.map(todo => (
+        {filteredTodos.map(todo => (
           <tr
             data-cy="todo"
             className=""
@@ -57,10 +79,10 @@ export const TodoList: React.FC<Prop> = (
                 data-cy="selectButton"
                 className="button"
                 type="button"
-                onClick={() => onSelect(todo)}
+                onClick={() => cahngedSelectTodo(todo)}
               >
                 <span className="icon">
-                  <i className={selectedTodo === todo
+                  <i className={currentTodo === todo
                     ? 'far fa-eye-slash'
                     : 'far fa-eye'}
                   />
