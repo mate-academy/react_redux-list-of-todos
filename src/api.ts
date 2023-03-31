@@ -18,7 +18,7 @@ function get<T>(url: string): Promise<T> {
     .then(() => fetch(fullURL))
     .then(response => {
       if (!response.ok) {
-        return Promise.reject(new Error(`${response.status}`));
+        throw new Error(`${response.status}`);
       }
 
       return response.json();
