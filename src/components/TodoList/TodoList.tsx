@@ -14,20 +14,22 @@ export const TodoList = () => {
   };
 
   const filterTodo = (queryTodo: string, optionQuery: string) => {
+    const filterCondition = (value: string) => {
+      return value.toLowerCase().includes(queryTodo.toLowerCase());
+    };
+
     switch (optionQuery) {
       case 'active':
         return todos.filter(todo => !todo.completed
-          && todo.title.toLowerCase().includes(queryTodo.toLowerCase()));
+          && filterCondition(todo.title));
 
       case 'completed':
         return todos.filter(todo => todo.completed
-          && todo.title.toLowerCase().includes(queryTodo.toLowerCase()));
+          && filterCondition(todo.title));
 
       default:
         if (filterQuery.length > 0) {
-          return todos.filter(
-            todo => todo.title.toLowerCase().includes(queryTodo.toLowerCase()),
-          );
+          return todos.filter(todo => filterCondition(todo.title));
         }
 
         return todos;
