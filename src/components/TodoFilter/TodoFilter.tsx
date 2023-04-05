@@ -1,17 +1,47 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { Status } from '../../types/Status';
+import { actions as filterActions } from '../../features/filter';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-export const TodoFilter: React.FC = () => {
+export const TodoFilter: React.FC = React.memo(() => {
+  const currentFilters = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
+  const { status, query } = currentFilters;
+
+  const changeStatus = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target;
+
+    if (value === Status.ALL) {
+      dispatch(filterActions.filterAll(value, query));
+    }
+
+    if (value === Status.ACTIVE) {
+      dispatch(filterActions.filterActive(value, query));
+    }
+
+    if (value === Status.COMPLETED) {
+      dispatch(filterActions.filterCompleted(value, query));
+    }
+  };
+
+  const setSearchString = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    dispatch(filterActions.filterAll(status, value));
+  };
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={changeStatus}
+          >
+            <option value={Status.ALL}>All</option>
+            <option value={Status.ACTIVE}>Active</option>
+            <option value={Status.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +52,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={setSearchString}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -29,13 +61,17 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {query.length > 0 && (
+          // eslint-disable-next-line jsx-a11y/control-has-associated-label
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(filterActions.filterAll(status, ''))}
+            />
+          )}
         </span>
       </p>
     </form>
   );
-};
+});
