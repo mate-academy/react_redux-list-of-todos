@@ -12,11 +12,11 @@ export const TodoFilter = () => {
     dispatch(actions.filter(todos, filterBy, query));
   }, [todos, query, filterBy]);
 
-  const hendlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlerInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
 
-  const hendlerSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handlerSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilterBy(e.target.value);
   };
 
@@ -34,7 +34,7 @@ export const TodoFilter = () => {
           <select
             data-cy="statusSelect"
             value={filterBy}
-            onChange={hendlerSelect}
+            onChange={handlerSelect}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -50,7 +50,7 @@ export const TodoFilter = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={hendlerInput}
+          onChange={handlerInput}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

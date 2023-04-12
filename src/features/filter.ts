@@ -1,3 +1,4 @@
+import { filterTodos } from '../helper/filterTodos';
 import { Todo } from '../types/Todo';
 
 const filter = (todos: Todo[], type: string, query: string) => ({
@@ -19,29 +20,9 @@ type Action = {
 const filterReducer = (state: Todo[] = [], action: Action): Todo[] => {
   switch (action.type) {
     case 'all':
-      return (
-        action.query === ''
-          ? action.todos
-          : [...action.todos].filter(todo => (
-            todo.title.toLowerCase().includes(action.query.toLowerCase())
-          ))
-      );
-
     case 'active':
     case 'completed':
-      return [...action.todos].filter(todo => {
-        if (action.type === 'active') {
-          return (
-            todo.completed
-            && todo.title.toLowerCase().includes(action.query.toLowerCase())
-          );
-        }
-
-        return (
-          !todo.completed
-          && todo.title.toLowerCase().includes(action.query.toLowerCase())
-        );
-      });
+      return filterTodos(action.todos, action.type, action.query);
 
     default:
       return state;

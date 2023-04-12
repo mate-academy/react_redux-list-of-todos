@@ -33,7 +33,7 @@ export const TodoModal: FC = () => {
     }
   }, [selectedTodo]);
 
-  const hendlerClose = () => {
+  const handlerClose = () => {
     dispatchSelectedTodo(actionTodos.removeTodo());
     setUser(null);
   };
@@ -60,7 +60,7 @@ export const TodoModal: FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={hendlerClose}
+              onClick={handlerClose}
             />
           </header>
         </div>
@@ -81,7 +81,7 @@ export const TodoModal: FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={hendlerClose}
+              onClick={handlerClose}
             />
           </header>
 

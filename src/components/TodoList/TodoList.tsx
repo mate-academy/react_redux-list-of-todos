@@ -6,8 +6,9 @@ import { Todo } from '../../types/Todo';
 
 export const TodoList: FC = () => {
   const filtredTodos = useAppSelector(store => store.filter);
+  const selectedTodo = useAppSelector(store => store.currentTodo);
   const dispatchSelectedTodo = useAppDispatch();
-  const hendlerSetTodo = (todo: Todo) => {
+  const handlerSetTodo = (todo: Todo) => {
     dispatchSelectedTodo(actionTodos.setTodo(todo));
   };
 
@@ -61,10 +62,10 @@ export const TodoList: FC = () => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => hendlerSetTodo(todo)}
+                    onClick={() => handlerSetTodo(todo)}
                   >
                     <span className="icon">
-                      <i className="far fa-eye" />
+                      <i className={`far ${selectedTodo?.id === todo.id ? 'fa-eye-slash' : 'fa-eye'}`} />
                     </span>
                   </button>
                 </td>
