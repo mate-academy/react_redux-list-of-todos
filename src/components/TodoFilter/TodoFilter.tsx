@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent } from 'react';
+import React, { ChangeEvent, FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';

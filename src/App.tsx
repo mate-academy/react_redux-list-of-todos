@@ -22,8 +22,6 @@ export const App: React.FC = () => {
       const todosFromServer = await getTodos();
 
       dispatch(actions.setTodos(todosFromServer));
-    } catch {
-      Promise.reject();
     } finally {
       setIsLoading(false);
     }
