@@ -9,7 +9,6 @@ export const TodoFilter: React.FC = () => {
 
   function handleResetQuery() {
     dispatch(filterActions.setQuery(''));
-    dispatch(filterActions.setStatus('all'));
   }
 
   function handleQueryChange(event: ChangeEvent<HTMLInputElement>) {
