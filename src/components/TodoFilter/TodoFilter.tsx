@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const [tempQuery, setTempQuery] = useState('');
@@ -11,15 +12,15 @@ export const TodoFilter: React.FC = () => {
     const { value } = e.target;
 
     switch (value) {
-      case 'all':
+      case Status.all:
         dispatch(filterActions.setStatusAll());
         break;
 
-      case 'active':
+      case Status.active:
         dispatch(filterActions.setStatusActive());
         break;
 
-      case 'completed':
+      case Status.complited:
         dispatch(filterActions.setStatusComplited());
         break;
 
@@ -46,9 +47,9 @@ export const TodoFilter: React.FC = () => {
       <p className="control">
         <span className="select">
           <select data-cy="statusSelect" onChange={handleSelect}>
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Status.all}>All</option>
+            <option value={Status.active}>Active</option>
+            <option value={Status.complited}>Completed</option>
           </select>
         </span>
       </p>
@@ -69,15 +70,13 @@ export const TodoFilter: React.FC = () => {
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
 
           {tempQuery && (
-            <>
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-              <button
-                data-cy="clearSearchButton"
-                type="button"
-                className="delete"
-                onClick={handleClearQuery}
-              />
-            </>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              aria-label="clearSearchButton"
+              className="delete"
+              onClick={handleClearQuery}
+            />
           )}
         </span>
       </p>

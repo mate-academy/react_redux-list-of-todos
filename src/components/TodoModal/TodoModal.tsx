@@ -14,7 +14,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    getUser(todo.userId).then(loadedUser => setUser(loadedUser));
+    getUser(todo.userId).then(setUser);
   }, []);
 
   const dispatch = useAppDispatch();
