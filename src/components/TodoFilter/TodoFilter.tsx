@@ -1,6 +1,20 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { filterActions, FilterTodoStatus } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
+  const { query } = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
+  const handlerSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(
+      filterActions.setTodoFilterStatus(event.target.value as FilterTodoStatus),
+    );
+  };
+
+  const handlerInput = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterActions.setQuery(event.target.value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +22,10 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select data-cy="statusSelect" onChange={handlerSelect}>
+            <option value={FilterTodoStatus.ALL}>All</option>
+            <option value={FilterTodoStatus.ACTIVE}>Active</option>
+            <option value={FilterTodoStatus.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +36,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handlerInput}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
