@@ -62,7 +62,7 @@ export const TodoModal: React.FC<Props> = ({ currentTodo, setIsHasError }) => {
               <p className="block" data-cy="modal-title">{currentTodo.title}</p>
 
               <p className="block" data-cy="modal-user">
-                {currentTodo.completed
+                {!currentTodo.completed
                   ? <strong className="has-text-danger">Planned</strong>
                   : <strong className="has-text-success">Done</strong>}
                 {' by '}
