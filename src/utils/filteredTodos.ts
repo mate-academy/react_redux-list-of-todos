@@ -7,16 +7,16 @@ export const filteredTodos = (
   status: Status,
 ) => {
   return todos.filter(({ completed, title }) => {
+    const isFilteredQuery = !query
+      || title.toLowerCase().includes(query.toLocaleLowerCase());
+
     switch (status) {
       case 'active':
-        return !completed && (!query
-          || title.toLowerCase().includes(query.toLocaleLowerCase()));
+        return !completed && isFilteredQuery;
       case 'completed':
-        return completed && (!query
-          || title.toLowerCase().includes(query.toLocaleLowerCase()));
+        return completed && isFilteredQuery;
       default:
-        return true && (!query
-          || title.toLowerCase().includes(query.toLocaleLowerCase()));
+        return true && isFilteredQuery;
     }
   });
 };

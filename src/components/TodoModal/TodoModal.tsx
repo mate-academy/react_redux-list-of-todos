@@ -9,10 +9,10 @@ import { Todo } from '../../types/Todo';
 
 type Props = {
   currentTodo: Todo;
-  setIsHasError: (value: string) => void;
+  setHasError: (value: string) => void;
 };
 
-export const TodoModal: React.FC<Props> = ({ currentTodo, setIsHasError }) => {
+export const TodoModal: React.FC<Props> = ({ currentTodo, setHasError }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
@@ -25,8 +25,8 @@ export const TodoModal: React.FC<Props> = ({ currentTodo, setIsHasError }) => {
 
         setUser(userData);
       } catch (error) {
-        setIsHasError(`${error}`);
-        warningTimer(setIsHasError, '', 3000);
+        setHasError(`${error}`);
+        warningTimer(setHasError, '', 3000);
       } finally {
         setIsLoading(false);
       }

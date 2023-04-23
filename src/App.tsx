@@ -15,10 +15,13 @@ import { warningTimer } from './utils/warningTimer';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { todos, currentTodo, filter } = useAppSelector(state => state);
-  const { query, status } = filter;
+  const todos = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
   const [isLoading, setIsLoading] = useState(false);
-  const [isHasError, setIsHasError] = useState('');
+  const [hasError, setHasError] = useState('');
 
   const visibleTodos = useMemo(() => (
     filteredTodos(todos, query, status)
@@ -32,8 +35,8 @@ export const App: React.FC = () => {
 
         dispatch(todoActions.setTodos(todosData));
       } catch (error) {
-        setIsHasError(`${error}`);
-        warningTimer(setIsHasError, '', 3000);
+        setHasError(`${error}`);
+        warningTimer(setHasError, '', 3000);
       } finally {
         setIsLoading(false);
       }
@@ -51,12 +54,12 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
-            {isHasError && (
+            {hasError && (
               <div
                 className="notification is-danger"
                 data-cy="PostsLoadingError"
               >
-                Something went wrong!
+                {hasError}
               </div>
             )}
 
@@ -69,7 +72,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {currentTodo && <TodoModal currentTodo={currentTodo} setIsHasError={setIsHasError} />}
+      {currentTodo && <TodoModal currentTodo={currentTodo} setHasError={setHasError} />}
     </>
   );
 };
