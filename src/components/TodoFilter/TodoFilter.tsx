@@ -5,7 +5,7 @@ import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const query = useAppSelector(state => state.filter.query);
-  const status = useAppSelector(state => state.filter.status)
+  const status = useAppSelector(state => state.filter.status);
   const dispatch = useAppDispatch();
 
   const setQuery = (text: string) => dispatch(actions.setQuery(text));

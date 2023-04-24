@@ -1,5 +1,6 @@
 import { Status } from '../types/Status';
 import { Todo } from '../types/Todo';
+import { FilterTodos } from '../types/filterTodos';
 
 export const filteredTodos = (
   todos: Todo[],
@@ -11,9 +12,9 @@ export const filteredTodos = (
       || title.toLowerCase().includes(query.toLocaleLowerCase());
 
     switch (status) {
-      case 'active':
+      case FilterTodos.ACTIVE:
         return !completed && isFilteredQuery;
-      case 'completed':
+      case FilterTodos.COMPLETED:
         return completed && isFilteredQuery;
       default:
         return true && isFilteredQuery;
