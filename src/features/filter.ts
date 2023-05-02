@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Status } from '../types/Status';
 
 export enum FilterActionsTypes {
