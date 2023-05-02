@@ -20,7 +20,6 @@ const setSelect = (select: Status): FilterSelectAction => ({
 });
 
 export const actions = { setQuery, setSelect };
-console.log(actions);
 
 type Action = FilterQueryAction | FilterSelectAction;
 
