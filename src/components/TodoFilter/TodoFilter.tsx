@@ -1,13 +1,14 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const { query, select } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(actions.setSelect(event.target.value));
+    dispatch(actions.setSelect(event.target.value as Status));
   };
 
   const hadleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {

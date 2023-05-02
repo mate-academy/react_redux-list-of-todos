@@ -1,16 +1,20 @@
 import { Todo } from '../types/Todo';
 
-type SetAction = { type: 'todos/set', payload: Todo[] };
+export enum TodosActionType {
+  SET = 'todos/set',
+}
+
+type SetAction = { type: TodosActionType.SET, payload: Todo[] };
 
 const set = (todos: Todo[]): SetAction => ({
-  type: 'todos/set',
+  type: TodosActionType.SET,
   payload: todos,
 });
 
 export const actions = { set };
 
 const todosReducer = (state: Todo[] = [], action: SetAction) => {
-  if (action.type === 'todos/set') {
+  if (action.type === TodosActionType.SET) {
     return action.payload;
   }
 
