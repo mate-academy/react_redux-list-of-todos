@@ -12,6 +12,23 @@ export const TodoList: React.FC = () => {
     dispatch(actions.setTodo(todo));
   };
 
+  const { query, status } = useAppSelector(state => state.filter);
+
+  const selectedList = () => {
+    switch (status) {
+      case 'active':
+        return todos.filter(todo => todo.completed === false);
+      case 'completed':
+        return todos.filter(todo => todo.completed === true);
+      default:
+        return todos;
+    }
+  };
+
+  const modifiedList = selectedList().filter(list => {
+    return list.title.toUpperCase().includes(query.toUpperCase());
+  });
+
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -28,7 +45,7 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-        {todos.map(todo => (
+        {modifiedList.map(todo => (
           <tr
             data-cy="todo"
             className=""
