@@ -1,1 +1,3 @@
-export type Status = 'all' | 'active' | 'completed';
+import { FilterType } from './FilterType';
+
+export type Status = FilterType.All | FilterType.Active | FilterType.Completed;
