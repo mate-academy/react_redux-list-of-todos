@@ -1,17 +1,65 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
+
+  const handleChangeStatus = (event: ChangeEvent<HTMLSelectElement>) => {
+    const statusFromView = event.target.value as Status;
+
+    switch (statusFromView) {
+      case 'all':
+        return dispatch(filterActions.filterAll(statusFromView, query));
+
+      case 'active':
+        return dispatch(filterActions.filterActive(statusFromView, query));
+
+      case 'completed':
+        return dispatch(filterActions.filterCompleted(statusFromView, query));
+
+      default:
+        return dispatch(filterActions.filterAll(statusFromView, query));
+    }
+  };
+
+  const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {
+    const queryFromView = event.target.value;
+
+    switch (status) {
+      case 'all':
+        return dispatch(filterActions.filterAll(Status.ALL, queryFromView));
+      case 'active':
+        return dispatch(filterActions
+          .filterActive(Status.ACTIVE, queryFromView));
+      case 'completed':
+        return dispatch(filterActions
+          .filterCompleted(Status.COMPLETED, queryFromView));
+      default:
+        return dispatch(filterActions.filterAll(Status.ALL, query));
+    }
+  };
+
+  const resetQuery = () => {
+    return dispatch(filterActions.filterAll(status, ''));
+  };
+
   return (
     <form
       className="field has-addons"
-      onSubmit={event => event.preventDefault()}
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleChangeStatus}
+          >
+            <option value={Status.ALL}>All</option>
+            <option value={Status.ACTIVE}>Active</option>
+            <option value={Status.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,19 +70,25 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={handleChangeQuery}
+          value={query}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={resetQuery}
+            />
+          </span>
+        )}
+
       </p>
     </form>
   );
