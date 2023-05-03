@@ -29,6 +29,7 @@ export const TodoFilter: React.FC = () => {
       <p className="control">
         <span className="select">
           <select
+            title="select filter"
             data-cy="statusSelect"
             value={status}
             onChange={handleSelect}
@@ -53,11 +54,11 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {query.length && (
+        {query.length > 0 && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               data-cy="clearSearchButton"
+              aria-label="Delete"
               type="button"
               className="delete"
               onClick={eraseInput}
