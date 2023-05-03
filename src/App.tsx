@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -10,24 +10,30 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
+import { getVisibleTodos } from './helper';
 
 export const App: React.FC = () => {
   const [hasError, setHasError] = useState(false);
-  const [isTodosLoaded, setIsTodosLoaded] = useState(false);
-  const [isTodosReceived, setIsTodosReceived] = useState(false);
+  const [hasTodosLoaded, setHasTodosLoaded] = useState(false);
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+  const { query, status } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
+
+  const visibleTodos = useMemo(
+    () => getVisibleTodos(todos, status, query),
+    [todos, status, query],
+  );
 
   const getTodosFromServer = async () => {
     try {
-      const todos = await getTodos();
+      const apiTodos = await getTodos();
 
-      dispatch(todosActions.setTodos(todos));
-      setIsTodosLoaded(true);
+      dispatch(todosActions.setTodos(apiTodos));
     } catch (error) {
       setHasError(true);
     } finally {
-      setIsTodosReceived(true);
+      setHasTodosLoaded(true);
     }
   };
 
@@ -51,10 +57,10 @@ export const App: React.FC = () => {
             )}
 
             <div className="block">
-              {!isTodosLoaded && <Loader />}
+              {!hasTodosLoaded && <Loader />}
 
-              {isTodosReceived && (
-                <TodoList />
+              {hasTodosLoaded && (
+                <TodoList todos={visibleTodos} />
               )}
 
             </div>

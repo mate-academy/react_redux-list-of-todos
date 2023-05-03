@@ -1,19 +1,16 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getVisibleTodos } from '../../helper';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Todo } from '../../types/Todo';
 
-export const TodoList: React.FC = () => {
-  const todos = useAppSelector(state => state.todos);
+type Props = {
+  todos: Todo[];
+};
+
+export const TodoList: React.FC<Props> = ({ todos }) => {
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const { query, status } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
-
-  const visibleTodos = useMemo(
-    () => getVisibleTodos(todos, status, query),
-    [todos, status, query],
-  );
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -31,7 +28,7 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-        {visibleTodos.map(todo => {
+        {todos.map(todo => {
           const { id, completed, title } = todo;
 
           const isCurrent = id === currentTodo?.id;
