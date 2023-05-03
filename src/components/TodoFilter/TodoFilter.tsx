@@ -7,8 +7,6 @@ export const TodoFilter: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  // const [resetIsClicked, setResetIsClicked] = useState(false);
-
   const handleSelect: React.ChangeEventHandler<HTMLSelectElement>
   = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
@@ -17,7 +15,6 @@ export const TodoFilter: React.FC = () => {
   };
 
   const eraseInput = () => {
-    // setResetIsClicked(false);
     dispatch(filterActions.setQuery(''));
   };
 
@@ -25,7 +22,6 @@ export const TodoFilter: React.FC = () => {
     const { value } = event.target;
 
     dispatch(filterActions.setQuery(value));
-    // setResetIsClicked(true);
   };
 
   return (
