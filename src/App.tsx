@@ -1,14 +1,29 @@
-/* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from './app/hooks';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
+import { getTodos } from './api';
+import { setTodos } from './features/todos';
+import { Todo } from './types/Todo';
+
 export const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos as Todo[]);
+
+  useEffect(() => {
+    getTodos()
+      .then(api => {
+        dispatch(setTodos(api));
+      });
+  }, []);
+
   return (
     <>
       <div className="section">
@@ -21,14 +36,17 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {todos.length > 0
+                ? <TodoList />
+                : <Loader />}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {selectedTodo && (
+        <TodoModal todo={selectedTodo} />
+      )}
     </>
   );
 };
