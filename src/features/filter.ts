@@ -1,4 +1,5 @@
 import { Status } from '../types/Status';
+import { ActionFilter } from '../types/ActionFilter';
 
 type SetFilter = { type: 'setFilter'; payload: Status; };
 type SetQuerry = { type: 'setQuery'; payload: string; };
@@ -6,8 +7,10 @@ type SetQuerry = { type: 'setQuery'; payload: string; };
 export type StateFilter = { query: string; status: Status };
 type Action = SetFilter | SetQuerry;
 
-const setFilter = (status: Status) => ({ type: 'setFilter', payload: status });
-const setQuery = (query: string) => ({ type: 'setQuery', payload: query });
+const setFilter
+= (status: Status) => ({ type: ActionFilter.setFilter, payload: status });
+const setQuery
+= (query: string) => ({ type: ActionFilter.setQuery, payload: query });
 
 export const actions = { setFilter, setQuery };
 
@@ -23,12 +26,12 @@ const filterReducer = (
   const action: SetFilter | SetQuerry = actionFilter;
 
   switch (action.type) {
-    case 'setQuery':
+    case ActionFilter.setQuery:
       return {
         ...state,
         query: action.payload,
       };
-    case 'setFilter':
+    case ActionFilter.setFilter:
       return {
         ...state,
         status: action.payload,

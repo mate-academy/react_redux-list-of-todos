@@ -3,6 +3,7 @@ import React from 'react';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { FilterType } from '../../types/FilterType';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -16,9 +17,9 @@ export const TodoList: React.FC = () => {
 
   const selectedList = () => {
     switch (status) {
-      case 'active':
+      case FilterType.active:
         return todos.filter(todo => todo.completed === false);
-      case 'completed':
+      case FilterType.completed:
         return todos.filter(todo => todo.completed === true);
       default:
         return todos;

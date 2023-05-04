@@ -1,5 +1,6 @@
 import { Action } from 'redux';
 import { Todo } from '../types/Todo';
+import { ActionTodo } from '../types/ActionTodo';
 
 type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
 
@@ -8,10 +9,10 @@ type SetTodoAction = {
   payload: Todo;
 };
 
-const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
+const removeTodo = (): RemoveTodoAction => ({ type: ActionTodo.REMOVE });
 
 const setTodo = (todo: Todo): SetTodoAction => ({
-  type: 'currentTodo/SET',
+  type: ActionTodo.SET,
   payload: todo,
 });
 
@@ -22,14 +23,14 @@ type ActionsTodo = SetTodoAction | RemoveTodoAction;
 
 const currentTodoReducer = (
   state: State = null,
-  actionTodo: Action,
+  ActionFilter: Action,
 ): State => {
-  const action = actionTodo as ActionsTodo;
+  const action = ActionFilter as ActionsTodo;
 
   switch (action.type) {
-    case 'currentTodo/SET':
+    case ActionTodo.SET:
       return action.payload;
-    case 'currentTodo/REMOVE':
+    case ActionTodo.REMOVE:
       return null;
 
     default:

@@ -37,9 +37,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               {todos.length > 0
-                ? (
-                  <TodoList />
-                )
+                ? <TodoList />
                 : <Loader />}
             </div>
           </div>
