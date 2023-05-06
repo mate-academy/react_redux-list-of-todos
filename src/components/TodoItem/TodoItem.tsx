@@ -19,7 +19,12 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   const isCurrentTodo = currentTodo?.id === todo.id;
 
   return (
-    <tr data-cy="todo">
+    <tr
+      data-cy="todo"
+      className={classnames({
+        'has-background-info-light': isCurrentTodo,
+      })}
+    >
       <td className="is-vcentered">{todo.id}</td>
       <td className="is-vcentered">
         {todo.completed

@@ -8,7 +8,7 @@ import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -25,8 +25,6 @@ export const TodoModal: React.FC = () => {
 
   const fetchUser = async () => {
     try {
-      setIsLoading(true);
-
       const foundUser = await getUser(userId);
 
       setUser(foundUser);
@@ -49,58 +47,57 @@ export const TodoModal: React.FC = () => {
       data-cy="modal"
     >
       <div className="modal-background" />
-      {isLoading
-        ? <Loader />
-        : (
-          <div className="modal-card">
-            <header className="modal-card-head">
-              <div
-                className="modal-card-title has-text-weight-medium"
-                data-cy="modal-header"
-              >
-                {hasError
-                  ? (
-                    'Error'
-                  )
-                  : `Todo #${id}`}
-              </div>
-
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-              <button
-                type="button"
-                className="delete"
-                data-cy="modal-close"
-                onClick={removeTodo}
-              />
-            </header>
-
-            <div className="modal-card-body">
-              <p
-                className="block"
-                data-cy="modal-title"
-              >
-                {hasError
-                  ? (
-                    <p className="notification is-warning">
-                      Failed to load user from server
-                    </p>
-                  )
-                  : title}
-
-              </p>
-
-              {!hasError && (
-                <p className="block" data-cy="modal-user">
-                  {completed
-                    ? <strong className="has-text-success">Done</strong>
-                    : <strong className="has-text-danger">Planned</strong>}
-                  {' by '}
-                  <a href={`mailto:${user?.email}`}>{user?.name}</a>
-                </p>
-              )}
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <div
+              className="modal-card-title has-text-weight-medium"
+              data-cy="modal-header"
+            >
+              {hasError
+                ? (
+                  'Error'
+                )
+                : `Todo #${id}`}
             </div>
+
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              type="button"
+              className="delete"
+              data-cy="modal-close"
+              onClick={removeTodo}
+            />
+          </header>
+
+          <div className="modal-card-body">
+            <p
+              className="block"
+              data-cy="modal-title"
+            >
+              {hasError
+                ? (
+                  <p className="notification is-warning">
+                    Failed to load user from server
+                  </p>
+                )
+                : title}
+
+            </p>
+
+            {!hasError && (
+              <p className="block" data-cy="modal-user">
+                {completed
+                  ? <strong className="has-text-success">Done</strong>
+                  : <strong className="has-text-danger">Planned</strong>}
+                {' by '}
+                <a href={`mailto:${user?.email}`}>{user?.name}</a>
+              </p>
+            )}
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 };
