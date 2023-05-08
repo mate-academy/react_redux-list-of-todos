@@ -9,7 +9,7 @@ interface IProps {
   todos: Todo[];
 }
 
-export const TodoList: React.FC<IProps> = ({ todos }) => {
+export const TodoList: React.FC<IProps> = React.memo(({ todos }) => {
   const currentTodo = useAppSelector((state) => state.currentTodo);
   const dispatch = useAppDispatch();
 
@@ -92,4 +92,4 @@ export const TodoList: React.FC<IProps> = ({ todos }) => {
       </table>
     </>
   );
-};
+});
