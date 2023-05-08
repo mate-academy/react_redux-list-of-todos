@@ -97,7 +97,10 @@ export const TodoList = () => {
                   <span className="icon">
                     <i className={
                       cn('far far',
-                        { 'fa-eye-slash': currTodo, 'fa-eye': !currTodo })
+                        {
+                          'fa-eye-slash': currTodo?.id === todo.id,
+                          'fa-eye': currTodo?.id !== todo.id,
+                        })
                     }
                     />
                   </span>
