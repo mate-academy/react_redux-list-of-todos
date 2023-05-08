@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import { actions as FilterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 import { useAppSelector } from '../../app/hooks';
+import { Filter } from '../../types/Filter';
 
 export const TodoFilter = () => {
   const dispatch = useDispatch();
@@ -30,9 +31,9 @@ export const TodoFilter = () => {
             data-cy="statusSelect"
             onChange={e => onChangeFilter(e.target.value as Status)}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Filter.ALL}>All</option>
+            <option value={Filter.ACTIVE}>Active</option>
+            <option value={Filter.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>

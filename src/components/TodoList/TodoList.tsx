@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { Filter } from '../../types/Filter';
 
 export const TodoList = () => {
   const dispatch = useDispatch();
@@ -14,9 +15,9 @@ export const TodoList = () => {
 
   const filteredTodos = useMemo(() => {
     switch (filter) {
-      case 'completed':
+      case Filter.COMPLETED:
         return todos.filter(todo => todo.completed);
-      case 'active':
+      case Filter.ACTIVE:
         return todos.filter(todo => !todo.completed);
       default:
         return todos;
