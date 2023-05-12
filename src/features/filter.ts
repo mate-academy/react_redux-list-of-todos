@@ -1,5 +1,5 @@
 type ChangeQuery = { type: 'filter/changeQuery', payload: string };
-type ChangeStatus = { type: 'filter/changeStatus', payload: Status };
+type ChangeStatus = { type: 'filter/changeStatus', payload: string };
 type Action = ChangeQuery | ChangeStatus;
 type StateType = { query: string, status: string };
 
