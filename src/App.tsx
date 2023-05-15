@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -15,29 +15,28 @@ import { notificationTimer } from './utils/notificationTimer';
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const error = useAppSelector(state => state.todos.error);
+  const isLoading = useAppSelector(state => state.todos.isLoading);
   const query = useAppSelector(state => state.filter.query);
   const status = useAppSelector(state => state.filter.status);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const visibleTodos = useMemo(() => (
-    filteredTodos(todos, query, status)
+    filteredTodos(todos.data, query, status)
   ), [todos, query, status]);
 
   useEffect(() => {
     (async () => {
       try {
-        setIsLoading(true);
+        dispatch(todosActions.setIsLoading(true));
         const todosFromServer = await getTodos();
 
         dispatch(todosActions.setTodos(todosFromServer));
       } catch (err) {
-        setError(`${err}`);
-        notificationTimer(setError, '', 3000);
+        dispatch(todosActions.setError(`${err}`));
+        notificationTimer(todosActions.setError, '', 3000);
       } finally {
-        setIsLoading(false);
+        dispatch(todosActions.setIsLoading(false));
       }
     })();
   }, []);
@@ -74,7 +73,6 @@ export const App: React.FC = () => {
       {currentTodo && (
         <TodoModal
           todo={currentTodo}
-          setError={setError}
         />
       )}
     </>

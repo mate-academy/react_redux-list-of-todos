@@ -6,13 +6,13 @@ import { useAppDispatch } from '../../app/hooks';
 import { getUser } from '../../api';
 import { notificationTimer } from '../../utils/notificationTimer';
 import { actions as todoActions } from '../../features/currentTodo';
+import { actions as todosActions } from '../../features/todos';
 
 type Props = {
   todo: Todo;
-  setError: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export const TodoModal: React.FC<Props> = ({ todo, setError }) => {
+export const TodoModal: React.FC<Props> = ({ todo }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
@@ -25,8 +25,8 @@ export const TodoModal: React.FC<Props> = ({ todo, setError }) => {
 
         setUser(fetchedUser);
       } catch (error) {
-        setError(`${error}`);
-        notificationTimer(setError, '', 3000);
+        dispatch(todosActions.setError(`${error}`));
+        notificationTimer(todosActions.setError, '', 3000);
       } finally {
         setIsLoading(false);
       }
