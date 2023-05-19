@@ -1,59 +1,30 @@
 import { Status } from '../types/Status';
 
-type FilterAll = {
-  type: 'todos/ALL',
-  payload: {
-    status: Status,
-    query: string,
-  }
+type ChangeStatus = {
+  type: 'changeStatus',
+  payload: Status,
 };
 
-type FilterActive = {
-  type: 'todos/ACTIVE',
-  payload: {
-    status: Status,
-    query: string,
-  }
+type ChangeQuery = {
+  type: 'changeQuery',
+  payload: string,
 };
 
-type FilterCompleted = {
-  type: 'todos/COMPLETED',
-  payload: {
-    status: Status,
-    query: string,
-  }
-};
-
-const filterAll = (status: Status, query: string): FilterAll => ({
-  type: 'todos/ALL',
-  payload: {
-    status,
-    query,
-  },
+const changeStatus = (status: Status): ChangeStatus => ({
+  type: 'changeStatus',
+  payload: status,
 });
 
-const filterActive = (status: Status, query: string): FilterActive => ({
-  type: 'todos/ACTIVE',
-  payload: {
-    status,
-    query,
-  },
+const changeQuery = (query: string): ChangeQuery => ({
+  type: 'changeQuery',
+  payload: query,
 });
 
-const filterCompleted = (status: Status, query: string): FilterCompleted => ({
-  type: 'todos/COMPLETED',
-  payload: {
-    status,
-    query,
-  },
-});
-
-type Action = FilterAll | FilterActive | FilterCompleted;
+type Action = ChangeQuery | ChangeStatus;
 
 export const actions = {
-  filterActive,
-  filterAll,
-  filterCompleted,
+  changeStatus,
+  changeQuery,
 };
 
 type State = {
@@ -61,30 +32,25 @@ type State = {
   status: Status,
 };
 
-const defaultState: State = {
+const initialState: State = {
   query: '',
-  status: 'all',
+  status: Status.ALL,
 };
 
 const filterReducer = (
-  state: State = defaultState,
+  state: State = initialState,
   action: Action,
 ) => {
   switch (action.type) {
-    case 'todos/ALL':
+    case 'changeStatus':
       return {
-        query: action.payload.query,
-        status: action.payload.status,
+        ...state,
+        status: action.payload,
       };
-    case 'todos/ACTIVE':
+    case 'changeQuery':
       return {
-        query: action.payload.query,
-        status: action.payload.status,
-      };
-    case 'todos/COMPLETED':
-      return {
-        query: action.payload.query,
-        status: action.payload.status,
+        ...state,
+        query: action.payload,
       };
     default:
       return state;

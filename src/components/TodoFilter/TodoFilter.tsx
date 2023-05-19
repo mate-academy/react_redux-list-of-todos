@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const currentFilters = useAppSelector(state => state.filter);
@@ -10,7 +11,7 @@ export const TodoFilter: React.FC = () => {
   const setQuery = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
 
-    dispatch(filterActions.filterAll(status, value));
+    dispatch(filterActions.changeQuery(value));
   };
 
   const setStatus = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -18,13 +19,13 @@ export const TodoFilter: React.FC = () => {
 
     switch (value) {
       case 'all':
-        dispatch(filterActions.filterAll(value, query));
+        dispatch(filterActions.changeStatus(Status.ALL));
         break;
       case 'active':
-        dispatch(filterActions.filterActive(value, query));
+        dispatch(filterActions.changeStatus(Status.ACTIVE));
         break;
       case 'completed':
-        dispatch(filterActions.filterCompleted(value, query));
+        dispatch(filterActions.changeStatus(Status.COMPLETED));
         break;
       default:
         break;
@@ -64,13 +65,15 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {query.length && (
+          {query.length !== 0 && (
             /* eslint-disable-next-line jsx-a11y/control-has-associated-label */
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(filterActions.filterAll(status, ''))}
+              onClick={() => {
+                dispatch(filterActions.changeQuery(''));
+              }}
             />
           )}
         </span>
