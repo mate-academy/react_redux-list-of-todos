@@ -1,7 +1,7 @@
-import React, { ChangeEvent } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as filterActions } from '../../features/filter';
-import { Status } from '../../types/Status';
+import React, {ChangeEvent} from 'react';
+import {useAppDispatch, useAppSelector} from '../../app/hooks';
+import {actions as filterActions} from '../../features/filter';
+import {Status} from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const currentFilters = useAppSelector(state => state.filter);
@@ -31,6 +31,8 @@ export const TodoFilter: React.FC = () => {
         break;
     }
   };
+
+  const showClearBtn = (query.length !== 0) || status !== Status.ALL;
 
   return (
     <form
@@ -65,13 +67,16 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {query.length !== 0 && (
+          {showClearBtn && (
             /* eslint-disable-next-line jsx-a11y/control-has-associated-label */
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(filterActions.changeQuery(''))}
+              onClick={() => {
+                dispatch(filterActions.changeQuery(''));
+                dispatch(filterActions.changeStatus(Status.ALL));
+              }}
             />
           )}
         </span>
