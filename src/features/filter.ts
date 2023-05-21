@@ -54,7 +54,7 @@ export const actions = {
 const filterReducer = (state: State = initial, action: Action): State => {
   const { status, query = '' } = action;
 
-  if (action.type && SOMEOFTYPES.includes(action.type)) {
+  if (SOMEOFTYPES.some(type => type === action.type)) {
     return { status, query };
   }
 
