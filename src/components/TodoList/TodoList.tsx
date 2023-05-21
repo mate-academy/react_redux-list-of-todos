@@ -1,12 +1,20 @@
 /* eslint-disable max-len */
 import React from 'react';
 
-export const TodoList: React.FC = () => {
+type Props = {
+  error: string,
+};
+
+export const TodoList: React.FC<Props> = ({
+  error,
+}) => {
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+      {error && (
+        <p className="notification is-warning">
+          {error}
+        </p>
+      )}
 
       <table className="table is-narrow is-fullwidth">
         <thead>
@@ -23,6 +31,47 @@ export const TodoList: React.FC = () => {
             <th> </th>
           </tr>
         </thead>
+        {/* <tbody>
+          {visibleTodos.map(({
+            id,
+            title,
+            completed,
+            // userId
+          }) => (
+            <tr key={id} data-cy="todo">
+              <td className="is-vcentered">{id}</td>
+              <td className="is-vcentered">
+                {completed && (
+                  <span className="icon" data-cy="iconCompleted">
+                    <i className="fas fa-check" />
+                  </span>
+                )}
+              </td>
+
+              <td className="is-vcentered is-expanded">
+                <p
+                  className={
+                    completed
+                      ? 'has-text-success'
+                      : 'has-text-danger'
+                  }
+                >
+                  {title}
+                </p>
+              </td>
+
+              <td className="has-text-right is-vcentered">
+                <button data-cy="selectButton" className="button" type="button">
+                  <span className="icon">
+                    <i className="far fa-eye" />
+                  </span>
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody> */}
+      </table>
+      {/* <table className="table is-narrow is-fullwidth">
 
         <tbody>
           <tr data-cy="todo">
@@ -204,7 +253,7 @@ export const TodoList: React.FC = () => {
             </td>
           </tr>
         </tbody>
-      </table>
+      </table> */}
     </>
   );
 };

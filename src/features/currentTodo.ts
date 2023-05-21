@@ -29,7 +29,8 @@ const currentTodoReducer = (
 ): State => {
   switch (action.type) {
     // Implement all actions here
-
+    case 'currentTodo/REMOVE':
+    case 'currentTodo/SET':
     default:
       return state;
   }
