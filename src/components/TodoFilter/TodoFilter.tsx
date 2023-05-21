@@ -1,6 +1,48 @@
+/* eslint-disable no-console */
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { actions } from '../../features/filter';
+// import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const filter = useSelector<RootState, string>(state => state.filter.status);
+  const query = useSelector<RootState, string>(state => state.filter.query);
+  const stateData = useSelector<RootState>(x => x.filter);
+
+  console.log(stateData);
+
+  const dispatch = useDispatch();
+
+  const updateStates = (filterValue: string, queryValue: string) => {
+    console.log(filterValue, queryValue);
+
+    switch (filterValue) {
+      case 'all':
+        return dispatch(actions.filterAll(queryValue));
+
+      case 'active':
+        return dispatch(actions.filterActive(queryValue));
+
+      case 'completed':
+        return dispatch(actions.filterCompleted(queryValue));
+
+      default: return stateData;
+    }
+  };
+
+  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const filterType = event.currentTarget.value;
+
+    updateStates(filterType, query);
+  };
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const queryData = event.currentTarget.value;
+
+    updateStates(filter, queryData);
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +50,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            onChange={handleSelect}
+            value={filter}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +68,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={handleInput}
+          value={query}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

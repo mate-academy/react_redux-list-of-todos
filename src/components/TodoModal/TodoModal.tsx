@@ -1,12 +1,12 @@
 import React from 'react';
-import { Loader } from '../Loader';
+// import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      <Loader />
+      {/* <Loader /> */}
 
       <div className="modal-card">
         <header className="modal-card-head">
