@@ -30,7 +30,8 @@ export const TodoList: React.FC = () => {
       case 'completed':
         return dispatch(todosActions.filterCompleted(todosFromServer, query));
 
-      default: return dispatch(todosActions.filterAll(todosFromServer, query));
+      default:
+        return todos;
     }
   };
 

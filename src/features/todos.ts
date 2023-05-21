@@ -15,8 +15,7 @@ const filterAll = (todos: Todo[], query: string): FilterAll => ({
   type: ALL,
   query,
   todos,
-}
-);
+});
 
 const filterActive = (todos: Todo[], query: string): FilterACTIVE => ({
   type: ACTIVE,

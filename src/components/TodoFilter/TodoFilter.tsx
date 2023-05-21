@@ -3,9 +3,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const filter = useSelector<RootState, string>(state => state.filter.status);
+  const filter = useSelector<RootState, Status>(state => state.filter.status);
   const query = useSelector<RootState, string>(state => state.filter.query);
   const stateData = useSelector<RootState>(state => state.filter);
 
@@ -22,7 +23,8 @@ export const TodoFilter: React.FC = () => {
       case 'completed':
         return dispatch(filterActions.filterCompleted(queryValue));
 
-      default: return stateData;
+      default:
+        return stateData;
     }
   };
 
@@ -36,6 +38,10 @@ export const TodoFilter: React.FC = () => {
     const queryData = event.currentTarget.value;
 
     updateStates(filter, queryData);
+  };
+
+  const clear = () => {
+    dispatch(filterActions.queryClear(filter));
   };
 
   return (
@@ -76,6 +82,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={clear}
           />
         </span>
       </p>
