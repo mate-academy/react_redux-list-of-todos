@@ -36,17 +36,23 @@ const todosReducer = (todoList: Todo[] = [], action: Action): Todo[] => {
 
   switch (type) {
     case 'todos/ALL':
-      return todos.filter(todo => todo.title.includes(query));
+      return todos.filter(todo => {
+        return todo.title.toLowerCase().includes(query.toLowerCase());
+      });
 
     case 'todos/ACTIVE':
-      return todos.filter(
-        todo => todo.title.includes(query) && !todo.completed,
-      );
+      return todos.filter(todo => {
+        const { title, completed } = todo;
+
+        return title.toLowerCase().includes(query.toLowerCase()) && !completed;
+      });
 
     case 'todos/COMPLETED':
-      return todos.filter(
-        todo => todo.title.includes(query) && todo.completed,
-      );
+      return todos.filter(todo => {
+        const { title, completed } = todo;
+
+        return title.toLowerCase().includes(query.toLowerCase()) && completed;
+      });
 
     default: return todoList;
   }
