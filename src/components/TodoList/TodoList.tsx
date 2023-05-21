@@ -1,48 +1,120 @@
-/* eslint-disable max-len */
-import React from 'react';
+/* eslint-disable no-console */
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTodos } from '../../api';
+import { RootState } from '../../app/store';
+import { actions as todosActions } from '../../features/todos';
+import { Todo } from '../../types/Todo';
+import { Loader } from '../Loader';
 
 export const TodoList: React.FC = () => {
+  const [todosFromServer, setTodosFromServer] = useState<Todo[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const filter = useSelector<RootState, string>(state => state.filter.status);
+  const query = useSelector<RootState, string>(state => state.filter.query);
+  const todos = useSelector<RootState, Todo[]>(state => state.todos);
+
+  console.log('TODOS', todos);
+
+  const updateTodosState = () => {
+    switch (filter) {
+      case 'all':
+        return dispatch(todosActions.filterAll(todosFromServer, query));
+
+      case 'active':
+        return dispatch(todosActions.filterActive(todosFromServer, query));
+
+      case 'completed':
+        return dispatch(todosActions.filterCompleted(todosFromServer, query));
+
+      default: return dispatch(todosActions.filterAll(todosFromServer, query));
+    }
+  };
+
+  const getTodosFromServer = async () => {
+    setIsLoading(true);
+
+    const todosDownload: Todo[] = await getTodos();
+
+    try {
+      setTodosFromServer(todosDownload);
+      dispatch(todosActions.filterAll(todosDownload, ''));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getTodosFromServer();
+  }, []);
+
+  useEffect(() => {
+    updateTodosState();
+  }, [filter, query]);
+
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+      {isLoading && <Loader />}
 
-      <table className="table is-narrow is-fullwidth">
-        <thead>
-          <tr>
-            <th>#</th>
+      {(todosFromServer.length > 0 && !todos.length) && (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      )}
 
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
+      {todosFromServer.length > 0 && todos.length > 0 && (
+        <table className="table is-narrow is-fullwidth">
+          <thead>
+            <tr>
+              <th>#</th>
 
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr data-cy="todo">
-            <td className="is-vcentered">1</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">delectus aut autem</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
+              <th>
                 <span className="icon">
-                  <i className="far fa-eye" />
+                  <i className="fas fa-check" />
                 </span>
-              </button>
-            </td>
-          </tr>
+              </th>
 
-          <tr data-cy="todo">
+              <th>Title</th>
+              <th> </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {todos && todos.map(todo => {
+              const {
+                id,
+                title,
+                // userId
+              } = todo;
+
+              return (
+                <tr data-cy="todo" key={id}>
+                  <td className="is-vcentered">{id}</td>
+                  <td className="is-vcentered"> </td>
+
+                  <td className="is-vcentered is-expanded">
+                    <p className="has-text-danger">{title}</p>
+                  </td>
+
+                  <td className="has-text-right is-vcentered">
+                    <button
+                      data-cy="selectButton"
+                      className="button"
+                      type="button"
+                    >
+                      <span className="icon">
+                        <i className="far fa-eye" />
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+
+            {/* <tr data-cy="todo">
             <td className="is-vcentered">2</td>
             <td className="is-vcentered"> </td>
 
@@ -202,9 +274,10 @@ export const TodoList: React.FC = () => {
                 </span>
               </button>
             </td>
-          </tr>
-        </tbody>
-      </table>
+            </tr> */}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };

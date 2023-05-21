@@ -3,6 +3,7 @@ import { Status } from '../types/Status';
 const ALL = 'filter/ALL';
 const ACTIVE = 'filter/ACTIVE';
 const COMPLETED = 'filter/COMPLETED';
+const SOMEOFTYPES = [ALL, ACTIVE, COMPLETED];
 
 type FilterAll = { type: typeof ALL } & State;
 type FilterACTIVE = { type: typeof ACTIVE } & State;
@@ -39,11 +40,8 @@ export const actions = { filterAll, filterActive, filterCompleted };
 const filterReducer = (state: State = initial, action: Action): State => {
   const { status, query } = action;
 
-  if (status && query) {
-    return {
-      status,
-      query,
-    };
+  if (SOMEOFTYPES.includes(action.type)) {
+    return { status, query };
   }
 
   return state;

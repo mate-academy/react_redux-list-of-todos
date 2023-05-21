@@ -2,30 +2,25 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { actions } from '../../features/filter';
-// import { Status } from '../../types/Status';
+import { actions as filterActions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const filter = useSelector<RootState, string>(state => state.filter.status);
   const query = useSelector<RootState, string>(state => state.filter.query);
-  const stateData = useSelector<RootState>(x => x.filter);
-
-  console.log(stateData);
+  const stateData = useSelector<RootState>(state => state.filter);
 
   const dispatch = useDispatch();
 
   const updateStates = (filterValue: string, queryValue: string) => {
-    console.log(filterValue, queryValue);
-
     switch (filterValue) {
       case 'all':
-        return dispatch(actions.filterAll(queryValue));
+        return dispatch(filterActions.filterAll(queryValue));
 
       case 'active':
-        return dispatch(actions.filterActive(queryValue));
+        return dispatch(filterActions.filterActive(queryValue));
 
       case 'completed':
-        return dispatch(actions.filterCompleted(queryValue));
+        return dispatch(filterActions.filterCompleted(queryValue));
 
       default: return stateData;
     }
