@@ -3,12 +3,18 @@ import React from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+import { useSelector } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-// import { TodoModal } from './components/TodoModal';
-// import { Loader } from './components/Loader';
+import { TodoModal } from './components/TodoModal';
+import { RootState } from './app/store';
+import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
+  const currentTodo = useSelector<RootState, Todo | null>(
+    state => state.currentTodo,
+  );
+
   return (
     <>
       <div className="section">
@@ -21,14 +27,13 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {/* <Loader /> */}
               <TodoList />
             </div>
           </div>
         </div>
       </div>
 
-      {/* <TodoModal /> */}
+      {currentTodo && <TodoModal currentTodo={currentTodo} />}
     </>
   );
 };
