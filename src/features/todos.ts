@@ -33,7 +33,7 @@ export const actions = { filterAll, filterActive, filterCompleted };
 
 const todosReducer = (todoList: Todo[] = [], action: Action): Todo[] => {
   const { type, query, todos } = action;
-  const input = query.toLowerCase();
+  const input = query ? query.toLowerCase() : '';
 
   switch (type) {
     case 'todos/ALL':
