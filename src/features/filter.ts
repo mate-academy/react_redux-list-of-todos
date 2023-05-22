@@ -1,12 +1,11 @@
-import { Status } from '../types/Status';
-
-type FilterAll = { type: 'filter/ALL'; payload: Status };
-type FilterCompleted = { type: 'filter/COMPLETED'; payload: Status };
-type FilterActive = { type: 'filter/ACTIVE'; payload: Status };
-type QueryFilter = { type: 'filter/QUERY'; payload: string };
-
-type Filter = { query: string; status: Status };
-type Action = FilterAll | FilterActive | FilterCompleted | QueryFilter;
+import {
+  Action,
+  Filter,
+  FilterActive,
+  FilterAll,
+  FilterCompleted,
+  QueryFilter,
+} from '../types/types';
 
 const initialFilter: Filter = {
   query: '',

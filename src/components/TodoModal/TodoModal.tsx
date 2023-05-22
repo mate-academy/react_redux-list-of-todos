@@ -12,18 +12,20 @@ export const TodoModal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleTodoModal = async () => {
+    if (!currentTodo) {
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
-      if (!currentTodo) {
-        return;
-      }
-
-      setIsLoading(true);
-
       const userInfoFromServer = await getUser(currentTodo.userId);
 
       setUserInfo(userInfoFromServer);
-      setIsLoading(false);
-    } catch {
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`Error on fetching user ${error}`);
+    } finally {
       setIsLoading(false);
     }
   };

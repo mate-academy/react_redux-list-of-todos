@@ -16,23 +16,25 @@ export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
-  const handleLoading = async () => {
-    try {
-      setIsLoading(true);
+  const handleFetch = async () => {
+    setIsLoading(true);
 
+    try {
       const todosFromServer = await getTodos();
 
       dispatch(todosActions.set(todosFromServer));
 
       setIsInitialized(true);
-      setIsLoading(false);
-    } catch {
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(`Error on fetching todos ${error}`);
+    } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    handleLoading();
+    handleFetch();
   }, []);
 
   return (
