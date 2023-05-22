@@ -20,6 +20,7 @@
     "sass": "^1.62.1"
   },
   "devDependencies": {
+    "webpack": "4.44.2",
     "@cypress/react": "^5.12.4",
     "@mate-academy/cypress-tools": "^1.0.5",
     "@mate-academy/eslint-config-react-typescript": "^1.0.11",

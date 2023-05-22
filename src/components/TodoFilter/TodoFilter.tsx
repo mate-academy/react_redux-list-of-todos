@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
@@ -8,41 +7,22 @@ import { Status } from '../../types/Status';
 export const TodoFilter: React.FC = () => {
   const filter = useSelector<RootState, Status>(state => state.filter.status);
   const query = useSelector<RootState, string>(state => state.filter.query);
-  const stateData = useSelector<RootState>(state => state.filter);
 
   const dispatch = useDispatch();
 
-  const updateStates = (filterValue: string, queryValue: string) => {
-    switch (filterValue) {
-      case 'all':
-        return dispatch(filterActions.filterAll(queryValue));
-
-      case 'active':
-        return dispatch(filterActions.filterActive(queryValue));
-
-      case 'completed':
-        return dispatch(filterActions.filterCompleted(queryValue));
-
-      default:
-        return stateData;
-    }
-  };
-
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const filterType = event.currentTarget.value;
+    const filterType = event.currentTarget.value as Status;
 
-    updateStates(filterType, query);
+    dispatch(filterActions.filter(filterType));
   };
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const queryData = event.currentTarget.value;
 
-    updateStates(filter, queryData);
+    dispatch(filterActions.setQuery(queryData));
   };
 
-  const clear = () => {
-    dispatch(filterActions.queryClear(filter));
-  };
+  const clear = () => dispatch(filterActions.setQuery());
 
   return (
     <form

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useLayoutEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { actions as currentTodoActions } from '../../features/currentTodo';
@@ -21,9 +20,9 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
   const getUserData = async () => {
     if (currentTodo) {
       setLoader(true);
-      const userFromServer = await getUser(currentTodo.userId);
-
       try {
+        const userFromServer = await getUser(currentTodo.userId);
+
         setUser(userFromServer);
       } finally {
         setLoader(false);
