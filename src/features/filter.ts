@@ -1,13 +1,11 @@
+import { Reducer } from '../types/Reducer';
 import { Status } from '../types/Status';
-
-const FILTER = 'filter/FILTER';
-const QUERY = 'filter/QUERY';
 
 type Action = Filter | Query;
 type State = { status: Status, query: string };
 
-type Filter = { type: typeof FILTER, payload: Status } ;
-type Query = { type: typeof QUERY, payload: string } ;
+type Filter = { type: typeof Reducer.FILTER, payload: Status } ;
+type Query = { type: typeof Reducer.QUERY, payload: string } ;
 
 const initial: State = {
   status: 'all',
@@ -15,12 +13,12 @@ const initial: State = {
 };
 
 const filter = (filterValue: Status): Filter => ({
-  type: FILTER,
+  type: Reducer.FILTER,
   payload: filterValue,
 });
 
 const setQuery = (query = ''): Query => ({
-  type: QUERY,
+  type: Reducer.QUERY,
   payload: query,
 });
 
@@ -31,13 +29,13 @@ const filterReducer = (state: State = initial, action: Action): State => {
   const { status, query } = state;
 
   switch (type) {
-    case 'filter/FILTER':
+    case Reducer.FILTER:
       return {
         status: payload,
         query,
       };
 
-    case 'filter/QUERY':
+    case Reducer.QUERY:
       return {
         status,
         query: payload,

@@ -1,18 +1,17 @@
+import { Reducer } from '../types/Reducer';
 import { Todo } from '../types/Todo';
 
-const TODOS = 'todos/ALL';
-
-type AddTodos = { type: typeof TODOS, payload: Todo[] };
+type AddTodos = { type: typeof Reducer.TODOS, payload: Todo[] };
 
 const addTodos = (todos: Todo[]): AddTodos => ({
-  type: TODOS,
+  type: Reducer.TODOS,
   payload: todos,
 });
 
 export const actions = { addTodos };
 
 const todosReducer = (todoList: Todo[] = [], action: AddTodos): Todo[] => {
-  if (action.type === 'todos/ALL') {
+  if (action.type === Reducer.TODOS) {
     return action.payload;
   }
 
