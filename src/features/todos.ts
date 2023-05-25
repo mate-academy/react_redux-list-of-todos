@@ -10,16 +10,17 @@ export const setTodos = (todos: Todo[]) => ({
   payload: todos,
 });
 
-// export const actions = { setTodos };
+export const getTodos = () => ({ type: 'todos/GET' });
+export const actions = { setTodos, getTodos };
 
 type State = Todo[];
 
 const todosReducer = (state: State = [], action: SetTodosAction): Todo[] => {
-  if (action.type === 'todos/SET' && state) {
-    return state;
+  if (action.type === 'todos/SET') {
+    return action.payload;
   }
 
-  return [];
+  return state;
 };
 
 export default todosReducer;

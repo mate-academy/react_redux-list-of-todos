@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
+import { useAppSelector } from '../../app/hooks';
 
 type Props = {
   error: string,
@@ -8,6 +9,8 @@ type Props = {
 export const TodoList: React.FC<Props> = ({
   error,
 }) => {
+  const todos = useAppSelector(state => state.todos);
+
   return (
     <>
       {error && (
@@ -31,8 +34,8 @@ export const TodoList: React.FC<Props> = ({
             <th> </th>
           </tr>
         </thead>
-        {/* <tbody>
-          {visibleTodos.map(({
+        <tbody>
+          {todos.map(({
             id,
             title,
             completed,
@@ -69,7 +72,7 @@ export const TodoList: React.FC<Props> = ({
               </td>
             </tr>
           ))}
-        </tbody> */}
+        </tbody>
       </table>
       {/* <table className="table is-narrow is-fullwidth">
 

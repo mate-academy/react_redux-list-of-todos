@@ -14,9 +14,9 @@ export const App: React.FC = () => {
 
   const onPageLoad = async () => {
     try {
-      const res = await getTodos();
+      const todos = await getTodos();
 
-      dispatch({ type: 'todos/SET', todos: res });
+      dispatch({ type: 'todos/SET', payload: todos });
     } catch {
       setError('unable to get todos');
     }
