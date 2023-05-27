@@ -1,21 +1,18 @@
-/* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
+import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
-  const [todosList, setTodosList] = useState<Todo[]>([]);
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const { query, status } = useAppSelector(state => state.filter);
-
-  const handleClickSelect = (todo: Todo) => dispatch(currentTodoActions.setTodo(todo));
-
-  useEffect(() => {
-    const filteredTodos = todos
-      .filter(todo => todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
+  const filteredTodos = useMemo(() => (
+    todos
+      .filter(todo => todo.title
+        .toLocaleLowerCase().includes(query.toLocaleLowerCase()))
       .filter(todo => {
         switch (status) {
           case 'completed':
@@ -27,13 +24,14 @@ export const TodoList: React.FC = () => {
           default:
             return true;
         }
-      });
+      })
+  ), [status, todos, query]);
 
-    setTodosList(filteredTodos);
-  }, [status, todos, query]);
+  const handleClickSelect = (todo: Todo) => (
+    dispatch(currentTodoActions.setTodo(todo)));
 
   return (
-    todosList.length === 0
+    filteredTodos.length === 0
       ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
@@ -57,13 +55,13 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {todosList.map(todo => (
+            {filteredTodos.map(todo => (
               <tr
                 data-cy="todo"
                 key={todo.id}
-                className={todo === currentTodo
-                  ? 'has-background-info-light'
-                  : ''}
+                className={classNames(
+                  { 'has-background-info-light': todo === currentTodo },
+                )}
               >
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
@@ -89,10 +87,9 @@ export const TodoList: React.FC = () => {
                     onClick={() => handleClickSelect(todo)}
                   >
                     <span className="icon">
-                      <i
-                        className={todo === currentTodo
-                          ? 'far fa-eye-slash'
-                          : 'far fa-eye'}
+                      <i className={todo === currentTodo
+                        ? 'far fa-eye-slash'
+                        : 'far fa-eye'}
                       />
                     </span>
                   </button>

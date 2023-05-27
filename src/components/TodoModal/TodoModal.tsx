@@ -6,7 +6,7 @@ import { User } from '../../types/User';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  const [isLoadUser, setIsLoadUser] = useState(false);
+  const [isLoadingUser, setIsLoadingUser] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
@@ -19,12 +19,12 @@ export const TodoModal: React.FC = () => {
     }
 
     try {
-      setIsLoadUser(true);
+      setIsLoadingUser(true);
       const userFromServer = await getUser(currentTodo.userId);
 
       setUser(userFromServer);
     } finally {
-      setIsLoadUser(false);
+      setIsLoadingUser(false);
     }
   };
 
@@ -36,9 +36,9 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoadUser && <Loader />}
+      {isLoadingUser && <Loader />}
 
-      {!isLoadUser && user && (
+      {!isLoadingUser && user && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div

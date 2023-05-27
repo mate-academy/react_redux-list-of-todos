@@ -12,18 +12,18 @@ import { getTodos } from './api';
 import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
-  const [isLoadTodos, setIsLoadTodos] = useState(false);
+  const [isLoadingTodos, setIsLoadingTodos] = useState(false);
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const loadTodos = async () => {
     try {
-      setIsLoadTodos(true);
+      setIsLoadingTodos(true);
       const todosFromServer = await getTodos();
 
       dispatch(todosActions.set(todosFromServer));
     } finally {
-      setIsLoadTodos(false);
+      setIsLoadingTodos(false);
     }
   };
 
@@ -43,7 +43,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoadTodos
+              {isLoadingTodos
                 ? <Loader />
                 : <TodoList />}
             </div>
