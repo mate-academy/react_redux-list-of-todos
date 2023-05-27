@@ -1,15 +1,32 @@
 /* eslint-disable max-len */
 import React from 'react';
+import { Todo } from '../../types/Todo';
 import { useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 type Props = {
   error: string,
+  todos: Todo[],
 };
 
 export const TodoList: React.FC<Props> = ({
   error,
+  todos,
 }) => {
-  const todos = useAppSelector(state => state.todos);
+  const { searchedTitle, selectedStatus } = useAppSelector(state => state.filter);
+
+  const visibletodos = todos.filter(({ title, completed }) => {
+    const isTitleContainsQuery = title.includes(searchedTitle);
+
+    switch (selectedStatus) {
+      case Status.active:
+        return isTitleContainsQuery && !completed;
+      case Status.completed:
+        return isTitleContainsQuery && completed;
+      default:
+        return isTitleContainsQuery;
+    }
+  });
 
   return (
     <>
@@ -35,7 +52,7 @@ export const TodoList: React.FC<Props> = ({
           </tr>
         </thead>
         <tbody>
-          {todos.map(({
+          {visibletodos.map(({
             id,
             title,
             completed,

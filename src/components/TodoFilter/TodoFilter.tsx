@@ -1,16 +1,24 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
-  const [selectedStatus, setSelectedStatus] = useState('all');
-  const [searchedTitle, setSearchedtitle] = useState('');
+  const dispatch = useAppDispatch();
+  const { selectedStatus, searchedTitle }
+    = useAppSelector(state => state.filter);
 
-  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedStatus(event.target.value);
-  };
+  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => (
+    dispatch({
+      payload: event.target.value,
+      type: 'todos/CHANGESTATUS',
+    })
+  );
 
-  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchedtitle(event.target.value);
-  };
+  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => (
+    dispatch({
+      payload: event.target.value,
+      type: 'todos/CHANGEQUERY',
+    })
+  );
 
   return (
     <form
@@ -51,7 +59,10 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => setSearchedtitle('')}
+              onClick={() => dispatch({
+                payload: '',
+                type: 'todos/CHANGEQUERY',
+              })}
             />
           </span>
         )}

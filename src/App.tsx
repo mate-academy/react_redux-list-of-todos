@@ -6,17 +6,18 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { getTodos } from './api';
-import { useAppDispatch } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos);
 
   const onPageLoad = async () => {
     try {
-      const todos = await getTodos();
+      const result = await getTodos();
 
-      dispatch({ type: 'todos/SET', payload: todos });
+      dispatch({ payload: result, type: 'todos/SET' });
     } catch {
       setError('unable to get todos');
     }
@@ -31,24 +32,22 @@ export const App: React.FC = () => {
       <div className="section">
         <div className="container">
           <div className="box">
-            {/* {!todos.length
-              ? <Loader />
-              : ( */}
-            <>
-              <h1 className="title">Todos:</h1>
+            {todos && (
+              <>
+                <h1 className="title">Todos:</h1>
 
-              <div className="block">
-                <TodoFilter />
-              </div>
+                <div className="block">
+                  <TodoFilter />
+                </div>
 
-              <div className="block">
-                <TodoList
-                  error={error}
-                // todos={todos}
-                />
-              </div>
-            </>
-            {/* )} */}
+                <div className="block">
+                  <TodoList
+                    error={error}
+                    todos={todos}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
