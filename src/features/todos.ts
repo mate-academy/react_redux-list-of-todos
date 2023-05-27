@@ -1,12 +1,13 @@
 import { Todo } from '../types/Todo';
+import { ActionTypes } from '../types/Actions';
 
 export type SetTodosAction = {
-  type: 'todos/SET';
+  type: ActionTypes.todosSet;
   payload: Todo[];
 };
 
 export const setTodos = (todos: Todo[]) => ({
-  type: 'todos/SET',
+  type: ActionTypes.todosSet,
   payload: todos,
 });
 
@@ -16,7 +17,7 @@ const todosReducer = (
   state: State = [],
   action: SetTodosAction,
 ): Todo[] => {
-  if (action.type === 'todos/SET') {
+  if (action.type === ActionTypes.todosSet) {
     return action.payload;
   }
 

@@ -1,22 +1,38 @@
 import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { ActionTypes } from '../../types/Actions';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selectedStatus, searchedTitle }
     = useAppSelector(state => state.filter);
 
-  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => (
+  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    let convertedStatus;
+
+    switch (event.target.value) {
+      case 'active':
+        convertedStatus = Status.active;
+        break;
+      case 'completed':
+        convertedStatus = Status.completed;
+        break;
+      default:
+        convertedStatus = Status.all;
+        break;
+    }
+
     dispatch({
-      payload: event.target.value,
-      type: 'todos/CHANGESTATUS',
-    })
-  );
+      type: ActionTypes.changeTodosStatus,
+      payload: convertedStatus,
+    });
+  };
 
   const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => (
     dispatch({
+      type: ActionTypes.changeTodosQuery,
       payload: event.target.value,
-      type: 'todos/CHANGEQUERY',
     })
   );
 
@@ -60,8 +76,8 @@ export const TodoFilter: React.FC = () => {
               type="button"
               className="delete"
               onClick={() => dispatch({
+                type: ActionTypes.changeTodosQuery,
                 payload: '',
-                type: 'todos/CHANGEQUERY',
               })}
             />
           </span>

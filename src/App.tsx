@@ -7,17 +7,21 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
+import { TodoModal } from './components/TodoModal';
+import { ActionTypes } from './types/Actions';
+// import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const onPageLoad = async () => {
     try {
       const result = await getTodos();
 
-      dispatch({ payload: result, type: 'todos/SET' });
+      dispatch({ payload: result, type: ActionTypes.todosSet });
     } catch {
       setError('unable to get todos');
     }
@@ -43,7 +47,6 @@ export const App: React.FC = () => {
                 <div className="block">
                   <TodoList
                     error={error}
-                    todos={todos}
                   />
                 </div>
               </>
@@ -51,7 +54,12 @@ export const App: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* <TodoModal /> */}
+      {
+        currentTodo && (
+
+          <TodoModal currentTodo={currentTodo} />
+        )
+      }
     </>
   );
 };

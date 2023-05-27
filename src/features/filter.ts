@@ -1,13 +1,4 @@
-// export const actions = { /* put action creators here */};
-
-// const filterReducer = () => {
-//   return {
-//     query: '',
-//     status: 'all',
-//   };
-// };
-
-// export default filterReducer;
+import { ActionTypes } from '../types/Actions';
 import { Status } from '../types/Status';
 
 type StateType = {
@@ -16,13 +7,13 @@ type StateType = {
 };
 
 type SetTodosQueryAction = {
-  type: 'todos/CHANGEQUERY';
+  type: ActionTypes.changeTodosQuery;
   payload: string;
 };
 
 type SetTodosStatusAction = {
-  type: 'todos/CHANGESTATUS';
-  payload: string;
+  type: ActionTypes.changeTodosStatus;
+  payload: Status;
 };
 
 type ActionsType = SetTodosQueryAction | SetTodosStatusAction;
@@ -33,12 +24,12 @@ const initialState: StateType = {
 };
 
 const setTodosQuery = (searchedTitle: string) => ({
-  type: 'todos/CHANGEQUERY',
+  type: ActionTypes.changeTodosQuery,
   payload: searchedTitle,
 });
 
 const setTodosStatus = (selectedStatus: Status) => ({
-  type: 'todos/CHANGESTATUS',
+  type: ActionTypes.changeTodosStatus,
   payload: selectedStatus,
 });
 
@@ -47,14 +38,14 @@ export const actions = { setTodosQuery, setTodosStatus };
 const filterReducer = (
   state: StateType = initialState,
   action: ActionsType,
-) => {
+): StateType => {
   switch (action.type) {
-    case 'todos/CHANGEQUERY':
+    case ActionTypes.changeTodosQuery:
       return {
         ...state,
         searchedTitle: action.payload,
       };
-    case 'todos/CHANGESTATUS':
+    case ActionTypes.changeTodosStatus:
       return {
         ...state,
         selectedStatus: action.payload,
