@@ -9,7 +9,6 @@ import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { TodoModal } from './components/TodoModal';
 import { ActionTypes } from './types/Actions';
-// import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
   const [error, setError] = useState('');
@@ -22,6 +21,7 @@ export const App: React.FC = () => {
       const result = await getTodos();
 
       dispatch({ payload: result, type: ActionTypes.todosSet });
+      setError('');
     } catch {
       setError('unable to get todos');
     }
@@ -56,7 +56,6 @@ export const App: React.FC = () => {
       </div>
       {
         currentTodo && (
-
           <TodoModal currentTodo={currentTodo} />
         )
       }

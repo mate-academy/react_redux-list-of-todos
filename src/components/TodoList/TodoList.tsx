@@ -1,8 +1,10 @@
 /* eslint-disable max-len */
 import React from 'react';
+import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
 import { Loader } from '../Loader';
+import { Todo } from '../../types/Todo';
 
 type Props = {
   error: string,
@@ -14,6 +16,7 @@ export const TodoList: React.FC<Props> = ({
   const todos = useAppSelector(state => state.todos);
   const { searchedTitle, selectedStatus } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
+  const slashedEyeId = useAppSelector(state => state.currentTodo)?.id;
 
   const visibletodos = todos.filter(({ title, completed }) => {
     if (searchedTitle !== '' && (
@@ -32,6 +35,23 @@ export const TodoList: React.FC<Props> = ({
         return true;
     }
   });
+
+  const addCurrentTodo = ({
+    id,
+    completed,
+    title,
+    userId,
+  }: Todo) => (
+    dispatch({
+      type: 'currentTodo/SET',
+      payload: {
+        id,
+        completed,
+        title,
+        userId,
+      },
+    })
+  );
 
   return (
     <>
@@ -61,11 +81,16 @@ export const TodoList: React.FC<Props> = ({
               </tr>
             </thead>
             <tbody>
-              {visibletodos.map((todo) => (
-                <tr key={todo.id} data-cy="todo">
-                  <td className="is-vcentered">{todo.id}</td>
+              {visibletodos.map(({
+                id,
+                completed,
+                title,
+                userId,
+              }) => (
+                <tr key={id} data-cy="todo">
+                  <td className="is-vcentered">{id}</td>
                   <td className="is-vcentered">
-                    {todo.completed && (
+                    {completed && (
                       <span className="icon" data-cy="iconCompleted">
                         <i className="fas fa-check" />
                       </span>
@@ -75,12 +100,12 @@ export const TodoList: React.FC<Props> = ({
                   <td className="is-vcentered is-expanded">
                     <p
                       className={
-                        todo.completed
+                        completed
                           ? 'has-text-success'
                           : 'has-text-danger'
                       }
                     >
-                      {todo.title}
+                      {title}
                     </p>
                   </td>
 
@@ -89,10 +114,20 @@ export const TodoList: React.FC<Props> = ({
                       data-cy="selectButton"
                       className="button"
                       type="button"
-                      onClick={() => dispatch({ type: 'currentTodo/SET', payload: todo })}
+                      onClick={() => addCurrentTodo({
+                        id,
+                        completed,
+                        title,
+                        userId,
+                      })}
                     >
                       <span className="icon">
-                        <i className="far fa-eye" />
+                        <i className={cn(
+                          'far',
+                          { 'fa-eye-slash': id === slashedEyeId },
+                          { 'fa-eye': id !== slashedEyeId },
+                        )}
+                        />
                       </span>
                     </button>
                   </td>

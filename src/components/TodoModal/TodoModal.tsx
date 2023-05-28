@@ -12,6 +12,7 @@ type Props = {
 export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
   const [user, setUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
+  const [error, setError] = useState('');
 
   const {
     id,
@@ -25,8 +26,9 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
       const res = await getUser(userId);
 
       setUser(res);
+      setError('');
     } catch {
-      // add some errors here
+      setError('unable to get user');
     }
   };
 
@@ -38,7 +40,13 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {!user && (<Loader />)}
+      {!user && !error && (<Loader />)}
+
+      {error && (
+        <p className="notification is-warning">
+          {error}
+        </p>
+      )}
 
       {user && (
         <div className="modal-card">
