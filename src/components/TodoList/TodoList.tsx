@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useMemo } from 'react';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
@@ -18,23 +18,25 @@ export const TodoList: React.FC<Props> = ({
   const dispatch = useAppDispatch();
   const slashedEyeId = useAppSelector(state => state.currentTodo)?.id;
 
-  const visibletodos = todos.filter(({ title, completed }) => {
-    if (searchedTitle !== '' && (
-      !title.toLocaleLowerCase()
-        .includes(searchedTitle.toLocaleLowerCase())
-    )) {
-      return false;
-    }
+  const visibletodos = useMemo(() => {
+    return todos.filter(({ title, completed }) => {
+      if (searchedTitle !== '' && (
+        !title.toLocaleLowerCase()
+          .includes(searchedTitle.toLocaleLowerCase())
+      )) {
+        return false;
+      }
 
-    switch (selectedStatus) {
-      case Status.active:
-        return !completed;
-      case Status.completed:
-        return completed;
-      default:
-        return true;
-    }
-  });
+      switch (selectedStatus) {
+        case Status.active:
+          return !completed;
+        case Status.completed:
+          return completed;
+        default:
+          return true;
+      }
+    });
+  }, [todos, searchedTitle, selectedStatus]);
 
   const addCurrentTodo = ({
     id,
@@ -61,10 +63,9 @@ export const TodoList: React.FC<Props> = ({
         </p>
       )}
 
-      {!todos.length && <Loader />}
-
-      {!!todos.length && (
-        <>
+      {!todos.length
+        ? <Loader />
+        : (
           <table className="table is-narrow is-fullwidth">
             <thead>
               <tr>
@@ -135,8 +136,7 @@ export const TodoList: React.FC<Props> = ({
               ))}
             </tbody>
           </table>
-        </>
-      )}
+        )}
     </>
   );
 };

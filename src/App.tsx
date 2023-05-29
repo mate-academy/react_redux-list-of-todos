@@ -13,7 +13,6 @@ import { ActionTypes } from './types/Actions';
 export const App: React.FC = () => {
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const onPageLoad = async () => {
@@ -36,29 +35,19 @@ export const App: React.FC = () => {
       <div className="section">
         <div className="container">
           <div className="box">
-            {todos && (
-              <>
-                <h1 className="title">Todos:</h1>
+            <h1 className="title">Todos:</h1>
 
-                <div className="block">
-                  <TodoFilter />
-                </div>
+            <div className="block">
+              <TodoFilter />
+            </div>
 
-                <div className="block">
-                  <TodoList
-                    error={error}
-                  />
-                </div>
-              </>
-            )}
+            <div className="block">
+              <TodoList error={error} />
+            </div>
           </div>
         </div>
       </div>
-      {
-        currentTodo && (
-          <TodoModal currentTodo={currentTodo} />
-        )
-      }
+      {currentTodo && <TodoModal currentTodo={currentTodo} />}
     </>
   );
 };
