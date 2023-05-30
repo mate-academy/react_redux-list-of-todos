@@ -4,7 +4,7 @@ import { Todo } from '../types/Todo';
 type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
 
 // payload is a typical name for an action data
-type SetTodoAction = {
+export type SetTodoAction = {
   type: 'currentTodo/SET';
   payload: Todo;
 };
@@ -28,7 +28,11 @@ const currentTodoReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    // Implement all actions here
+    case 'currentTodo/SET':
+      return action.payload;
+
+    case 'currentTodo/REMOVE':
+      return null;
 
     default:
       return state;
