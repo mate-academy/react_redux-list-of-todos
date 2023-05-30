@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useMemo } from 'react';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -14,7 +13,8 @@ export const TodoList: React.FC<Props> = ({
   error,
 }) => {
   const todos = useAppSelector(state => state.todos);
-  const { searchedTitle, selectedStatus } = useAppSelector(state => state.filter);
+  const { searchedTitle, selectedStatus }
+    = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
   const slashedEyeId = useAppSelector(state => state.currentTodo)?.id;
 
