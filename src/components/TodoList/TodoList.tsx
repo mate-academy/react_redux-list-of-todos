@@ -12,14 +12,14 @@ export const TodoList: React.FC = () => {
   const query = useAppSelector(state => state.filter.query);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
-  const setTodo = ((todo: Todo) => dispatch(currentTodoActions.setTodo(todo)));
+  const setTodo = (todo: Todo) => dispatch(currentTodoActions.setTodo(todo));
 
   let visibleTodos = todos.filter(todo => {
     switch (status) {
-      case StatusValues.ACTIVE:
+      case StatusValues.Active:
         return !todo.completed;
 
-      case StatusValues.COMPLETED:
+      case StatusValues.Completed:
         return todo.completed;
 
       default:

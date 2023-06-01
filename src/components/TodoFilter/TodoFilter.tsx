@@ -29,9 +29,9 @@ export const TodoFilter: React.FC = () => {
               setStatus(event.target.value as StatusValues);
             })}
           >
-            <option value={StatusValues.ALL}>All</option>
-            <option value={StatusValues.ACTIVE}>Active</option>
-            <option value={StatusValues.COMPLETED}>Completed</option>
+            <option value={StatusValues.All}>All</option>
+            <option value={StatusValues.Active}>Active</option>
+            <option value={StatusValues.Completed}>Completed</option>
           </select>
         </span>
       </p>
