@@ -20,6 +20,10 @@ export const TodoFilter: React.FC = () => {
     event.preventDefault();
   };
 
+  const clearQuery = () => {
+    dispatch(filterActions.setQuery(''));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -67,6 +71,7 @@ export const TodoFilter: React.FC = () => {
               type="button"
               aria-label="clear"
               className="delete"
+              onClick={clearQuery}
             />
           </span>
         )}
