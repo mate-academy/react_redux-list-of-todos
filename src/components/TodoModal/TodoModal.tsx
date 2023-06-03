@@ -11,13 +11,17 @@ type Props = {
 };
 
 export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
+  const [hasError, sethasError] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
+  const { id, title, completed } = selectedTodo;
+  const { name, email } = currentUser || {};
 
   useEffect(() => {
     if (selectedTodo) {
       getUser(selectedTodo.userId)
-        .then(user => setCurrentUser(user));
+        .then(user => setCurrentUser(user))
+        .catch(() => sethasError(true));
     }
   }, [selectedTodo]);
 
@@ -29,6 +33,12 @@ export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
+      {hasError && (
+        <p className="notification is-warning">
+          Oops... Something went wrong.
+        </p>
+      )}
+
       {!currentUser ? (
         <Loader />
       ) : (
@@ -39,10 +49,10 @@ export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
               data-cy="modal-header"
             >
               Todo #
-              {selectedTodo.id}
+              {id}
             </div>
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
+              aria-label="modal-close"
               type="button"
               className="delete"
               data-cy="modal-close"
@@ -52,20 +62,20 @@ export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {selectedTodo.title}
+              {title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {selectedTodo.completed ? (
+              {completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
               <a
-                href={`mailto:${currentUser.email}`}
+                href={`mailto:${email}`}
               >
-                {currentUser.name}
+                {name}
               </a>
             </p>
           </div>

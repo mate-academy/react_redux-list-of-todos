@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
@@ -6,9 +6,8 @@ import { actions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
-  const selectedTodo = useAppSelector(state => state.currentTodo);
-  const { query, status } = useAppSelector(state => state.filter);
+  const { todos, currentTodo, filter } = useAppSelector(state => state);
+  const { query, status } = filter;
 
   const onButtonClick = (todo: Todo) => {
     dispatch(actions.setTodo(todo));
@@ -27,9 +26,13 @@ export const TodoList: React.FC = () => {
     }
   };
 
-  const list = selectList().filter(l => {
-    return l.title.toLowerCase().includes(query);
-  });
+  const filterList = useCallback(() => {
+    return selectList().filter(l => {
+      return l.title.toLowerCase().includes(query);
+    });
+  }, [query]);
+
+  const list = filterList();
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -65,12 +68,9 @@ export const TodoList: React.FC = () => {
 
             <td className="is-vcentered is-expanded">
               <p
-                className={classNames({
-                  'has-text-danger': !todo.completed,
-                },
-                {
-                  'has-text-success': todo.completed,
-                })}
+                className={classNames(todo.completed
+                  ? 'has-text-success'
+                  : 'has-text-danger')}
               >
                 {todo.title}
               </p>
@@ -87,8 +87,8 @@ export const TodoList: React.FC = () => {
                   <i
                     className={classNames(
                       'far',
-                      { 'fa-eye': todo.id !== selectedTodo?.id },
-                      { 'fa-eye-slash': todo.id === selectedTodo?.id },
+                      { 'fa-eye': todo.id !== currentTodo?.id },
+                      { 'fa-eye-slash': todo.id === currentTodo?.id },
                     )}
                   />
                 </span>
