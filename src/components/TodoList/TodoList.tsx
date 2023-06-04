@@ -30,7 +30,7 @@ export const TodoList: React.FC = () => {
     return selectList().filter(l => {
       return l.title.toLowerCase().includes(query);
     });
-  }, [query]);
+  }, [status]);
 
   const list = filterList();
 
