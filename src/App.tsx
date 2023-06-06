@@ -13,24 +13,24 @@ import { Loader } from './components/Loader';
 export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [isError, setIsError] = useState(false);
   const dispatch = useAppDispatch();
 
+  const fetchTodos = async () => {
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      const todosFromServer = await getTodos();
+
+      dispatch(todosActions.setTodos(todosFromServer));
+    } catch {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        setError(false);
-        setIsLoading(true);
-        const todosFromServer = await getTodos();
-
-        dispatch(todosActions.setTodos(todosFromServer));
-      } catch {
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchTodos();
   }, []);
 
@@ -50,13 +50,13 @@ export const App: React.FC = () => {
                 <Loader />
               )}
 
-              {error && (
+              {isError && (
                 <p className="notification is-warning">
                   Can&apos;t load todos
                 </p>
               )}
 
-              {!isLoading && !error && <TodoList />}
+              {!isLoading && !isError && <TodoList />}
             </div>
           </div>
         </div>

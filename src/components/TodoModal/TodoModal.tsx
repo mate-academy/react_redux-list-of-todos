@@ -9,30 +9,30 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [error, setError] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const removeTodo = () => dispatch(currentTodoActions.removeTodo());
 
+  const getUserFromServer = async () => {
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      const userFromServer = await getUser(currentTodo?.userId || 0);
+
+      setCurrentUser(userFromServer);
+    } catch {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const getUserFromServer = async () => {
-      try {
-        if (currentTodo) {
-          setError(false);
-          setIsLoading(true);
-          const userFromServer = await getUser(currentTodo.userId);
-
-          setCurrentUser(userFromServer);
-        }
-      } catch {
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getUserFromServer();
-  }, []);
+    if (currentTodo) {
+      getUserFromServer();
+    }
+  }, [currentTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -60,7 +60,7 @@ export const TodoModal: React.FC = () => {
             </header>
 
             <div className="modal-card-body">
-              {error
+              {isError
                 ? (
                   <strong className="has-text-danger">
                     Can&apos;t load user
