@@ -10,13 +10,13 @@ function wait(delay: number): Promise<void> {
   });
 }
 
-function get<T>(url: string): Promise<T> {
-  // eslint-disable-next-line prefer-template
-  const fullURL = BASE_URL + url + '.json';
+async function get<T>(url: string): Promise<T> {
+  const fullURL = `${BASE_URL + url}.json`;
 
-  return wait(300)
-    .then(() => fetch(fullURL))
-    .then(res => res.json());
+  await wait(300);
+  const res = await fetch(fullURL);
+
+  return res.json();
 }
 
 export const getTodos = () => get<Todo[]>('/todos');
