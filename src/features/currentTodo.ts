@@ -1,16 +1,21 @@
 import { Todo } from '../types/Todo';
 
-type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
+export enum ActionType {
+  Remove = 'currentTodo/REMOVE',
+  Set = 'currentTodo/SET',
+}
+
+type RemoveTodoAction = { type: ActionType.Remove };
 
 type SetTodoAction = {
-  type: 'currentTodo/SET';
+  type: ActionType.Set;
   payload: Todo;
 };
 
-const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
+const removeTodo = (): RemoveTodoAction => ({ type: ActionType.Remove });
 
 const setTodo = (todo: Todo): SetTodoAction => ({
-  type: 'currentTodo/SET',
+  type: ActionType.Set,
   payload: todo,
 });
 
@@ -24,10 +29,10 @@ const currentTodoReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    case 'currentTodo/SET':
+    case ActionType.Set:
       return action.payload;
 
-    case 'currentTodo/REMOVE':
+    case ActionType.Remove:
       return null;
 
     default:

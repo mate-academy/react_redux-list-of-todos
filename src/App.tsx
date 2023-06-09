@@ -55,13 +55,13 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!todos.length ? (
-                <Loader />
-              ) : (
+              {todos.length ? (
                 <TodoList
                   todos={visibleTodos}
                   currentTodo={currentTodo}
                 />
+              ) : (
+                <Loader />
               )}
             </div>
           </div>
