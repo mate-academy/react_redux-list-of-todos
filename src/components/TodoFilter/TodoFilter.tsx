@@ -1,6 +1,41 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { ActionTypes } from '../../types/Actions';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { status, query }
+    = useAppSelector(state => state.filter);
+
+  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    let convertedStatus;
+
+    switch (event.target.value) {
+      case Status.Active:
+        convertedStatus = Status.Active;
+        break;
+      case Status.Completed:
+        convertedStatus = Status.Completed;
+        break;
+      default:
+        convertedStatus = Status.All;
+        break;
+    }
+
+    dispatch({
+      type: ActionTypes.ChangeTodosStatus,
+      payload: convertedStatus,
+    });
+  };
+
+  const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => (
+    dispatch({
+      type: ActionTypes.ChangeTodosQuery,
+      payload: event.target.value,
+    })
+  );
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +43,14 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            onChange={handleStatusChange}
+            value={status}
+          >
+            <option value={Status.All}>All</option>
+            <option value={Status.Active}>Active</option>
+            <option value={Status.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,19 +61,27 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleChangeTitle}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch({
+                type: ActionTypes.ChangeTodosQuery,
+                payload: '',
+              })}
+              aria-label="button"
+            />
+          </span>
+        )}
       </p>
     </form>
   );
