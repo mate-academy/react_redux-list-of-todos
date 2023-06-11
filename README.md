@@ -8,3 +8,4 @@ show recent todos after clicks eye icon
 filter elements with search input(uppercase letter insensitive) and with status
 if todo is completed - title color is green, otherwise color is red
 
+demo: https://frontend112.github.io/react_redux-list-of-todos/
