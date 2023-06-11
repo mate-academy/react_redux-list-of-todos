@@ -14,7 +14,7 @@ export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
-  const onPageLoad = async () => {
+  const handlePageLoad = async () => {
     try {
       const result = await getTodos();
 
