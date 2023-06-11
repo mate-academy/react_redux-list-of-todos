@@ -21,7 +21,7 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
     userId,
   } = currentTodo;
 
-  const onTodoSelect = async () => {
+  const handleTodoSelect = async () => {
     try {
       const res = await getUser(userId);
 
