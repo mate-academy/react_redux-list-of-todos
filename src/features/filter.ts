@@ -1,21 +1,21 @@
 import { Status } from '../types/Status';
 
-export enum ActionType {
+export enum FilterActionTypes {
   SetQuery = 'filter/QUERY',
   SetStatus = 'filter/Status',
 }
 
-type SetQueryAction = { type: ActionType.SetQuery, payload: string };
-type SetStatusAction = { type: ActionType.SetStatus, payload: Status };
+type SetQueryAction = { type: FilterActionTypes.SetQuery, payload: string };
+type SetStatusAction = { type: FilterActionTypes.SetStatus, payload: Status };
 type Action = SetQueryAction | SetStatusAction;
 
 const setQuery = (value: string): SetQueryAction => ({
-  type: ActionType.SetQuery,
+  type: FilterActionTypes.SetQuery,
   payload: value,
 });
 
 const setStatus = (status: Status): SetStatusAction => ({
-  type: ActionType.SetStatus,
+  type: FilterActionTypes.SetStatus,
   payload: status,
 });
 
@@ -29,10 +29,10 @@ const filterReducer = (
   action: Action,
 ) => {
   switch (action.type) {
-    case ActionType.SetQuery:
+    case FilterActionTypes.SetQuery:
       return { ...filter, query: action.payload };
 
-    case ActionType.SetStatus:
+    case FilterActionTypes.SetStatus:
       return { ...filter, status: action.payload };
 
     default:

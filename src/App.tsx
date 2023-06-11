@@ -34,10 +34,10 @@ export const App: React.FC = () => {
   const filteredTodos = useMemo(() => {
     switch (filter) {
       case Status.completed:
-        return visibleTodos.filter(todo => todo.completed === true);
+        return visibleTodos.filter(todo => todo.completed);
 
       case Status.active:
-        return visibleTodos.filter(todo => todo.completed === false);
+        return visibleTodos.filter(todo => !todo.completed);
 
       default:
         return visibleTodos;

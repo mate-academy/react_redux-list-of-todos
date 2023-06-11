@@ -1,13 +1,13 @@
 import { Todo } from '../types/Todo';
 
-export enum ActionType {
+export enum TodosActionTypes {
   load = 'todos/LOAD',
 }
 
-type SetTodos = { type: ActionType.load, payload: Todo[] };
+type SetTodos = { type: TodosActionTypes.load, payload: Todo[] };
 
 const setTodos = (todos: Todo[]): SetTodos => ({
-  type: ActionType.load,
+  type: TodosActionTypes.load,
   payload: todos,
 });
 
@@ -20,7 +20,7 @@ const todosReducer = (
   action: Action,
 ): Todo[] => {
   switch (action.type) {
-    case ActionType.load:
+    case TodosActionTypes.load:
       return action.payload;
 
     default:
