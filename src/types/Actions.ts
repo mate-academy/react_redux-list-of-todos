@@ -1,7 +1,7 @@
 export enum ActionTypes {
-  currentTodoSet = 'currentTodo/SET',
-  currentTodoDelete = 'currentTodo/REMOVE',
-  changeTodosStatus = 'todos/CHANGESTATUS',
-  changeTodosQuery = 'todos/CHANGEQUERY',
-  todosSet = 'todos/SET',
+  CurrentTodoSet = 'currentTodo/SET',
+  CurrentTodoDelete = 'currentTodo/REMOVE',
+  ChangeTodosStatus = 'todos/CHANGESTATUS',
+  ChangeTodosQuery = 'todos/CHANGEQUERY',
+  TodosSet = 'todos/SET',
 }

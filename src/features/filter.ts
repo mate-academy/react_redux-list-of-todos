@@ -2,34 +2,34 @@ import { ActionTypes } from '../types/Actions';
 import { Status } from '../types/Status';
 
 type StateType = {
-  searchedTitle: string;
-  selectedStatus: Status;
+  query: string;
+  status: Status;
 };
 
 type SetTodosQueryAction = {
-  type: ActionTypes.changeTodosQuery;
+  type: ActionTypes.ChangeTodosQuery;
   payload: string;
 };
 
 type SetTodosStatusAction = {
-  type: ActionTypes.changeTodosStatus;
+  type: ActionTypes.ChangeTodosStatus;
   payload: Status;
 };
 
 type ActionsType = SetTodosQueryAction | SetTodosStatusAction;
 
 const initialState: StateType = {
-  searchedTitle: '',
-  selectedStatus: Status.all,
+  query: '',
+  status: Status.All,
 };
 
 const setTodosQuery = (searchedTitle: string) => ({
-  type: ActionTypes.changeTodosQuery,
+  type: ActionTypes.ChangeTodosQuery,
   payload: searchedTitle,
 });
 
 const setTodosStatus = (selectedStatus: Status) => ({
-  type: ActionTypes.changeTodosStatus,
+  type: ActionTypes.ChangeTodosStatus,
   payload: selectedStatus,
 });
 
@@ -40,15 +40,15 @@ const filterReducer = (
   action: ActionsType,
 ): StateType => {
   switch (action.type) {
-    case ActionTypes.changeTodosQuery:
+    case ActionTypes.ChangeTodosQuery:
       return {
         ...state,
-        searchedTitle: action.payload,
+        query: action.payload,
       };
-    case ActionTypes.changeTodosStatus:
+    case ActionTypes.ChangeTodosStatus:
       return {
         ...state,
-        selectedStatus: action.payload,
+        status: action.payload,
       };
     default:
       return state;

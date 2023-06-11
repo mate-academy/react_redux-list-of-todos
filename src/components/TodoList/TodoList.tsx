@@ -13,30 +13,30 @@ export const TodoList: React.FC<Props> = ({
   error,
 }) => {
   const todos = useAppSelector(state => state.todos);
-  const { searchedTitle, selectedStatus }
+  const { query, status }
     = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
   const slashedEyeId = useAppSelector(state => state.currentTodo)?.id;
 
   const visibletodos = useMemo(() => {
     return todos.filter(({ title, completed }) => {
-      if (searchedTitle !== '' && (
+      if (query !== '' && (
         !title.toLocaleLowerCase()
-          .includes(searchedTitle.toLocaleLowerCase())
+          .includes(query.toLocaleLowerCase())
       )) {
         return false;
       }
 
-      switch (selectedStatus) {
-        case Status.active:
+      switch (status) {
+        case Status.Active:
           return !completed;
-        case Status.completed:
+        case Status.Completed:
           return completed;
         default:
           return true;
       }
     });
-  }, [todos, searchedTitle, selectedStatus]);
+  }, [todos, query, status]);
 
   const addCurrentTodo = ({
     id,

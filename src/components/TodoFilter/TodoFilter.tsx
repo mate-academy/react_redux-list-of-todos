@@ -5,33 +5,33 @@ import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { selectedStatus, searchedTitle }
+  const { status, query }
     = useAppSelector(state => state.filter);
 
   const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
     let convertedStatus;
 
     switch (event.target.value) {
-      case 'active':
-        convertedStatus = Status.active;
+      case Status.Active:
+        convertedStatus = Status.Active;
         break;
-      case 'completed':
-        convertedStatus = Status.completed;
+      case Status.Completed:
+        convertedStatus = Status.Completed;
         break;
       default:
-        convertedStatus = Status.all;
+        convertedStatus = Status.All;
         break;
     }
 
     dispatch({
-      type: ActionTypes.changeTodosStatus,
+      type: ActionTypes.ChangeTodosStatus,
       payload: convertedStatus,
     });
   };
 
   const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => (
     dispatch({
-      type: ActionTypes.changeTodosQuery,
+      type: ActionTypes.ChangeTodosQuery,
       payload: event.target.value,
     })
   );
@@ -46,11 +46,11 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             onChange={handleStatusChange}
-            value={selectedStatus}
+            value={status}
           >
-            <option value={Status.all}>All</option>
-            <option value={Status.active}>Active</option>
-            <option value={Status.completed}>Completed</option>
+            <option value={Status.All}>All</option>
+            <option value={Status.Active}>Active</option>
+            <option value={Status.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -61,21 +61,21 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={searchedTitle}
+          value={query}
           onChange={handleChangeTitle}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {searchedTitle && (
+        {query && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
               onClick={() => dispatch({
-                type: ActionTypes.changeTodosQuery,
+                type: ActionTypes.ChangeTodosQuery,
                 payload: '',
               })}
               aria-label="button"

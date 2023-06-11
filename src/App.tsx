@@ -18,7 +18,7 @@ export const App: React.FC = () => {
     try {
       const result = await getTodos();
 
-      dispatch({ payload: result, type: ActionTypes.todosSet });
+      dispatch({ payload: result, type: ActionTypes.TodosSet });
       setError('');
     } catch {
       setError('unable to get todos');
@@ -26,7 +26,7 @@ export const App: React.FC = () => {
   };
 
   useEffect(() => {
-    onPageLoad();
+    handlePageLoad();
   }, []);
 
   return (
