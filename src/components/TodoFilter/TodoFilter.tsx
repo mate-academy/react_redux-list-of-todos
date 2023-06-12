@@ -8,8 +8,8 @@ export const TodoFilter: React.FC = () => {
   const { query, status } = filter;
 
   const dispatch = useAppDispatch();
-  const setSelect = (value: Status) => (
-    dispatch(filterActions.setSelect(value))
+  const selectStatus = (value: Status) => (
+    dispatch(filterActions.selectStatus(value))
   );
   const setQuery = (value: string) => (
     dispatch(filterActions.setQuery(value))
@@ -19,7 +19,7 @@ export const TodoFilter: React.FC = () => {
     const { value } = event.target;
     const selectValue = value as Status;
 
-    setSelect(selectValue);
+    selectStatus(selectValue);
   }, []);
 
   const inputHandler = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +29,6 @@ export const TodoFilter: React.FC = () => {
   }, []);
 
   const clearQuery = useCallback(() => {
-    setSelect('all');
     setQuery('');
   }, []);
 
@@ -65,15 +64,18 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            aria-label="Clear input button"
-            onClick={clearQuery}
-          />
-        </span>
+        {query.length > 0
+          && (
+            <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+              <button
+                data-cy="clearSearchButton"
+                type="button"
+                className="delete"
+                aria-label="Clear input button"
+                onClick={clearQuery}
+              />
+            </span>
+          )}
       </p>
     </form>
   );

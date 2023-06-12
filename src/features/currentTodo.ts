@@ -16,7 +16,7 @@ const setTodo = (todo: Todo): SetTodoAction => ({
 
 export const actions = { setTodo, removeTodo };
 
-type State = Todo | null;
+export type State = Todo | null;
 type Action = SetTodoAction | RemoveTodoAction;
 
 const currentTodoReducer = (

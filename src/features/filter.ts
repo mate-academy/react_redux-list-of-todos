@@ -3,7 +3,7 @@ import { Status } from '../types/Status';
 type Select = { type: 'filter/SELECT', payload: Status };
 type Query = { type: 'filter/QUERY', payload: string };
 
-const setSelect = (value: Status): Select => (
+const selectStatus = (value: Status): Select => (
   { type: 'filter/SELECT', payload: value }
 );
 const setQuery = (value: string): Query => (
@@ -17,7 +17,7 @@ export type Filter = {
   status: Status,
 };
 
-export const actions = { setSelect, setQuery };
+export const actions = { selectStatus, setQuery };
 
 const filterReducer = (filter: Filter, action: Actions) => {
   switch (action.type) {
@@ -25,12 +25,12 @@ const filterReducer = (filter: Filter, action: Actions) => {
       return { ...filter, status: action.payload };
 
     case 'filter/QUERY':
-      return { ...filter, query: action.payload };
+      return { ...filter, query: action.payload.trim() };
 
     default:
       return filter || {
         query: '',
-        status: 'active',
+        status: 'all',
       };
   }
 };

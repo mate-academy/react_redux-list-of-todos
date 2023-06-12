@@ -26,7 +26,7 @@ export const TodoModal: React.FC = () => {
           setUserName(user.name);
         }
       } catch (error) {
-        throw new Error();
+        throw new Error('Failed to fetch user');
       }
     };
 
@@ -52,7 +52,7 @@ export const TodoModal: React.FC = () => {
                 className="delete"
                 data-cy="modal-close"
                 aria-label="Close modal button"
-                onClick={removeHandler}
+                onClick={(event) => removeHandler(event)}
               />
             </header>
 

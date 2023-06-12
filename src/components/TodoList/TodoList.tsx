@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as curentTodoActions } from '../../features/currentTodo';
+import { State, actions as curentTodoActions } from '../../features/currentTodo';
 import { Filter } from '../../features/filter';
 
 export const TodoList: React.FC = () => {
@@ -12,11 +12,12 @@ export const TodoList: React.FC = () => {
 
   const todos: Todo[] = useAppSelector(state => state.todos);
   const filter: Filter = useAppSelector(state => state.filter);
+  const curentTodo: State = useAppSelector(state => state.currentTodo);
   const { query, status } = filter;
 
   const dispatch = useAppDispatch();
-  const set = useCallback((curentTodo: Todo) => (
-    dispatch(curentTodoActions.setTodo(curentTodo))
+  const set = useCallback((selectedTodo: Todo) => (
+    dispatch(curentTodoActions.setTodo(selectedTodo))
   ), []);
 
   const setHandler = (event: MouseEvent<HTMLButtonElement>, todo: Todo) => {
@@ -24,7 +25,7 @@ export const TodoList: React.FC = () => {
     set(todo);
   };
 
-  const isNoMathches = useMemo(() => Boolean(filtredTodos.length <= 0 && query),
+  const isNoMathches = useMemo(() => Boolean(filtredTodos.length === 0 && query),
     [filter, filtredTodos]);
 
   useEffect(() => {
@@ -55,7 +56,7 @@ export const TodoList: React.FC = () => {
         setFiltredTodos(filtredByQuery);
         break;
     }
-  }, [filter, query, status]);
+  }, [filter, query, status, todos]);
 
   useEffect(() => {
     setFiltredTodos(todos);
@@ -86,11 +87,18 @@ export const TodoList: React.FC = () => {
             </thead>
 
             <tbody>
-              {filtredTodos.map((todo: Todo) => {
-                const { id, completed, title } = todo;
-
+              {filtredTodos.map(({
+                id, completed, title, userId,
+              }: Todo) => {
                 return (
-                  <tr data-cy="todo" key={id}>
+                  <tr
+                    data-cy="todo"
+                    className={`${curentTodo?.id === id
+                      ? 'has-background-info-light'
+                      : ''
+                    }`}
+                    key={id}
+                  >
                     <td className="is-vcentered">{id}</td>
                     <td className="is-vcentered">
                       {completed
@@ -115,10 +123,17 @@ export const TodoList: React.FC = () => {
                         data-cy="selectButton"
                         className="button"
                         type="button"
-                        onClick={(event) => setHandler(event, todo)}
+                        onClick={(event) => setHandler(event, {
+                          id, completed, title, userId,
+                        })}
                       >
                         <span className="icon">
-                          <i className="far fa-eye " />
+                          <i className={
+                            `far ${curentTodo?.id === id
+                              ? 'fa-eye-slash'
+                              : 'fa-eye'}`
+                          }
+                          />
                         </span>
                       </button>
                     </td>

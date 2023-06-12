@@ -22,7 +22,7 @@ export const App: React.FC = () => {
     dispatch(todosActions.set(todosFromServer))
   );
 
-  const isLoaded = useMemo((() => todos.length > 0), [todos]);
+  const isLoaded = useMemo(() => todos.length > 0, [todos]);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -31,7 +31,7 @@ export const App: React.FC = () => {
 
         set(fetchedTodos);
       } catch (error) {
-        throw new Error();
+        throw new Error('Failed to fetch todos');
       }
     };
 
