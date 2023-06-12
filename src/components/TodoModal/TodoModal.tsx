@@ -1,40 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as TodoAction } from '../../features/currentTodo';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
-import { Todo } from '../../types/Todo';
 
-type Props = {
-  currentTodo: Todo;
-};
-
-export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
-  const [isLoading, setLoaded] = useState(false);
+export const TodoModal: React.FC = () => {
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
 
-  const {
-    id,
-    userId,
-    completed,
-    title,
-  } = currentTodo;
+  const handleModal = async () => {
+    if (!currentTodo) {
+      return;
+    }
 
-  const getUserFromServer = async () => {
+    setIsLoading(true);
+
     try {
-      const userFromServer = await getUser(userId);
+      const getUserFromServer = await getUser(currentTodo.userId);
 
-      setUser(userFromServer);
+      setUser(getUserFromServer);
     } finally {
-      setLoaded(false);
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getUserFromServer();
+    handleModal();
   }, []);
 
   return (
@@ -52,7 +47,7 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${id}`}
+              {`Todo #${currentTodo?.id}`}
             </div>
 
             <button
@@ -66,16 +61,16 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {title}
+              {currentTodo?.title}
             </p>
 
             <p className="block" data-cy="modal-user">
               <strong className={classNames({
-                'has-text-success': completed,
-                'has-text-danger': !completed,
+                'has-text-success': currentTodo?.completed,
+                'has-text-danger': !currentTodo?.completed,
               })}
               >
-                {completed
+                {currentTodo?.completed
                   ? 'Done'
                   : 'Planned'}
               </strong>
