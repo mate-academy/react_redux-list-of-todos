@@ -1,14 +1,31 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
+import { getTodos } from './api';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as todosActions } from './features/todos';
 import { Loader } from './components/Loader';
+import { TodoModal } from './components/TodoModal';
 
 export const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const data = await getTodos();
+
+      dispatch(todosActions.setTodos(data));
+    };
+
+    fetchTodos();
+  }, []);
+
   return (
     <>
       <div className="section">
@@ -21,14 +38,18 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {todos ? (
+                <TodoList />
+              ) : (
+                <Loader />
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      <TodoModal />
+      {currentTodo && (
+        <TodoModal />
+      )}
     </>
   );
 };
