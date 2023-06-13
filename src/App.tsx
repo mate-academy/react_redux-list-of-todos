@@ -24,7 +24,7 @@ export const App: React.FC = () => {
     };
 
     fetchTodos();
-  }, []);
+  }, [currentTodo]);
 
   return (
     <>
@@ -38,11 +38,8 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {todos ? (
-                <TodoList />
-              ) : (
-                <Loader />
-              )}
+              {todos && <TodoList />}
+              {!todos && <Loader />}
             </div>
           </div>
         </div>

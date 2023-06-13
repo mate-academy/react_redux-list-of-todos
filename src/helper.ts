@@ -18,6 +18,6 @@ export const filterTodosByQuery = (todos: Todo[], query: string) => {
   const queryToLower = query.toLowerCase();
 
   return todos.filter(({ title }) => (
-		title.toLowerCase().includes(queryToLower)
-	));
+    title.toLowerCase().includes(queryToLower)
+  ));
 };

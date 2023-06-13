@@ -1,18 +1,22 @@
 import { Status } from '../types/Status';
 
-type QueryUpdateAction = { type: 'query/UPDATE', payload: string };
-type QueryResetAction = { type: 'query/RESET' };
-type StatusChangeAction = { type: 'status/CHANGE', payload: Status };
+const UPDATE = 'query/UPDATE';
+const RESET = 'query/RESET';
+const CHANGE = 'status/CHANGE';
+
+type QueryUpdateAction = { type: typeof UPDATE, payload: string };
+type QueryResetAction = { type: typeof RESET };
+type StatusChangeAction = { type: typeof CHANGE, payload: Status };
 
 const updateQuery = (newQuery: string): QueryUpdateAction => {
-  return { type: 'query/UPDATE', payload: newQuery };
+  return { type: UPDATE, payload: newQuery };
 };
 
 const changeStatus = (status: Status): StatusChangeAction => {
-  return { type: 'status/CHANGE', payload: status };
+  return { type: CHANGE, payload: status };
 };
 
-const resetQuery = (): QueryResetAction => ({ type: 'query/RESET' });
+const resetQuery = (): QueryResetAction => ({ type: RESET });
 
 export const actions = { updateQuery, resetQuery, changeStatus };
 
@@ -29,11 +33,11 @@ const filterReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    case 'query/RESET':
+    case RESET:
       return { ...state, query: '' };
-    case 'query/UPDATE':
+    case UPDATE:
       return { ...state, query: action.payload };
-    case 'status/CHANGE':
+    case CHANGE:
       return { ...state, status: action.payload };
     default:
       return state;

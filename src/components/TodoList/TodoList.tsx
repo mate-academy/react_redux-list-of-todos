@@ -1,5 +1,5 @@
-/* eslint-disable max-len */
 import React from 'react';
+import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { filterTodosByQuery, filterTodosByStatus } from '../../helper';
@@ -52,9 +52,9 @@ export const TodoList: React.FC = () => {
                 <tr
                   key={id}
                   data-cy="todo"
-                  className={isSelected
-                    ? 'has-background-info-light'
-                    : ''}
+                  className={cn({
+                    'has-background-info-light': isSelected,
+                  })}
                 >
                   <td className="is-vcentered">{id}</td>
                   <td className="is-vcentered">
@@ -66,9 +66,10 @@ export const TodoList: React.FC = () => {
                   </td>
                   <td className="is-vcentered is-expanded">
                     <p
-                      className={completed
-                        ? 'has-text-success'
-                        : 'has-text-danger'}
+                      className={cn({
+                        'has-text-success': completed,
+                        'has-text-danger': !completed,
+                      })}
                     >
                       {title}
                     </p>
@@ -82,10 +83,12 @@ export const TodoList: React.FC = () => {
                     >
                       <span className="icon">
                         <i
-                          className={`far
-                              ${isSelected ? 'fa-eye-slash' : 'fa-eye'}`}
+                          className={cn({
+                            far: true,
+                            'fa-eye-slash': isSelected,
+                            'fa-eye': !isSelected,
+                          })}
                         />
-
                       </span>
                     </button>
                   </td>
