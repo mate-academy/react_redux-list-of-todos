@@ -1,40 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getUserById } from '../../api';
+import { useAppSelector } from '../../app/hooks';
+import { User } from '../../types/User';
 import { Loader } from '../Loader';
+import { ModalCard } from '../ModalCard/ModalCard';
 
 export const TodoModal: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (!currentTodo) {
+        return;
+      }
+
+      try {
+        const fetchedUser = await getUserById(currentTodo.userId);
+
+        setUser(fetchedUser);
+      } catch {
+        window.console.log('error');
+      } finally {
+        setIsLoaded(true);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  const isModalCard = isLoaded && user && currentTodo;
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      <Loader />
+      {!isLoaded && <Loader />}
 
-      <div className="modal-card">
-        <header className="modal-card-head">
-          <div
-            className="modal-card-title has-text-weight-medium"
-            data-cy="modal-header"
-          >
-            Todo #3
-          </div>
-
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
-        </header>
-
-        <div className="modal-card-body">
-          <p className="block" data-cy="modal-title">fugiat veniam minus</p>
-
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
-
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
-            {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-          </p>
-        </div>
-      </div>
+      {isModalCard && <ModalCard user={user} todo={currentTodo} />}
     </div>
   );
 };
