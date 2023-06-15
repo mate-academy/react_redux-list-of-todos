@@ -1,17 +1,18 @@
 import { Status } from '../types/Status';
+import { FilterAction } from '../types/FilterAction';
 
 type SetStatusAction = {
-  type: 'filter/setStatus';
+  type: FilterAction.SetStatus;
   payload: Status;
 };
 
 type SetQueryAction = {
-  type: 'filter/setQuery';
+  type: FilterAction.SetQuery;
   payload: string;
 };
 
 type ClearQueryAction = {
-  type: 'filter/clearQuery'
+  type: FilterAction.ClearQuery;
 };
 
 type Action = SetStatusAction
@@ -19,17 +20,17 @@ type Action = SetStatusAction
 | ClearQueryAction;
 
 const setStatus = (status: Status): SetStatusAction => ({
-  type: 'filter/setStatus',
+  type: FilterAction.SetStatus,
   payload: status,
 });
 
 const setQuery = (query: string): SetQueryAction => ({
-  type: 'filter/setQuery',
+  type: FilterAction.SetQuery,
   payload: query,
 });
 
 const clearQuery = (): ClearQueryAction => ({
-  type: 'filter/clearQuery',
+  type: FilterAction.ClearQuery,
 });
 
 export const actions = { setStatus, setQuery, clearQuery };

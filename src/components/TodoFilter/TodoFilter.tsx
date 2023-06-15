@@ -15,6 +15,8 @@ export const TodoFilter: React.FC = () => {
     dispatch(filterAction.setQuery(newQuery));
   };
 
+  const statusValues = Object.values(Status);
+
   return (
     <form className="field has-addons">
       <p className="control">
@@ -25,8 +27,13 @@ export const TodoFilter: React.FC = () => {
             value={status}
             onChange={(event) => handleStatus(event.target.value as Status)}
           >
-            {Object.values(Status).map((filterType) => (
-              <option key={filterType} value={filterType}>{filterType}</option>
+            {statusValues.map((filterType) => (
+              <option
+                key={filterType}
+                value={filterType}
+              >
+                {filterType}
+              </option>
             ))}
           </select>
         </span>

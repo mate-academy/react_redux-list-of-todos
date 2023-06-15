@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -22,7 +21,7 @@ export const App: React.FC = () => {
 
       dispatch(TodoAction.setTodos(todosFromServer));
     } catch {
-      dispatch(TodoAction.setError(false));
+      dispatch(TodoAction.setError(true));
     } finally {
       dispatch(TodoAction.setLoading(true));
     }

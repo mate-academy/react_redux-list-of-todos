@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -50,9 +49,9 @@ export const TodoList: React.FC = () => {
     <>
       {todos.length === 0
         ? (
-          <p className="notification is-warning">
-            There are no todos matching current filter criteria
-          </p>
+          <div className="notification is-danger">
+            An error occured when loading data!
+          </div>
         ) : (
           <table className="table is-narrow is-fullwidth">
             <thead>
@@ -84,6 +83,7 @@ export const TodoList: React.FC = () => {
                     <td className="is-vcentered">
                       {id}
                     </td>
+
                     <td className="is-vcentered">
                       {completed && (
                         <span className="icon" data-cy="iconCompleted">

@@ -1,17 +1,18 @@
 import { Todo } from '../types/Todo';
+import { TodosAction } from '../types/TodoAction';
 
 type SetTodoAction = {
-  type: 'todos/setTodos';
+  type: TodosAction.SetTodos;
   payload: Todo[];
 };
 
 type SetErrorAction = {
-  type: 'todos/setError';
+  type: TodosAction.SetError;
   payload: boolean;
 };
 
 type SetIsLoadingAction = {
-  type: 'todos/setIsLoading';
+  type: TodosAction.SetIsLoading;
   payload: boolean;
 };
 
@@ -20,17 +21,17 @@ type Action = SetTodoAction
 | SetIsLoadingAction;
 
 const setTodos = (loadTodos: Todo[]): SetTodoAction => ({
-  type: 'todos/setTodos',
+  type: TodosAction.SetTodos,
   payload: loadTodos,
 });
 
 const setError = (hasError: boolean): SetErrorAction => ({
-  type: 'todos/setError',
+  type: TodosAction.SetError,
   payload: hasError,
 });
 
 const setLoading = (isLoading: boolean): SetIsLoadingAction => ({
-  type: 'todos/setIsLoading',
+  type: TodosAction.SetIsLoading,
   payload: isLoading,
 });
 

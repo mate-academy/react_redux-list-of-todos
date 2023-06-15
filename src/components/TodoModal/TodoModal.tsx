@@ -9,6 +9,7 @@ import { User } from '../../types/User';
 export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
 
@@ -23,6 +24,8 @@ export const TodoModal: React.FC = () => {
       const getUserFromServer = await getUser(currentTodo.userId);
 
       setUser(getUserFromServer);
+    } catch {
+      setIsError(true);
     } finally {
       setIsLoading(false);
     }
@@ -38,7 +41,7 @@ export const TodoModal: React.FC = () => {
 
       {isLoading && (<Loader />)}
 
-      {!isLoading && (
+      {!isLoading && !isError && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
@@ -50,7 +53,7 @@ export const TodoModal: React.FC = () => {
 
             <button
               type="button"
-              aria-label="Mute volume"
+              aria-label="Close modal"
               className="delete"
               data-cy="modal-close"
               onClick={() => dispatch(TodoAction.removeTodo())}

@@ -1,16 +1,19 @@
 import { Todo } from '../types/Todo';
+import { CurrentTodoAction } from '../types/CurrentTodoAction';
 
-type RemoveAction = { type: 'currentTodo/REMOVE' };
+type RemoveAction = {
+  type: CurrentTodoAction.Remove;
+};
 
 type SetAction = {
-  type: 'currentTodo/SET';
+  type: CurrentTodoAction.Set;
   payload: Todo;
 };
 
-const removeTodo = (): RemoveAction => ({ type: 'currentTodo/REMOVE' });
+const removeTodo = (): RemoveAction => ({ type: CurrentTodoAction.Remove });
 
 const setTodo = (todo: Todo): SetAction => ({
-  type: 'currentTodo/SET',
+  type: CurrentTodoAction.Set,
   payload: todo,
 });
 
