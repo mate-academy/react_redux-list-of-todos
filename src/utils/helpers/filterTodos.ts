@@ -5,7 +5,7 @@ import { Todo } from '../../types/Todo';
 export const getFilteredTodos = (todos: Todo[], filter: FilterTodosType) => {
   const { status, query } = filter;
 
-  let filteredTodos;
+  let filteredTodos = todos;
 
   switch (status) {
     case TodoStatusTypes.ACTIVE:
@@ -17,7 +17,6 @@ export const getFilteredTodos = (todos: Todo[], filter: FilterTodosType) => {
       break;
 
     default:
-      filteredTodos = todos;
       break;
   }
 

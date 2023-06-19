@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import cn from 'classnames';
 import React from 'react';
 
 interface Props {
@@ -18,7 +18,7 @@ export const TodoRow: React.FC<Props> = ({
 }) => (
   <tr
     data-cy="todo"
-    className={classNames({
+    className={cn({
       'has-background-info-light': isSelectedTodo,
     })}
   >
@@ -36,7 +36,7 @@ export const TodoRow: React.FC<Props> = ({
 
     <td className="is-vcentered is-expanded">
       <p
-        className={classNames({
+        className={cn({
           'has-text-success': completed,
           'has-text-danger': !completed,
         })}
@@ -54,7 +54,7 @@ export const TodoRow: React.FC<Props> = ({
       >
         <span className="icon">
           <i
-            className={classNames(
+            className={cn(
               'far',
               {
                 'fa-eye': !isSelectedTodo,

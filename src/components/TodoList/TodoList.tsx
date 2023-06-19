@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
@@ -10,16 +10,18 @@ interface Props {
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
-  const dispatchCurrentTodo = useAppDispatch();
+  const dispatch = useAppDispatch();
   const handlerSelectTodo = (todoId: number) => {
     const todo = todos.find(({ id }) => id === todoId);
 
     if (todo) {
-      dispatchCurrentTodo(currentTodoActions.setTodo(todo));
+      dispatch(currentTodoActions.setTodo(todo));
     }
   };
 
-  const hasTodos = todos.length > 0;
+  const hasTodos = useMemo(() => {
+    return todos.length > 0;
+  }, [todos]);
 
   return (
     <>
@@ -47,20 +49,16 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
           </thead>
 
           <tbody>
-            {todos.map(({ id, completed, title }) => {
-              const isSelectedTodo = selectedTodo?.id === id;
-
-              return (
-                <TodoRow
-                  key={id}
-                  id={id}
-                  completed={completed}
-                  title={title}
-                  isSelectedTodo={isSelectedTodo}
-                  onSelect={handlerSelectTodo}
-                />
-              );
-            })}
+            {todos.map(({ id, completed, title }) => (
+              <TodoRow
+                key={id}
+                id={id}
+                completed={completed}
+                title={title}
+                isSelectedTodo={selectedTodo?.id === id}
+                onSelect={handlerSelectTodo}
+              />
+            ))}
           </tbody>
         </table>
       )}

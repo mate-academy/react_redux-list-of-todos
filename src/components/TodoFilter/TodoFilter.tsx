@@ -6,16 +6,16 @@ import { getStatusValue } from '../../utils/helpers/getStatusValue';
 
 export const TodoFilter: React.FC = () => {
   const { query } = useAppSelector(state => state.filter);
-  const dispatchFilter = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const handlerQuery = (
     event: React.FormEvent<HTMLInputElement>,
   ) => {
-    dispatchFilter(FilterActions.setQuery(event.currentTarget.value));
+    dispatch(FilterActions.setQuery(event.currentTarget.value));
   };
 
   const handlerResetQuery = () => {
-    dispatchFilter(FilterActions.clearQuery());
+    dispatch(FilterActions.clearQuery());
   };
 
   const handlerStatusChange = (
@@ -26,7 +26,7 @@ export const TodoFilter: React.FC = () => {
     const statusTodo
     = getStatusValue(upperCasedValue as keyof typeof TodoStatusTypes);
 
-    dispatchFilter(FilterActions.setStatus(statusTodo));
+    dispatch(FilterActions.setStatus(statusTodo));
   };
 
   const isShowClearButton = Boolean(query);
@@ -42,10 +42,6 @@ export const TodoFilter: React.FC = () => {
             data-cy="statusSelect"
             onChange={handlerStatusChange}
           >
-            {/* {Object.entries(TodoStatusTypes).map(([key, value]) => (
-              <option key={key} value={key}>{value}</option>
-            ))} */}
-
             <option value={TodoStatusTypes.ALL}>All</option>
             <option value={TodoStatusTypes.ACTIVE}>Active</option>
             <option value={TodoStatusTypes.COMPLETED}>Completed</option>

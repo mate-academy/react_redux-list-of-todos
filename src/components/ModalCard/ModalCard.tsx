@@ -16,10 +16,10 @@ export const ModalCard: React.FC<Props> = ({ user, todo }) => {
     title,
     completed,
   } = todo;
-  const dispatchCurrentTodo = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const handlerCloseModal = () => {
-    dispatchCurrentTodo(actionsCurrentTodo.removeTodo());
+    dispatch(actionsCurrentTodo.removeTodo());
   };
 
   return (

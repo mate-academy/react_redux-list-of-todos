@@ -15,7 +15,7 @@ export const App: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const filter = useAppSelector(state => state.filter);
-  const dispatchTodos = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -24,7 +24,7 @@ export const App: React.FC = () => {
       try {
         const fetchedTodos = await getTodos();
 
-        dispatchTodos(TodosActions.addTodos(fetchedTodos));
+        dispatch(TodosActions.addTodos(fetchedTodos));
       } catch {
         window.console.log('error message');
       } finally {
