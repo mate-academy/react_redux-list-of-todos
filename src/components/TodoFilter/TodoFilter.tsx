@@ -1,11 +1,12 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as FilterActions } from '../../features/filter';
+import { actions as FilterActions } from '../../features/filter/actions';
 import { TodoStatusTypes } from '../../types/enums/TodoStatusTypes';
 import { getStatusValue } from '../../utils/helpers/getStatusValue';
+import { selectFilter } from '../../features/filter/selectors';
 
 export const TodoFilter: React.FC = () => {
-  const { query } = useAppSelector(state => state.filter);
+  const { query } = useAppSelector(selectFilter);
   const dispatch = useAppDispatch();
 
   const handlerQuery = (

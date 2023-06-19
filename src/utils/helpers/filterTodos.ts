@@ -1,4 +1,4 @@
-import { State as FilterTodosType } from '../../features/filter';
+import { State as FilterTodosType } from '../../features/filter/types';
 import { TodoStatusTypes } from '../../types/enums/TodoStatusTypes';
 import { Todo } from '../../types/Todo';
 

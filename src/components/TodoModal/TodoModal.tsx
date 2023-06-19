@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getUserById } from '../../api';
 import { useAppSelector } from '../../app/hooks';
+import { selectCurrentTodo } from '../../features/currentTodo';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 import { ModalCard } from '../ModalCard/ModalCard';
@@ -8,7 +9,7 @@ import { ModalCard } from '../ModalCard/ModalCard';
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector(selectCurrentTodo);
 
   useEffect(() => {
     const fetchUser = async () => {

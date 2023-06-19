@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -8,16 +8,17 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { actions as TodosActions } from './features/todos';
+import { actions as TodosActions } from './features/todos/actions';
 import { getFilteredTodos } from './utils/helpers/filterTodos';
+import { selectTodos } from './features/todos';
+import { selectCurrentTodo } from './features/currentTodo';
+import { selectFilter } from './features/filter';
 
 export const App: React.FC = () => {
-  const todos = useAppSelector(state => state.todos);
-  const selectedTodo = useAppSelector(state => state.currentTodo);
-  const filter = useAppSelector(state => state.filter);
+  const { todos, isError, isLoaded } = useAppSelector(selectTodos);
+  const selectedTodo = useAppSelector(selectCurrentTodo);
+  const filter = useAppSelector(selectFilter);
   const dispatch = useAppDispatch();
-
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const fetchTodo = async () => {
@@ -26,16 +27,18 @@ export const App: React.FC = () => {
 
         dispatch(TodosActions.addTodos(fetchedTodos));
       } catch {
-        window.console.log('error message');
+        dispatch(TodosActions.setIsError(true));
       } finally {
-        setIsLoaded(true);
+        dispatch(TodosActions.setIsLoaded(true));
       }
     };
 
     fetchTodo();
   }, []);
 
-  const filteredTodos = getFilteredTodos(todos, filter);
+  const filteredTodos = useMemo(() => {
+    return getFilteredTodos(todos, filter);
+  }, [todos, filter]);
 
   return (
     <>
@@ -53,6 +56,12 @@ export const App: React.FC = () => {
                 <TodoList todos={filteredTodos} />
               ) : (
                 <Loader />
+              )}
+
+              {isError && (
+                <p className="notification is-warning">
+                  Something went wrong, please try again later
+                </p>
               )}
             </div>
           </div>

@@ -1,6 +1,9 @@
+import classNames from 'classnames';
 import React from 'react';
 import { useAppDispatch } from '../../app/hooks';
-import { actions as actionsCurrentTodo } from '../../features/currentTodo';
+import {
+  actions as actionsCurrentTodo,
+} from '../../features/currentTodo/actions';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 
@@ -29,7 +32,8 @@ export const ModalCard: React.FC<Props> = ({ user, todo }) => {
           className="modal-card-title has-text-weight-medium"
           data-cy="modal-header"
         >
-          {`Todo #${id}`}
+          Todo #
+          {id}
         </div>
 
         <button
@@ -47,11 +51,18 @@ export const ModalCard: React.FC<Props> = ({ user, todo }) => {
         </p>
 
         <p className="block" data-cy="modal-user">
-          {completed ? (
-            <strong className="has-text-success">Done</strong>
-          ) : (
-            <strong className="has-text-danger">Planned</strong>
-          )}
+          <strong
+            className={classNames({
+              'has-text-success': completed,
+              'has-text-danger': !completed,
+            })}
+          >
+            {completed ? (
+              'Done'
+            ) : (
+              'Planned'
+            )}
+          </strong>
 
           {' by '}
 

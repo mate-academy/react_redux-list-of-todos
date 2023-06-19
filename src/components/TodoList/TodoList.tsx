@@ -1,6 +1,9 @@
 import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as currentTodoActions } from '../../features/currentTodo';
+import { selectCurrentTodo } from '../../features/currentTodo';
+import {
+  actions as currentTodoActions,
+} from '../../features/currentTodo/actions';
 import { Todo } from '../../types/Todo';
 import { TodoRow } from '../TodoRow';
 
@@ -9,7 +12,7 @@ interface Props {
 }
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
-  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const selectedTodo = useAppSelector(selectCurrentTodo);
   const dispatch = useAppDispatch();
   const handlerSelectTodo = (todoId: number) => {
     const todo = todos.find(({ id }) => id === todoId);
