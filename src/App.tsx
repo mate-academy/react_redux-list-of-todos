@@ -16,7 +16,7 @@ export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
-  useEffect(() => {
+  const loadTodo = () => {
     setLoading(true);
 
     getTodos()
@@ -25,6 +25,10 @@ export const App: React.FC = () => {
         throw new Error(error);
       })
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadTodo();
   }, []);
 
   return (

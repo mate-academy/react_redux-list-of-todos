@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
@@ -16,9 +16,9 @@ export const TodoModal: React.FC = () => {
     dispatch(actions.removeTodo());
   };
 
-  useMemo(() => {
+  useEffect(() => {
     if (currentTodo) {
-      getUser(currentTodo?.userId).then((user) => setCurrentUsers(user));
+      getUser(currentTodo.userId).then((user) => setCurrentUsers(user));
     }
   }, [currentTodo]);
 
@@ -55,9 +55,8 @@ export const TodoModal: React.FC = () => {
             </p>
 
             <p className="block" data-cy="modal-user">
-              {/* <strong className="has-text-success">Done</strong> */}
               <strong
-                className={`has-text-${findTodo?.completed ? 'succses' : 'danger'}`}
+                className={`has-text-${findTodo?.completed ? 'success' : 'danger'}`}
               >
                 {findTodo?.completed
                   ? 'Done'
