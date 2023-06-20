@@ -7,22 +7,25 @@ export const filterTodo = {
     const { todos, filter } = state;
     const { query, status } = filter;
 
-    let FilteredTodos: Todo[];
+    let filteredTodos: Todo[];
 
     switch (status) {
       case 'completed':
-        FilteredTodos = todos.filter(todo => todo.completed);
+        filteredTodos = todos.filter(todo => todo.completed);
         break;
       case 'active':
-        FilteredTodos = todos.filter(todo => !todo.completed);
+        filteredTodos = todos.filter(todo => !todo.completed);
         break;
       case 'all':
       default:
-        FilteredTodos = todos;
+        filteredTodos = todos;
         break;
     }
 
-    return FilteredTodos
-      .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
+    return filteredTodos.filter(todo => {
+      return todo.title
+        .toLowerCase()
+        .includes(query.toLowerCase());
+    });
   },
 };

@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { Todo } from '../types/Todo';
 
 type SetActionTodos = {
@@ -14,7 +13,10 @@ const setTodos = (todos: Todo[]): SetActionTodos => ({
 type State = Todo[];
 type Action = SetActionTodos;
 
-const todosReducer = (state: State = [], action: Action): Todo[] => {
+const todosReducer = (
+  state: State = [],
+  action: Action,
+): Todo[] => {
   switch (action.type) {
     case 'todos/set':
 

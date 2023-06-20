@@ -21,6 +21,9 @@ export const App: React.FC = () => {
 
     getTodos()
       .then(res => dispatch(actionTodos.setTodos(res)))
+      .catch(error => {
+        throw new Error(error);
+      })
       .finally(() => setLoading(false));
   }, []);
 
