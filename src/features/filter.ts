@@ -15,9 +15,9 @@ type SetStatus = {
   payload: Status;
 };
 
-const setQuery = (title: string): SetQuery => ({
+const setQuery = (query: string): SetQuery => ({
   type: FilterActionType.setQuery,
-  payload: title,
+  payload: query,
 }
 );
 

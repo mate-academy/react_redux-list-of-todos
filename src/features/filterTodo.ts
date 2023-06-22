@@ -1,5 +1,6 @@
 import { Todo } from '../types/Todo';
 import { RootState } from '../app/store';
+import { FilterByParameters } from '../utils/filterByParameters';
 
 export const filterTodo = {
   getTodos: (state: RootState) => state.todos,
@@ -10,13 +11,13 @@ export const filterTodo = {
     let filteredTodos: Todo[];
 
     switch (status) {
-      case 'completed':
+      case FilterByParameters.Copleted:
         filteredTodos = todos.filter(todo => todo.completed);
         break;
-      case 'active':
+      case FilterByParameters.Active:
         filteredTodos = todos.filter(todo => !todo.completed);
         break;
-      case 'all':
+      case FilterByParameters.All:
       default:
         filteredTodos = todos;
         break;

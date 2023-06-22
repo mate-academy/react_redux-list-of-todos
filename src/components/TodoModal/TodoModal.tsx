@@ -7,7 +7,7 @@ import { filterTodo } from '../../features/filterTodo';
 import { actions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  const [currentUser, setCurrentUsers] = useState<User>();
+  const [currentUser, setCurrentUser] = useState<User>();
   const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(filterTodo.getFilteredTodos);
   const dispatch = useAppDispatch();
@@ -18,7 +18,7 @@ export const TodoModal: React.FC = () => {
 
   useEffect(() => {
     if (currentTodo) {
-      getUser(currentTodo.userId).then((user) => setCurrentUsers(user));
+      getUser(currentTodo.userId).then((user) => setCurrentUser(user));
     }
   }, [currentTodo]);
 

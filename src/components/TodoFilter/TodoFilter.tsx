@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
+import { FilterByParameters } from '../../utils/filterByParameters';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -28,9 +30,15 @@ export const TodoFilter: React.FC = () => {
             value={status}
             onChange={({ target }) => updateStatus(target.value as Status)}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value="all">
+              {FilterByParameters.All}
+            </option>
+            <option value="active">
+              {FilterByParameters.Active}
+            </option>
+            <option value="completed">
+              {FilterByParameters.Copleted}
+            </option>
           </select>
         </span>
       </p>
@@ -49,9 +57,12 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         {query && (
-          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+          <span
+            className="icon is-right"
+            style={{ pointerEvents: FilterByParameters.All }}
+          >
             <button
+              id="searchButton"
               data-cy="clearSearchButton"
               type="button"
               className="delete"
