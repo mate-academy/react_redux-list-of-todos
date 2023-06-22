@@ -18,8 +18,7 @@ type SetStatus = {
 const setQuery = (query: string): SetQuery => ({
   type: FilterActionType.setQuery,
   payload: query,
-}
-);
+});
 
 const setStatus = (status: Status): SetStatus => ({
   type: FilterActionType.setStatus,
