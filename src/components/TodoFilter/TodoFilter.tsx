@@ -37,7 +37,7 @@ export const TodoFilter: React.FC = () => {
               {FilterByParameters.Active}
             </option>
             <option value="completed">
-              {FilterByParameters.Copleted}
+              {FilterByParameters.Completed}
             </option>
           </select>
         </span>

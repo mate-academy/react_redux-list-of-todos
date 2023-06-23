@@ -22,7 +22,9 @@ export const TodoModal: React.FC = () => {
     }
   }, [currentTodo]);
 
-  const findTodo = todos.find(todo => todo.id === currentTodo?.id);
+  const findTodo = todos.find(todo => {
+    return todo.id === currentTodo?.id;
+  });
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -40,12 +42,12 @@ export const TodoModal: React.FC = () => {
               {`Todo #${currentTodo?.id}`}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"
               data-cy="modal-close"
               onClick={removeCurrentTodo}
+              aria-label=" "
             />
           </header>
 

@@ -12,7 +12,7 @@ export const filterTodo = {
     let filteredTodos: Todo[];
 
     switch (status) {
-      case FilterByParameters.Copleted:
+      case FilterByParameters.Completed:
         filteredTodos = todos.filter(todo => todo.completed);
         break;
       case FilterByParameters.Active:
