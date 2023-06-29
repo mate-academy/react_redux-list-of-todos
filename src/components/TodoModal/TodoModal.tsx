@@ -14,22 +14,22 @@ export const TodoModal: React.FC = () => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    const fetchTodos = async () => {
+    const fetchUser = () => {
       setIsLoading(true);
-      try {
-        if (selectedTodo) {
-          const data = await getUser(selectedTodo.userId);
-
-          setUser(data);
-          setIsLoading(false);
-        }
-      } catch {
-        setIsError(true);
-        setIsLoading(false);
+      if (selectedTodo) {
+        getUser(selectedTodo.userId)
+          .then(data => {
+            setUser(data);
+            setIsLoading(false);
+          })
+          .catch(() => {
+            setIsLoading(false);
+            setIsError(true);
+          });
       }
     };
 
-    fetchTodos();
+    fetchUser();
   }, [selectedTodo]);
 
   return (
