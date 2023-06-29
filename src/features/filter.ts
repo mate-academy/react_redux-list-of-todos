@@ -12,7 +12,7 @@ const setStatus = (status: FilterType): SetStatusAction => ({
   type: 'filter/SET_STATUS',
   payload: status,
 });
-const setClear = ():SetClearAction => ({
+const clearFilter = (): SetClearAction => ({
   type: 'filter/SET_CLEAR',
 });
 
@@ -47,4 +47,4 @@ const filterReducer = (state = filterInitial, action: Action): State => {
 };
 
 export default filterReducer;
-export const actions = { setQuery, setStatus, setClear };
+export const actions = { setQuery, setStatus, setClear: clearFilter };

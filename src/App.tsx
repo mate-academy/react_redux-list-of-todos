@@ -1,5 +1,4 @@
-/* eslint-disable max-len */
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -12,27 +11,31 @@ import { useAppSelector } from './app/hooks';
 import { getTodos } from './api';
 import { actions } from './features/todos';
 import { FilterType } from './types/FilterType';
+import { Notification } from './components/Notification';
+import { ErrorType } from './types/ErrorType';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
   const todos = useAppSelector(state => state.todos);
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const { query, status } = useAppSelector(state => state.filter);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<ErrorType>(ErrorType.None);
 
   useEffect(() => {
-    const fetchTodos = async () => {
+    const fetchTodos = () => {
       setIsLoading(true);
-      try {
-        const data = await getTodos();
-
-        dispatch(actions.setTodos(data));
-        setIsLoading(false);
-      } catch {
-        setIsError(true);
-        setIsLoading(false);
-      }
+      getTodos()
+        .then(data => {
+          dispatch(actions.setTodos(data));
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsLoading(false);
+          setIsError(true);
+          setErrorMessage(ErrorType.Load);
+        });
     };
 
     fetchTodos();
@@ -74,7 +77,7 @@ export const App: React.FC = () => {
             <div className="block">
               {isLoading && <Loader />}
               {isError
-                ? <p>Cant download todos</p>
+                ? <Notification errorMessage={errorMessage} />
                 : <TodoList todos={filteredTodos} />}
             </div>
           </div>

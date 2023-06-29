@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import classnames from 'classnames';
+import cn from 'classnames';
 import React from 'react';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -38,7 +38,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
             return (
               <tr
                 data-cy="todo"
-                className={classnames({
+                className={cn({
                   'has-background-info-light': isTodoSelected,
                 })}
                 key={todo.id}
@@ -52,7 +52,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                   )}
                 </td>
                 <td className="is-vcentered is-expanded">
-                  <p className={classnames({
+                  <p className={cn({
                     'has-text-danger': !todo.completed,
                     'has-text-success': todo.completed,
                   })}
@@ -68,7 +68,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                     onClick={() => dispatch(actions.setTodo(todo))}
                   >
                     <span className="icon">
-                      <i className={classnames(
+                      <i className={cn(
                         'far',
                         {
                           'fa-eye': !isTodoSelected,
