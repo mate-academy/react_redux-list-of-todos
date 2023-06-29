@@ -1,4 +1,5 @@
-import { Todo } from '../../types/Todo';
+import { Status } from '../types/Status';
+import { Todo } from '../types/Todo';
 
 export const getVisibleTodos = (
   filterCase: string,
@@ -8,11 +9,11 @@ export const getVisibleTodos = (
   let filteredTodos;
 
   switch (filterCase) {
-    case 'active':
+    case Status.Active:
       filteredTodos = todos.filter(todo => !todo.completed);
       break;
 
-    case 'completed':
+    case Status.Completed:
       filteredTodos = todos.filter(todo => todo.completed);
       break;
 

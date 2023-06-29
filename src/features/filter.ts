@@ -30,7 +30,7 @@ type State = {
 };
 
 const filterReducer = (
-  state: State = { status: 'all', query: '' },
+  state: State = { status: Status.All, query: '' },
   action: Action,
 ) => {
   switch (action.type) {

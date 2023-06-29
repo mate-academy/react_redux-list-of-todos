@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -19,7 +19,7 @@ export const App: React.FC = () => {
 
   const loadTodos = (todosFromServer: Todo[]) => dispatch(todoActions.loadTodos(todosFromServer));
 
-  const loadTodosFromServer = async () => {
+  const loadTodosFromServer = useCallback(async () => {
     try {
       const todosFromServer = await getTodos();
 
@@ -29,7 +29,7 @@ export const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadTodosFromServer();
