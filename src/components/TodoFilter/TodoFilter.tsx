@@ -1,6 +1,17 @@
-import React from 'react';
+import { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { FilterBy } from '../../types/FilterBy';
+import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispach = useAppDispatch();
+  const filter = useAppSelector(state => state.filter);
+
+  const handleSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispach(filterActions.setFilter(event.target.value as Status));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +19,13 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            onChange={handleSelect}
+          >
+            <option value={FilterBy.all}>All</option>
+            <option value={FilterBy.active}>Active</option>
+            <option value={FilterBy.completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +36,10 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={filter.query}
+          onChange={(event) => {
+            dispach(filterActions.setQuery(event.target.value));
+          }}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -33,6 +51,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={() => dispach(filterActions.setQuery(''))}
           />
         </span>
       </p>
