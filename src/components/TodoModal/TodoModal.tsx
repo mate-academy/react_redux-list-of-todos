@@ -12,16 +12,16 @@ export const TodoModal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
+  const fetchData = async () => {
+    if (currentTodo?.userId) {
+      const loadedUser = await getUser(currentTodo?.userId);
+
+      setUser(loadedUser);
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      if (currentTodo?.userId) {
-        const loadedUser = await getUser(currentTodo?.userId);
-
-        setUser(loadedUser);
-        setIsLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
 

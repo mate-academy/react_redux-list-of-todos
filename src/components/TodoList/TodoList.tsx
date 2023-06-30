@@ -34,7 +34,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {visibleTodos.length === 0 ? (
+      {!visibleTodos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -58,11 +58,16 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {visibleTodos.map(todo => (
-              <tr data-cy="todo" key={todo.id}>
-                <td className="is-vcentered">{todo.id}</td>
+            {visibleTodos.map(({
+              id,
+              title,
+              completed,
+              userId
+            }) => (
+              <tr data-cy="todo" key={id}>
+                <td className="is-vcentered">{id}</td>
                 <td className="is-vcentered">
-                  {todo.completed && (
+                  {completed && (
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
@@ -73,12 +78,12 @@ export const TodoList: React.FC = () => {
                   <p
                     className={classNames(
                       {
-                        'has-text-danger': !todo.completed,
-                        'has-text-success': todo.completed,
+                        'has-text-danger': !completed,
+                        'has-text-success': completed,
                       },
                     )}
                   >
-                    {todo.title}
+                    {title}
                   </p>
                 </td>
 
@@ -87,7 +92,12 @@ export const TodoList: React.FC = () => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => addTodo(todo)}
+                    onClick={() => addTodo({
+                      id,
+                      title,
+                      completed,
+                      userId,
+                    })}
                   >
                     <span
                       className="icon"
