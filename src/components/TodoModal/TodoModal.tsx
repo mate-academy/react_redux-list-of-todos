@@ -4,11 +4,14 @@ import { User } from '../../types/User';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getUser } from '../../api';
 import { actions } from '../../features/currentTodo';
+import { ErrorTypes } from '../../types/ErrorTypes';
+import { Notification } from '../Notification';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<ErrorTypes>(ErrorTypes.None);
 
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
@@ -25,12 +28,16 @@ export const TodoModal: React.FC = () => {
           .catch(() => {
             setIsLoading(false);
             setIsError(true);
+            setErrorMessage(ErrorTypes.LoadUser);
           });
       }
     };
 
     fetchUser();
   }, [selectedTodo]);
+
+  const { id, title, completed } = selectedTodo || {};
+  const { email, name } = user || {};
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -46,7 +53,7 @@ export const TodoModal: React.FC = () => {
                 className="modal-card-title has-text-weight-medium"
                 data-cy="modal-header"
               >
-                {`Todo #${selectedTodo?.id}`}
+                {`Todo #${id}`}
               </div>
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button
@@ -59,23 +66,21 @@ export const TodoModal: React.FC = () => {
 
             <div className="modal-card-body">
               <p className="block" data-cy="modal-title">
-                {selectedTodo?.title}
+                {title}
               </p>
-              {isError && (
-                <h2 style={{ color: 'red' }}>
-                  An error occured while user loading
-                </h2>
-              )}
-
-              <p className="block" data-cy="modal-user">
-                {selectedTodo?.completed
-                  ? <strong className="has-text-success">Done</strong>
-                  : <strong className="has-text-danger">Planned</strong>}
-                { ' by ' }
-                <a href={`mailto:${user?.email}`}>
-                  {user?.name}
-                </a>
-              </p>
+              {isError
+                ? <Notification errorMessage={errorMessage} />
+                : (
+                  <p className="block" data-cy="modal-user">
+                    {completed
+                      ? <strong className="has-text-success">Done</strong>
+                      : <strong className="has-text-danger">Planned</strong>}
+                    { ' by ' }
+                    <a href={`mailto:${email}`}>
+                      {name}
+                    </a>
+                  </p>
+                )}
             </div>
           </div>
         )}

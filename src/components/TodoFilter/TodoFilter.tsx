@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
-import { FilterType } from '../../types/FilterType';
+import { FilterTypes } from '../../types/FilterTypes';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -12,10 +12,10 @@ export const TodoFilter: React.FC = () => {
   };
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(actions.setStatus(event.target.value as FilterType));
+    dispatch(actions.setStatus(event.target.value as FilterTypes));
   };
 
-  const handleClear = () => dispatch(actions.setClear());
+  const handleClear = () => dispatch(actions.clearFilter());
 
   return (
     <form

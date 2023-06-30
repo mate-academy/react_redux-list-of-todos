@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-import cn from 'classnames';
 import React from 'react';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/currentTodo';
+import { TodoItem } from '../TodoItem';
 
 type Props = {
   todos: Todo[];
@@ -36,50 +36,12 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
             const isTodoSelected = currentTodo?.id === todo.id;
 
             return (
-              <tr
-                data-cy="todo"
-                className={cn({
-                  'has-background-info-light': isTodoSelected,
-                })}
+              <TodoItem
                 key={todo.id}
-              >
-                <td className="is-vcentered">{todo.id}</td>
-                <td className="is-vcentered">
-                  {todo.completed && (
-                    <span className="icon" data-cy="iconCompleted">
-                      <i className="fas fa-check" />
-                    </span>
-                  )}
-                </td>
-                <td className="is-vcentered is-expanded">
-                  <p className={cn({
-                    'has-text-danger': !todo.completed,
-                    'has-text-success': todo.completed,
-                  })}
-                  >
-                    {todo.title}
-                  </p>
-                </td>
-                <td className="has-text-right is-vcentered">
-                  <button
-                    data-cy="selectButton"
-                    className="button"
-                    type="button"
-                    onClick={() => dispatch(actions.setTodo(todo))}
-                  >
-                    <span className="icon">
-                      <i className={cn(
-                        'far',
-                        {
-                          'fa-eye': !isTodoSelected,
-                          'fa-eye-slash': isTodoSelected,
-                        },
-                      )}
-                      />
-                    </span>
-                  </button>
-                </td>
-              </tr>
+                todo={todo}
+                isSelected={isTodoSelected}
+                onSelect={() => dispatch(actions.setTodo(todo))}
+              />
             );
           })}
         </tbody>

@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React, { useEffect, useMemo, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -10,9 +11,9 @@ import { Loader } from './components/Loader';
 import { useAppSelector } from './app/hooks';
 import { getTodos } from './api';
 import { actions } from './features/todos';
-import { FilterType } from './types/FilterType';
+import { FilterTypes } from './types/FilterTypes';
 import { Notification } from './components/Notification';
-import { ErrorType } from './types/ErrorType';
+import { ErrorTypes } from './types/ErrorTypes';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ export const App: React.FC = () => {
   const { query, status } = useAppSelector(state => state.filter);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<ErrorType>(ErrorType.None);
+  const [errorMessage, setErrorMessage] = useState<ErrorTypes>(ErrorTypes.None);
 
   useEffect(() => {
     const fetchTodos = () => {
@@ -34,7 +35,7 @@ export const App: React.FC = () => {
         .catch(() => {
           setIsLoading(false);
           setIsError(true);
-          setErrorMessage(ErrorType.Load);
+          setErrorMessage(ErrorTypes.Load);
         });
     };
 
@@ -42,7 +43,7 @@ export const App: React.FC = () => {
   }, []);
 
   const filteredTodos = useMemo(() => {
-    if (!query.length && status === FilterType.ALL) {
+    if (!query.length && status === FilterTypes.ALL) {
       return todos;
     }
 
@@ -51,10 +52,10 @@ export const App: React.FC = () => {
       const lowerCaseQuery = query.toLowerCase();
 
       switch (status) {
-        case FilterType.COMPLETED:
+        case FilterTypes.COMPLETED:
           return completed && lowerCaseTitle.includes(lowerCaseQuery);
 
-        case FilterType.ACTIVE:
+        case FilterTypes.ACTIVE:
           return !completed && lowerCaseTitle.includes(lowerCaseQuery);
 
         default:
