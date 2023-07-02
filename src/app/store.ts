@@ -12,7 +12,6 @@ const rootReducer = combineReducers({
   todos: todosReducer,
 });
 
-// The `store` is passed to the Provider in `/src/index.tsx`
 export const store = createStore(
   rootReducer,
   composeWithDevTools(
@@ -20,5 +19,9 @@ export const store = createStore(
   ),
 );
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = {
+  currentTodo: ReturnType<typeof currentTodoReducer>;
+  filter: ReturnType<typeof filterReducer>;
+  todos: ReturnType<typeof todosReducer>;
+};
 export type AppDispatch = typeof store.dispatch;
