@@ -2,21 +2,21 @@ type Props = {
   query: string,
   status: string,
   todoStatus: (event: React.ChangeEvent<HTMLSelectElement>) => void,
-  setQuery: (value: string) => void,
+  onSelect: (value: string) => void,
 };
 
 export const TodoFilter: React.FC<Props> = ({
   query,
   status,
   todoStatus,
-  setQuery,
+  onSelect,
 }) => {
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event?.target.value);
+    onSelect(event?.target.value);
   };
 
   const handleClear = () => {
-    setQuery('');
+    onSelect('');
   };
 
   return (

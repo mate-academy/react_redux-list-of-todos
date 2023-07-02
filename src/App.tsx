@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -44,13 +43,13 @@ export const App: React.FC = () => {
 
   function filterStatus(value: string): Todo[] | null {
     switch (value) {
-      case 'all':
+      case Status.All:
         return latestTodos;
 
-      case 'active':
+      case Status.Active:
         return latestTodos.filter(todo => !todo.completed);
 
-      case 'completed':
+      case Status.Completed:
         return latestTodos.filter(todo => todo.completed);
 
       default:
@@ -74,7 +73,7 @@ export const App: React.FC = () => {
                 status={status}
                 todoStatus={handleStatusChange}
                 query={query}
-                setQuery={(value) => dispatch(filterActions.changeQuery(value))}
+                onSelect={(value) => dispatch(filterActions.changeQuery(value))}
               />
             </div>
 
@@ -98,7 +97,6 @@ export const App: React.FC = () => {
           selectedTodo={selectedTodo}
         />
       )}
-
     </>
   );
 };

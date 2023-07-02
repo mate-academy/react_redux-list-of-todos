@@ -1,39 +1,45 @@
 import { Status } from '../types/Status';
 
-type StatusAction = { type: 'filter/CHANGE_STATUS', payload: Status };
-type QueryAction = { type: 'filter/CHANGE_QUERY', payload: string };
-type ClearAction = { type: 'filter/CLEAR_QUERY' };
+enum FilterActions {
+  StatusAction = 'filter/CHANGE_STATUS',
+  QueryAction = 'filter/CHANGE_QUERY',
+  ClearAction = 'filter/CLEAR_QUERY',
+}
+
+type StatusAction = { type: FilterActions.StatusAction, payload: Status };
+type QueryAction = { type: FilterActions.QueryAction, payload: string };
+type ClearAction = { type: FilterActions.ClearAction };
 
 type Actions = StatusAction | QueryAction | ClearAction;
 
 const changeStatus = (payload: Status): StatusAction => ({
-  type: 'filter/CHANGE_STATUS', payload,
+  type: FilterActions.StatusAction, payload,
 });
 
 const changeQuery = (payload: string): QueryAction => ({
-  type: 'filter/CHANGE_QUERY', payload,
+  type: FilterActions.QueryAction, payload,
 });
 
-const clear = (): ClearAction => ({ type: 'filter/CLEAR_QUERY' });
+const clear = (): ClearAction => ({ type: FilterActions.ClearAction });
 
 const initialState = {
-  status: 'all',
+  status: Status.All,
   query: '',
 };
 
 const filterReducer = (state = initialState, actions: Actions) => {
   switch (actions.type) {
-    case 'filter/CHANGE_STATUS':
+    case FilterActions.StatusAction:
       return {
         ...state,
         status: actions.payload,
       };
-    case 'filter/CHANGE_QUERY':
+    case FilterActions.QueryAction:
       return {
         ...state,
         query: actions.payload,
       };
-    case 'filter/CLEAR_QUERY':
+    case FilterActions.ClearAction:
       return {
         ...state,
         query: '',
