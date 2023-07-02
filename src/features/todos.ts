@@ -15,7 +15,7 @@ interface RemoveTodosAction {
   payload: Todo,
 }
 
-type Action = SetTodosAction | AddTodosAction | RemoveTodosAction
+type Action = SetTodosAction | AddTodosAction | RemoveTodosAction;
 
 const setTodos = (todos: Todo[]): SetTodosAction => ({
   type: 'todos/SET',

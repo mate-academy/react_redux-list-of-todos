@@ -1,11 +1,11 @@
 import React, { ChangeEvent, useCallback } from 'react';
-import { useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const { query, status } = useAppSelector(state => state.filter)
+  const { query, status } = useAppSelector(state => state.filter);
   const dispatch = useDispatch();
 
   const handleSelect = useCallback(

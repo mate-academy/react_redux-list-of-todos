@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
 import { useAppSelector } from '../../app/hooks';
-import { useDispatch } from 'react-redux';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { actions } from '../../features/currentTodo';
@@ -18,14 +18,14 @@ export const TodoModal: React.FC = () => {
 
     if (todo) {
       getUser(todo.userId).then(result => {
-        setUser(result)
+        setUser(result);
       }).catch(() => {
-        setHasError(true)
+        setHasError(true);
       }).finally(() => {
-        setIsLoading(false)
-      })
+        setIsLoading(false);
+      });
     }
-  }, [])
+  }, []);
 
   return (
     <div className="modal is-active" data-cy="modal">

@@ -26,8 +26,8 @@ export const App: React.FC = () => {
       setHasError(true);
     }).finally(() => {
       setIsLoading(false);
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <>

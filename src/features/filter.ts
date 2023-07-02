@@ -3,14 +3,14 @@ import { Status } from '../types/Status';
 interface SetQueryActions {
   type: 'filter/SET_QUERY',
   payload: string
-};
+}
 interface RemoveQueryActions {
   type: 'filter/REMOVE_QUERY'
-};
+}
 interface SetStatusActions {
   type: 'filter/SET_STATUS',
   payload: Status
-};
+}
 
 type Action = SetQueryActions | RemoveQueryActions | SetStatusActions;
 
@@ -33,7 +33,7 @@ export const actions = { setQuery, removeQuery, setStatus };
 interface State {
   query: string,
   status: Status,
-};
+}
 
 const initState: State = { query: '', status: 'all' };
 

@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
 import React, { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
 import { Todo } from '../../types/Todo';
-import { useDispatch } from 'react-redux';
 import { actions } from '../../features/currentTodo';
 
 export const getVisibleTodos = (
@@ -37,8 +37,8 @@ export const getVisibleTodos = (
 };
 
 export const TodoList: React.FC = () => {
-  const todos = useAppSelector(state => state.todos)
-  const { query, status } = useAppSelector(state => state.filter)
+  const todos = useAppSelector(state => state.todos);
+  const { query, status } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useDispatch();
 
@@ -76,13 +76,13 @@ export const TodoList: React.FC = () => {
             onClick={() => dispatch(actions.setTodo(todo))}
           >
             <span className="icon">
-              <i className={`far ${!isCurrent ? 'fa-eye' : 'fa-eye-slash'}`}/>
+              <i className={`far ${!isCurrent ? 'fa-eye' : 'fa-eye-slash'}`} />
             </span>
           </button>
         </td>
       </tr>
-    )
-  })
+    );
+  });
 
   return (
     <>
@@ -112,7 +112,6 @@ export const TodoList: React.FC = () => {
           </tbody>
         </table>
       )}
-
 
     </>
   );
