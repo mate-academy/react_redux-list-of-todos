@@ -5,7 +5,7 @@ import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
 
 type Props = {
-  todos: Todo[] | null;
+  todos: Todo[];
 };
 
 export const TodoList: React.FC<Props> = ({ todos }) => {

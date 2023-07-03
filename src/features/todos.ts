@@ -12,8 +12,8 @@ export const actions = {
 };
 
 const todosReducer = (
-  todos: Todo[] | null = null, action: Actions,
-): Todo[] | null => {
+  todos: Todo[] = [], action: Actions,
+): Todo[] => {
   if (action.type === 'load') {
     return action.payload;
   }

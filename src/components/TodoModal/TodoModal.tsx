@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useEffect, useState } from 'react';
 import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -8,19 +7,23 @@ import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
 
   async function getUsersFromServer() {
     setLoading(true);
+    setError(false);
 
     try {
-      const user = await getUser(selectedTodo?.userId || null);
+      if (selectedTodo !== null) {
+        const user = await getUser(selectedTodo.userId);
 
-      setSelectedUser(user);
+        setSelectedUser(user);
+      }
     } catch (error) {
-      window.console.log('Error: ', error);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -32,7 +35,7 @@ export const TodoModal: React.FC = () => {
 
   useEffect(() => {
     getUsersFromServer();
-  }, []);
+  }, [selectedTodo?.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -46,7 +49,12 @@ export const TodoModal: React.FC = () => {
                 className="modal-card-title has-text-weight-medium"
                 data-cy="modal-header"
               >
-                Todo #{selectedTodo?.id}
+                {!isError && (
+                  <>
+                    Todo #
+                    {selectedTodo?.id}
+                  </>
+                )}
               </div>
 
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -59,24 +67,33 @@ export const TodoModal: React.FC = () => {
             </header>
 
             <div className="modal-card-body">
-              <p className="block" data-cy="modal-title">
-                {selectedTodo?.title}
-              </p>
+              {!isError ? (
+                <>
+                  <p className="block" data-cy="modal-title">
+                    {selectedTodo?.title}
+                  </p>
 
-              <p className="block" data-cy="modal-user">
-                {!selectedTodo?.completed && (
-                  <strong className="has-text-danger">Planned</strong>
+                  <p className="block" data-cy="modal-user">
+                    {!selectedTodo?.completed && (
+                      <strong className="has-text-danger">Planned</strong>
+                    )}
+
+                    {!!selectedTodo?.completed && (
+                      <strong className="has-text-success">Done</strong>
+                    )}
+
+                    {' by '}
+                    <a href={`mailto:${selectedUser?.email}`}>
+                      {selectedUser?.name}
+                    </a>
+                  </p>
+                </>
+              )
+                : (
+                  <p className="has-text-danger has-text-weight-medium">
+                    Something went wrong
+                  </p>
                 )}
-
-                {!!selectedTodo?.completed && (
-                  <strong className="has-text-success">Done</strong>
-                )}
-
-                {' by '}
-                <a href={`mailto:${selectedUser?.email}`}>
-                  {selectedUser?.name}
-                </a>
-              </p>
             </div>
           </div>
         )}
