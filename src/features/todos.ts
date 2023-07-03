@@ -36,7 +36,7 @@ const setTodosError = (error: string): SetErrorAction => ({
   payload: error,
 });
 
-export const actions = { setTodos, setTodosLoading, setTodosError};
+export const actions = { setTodos, setTodosLoading, setTodosError };
 
 const initialState = {
   todos: [],
