@@ -12,11 +12,15 @@ interface Props {
 export const TodoList: React.FC<Props> = ({ todos }) => {
   const { query, status } = useAppSelector(state => state.filter);
   const { loading } = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   let todoStatus: boolean | null = null;
 
   const filteredTodos = todos.filter(todo => {
+    const formattedTitle = todo.title.toLowerCase();
+    const formattedQuery = query.toLowerCase();
+
     switch (status) {
       case 'completed':
         todoStatus = true;
@@ -28,7 +32,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
         todoStatus = null;
     }
 
-    return todo.title.includes(query)
+    return formattedTitle.includes(formattedQuery)
       && (todo.completed === todoStatus || status === 'all');
   });
 
@@ -83,7 +87,11 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                     onClick={() => dispatch(actions.setTodo(todo))}
                   >
                     <span className="icon">
-                      <i className="far fa-eye" />
+                      <i className={cn(
+                        { 'far fa-eye': !currentTodo },
+                        { 'far fa-eye-slash': currentTodo },
+                      )}
+                      />
                     </span>
                   </button>
                 </td>

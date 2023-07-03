@@ -14,7 +14,7 @@ import { actions } from './features/todos';
 export const App: React.FC = () => {
   const { todos, loading } = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
-  const todo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     dispatch(actions.setTodosLoading(true));
@@ -51,7 +51,7 @@ export const App: React.FC = () => {
           </div>
         </div>
       </div>
-      {todo && (
+      {currentTodo && (
         <TodoModal />
       )}
     </>
