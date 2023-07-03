@@ -6,15 +6,15 @@ import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
-  const [isLoading, setLoading] = useState(false);
-  const [isError, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
 
   async function getUsersFromServer() {
-    setLoading(true);
-    setError(false);
+    setIsLoading(true);
+    setIsError(false);
 
     try {
       if (selectedTodo !== null) {
@@ -23,9 +23,9 @@ export const TodoModal: React.FC = () => {
         setSelectedUser(user);
       }
     } catch (error) {
-      setError(true);
+      setIsError(true);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 

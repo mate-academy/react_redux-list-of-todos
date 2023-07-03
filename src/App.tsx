@@ -17,42 +17,42 @@ export const App: React.FC = () => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const { query, status } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
-  const [isLoading, setLoading] = useState(true);
-  const [isError, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   async function getTodosFromServer() {
-    setLoading(true);
-    setError(false);
+    setIsLoading(true);
+    setIsError(false);
 
     try {
       const data = await getTodos();
 
       dispatch(todosActions.load(data));
     } catch (error) {
-      setError(true);
+      setIsError(true);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }
 
   const visibleTodos = useMemo(() => {
-    if (status === StatusEnum.All && query !== '') {
-      return todos?.filter(todo => todo.title.includes(query));
-    }
+    switch (status) {
+      case StatusEnum.All:
+        return todos?.filter(todo => todo.title.includes(query));
 
-    if (status === StatusEnum.Completed) {
-      return todos?.filter(todo => {
-        return todo.completed === true && todo.title.includes(query);
-      });
-    }
+      case StatusEnum.Completed:
+        return todos?.filter(todo => {
+          return todo.completed === true && todo.title.includes(query);
+        });
 
-    if (status === StatusEnum.Active) {
-      return todos?.filter(todo => {
-        return todo.completed === false && todo.title.includes(query);
-      });
-    }
+      case StatusEnum.Active:
+        return todos?.filter(todo => {
+          return todo.completed === false && todo.title.includes(query);
+        });
 
-    return todos;
+      default:
+        return todos;
+    }
   }, [query, status, todos]);
 
   useEffect(() => {

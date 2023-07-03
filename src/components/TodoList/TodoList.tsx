@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import classNames from 'classnames';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
@@ -17,7 +18,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
 
   return (
     <>
-      {todos?.length === 0 && todos !== null ? (
+      {!todos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -41,13 +42,13 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
 
             <tbody>
               {
-                todos?.map(todo => (
+                todos.map(todo => (
                   <tr
                     key={todo.id}
                     data-cy="todo"
-                    className={todo.id === selectedTodo?.id
-                      ? 'has-background-info-light'
-                      : ''}
+                    className={classNames({
+                      'has-background-info-light': todo.id === selectedTodo?.id,
+                    })}
                   >
                     <td className="is-vcentered">{todo.id}</td>
                     <td className="is-vcentered">
