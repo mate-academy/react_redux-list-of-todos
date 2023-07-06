@@ -32,7 +32,7 @@ export const TodoFilter: React.FC = () => {
     }
   };
 
-  const showClear = (query.length !== 0) || status !== Status.ALL;
+  const showClear = (query.length) || status !== Status.ALL;
 
   return (
     <form
