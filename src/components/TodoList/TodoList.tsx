@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 interface Props {
   isLoading: boolean
@@ -16,14 +17,18 @@ export const TodoList: React.FC<Props> = ({ isLoading }) => {
   const visibleTodos = useMemo(() => {
     let filteredTodos = todos;
 
+    const filterItems = (completed:boolean) => {
+      return filteredTodos.filter(todo => todo.completed === completed);
+    };
+
     switch (status) {
-      case 'completed':
-        filteredTodos = filteredTodos.filter(todo => todo.completed);
+      case Status.Completed:
+        filteredTodos = filterItems(true);
         break;
-      case 'active':
-        filteredTodos = filteredTodos.filter(todo => !todo.completed);
+      case Status.Active:
+        filteredTodos = filterItems(false);
         break;
-      case 'all':
+      case Status.All:
         filteredTodos = todos;
         break;
       default:

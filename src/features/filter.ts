@@ -1,27 +1,32 @@
 import { Status } from '../types/Status';
 
+const enum ActionType {
+  SET_FILTER = 'SET_FILTER',
+  SET_QUERY = 'SET_QUERY',
+}
+
 type FilterAction = {
-  type: 'SET_FILTER',
+  type: ActionType.SET_FILTER,
   payload: Status,
 };
 
 type QueryAction = {
-  type: 'SET_QUERY',
+  type: ActionType.SET_QUERY,
   payload: string,
 };
 
 const setFilter = (status: Status): FilterAction => ({
-  type: 'SET_FILTER',
+  type: ActionType.SET_FILTER,
   payload: status,
 });
 
 const setQuery = (query: string): QueryAction => ({
-  type: 'SET_QUERY',
+  type: ActionType.SET_QUERY,
   payload: query,
 });
 
 const initialState = {
-  status: 'all',
+  status: Status.All,
   query: '',
 };
 
@@ -34,12 +39,12 @@ const filterReducer = (
   action: Action,
 ) => {
   switch (action.type) {
-    case 'SET_FILTER':
+    case ActionType.SET_FILTER:
       return {
         ...state,
         status: action.payload,
       };
-    case 'SET_QUERY':
+    case ActionType.SET_QUERY:
       return {
         ...state,
         query: action.payload,
