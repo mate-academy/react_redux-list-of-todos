@@ -90,7 +90,6 @@ export const TodoList: React.FC<Props> = ({ isLoading }) => {
                     })}
                     >
                       {title}
-
                     </p>
                   </td>
                   <td className="has-text-right is-vcentered">
