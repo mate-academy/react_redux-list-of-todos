@@ -1,14 +1,37 @@
-import React from 'react';
+/* eslint-disable no-console */
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../app/store';
+import { actions as filterActions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
+  const [select, setSelect] = useState('all');
+  const [query, setQuery] = useState('');
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleChange = () => {
+    dispatch(filterActions.setFilter({
+      query,
+      select,
+    }));
+  };
+
   return (
     <form
       className="field has-addons"
-      onSubmit={event => event.preventDefault()}
+      onSubmit={event => {
+        event.preventDefault();
+      }}
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            onChange={(event) => {
+              setSelect(event.target.value);
+              handleChange();
+            }}
+            data-cy="statusSelect"
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +45,10 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={(event) => {
+            setQuery(event.target.value);
+            handleChange();
+          }}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
