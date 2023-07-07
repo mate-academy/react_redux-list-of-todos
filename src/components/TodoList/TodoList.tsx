@@ -14,7 +14,7 @@ interface Props {
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const filter: PayloadType = useSelector<RootState, PayloadType>((state) => state.filter);
+  let filter: PayloadType = useSelector<RootState, PayloadType>((state) => state.filter);
   const selectedTodo: Todo | null = useSelector<RootState, Todo | null>(
     (state) => state.currentTodo,
   );
@@ -27,24 +27,35 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
     }
   };
 
-  let visibleTodos = todos;
+  const filterCase = () => {
+    let filteredTodos = todos;
 
-  if (filter) {
+    if (!filter) {
+      filter = {
+        select: 'all',
+        query: '',
+      };
+    }
+
     if (filter.select === 'completed') {
-      visibleTodos = visibleTodos.filter(todo => todo.completed);
+      filteredTodos = filteredTodos.filter(todo => todo.completed);
     }
 
     if (filter.select === 'active') {
-      visibleTodos = visibleTodos.filter(todo => !todo.completed);
+      filteredTodos = filteredTodos.filter(todo => !todo.completed);
     }
 
     if (filter.query) {
-      visibleTodos = visibleTodos
+      filteredTodos = filteredTodos
         .filter(todo => todo.title
           .toLowerCase()
-          .includes(filter.query));
+          .includes(filter.query.toLowerCase().trim()));
     }
-  }
+
+    return filteredTodos;
+  };
+
+  const visibleTodos = filterCase();
 
   return (
     <>
