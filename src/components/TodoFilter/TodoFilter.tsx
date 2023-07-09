@@ -18,13 +18,13 @@ export const TodoFilter: React.FC = () => {
     const { value } = event.target;
 
     switch (value) {
-      case 'all':
+      case Status.ALL:
         dispatch(filterActions.changeStatus(Status.ALL));
         break;
-      case 'active':
+      case Status.ACTIVE:
         dispatch(filterActions.changeStatus(Status.ACTIVE));
         break;
-      case 'completed':
+      case Status.COMPLETED:
         dispatch(filterActions.changeStatus(Status.COMPLETED));
         break;
       default:

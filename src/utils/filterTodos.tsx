@@ -19,11 +19,11 @@ export const filterTodos = (
     });
   }
 
-  if (status === 'active') {
+  if (status === Status.ACTIVE) {
     filteredTodos = filteredTodos.filter(todo => (!todo.completed));
   }
 
-  if (status === 'completed') {
+  if (status === Status.COMPLETED) {
     filteredTodos = filteredTodos.filter(todo => (
       todo.completed));
   }
