@@ -10,12 +10,13 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as actionTodos } from './features/todos';
+import { currentTodoSelector, filterSelector, todosSelector } from './features/selectors';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  const selectTodo = useAppSelector(state => state.currentTodo);
-  const todos = useAppSelector(state => state.todos);
-  const filterState = useAppSelector(state => state.filter);
+  const selectTodo = useAppSelector(currentTodoSelector);
+  const todos = useAppSelector(todosSelector);
+  const filterState = useAppSelector(filterSelector);
   const [errorMessage, setErrorMessage] = useState('');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);

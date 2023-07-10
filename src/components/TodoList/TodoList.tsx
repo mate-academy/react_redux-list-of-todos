@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as actionsCurrent } from '../../features/currentTodo';
+import { currentTodoSelector } from '../../features/selectors';
 
 type Props = {
   todos: Todo[];
@@ -12,7 +13,7 @@ type Props = {
 
 export const TodoList: FC<Props> = ({ todos, errorMessage }) => {
   const dispatch = useAppDispatch();
-  const selectTodo = useAppSelector(state => state.currentTodo);
+  const selectTodo = useAppSelector(currentTodoSelector);
 
   const handleClick = (todoId: number) => {
     const findTodo = todos.find(todo => todo.id === todoId);

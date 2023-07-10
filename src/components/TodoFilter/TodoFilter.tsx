@@ -2,10 +2,11 @@ import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
+import { filterSelector } from '../../features/selectors';
 
 export const TodoFilter: FC = () => {
   const dispatch = useAppDispatch();
-  const { status, query } = useAppSelector(state => state.filter);
+  const { status, query } = useAppSelector(filterSelector);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(filterActions.setStatus(event.target.value as Status));

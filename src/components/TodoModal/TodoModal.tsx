@@ -4,10 +4,11 @@ import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as actionsCurrent } from '../../features/currentTodo';
+import { currentTodoSelector } from '../../features/selectors';
 
 export const TodoModal: FC = () => {
   const dispatch = useAppDispatch();
-  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const selectedTodo = useAppSelector(currentTodoSelector);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
