@@ -2,15 +2,12 @@ import React, { ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
-// import { actions as TodoActions } from '../../features/todos';
 
 export const TodoFilter: React.FC = () => {
   const { query } = useAppSelector(state => state.filter);
   const dispatch = useDispatch();
 
-  const handleStatus = (
-    event: ChangeEvent<HTMLSelectElement>,
-  ) => {
+  const handleStatus = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(filterActions.setStatus(event.target.value));
   };
 

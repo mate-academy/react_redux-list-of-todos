@@ -1,31 +1,21 @@
-import React from 'react';
-import cn from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as currentActions } from '../../features/currentTodo';
-import { Todo } from '../../types/Todo';
+import React, { Fragment } from 'react';
+import { useAppSelector } from '../../app/hooks';
+import { Statuses } from '../../types/Status';
+import { TodoItem } from '../TodoItem';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
-  const dispatch = useAppDispatch();
   const { query, status } = useAppSelector(state => state.filter);
-  const currentTodo = useAppSelector(state => state.currentTodo);
-
-  const handleClick = async (todo: Todo) => {
-    dispatch(currentActions.setTodo(todo));
-  };
-
-  // eslint-disable-next-line no-console
-  console.log(Boolean(currentTodo));
 
   const newTodos = todos.filter(({ completed }) => {
     switch (status) {
-      case 'active':
+      case Statuses.Active:
         return !completed;
 
-      case 'completed':
+      case Statuses.Completed:
         return completed;
 
-      case 'all':
+      case Statuses.All:
         return true;
 
       default:
@@ -66,64 +56,10 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {newTodos.map(({
-              id,
-              title,
-              completed,
-              userId,
-            }) => (
-              <tr
-                data-cy="todo"
-                className={cn(
-                  { 'has-backgound-info-light': currentTodo?.id === id },
-                )}
-                key={id}
-              >
-                <td className="is-vcentered">{id}</td>
-                <td className="is-vcentered">
-                  {
-                    completed && (
-                      <span className="icon" data-cy="iconCompleted">
-                        <i className="fas fa-check" />
-                      </span>
-                    )
-                  }
-                </td>
-
-                <td className="is-vcentered is-expanded">
-
-                  <p className={cn(
-                    { 'has-text-danger': !completed },
-                    { 'has-text-success': completed },
-                  )}
-                  >
-                    {title}
-                  </p>
-                </td>
-
-                <td className="has-text-right is-vcentered">
-                  <button
-                    data-cy="selectButton"
-                    className="button"
-                    type="button"
-                    onClick={() => handleClick({
-                      id,
-                      title,
-                      completed,
-                      userId,
-                    })}
-                  >
-                    <span className="icon">
-                      <i className={cn(
-                        'far',
-                        { 'fa-eye': currentTodo?.id !== id },
-                        { 'fa-eye-slash': currentTodo?.id === id },
-                      )}
-                      />
-                    </span>
-                  </button>
-                </td>
-              </tr>
+            {newTodos.map(todo => (
+              <Fragment key={todo.id}>
+                <TodoItem todo={todo} />
+              </Fragment>
             ))}
           </tbody>
         </table>

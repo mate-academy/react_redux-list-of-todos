@@ -1,5 +1,6 @@
 import {
   Actions,
+  FilterActions,
   FilterState,
   QueryAction,
 } from '../types/Status';
@@ -31,19 +32,19 @@ export const actions = {
 
 const filterReducer = (state = intialState, action: Actions): FilterState => {
   switch (action.type) {
-    case 'filter/SET_QUERY':
+    case FilterActions.SetQuery:
       return {
         ...state,
         query: action.payload,
       };
 
-    case 'filter/CLEAR_QUERY':
+    case FilterActions.ClearQuery:
       return {
         ...state,
         query: '',
       };
 
-    case 'filter/SET_STATUS':
+    case FilterActions.SetStatus:
       return {
         ...state,
         status: action.payload,

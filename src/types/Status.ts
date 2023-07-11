@@ -4,6 +4,17 @@ export interface FilterState {
   query: string;
   status: Status;
 }
+export enum Statuses {
+  Active = 'active',
+  Completed = 'completed',
+  All = 'all',
+}
+
+export enum FilterActions {
+  SetQuery = 'filter/SET_QUERY',
+  ClearQuery = 'filter/CLEAR_QUERY',
+  SetStatus = 'filter/SET_STATUS',
+}
 
 export type QueryAction = {
   type: 'filter/SET_QUERY';
