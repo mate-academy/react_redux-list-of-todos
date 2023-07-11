@@ -1,14 +1,31 @@
-/* eslint-disable max-len */
-import React from 'react';
+import { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { Loader } from './components/Loader';
+import { actions as todoActions } from './features/todos';
+import { Todo } from './types/Todo';
+import { getTodos } from './api';
+import { TodoModal } from './components/TodoModal';
 
 export const App: React.FC = () => {
+  const todos: Todo[] = useAppSelector(state => state.todos);
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  const todosFromSerever = async () => {
+    const responce = await getTodos();
+
+    dispatch(todoActions.fetchTodos(responce));
+  };
+
+  useEffect(() => {
+    todosFromSerever();
+  }, []);
+
   return (
     <>
       <div className="section">
@@ -21,14 +38,13 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {todos.length > 0 ? <TodoList /> : <Loader />}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {currentTodo && <TodoModal />}
     </>
   );
 };
