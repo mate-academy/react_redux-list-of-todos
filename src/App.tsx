@@ -9,6 +9,7 @@ import { Loader } from './components/Loader';
 import { TodoModal } from './components/TodoModal';
 import { useSortAndSearch } from './app/useSortAndSearch';
 import { LoadingError } from './components/LoadingError';
+import { SearchError } from './components/SearchError';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
 
@@ -46,6 +47,14 @@ export const App: React.FC = () => {
     query,
   );
 
+  const todoListOnPage = sortedAndSearchedTodos.length === 0
+    ? <SearchError />
+    : <TodoList todos={sortedAndSearchedTodos} />;
+
+  const loadedTodos = isLoading
+    ? <Loader />
+    : todoListOnPage;
+
   return (
     <>
       <div className="section">
@@ -59,15 +68,7 @@ export const App: React.FC = () => {
 
             {hasLoadingError
               ? <LoadingError />
-              : (
-                <div className="block">
-                  {isLoading
-                    ? <Loader />
-                    : (
-                      <TodoList todos={sortedAndSearchedTodos} />
-                    )}
-                </div>
-              )}
+              : loadedTodos}
 
             {selectedTodo && <TodoModal />}
           </div>

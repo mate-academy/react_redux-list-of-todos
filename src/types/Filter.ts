@@ -1,6 +1,6 @@
-import { Sort } from './Sort';
+import { SORT } from './Sort';
 
 export interface Filter {
-  sort: Sort,
-  query: string
+  sort: SORT,
+  query: string,
 }

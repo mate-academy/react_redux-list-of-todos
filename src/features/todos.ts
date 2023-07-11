@@ -11,10 +11,10 @@ const loadTodos = (todos: Todo[]): Action => ({
 
 export const actions = { loadTodos };
 
-const todosReducer = (todos: Todo[] = [] || null, action: Action) => {
+const todosReducer = (todos: Todo[] = [], action: Action) => {
   switch (action.type) {
     case 'todos/LOAD':
-      return [...todos, ...action.payload];
+      return action.payload;
 
     default:
       return todos;

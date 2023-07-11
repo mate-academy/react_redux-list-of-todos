@@ -3,6 +3,10 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
 
+/* type Props = {
+  setHasSearchError: (value: boolean) => void;
+} */
+
 export const TodoFilter = () => {
   const dispatch = useDispatch();
   const { query, sort } = useAppSelector(state => state.filter);
@@ -17,10 +21,14 @@ export const TodoFilter = () => {
 
   const handleQueryClear = () => {
     dispatch(actions.queryClear());
+    // setHasSearchError(false);
   };
 
   return (
-    <form className="field has-addons">
+    <form
+      className="field has-addons"
+      onSubmit={(event) => event.preventDefault()}
+    >
       <p className="control">
         <span className="select">
           <select

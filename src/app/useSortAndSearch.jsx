@@ -1,16 +1,16 @@
 import { useMemo } from 'react';
-import { Sort } from '../types/Sort';
+import { SORT } from '../types/Sort';
 
 export const useSortAndSearch = (todos, sort, query) => {
   const modifiedTodos = useMemo(() => {
     return ((todos || [])
       .filter(todo => {
         switch (sort) {
-          case Sort.active:
+          case SORT.Active:
             return !todo.completed;
-          case Sort.completed:
+          case SORT.Completed:
             return todo.completed;
-          case Sort.all:
+          case SORT.All:
           default:
             return todo;
         }

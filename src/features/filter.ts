@@ -1,9 +1,9 @@
 import { Filter } from '../types/Filter';
-import { Sort } from '../types/Sort';
+import { SORT } from '../types/Sort';
 
 type QueryAddAction = { type: 'filter/QUERYADD', payload: string };
 type QueryClearAction = { type: 'filter/QUERYCLEAR' };
-type SortChangeAction = { type: 'filter/SORTCHANGE', payload: string };
+type SortChangeAction = { type: 'filter/SORTCHANGE', payload: SORT };
 
 type Action = QueryAddAction | QueryClearAction | SortChangeAction;
 
@@ -25,7 +25,7 @@ export const actions = { queryAdd, queryClear, sortChange };
 
 const filterReducer = (filter: Filter = {
   query: '',
-  sort: Sort.all,
+  sort: SORT.All,
 },
 action: Action) => {
   switch (action.type) {
@@ -36,7 +36,7 @@ action: Action) => {
       return { ...filter, query: '' };
 
     case 'filter/SORTCHANGE':
-      return { ...filter, sort: action.payload as Sort };
+      return { ...filter, sort: action.payload };
 
     default:
       return filter;
