@@ -4,3 +4,10 @@ export interface Todo {
   completed: boolean;
   userId: number;
 }
+
+export type FetchAction = {
+  type: 'todos/FETCH_TODOS';
+  payload: Todo[];
+};
+
+export type Actions = FetchAction;
