@@ -27,7 +27,7 @@ export const App: React.FC = () => {
   }, []);
 
   const filteredHandler = () => {
-    return todos.filter(todo => todo.title.includes(query)).filter(todo => {
+    return todos.filter(todo => todo.title.includes(query.toLowerCase())).filter(todo => {
       switch (status) {
         case 'active':
           return !todo.completed;

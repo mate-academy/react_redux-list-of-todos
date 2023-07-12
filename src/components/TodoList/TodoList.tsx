@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { useAppSelector } from '../../app/hooks';
 
 type Props = {
   todos: Todo[];
@@ -9,8 +10,13 @@ type Props = {
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
   const dispatch = useDispatch();
+  const { todo } = useAppSelector(state => state.currentTodo);
 
-  if (todos.length === 0) {
+  const isSelected = (currentTodo: Todo) => {
+    return currentTodo.id === todo?.id;
+  };
+
+  if (!todos.length) {
     return (
       <p className="notification is-warning">
         There are no todos matching current filter criteria
@@ -37,11 +43,11 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
         </thead>
 
         <tbody>
-          {todos.map(todo => (
-            <tr data-cy="todo" key={todo.id}>
-              <td className="is-vcentered">{todo.id}</td>
+          {todos.map(t => (
+            <tr data-cy="todo" key={t.id}>
+              <td className="is-vcentered">{t.id}</td>
               <td className="is-vcentered">
-                {todo.completed
+                {t.completed
                   && (
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
@@ -50,10 +56,10 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
               </td>
               <td className="is-vcentered is-expanded">
                 <p className={
-                  todo.completed ? 'has-text-success' : 'has-text-danger'
+                  t.completed ? 'has-text-success' : 'has-text-danger'
                 }
                 >
-                  {todo.title}
+                  {t.title}
                 </p>
               </td>
               <td className="has-text-right is-vcentered">
@@ -62,11 +68,11 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                   className="button"
                   type="button"
                   onClick={() => {
-                    dispatch(currentTodoActions.setTodo(todo));
+                    dispatch(currentTodoActions.setTodo(t));
                   }}
                 >
                   <span className="icon">
-                    <i className="far fa-eye" />
+                    <i className={`far ${isSelected(t) ? 'fa-eye-slash' : 'fa-eye'}`} />
                   </span>
                 </button>
               </td>
