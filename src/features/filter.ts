@@ -3,8 +3,6 @@
 type Query = { type: 'query', payload: string };
 type Status = { type: 'status', payload: string };
 
-
-
 type Actions = Status | Query;
 
 // // eslint-disable-next-line @typescript-eslint/naming-convention
