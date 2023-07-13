@@ -35,8 +35,6 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {/* <Loader /> */}
-
       {!isLoading
         ? (
           <Loader />)
@@ -73,9 +71,11 @@ export const TodoModal: React.FC = () => {
                   ? <strong className="has-text-success">Done</strong>
                   : <strong className="has-text-danger">Planned</strong>}
                 {' by '}
-                <a href={`mailto:${user?.email}`}>
-                  {user?.name}
-                </a>
+                {user?.email && user?.name ? (
+                  <a href={`mailto:${user.email}`}>
+                    {user.name}
+                  </a>
+                ) : null}
               </p>
             </div>
           </div>

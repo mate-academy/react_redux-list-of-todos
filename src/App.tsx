@@ -49,28 +49,29 @@ export const App: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
   const selectedTodo = useAppSelector(state => state.currentTodo);
-  const [isLoading, setisLoading] = useState(true);
-  const [hasError, sethasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const visibleTodos = useMemo(
     () => getFilteredTodos(todos, query, status),
     [todos, query, status],
   );
 
-  const getTodosServer = async () => {
+  const getTodosFromServer = async () => {
     try {
       const arrayTodos = await getTodos();
 
       dispatch(todosActions.setTodos(arrayTodos));
-      setisLoading(false);
-      sethasError(false);
+      setHasError(false);
     } catch (error) {
-      sethasError(true);
+      setHasError(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    getTodosServer();
+    getTodosFromServer();
   }, []);
 
   return (
@@ -92,7 +93,7 @@ export const App: React.FC = () => {
                 : <TodoList todos={visibleTodos} />}
             </div>
           </div>
-          {!isLoading && (
+          {!visibleTodos.length && (
             <p className="notification is-warning">
               There are no todos matching current filter criteria
             </p>

@@ -9,7 +9,7 @@ type Props = { todos: Todo[] };
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
   const dispatch = useAppDispatch();
-  const carrentTodo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -30,7 +30,8 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
 
       <tbody>
         {todos.map((todo) => {
-          const isTodoSelected = carrentTodo?.id === todo.id;
+          const { id, title, completed } = todo;
+          const isTodoSelected = currentTodo?.id === id;
 
           return (
             <tr
@@ -38,11 +39,11 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
               className={classnames({
                 'has-background-info-light': isTodoSelected,
               })}
-              key={todo.id}
+              key={id}
             >
-              <td className="is-vcentered">{todo.id}</td>
+              <td className="is-vcentered">{id}</td>
               <td className="is-vcentered">
-                {todo.completed && (
+                {completed && (
                   <span className="icon" data-cy="iconCompleted">
                     <i className="fas fa-check" />
                   </span>
@@ -50,11 +51,11 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
               </td>
               <td className="is-vcentered is-expanded">
                 <p className={classnames({
-                  'has-text-danger': !todo.completed,
-                  'has-text-success': todo.completed,
+                  'has-text-danger': !completed,
+                  'has-text-success': completed,
                 })}
                 >
-                  {todo.title}
+                  {title}
                 </p>
               </td>
               <td className="has-text-right is-vcentered">
