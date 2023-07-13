@@ -51,7 +51,7 @@ export const App: React.FC = () => {
   const getFilteredTodos = () => {
     let newTodos = [...todos];
 
-    if (status !== 'all') {
+    if (status !== Status.All) {
       newTodos = newTodos.filter(todo => (
         status === 'active' ? !todo.completed : todo.completed
       ));

@@ -1,5 +1,7 @@
+import { Status } from '../../types/Status';
+
 type Props = {
-  status: string;
+  status: Status;
   query: string;
   handleSetQuery: (value: string) => void;
   handleChangeStatus: (value: string) => void;
@@ -21,9 +23,9 @@ export const TodoFilter: React.FC<Props> = ({
           value={status}
           onChange={(e) => handleChangeStatus(e.target.value)}
         >
-          <option value="all">All</option>
-          <option value="active">Active</option>
-          <option value="completed">Completed</option>
+          <option value={Status.All}>All</option>
+          <option value={Status.Active}>Active</option>
+          <option value={Status.Completed}>Completed</option>
         </select>
       </span>
     </p>
