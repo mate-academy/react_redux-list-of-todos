@@ -3,17 +3,20 @@ import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { Loader } from '../Loader';
+import { currentTodoActions } from '../../features/currentTodo';
+import { useAppDispatch } from '../../app/hooks';
 
 type Props = {
   currentTodo: Todo;
-  handleClearCurrentTodo: () => void;
 };
 
-export const TodoModal: React.FC<Props> = ({
-  currentTodo,
-  handleClearCurrentTodo,
-}) => {
+export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const dispatch = useAppDispatch();
+
+  const handleClearCurrentTodo = () => {
+    dispatch(currentTodoActions.removeTodo());
+  };
 
   useEffect(() => {
     getUser(currentTodo.userId)
