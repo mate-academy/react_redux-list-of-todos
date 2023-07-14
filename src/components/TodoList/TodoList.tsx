@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { StatusType } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const [todosList, setTodosList] = useState<Todo[]>([]);
@@ -16,10 +17,10 @@ export const TodoList: React.FC = () => {
     .filter(todo => todo.title.toLowerCase().includes(query.toLocaleLowerCase()))
     .filter(todo => {
       switch (status) {
-        case 'completed':
+        case StatusType.COMPLETED:
           return todo.completed;
 
-        case 'active':
+        case StatusType.ACTIVE:
           return !todo.completed;
         default:
           return true;
@@ -36,7 +37,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {todosList.length === 0 ? (
+      {!todosList.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
