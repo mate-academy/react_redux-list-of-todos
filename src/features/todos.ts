@@ -23,8 +23,10 @@ const initialState: InitialState = {
   load: false,
 };
 
-// eslint-disable-next-line max-len
-const todosReducer = (state: InitialState = initialState, action: Actions): InitialState => {
+const todosReducer = (
+  state: InitialState = initialState,
+  action: Actions,
+): InitialState => {
   switch (action.type) {
     case 'set':
       return {

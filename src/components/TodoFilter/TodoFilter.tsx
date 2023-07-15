@@ -7,7 +7,7 @@ export const TodoFilter: React.FC = () => {
   const { status, query } = useAppSelector(state => state.filter);
   const dispatch = useDispatch();
 
-  const deleteHandler = () => {
+  const handelDelete = () => {
     dispatch(actionsFilter.query(''));
   };
 
@@ -50,7 +50,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={deleteHandler}
+              onClick={handelDelete}
             />
           )}
         </span>

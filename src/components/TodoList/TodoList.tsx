@@ -16,7 +16,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
     return currentTodo.id === todo?.id;
   };
 
-  if (!todos.length) {
+  if (!todos?.length) {
     return (
       <p className="notification is-warning">
         There are no todos matching current filter criteria

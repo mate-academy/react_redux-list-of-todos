@@ -1,15 +1,8 @@
-// type Active = { type: 'active', payload: string };
-// type Completed = { type: 'completed', payload: string };
 type Query = { type: 'query', payload: string };
 type Status = { type: 'status', payload: string };
 
 type Actions = Status | Query;
 
-// // eslint-disable-next-line @typescript-eslint/naming-convention
-// export type statusPayload = 'active' | 'completed' | 'all';
-
-// const active = { type: 'active', payload: 'active' };
-// const complete = { type: 'complete', payload: 'complete' };
 const query = (searchWord: string): Query => (
   { type: 'query', payload: searchWord }
 );

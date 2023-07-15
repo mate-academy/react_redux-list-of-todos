@@ -12,6 +12,11 @@ import { useAppSelector } from './app/hooks';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
+enum ActionTodos {
+  active = 'active',
+  completed = 'completed',
+}
+
 export const App: React.FC = () => {
   const { todos, load } = useAppSelector(state => state.todos);
   const { status, query } = useAppSelector(state => state.filter);
@@ -23,15 +28,22 @@ export const App: React.FC = () => {
     getTodos()
       .then(res => {
         dispatch(actionsTodos.set(res));
+      })
+      .catch(error => {
+        throw error;
       });
   }, []);
 
-  const filteredHandler = () => {
-    return todos.filter(todo => todo.title.includes(query.toLowerCase())).filter(todo => {
+  const handleFilter = () => {
+    return todos.filter(todo => {
+      if (query) {
+        return todo.title.includes(query.toLowerCase());
+      }
+
       switch (status) {
-        case 'active':
+        case ActionTodos.active:
           return !todo.completed;
-        case 'completed':
+        case ActionTodos.completed:
           return todo.completed;
         default:
           return true;
@@ -51,9 +63,9 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {load ? <Loader /> : (
-                <TodoList todos={filteredHandler()} />
-              )}
+              {load
+                ? <Loader />
+                : <TodoList todos={handleFilter()} />}
             </div>
           </div>
         </div>
