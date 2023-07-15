@@ -1,3 +1,4 @@
+import { Status } from './types/Status';
 import { Todo } from './types/Todo';
 import { User } from './types/User';
 
@@ -22,3 +23,33 @@ function get<T>(url: string): Promise<T> {
 export const getTodos = () => get<Todo[]>('/todos');
 
 export const getUser = (userId: number) => get<User>(`/users/${userId}`);
+
+export const getVisibleTodos = (
+  todos: Todo[],
+  selectedValue: string,
+  query: string,
+) => {
+  let visibleTodos = todos;
+
+  switch (selectedValue) {
+    case Status.Active:
+      visibleTodos = todos.filter(todo => !todo.completed);
+      break;
+
+    case Status.Completed:
+      visibleTodos = todos.filter(todo => todo.completed);
+      break;
+
+    case Status.All:
+    default:
+      break;
+  }
+
+  if (query) {
+    const normalizedQuery = query.toLowerCase().trim();
+
+    return visibleTodos.filter(todo => todo.title.includes(normalizedQuery));
+  }
+
+  return visibleTodos;
+};
