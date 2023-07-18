@@ -10,6 +10,7 @@ import { actions as todosActions } from '../../features/todos';
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const todos: Todo[] = useAppSelector(state => state.todos);
+  const filter = useAppSelector(state => state.filter);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +21,42 @@ export const TodoList: React.FC = () => {
 
     fetchData();
   }, []);
+
+  function filterTodos(array: Todo[]) {
+    let result = [...array];
+
+    result = result.filter(todo => {
+      switch (filter.status) {
+        case 'filter/ACTIVE':
+          if (todo.completed === false) {
+            return true;
+          }
+
+          return false;
+
+        case 'filter/COMPLETED':
+          if (todo.completed === true) {
+            return true;
+          }
+
+          return false;
+
+        case 'filter/ALL':
+          return true;
+
+        default:
+          return false;
+      }
+    });
+
+    if (filter.query !== '') {
+      result = result.filter(todo => todo.title.includes(filter.query));
+    }
+
+    return result;
+  }
+
+  const visibleTodos: Todo[] = filterTodos(todos);
 
   return (
     <>
@@ -44,7 +81,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {todos.map(todo => (
+          {visibleTodos.map(todo => (
             <tr data-cy="todo" key={todo.id}>
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">

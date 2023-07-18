@@ -1,60 +1,26 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { State, actions as filterActions } from '../../features/filter';
-import { actions as todosActions } from '../../features/todos';
+import { actions as filterActions } from '../../features/filter';
 import { useAppSelector } from '../../app/hooks';
-import { Todo } from '../../types/Todo';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
   const queryState = useAppSelector(state => state.filter.query);
-  const todos: Todo[] = useAppSelector(state => state.todos);
-  const filter: State = useAppSelector(state => state.filter);
-
-  function filteredTodos(dataFilter: State) {
-    switch (dataFilter.status) {
-      case 'filter/ACTIVE':
-        dispatch(todosActions.setTodos(
-          todos.filter(t => t.completed === false),
-        ));
-        break;
-
-      case 'filter/COMPLETED':
-        dispatch(todosActions.setTodos(
-          todos.filter(t => t.completed === true),
-        ));
-        break;
-
-      case 'filter/ALL':
-      default:
-        break;
-    }
-
-    if (dataFilter.query !== '') {
-      dispatch(todosActions.setTodos(
-        todos.filter(t => t.title.includes(dataFilter.query)),
-      ));
-    }
-  }
 
   const query = (value: string) => {
     dispatch(filterActions.query(value));
-    filteredTodos(filter);
   };
 
   const all = () => {
     dispatch(filterActions.status.all());
-    filteredTodos(filter);
   };
 
   const active = () => {
     dispatch(filterActions.status.active());
-    filteredTodos(filter);
   };
 
   const completed = () => {
     dispatch(filterActions.status.completed());
-    filteredTodos(filter);
   };
 
   function handleQuery(event: React.ChangeEvent<HTMLInputElement>) {
