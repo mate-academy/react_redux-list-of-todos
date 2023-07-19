@@ -9,10 +9,6 @@ export const TodoFilter: React.FC = () => {
   const queryState = useAppSelector(state => state.filter.query);
 
   const query = (value: string) => dispatch(filterActions.query(value));
-
-  // const all = (value: string) => dispatch(filterActions.status.all(value));
-  // const active = (value: string) => dispatch(filterActions.status.active(value));
-  // const completed = (value: string) => dispatch(filterActions.status.completed(value));
   const setStatus = (value: Status) => dispatch(filterActions.status.setStatus(value));
 
   function handleQuery(event: React.ChangeEvent<HTMLInputElement>) {
