@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { actions as filterActions } from '../../features/filter';
+import { Status, actions as filterActions } from '../../features/filter';
 import { useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
@@ -10,9 +10,10 @@ export const TodoFilter: React.FC = () => {
 
   const query = (value: string) => dispatch(filterActions.query(value));
 
-  const all = (value: string) => dispatch(filterActions.status.all(value));
-  const active = (value: string) => dispatch(filterActions.status.active(value));
-  const completed = (value: string) => dispatch(filterActions.status.completed(value));
+  // const all = (value: string) => dispatch(filterActions.status.all(value));
+  // const active = (value: string) => dispatch(filterActions.status.active(value));
+  // const completed = (value: string) => dispatch(filterActions.status.completed(value));
+  const setStatus = (value: Status) => dispatch(filterActions.status.setStatus(value));
 
   function handleQuery(event: React.ChangeEvent<HTMLInputElement>) {
     query(event.target.value);
@@ -26,9 +27,9 @@ export const TodoFilter: React.FC = () => {
       <p className="control">
         <span className="select">
           <select data-cy="statusSelect">
-            <option onClick={() => (all('filter/ALL'))} value="all">All</option>
-            <option onClick={() => (active('filter/ACTIVE'))} value="active">Active</option>
-            <option onClick={() => (completed('filter/COMPLETED'))} value="completed">Completed</option>
+            <option onClick={() => (setStatus(Status.ALL))} value="all">All</option>
+            <option onClick={() => (setStatus(Status.ACTIVE))} value="active">Active</option>
+            <option onClick={() => (setStatus(Status.COMPLETED))} value="completed">Completed</option>
           </select>
         </span>
       </p>
