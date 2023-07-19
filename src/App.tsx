@@ -11,7 +11,6 @@ import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const todos: Todo[] = useAppSelector(state => state.todos);
-  // const currentTodo: Todo = useAppSelector(state => state.currentTodo);
 
   return (
     <>
