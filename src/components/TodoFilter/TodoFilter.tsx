@@ -1,6 +1,25 @@
+/* eslint-disable max-len */
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { actions as filterActions } from '../../features/filter';
+import { useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const queryState = useAppSelector(state => state.filter.query);
+
+  const query = (value: string) => dispatch(filterActions.query(value));
+  const setStatus = (value: Status) => dispatch(filterActions.status.setStatus(value));
+
+  function handleQuery(event: React.ChangeEvent<HTMLInputElement>) {
+    query(event.target.value);
+  }
+
+  function handleStatus(event: React.ChangeEvent<HTMLSelectElement>) {
+    setStatus(event.target.value as Status);
+  }
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +27,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" onChange={handleStatus}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +41,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={queryState}
+          onChange={handleQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
