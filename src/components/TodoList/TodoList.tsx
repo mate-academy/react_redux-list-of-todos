@@ -21,6 +21,8 @@ export const TodoList: React.FC<Props> = ({
 
     if (findTodo) {
       dispatch(actionsCurrent.setTodo(findTodo));
+    } else {
+      throw new Error('Todo not found');
     }
   };
 

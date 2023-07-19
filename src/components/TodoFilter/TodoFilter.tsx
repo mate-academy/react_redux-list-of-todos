@@ -15,7 +15,7 @@ export const TodoFilter: React.FC = () => {
     dispatch(filterActions.setQuery(event.target.value));
   };
 
-  const handleClearSerch = () => {
+  const handleClearSearch = () => {
     dispatch(filterActions.clearFilter());
   };
 
@@ -55,7 +55,7 @@ export const TodoFilter: React.FC = () => {
                 data-cy="clearSearchButton"
                 type="button"
                 className="delete"
-                onClick={handleClearSerch}
+                onClick={handleClearSearch}
                 aria-label="delete"
               />
             )}

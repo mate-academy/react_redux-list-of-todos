@@ -11,7 +11,7 @@ export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string>('User not found');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

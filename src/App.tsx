@@ -40,29 +40,21 @@ export const App: React.FC = () => {
   }, []);
 
   const visibleTodos = useMemo(() => {
-    let filteredTodos = [...todos];
-
     switch (filterState.status) {
+      case SortingType.ALL:
+        return todos?.filter(todo => todo.title.includes(filterState.query));
+
       case SortingType.ACTIVE:
-        filteredTodos = todos.filter(todo => !todo.completed);
-        break;
+        return todos.filter(todo => !todo.completed
+          && todo.title.includes(filterState.query));
 
       case SortingType.COMPLETED:
-        filteredTodos = todos.filter(todo => todo.completed);
-        break;
+        return todos.filter(todo => todo.completed
+          && todo.title.includes(filterState.query));
 
       default:
-        break;
+        return todos;
     }
-
-    if (filterState.query) {
-      const lowerCaseQuery = filterState.query.toLowerCase();
-
-      filteredTodos = filteredTodos
-        .filter(todo => todo.title.toLowerCase().includes(lowerCaseQuery));
-    }
-
-    return filteredTodos;
   }, [todos, filterState]);
 
   return (
@@ -81,7 +73,6 @@ export const App: React.FC = () => {
               <TodoList
                 errorMessage={errorMessage}
                 todos={visibleTodos}
-                // selectTodo={selectTodo}
               />
             </div>
           </div>

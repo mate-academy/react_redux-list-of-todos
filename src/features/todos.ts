@@ -2,12 +2,12 @@ import { Todo } from '../types/Todo';
 
 type SetAddAction = {
   type: 'todos/SET_ADD',
-  playload: Todo[],
+  payload: Todo[],
 };
 
 const SetAdd = (arr: Todo[]): SetAddAction => ({
   type: 'todos/SET_ADD',
-  playload: arr,
+  payload: arr,
 });
 
 export const actions = { SetAdd };
@@ -22,7 +22,7 @@ const todosReducer = (
 ): Todo[] => {
   switch (action.type) {
     case 'todos/SET_ADD':
-      return [...action.playload, ...state];
+      return [...state, ...action.payload];
 
     default:
       return [...state];
