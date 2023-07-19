@@ -15,6 +15,10 @@ export const TodoFilter: React.FC = () => {
     query(event.target.value);
   }
 
+  function handleStatus(event: React.ChangeEvent<HTMLSelectElement>) {
+    setStatus(event.target.value as Status);
+  }
+
   return (
     <form
       className="field has-addons"
@@ -22,10 +26,10 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option onClick={() => (setStatus(Status.ALL))} value="all">All</option>
-            <option onClick={() => (setStatus(Status.ACTIVE))} value="active">Active</option>
-            <option onClick={() => (setStatus(Status.COMPLETED))} value="completed">Completed</option>
+          <select data-cy="statusSelect" onChange={handleStatus}>
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
           </select>
         </span>
       </p>

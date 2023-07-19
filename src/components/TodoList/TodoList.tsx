@@ -6,6 +6,7 @@ import { useAppSelector } from '../../app/hooks';
 import { getTodos } from '../../api';
 import { Todo } from '../../types/Todo';
 import { actions as todosActions } from '../../features/todos';
+import { Status } from '../../features/filter';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,21 +31,21 @@ export const TodoList: React.FC = () => {
 
     result = result.filter(todo => {
       switch (filter.status) {
-        case 'filter/ACTIVE':
-          if (todo.completed === false) {
-            return true;
-          }
-
-          return false;
-
-        case 'filter/COMPLETED':
+        case Status.COMPLETED:
           if (todo.completed === true) {
             return true;
           }
 
           return false;
 
-        case 'filter/ALL':
+        case Status.ACTIVE:
+          if (todo.completed === false) {
+            return true;
+          }
+
+          return false;
+
+        case Status.ALL:
           return true;
 
         default:
