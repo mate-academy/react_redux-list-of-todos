@@ -19,7 +19,7 @@ export const TodoModal: React.FC = () => {
   }
 
   async function loadUser(todo: Todo) {
-    const loadedUser = await getUser(todo.id);
+    const loadedUser = await getUser(todo.userId);
 
     setUser(loadedUser);
   }
