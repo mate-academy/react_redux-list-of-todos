@@ -1,8 +1,9 @@
 /* eslint-disable max-len */
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Status, actions as filterActions } from '../../features/filter';
+import { actions as filterActions } from '../../features/filter';
 import { useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();

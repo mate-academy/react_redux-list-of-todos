@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
@@ -6,7 +5,8 @@ import { useAppSelector } from '../../app/hooks';
 import { getTodos } from '../../api';
 import { Todo } from '../../types/Todo';
 import { actions as todosActions } from '../../features/todos';
-import { Status } from '../../features/filter';
+import { Status } from '../../types/Status';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -60,6 +60,10 @@ export const TodoList: React.FC = () => {
     return result;
   }
 
+  function setCurrentTodo(todo: Todo) {
+    dispatch(currentTodoActions.setTodo(todo));
+  }
+
   const visibleTodos: Todo[] = filterTodos(todos);
 
   return (
@@ -92,7 +96,13 @@ export const TodoList: React.FC = () => {
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {todo.completed && (
-                    <span className="icon" data-cy="iconCompleted"><i className="fas fa-check" /></span>
+                    <span
+                      className="icon"
+                      data-cy="iconCompleted"
+                    >
+                      <i className="fas fa-check" />
+
+                    </span>
                   )}
                 </td>
 
@@ -109,7 +119,12 @@ export const TodoList: React.FC = () => {
                 </td>
 
                 <td className="has-text-right is-vcentered">
-                  <button data-cy="selectButton" className="button" type="button">
+                  <button
+                    data-cy="selectButton"
+                    className="button"
+                    type="button"
+                    onClick={() => (setCurrentTodo(todo))}
+                  >
                     <span className="icon">
                       <i className="far fa-eye" />
                     </span>

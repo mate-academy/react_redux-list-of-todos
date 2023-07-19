@@ -1,12 +1,8 @@
+import { Status } from '../types/Status';
+
 type QUERY = { type: 'filter/SET_QUERY', payload: string };
 type STATUS = { type: 'filter/SET_STATUS', payload: Status };
 type ACTION = STATUS | QUERY;
-
-export enum Status {
-  ALL = 'all',
-  ACTIVE = 'active',
-  COMPLETED = 'completed',
-}
 
 const query = (value: string) => ({ type: 'filter/SET_QUERY', payload: value });
 const setStatus = (
