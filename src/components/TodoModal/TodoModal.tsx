@@ -71,7 +71,7 @@ export const TodoModal: React.FC = () => {
             <p className="block" data-cy="modal-title">
               {title}
             </p>
-            {errorMessage !== errorText || !user
+            {errorMessage === errorText
               ? <p>{errorMessage}</p>
               : (
                 <span>
