@@ -8,7 +8,7 @@ import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
   const activeTodo = useAppSelector(state => state.activeTodo);
-  const filter = useAppSelector(state => state.filter);
+  const { todos } = useAppSelector(state => state.filter);
   const dispatch = useDispatch();
 
   const addActiveTodo = (todo: Todo) => {
@@ -17,7 +17,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {!filter && (
+      {!todos && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -40,7 +40,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {filter?.map(todo => (
+          {todos.map(todo => (
             <tr data-cy="todo" key={todo.id}>
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">

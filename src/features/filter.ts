@@ -1,35 +1,48 @@
 import { Todo } from '../types/Todo';
 
-type PayloadType = { todos: Todo[]; query: string };
-type AllFilter = { type: 'filter/ALL'; payload: PayloadType };
-type ActiveFilter = { type: 'filter/ACTIVE'; payload: PayloadType };
-type CompletedFilter = { type: 'filter/COMPLETED'; payload: PayloadType };
+export enum Filter {
+  ALL = 'all',
+  ACTIVE = 'active',
+  COMPLETED = 'completed',
+}
 
-const filterAll = (todos: Todo[], query = '')
-: AllFilter => ({ type: 'filter/ALL', payload: { todos, query } });
-const filterActive = (todos: Todo[], query = '')
-: ActiveFilter => ({ type: 'filter/ACTIVE', payload: { todos, query } });
-const filterCompleted = (todos: Todo[], query = '')
-: CompletedFilter => ({ type: 'filter/COMPLETED', payload: { todos, query } });
+type FilterType = { type: 'set/FILTER'; filter: Filter };
+type QueryType = { type: 'set/QUERY'; query: string };
+type FilterTodos = { type: 'set/TODOS', todos: Todo[] };
 
-export const actions = { filterAll, filterActive, filterCompleted };
+const setFilter = (filter:Filter)
+: FilterType => ({ type: 'set/FILTER', filter });
+const setQuery = (query:string)
+: QueryType => ({ type: 'set/QUERY', query });
+const setFilterTodos = (todos: Todo[])
+: FilterTodos => ({ type: 'set/TODOS', todos });
 
-type State = Todo[] | [];
-type Actions = AllFilter | ActiveFilter | CompletedFilter;
+export const actions = { setFilter, setQuery, setFilterTodos };
 
-export const filterReducer = (state: State = [], action: Actions) => {
+type State = {
+  query: string,
+  filter: Filter,
+  todos: Todo[],
+};
+type Actions = FilterType | QueryType | FilterTodos;
+
+export const filterReducer = (
+  state: State = {
+    query: '',
+    filter: Filter.ALL,
+    todos: [],
+  },
+  action: Actions,
+) => {
   switch (action.type) {
-    case 'filter/ALL':
-      return action.payload.todos
-        .filter(item => item.title.includes(action.payload.query));
+    case 'set/QUERY':
+      return { ...state, query: action.query };
 
-    case 'filter/ACTIVE':
-      return action.payload.todos.filter(item => item.completed === false
-        && item.title.includes(action.payload.query));
+    case 'set/FILTER':
+      return { ...state, filter: action.filter };
 
-    case 'filter/COMPLETED':
-      return action.payload.todos.filter(item => item.completed === true
-        && item.title.includes(action.payload.query));
+    case 'set/TODOS':
+      return { ...state, todos: action.todos };
 
     default:
       return state;

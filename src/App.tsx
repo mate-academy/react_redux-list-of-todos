@@ -10,7 +10,7 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { useAppSelector } from './app/hooks';
-import { actions as actionsTodos } from './features/allTodo';
+import { actions as actionsTodos } from './features/todos';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();

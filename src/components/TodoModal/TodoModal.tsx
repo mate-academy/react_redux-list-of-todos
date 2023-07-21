@@ -40,7 +40,7 @@ export const TodoModal: React.FC = () => {
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
-              onClick={() => removeUser()}
+              onClick={removeUser}
               type="button"
               className="delete"
               data-cy="modal-close"
@@ -58,7 +58,7 @@ export const TodoModal: React.FC = () => {
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={`mailto:${users.email}`}>Leanne Graham</a>
+              <a href={`mailto:${users.email}`}>{users.name}</a>
             </p>
           </div>
         </div>

@@ -1,45 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { actions as actionsFilter } from '../../features/filter';
+import { actions as actionsFilter, Filter } from '../../features/filter';
 
-enum SelectValue {
-  ALL = 'All',
-  ACTIVE = 'Active',
-  COMPLETED = 'Completed',
-}
 export const TodoFilter: React.FC = () => {
-  const [select, setSelect] = useState('All');
-  const [search, setSearch] = useState('');
   const dispatch = useDispatch();
-  const allTodos = useAppSelector(state => state.allTodos);
+  const { filter, query } = useAppSelector(state => state.filter);
+  const todos = useAppSelector(state => state.todos);
 
   const filterFunc = () => {
-    switch (select) {
-      case SelectValue.ALL:
-        dispatch(actionsFilter.filterAll(allTodos, search));
-        break;
+    const allTodos = [...todos];
 
-      case SelectValue.ACTIVE:
-        dispatch(actionsFilter.filterActive(allTodos, search));
-        break;
+    const filterTodos = allTodos.filter(todo => {
+      switch (filter) {
+        case Filter.ALL:
+          return todo.title.toLowerCase().includes(query.toLowerCase());
 
-      case SelectValue.COMPLETED:
-        dispatch(actionsFilter.filterCompleted(allTodos, search));
-        break;
+        case Filter.ACTIVE:
+          return !todo.completed && todo.title.toLowerCase()
+            .includes(query.toLowerCase());
 
-      default:
-        dispatch(actionsFilter.filterAll(allTodos, search));
-    }
+        case Filter.COMPLETED:
+          return todo.completed && todo.title.toLowerCase()
+            .includes(query.toLowerCase());
+
+        default:
+          return todo;
+      }
+    });
+
+    dispatch(actionsFilter.setFilterTodos(filterTodos));
+  };
+
+  const onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(actionsFilter.setFilter(e.target.value as Filter));
+  };
+
+  const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(actionsFilter.setQuery(e.target.value));
+  };
+
+  const onChangeSearchRemove = () => {
+    dispatch(actionsFilter.setQuery(''));
   };
 
   useEffect(() => {
     filterFunc();
-  }, [select, search, dispatch, allTodos]);
-
-  const onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelect(e.target.value);
-  };
+  }, [filter, query, dispatch, todos]);
 
   return (
     <form
@@ -50,12 +57,12 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={select}
+            value={filter}
             onChange={onChangeSelect}
           >
-            <option value="All">All</option>
-            <option value="Active">Active</option>
-            <option value="Completed">Completed</option>
+            <option value={Filter.ALL}>All</option>
+            <option value={Filter.ACTIVE}>Active</option>
+            <option value={Filter.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>
@@ -66,8 +73,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={query}
+          onChange={onChangeSearch}
         />
 
         <span className="icon is-left">
@@ -76,13 +83,13 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          {search && (
+          {query && (
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
               aria-label="btnDelete"
-              onClick={() => setSearch('')}
+              onClick={onChangeSearchRemove}
             />
           )}
         </span>
