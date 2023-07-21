@@ -64,14 +64,13 @@ export const TodoFilter: React.FC = () => {
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {query && (
             <button
+              aria-label="Close button"
               data-cy="clearSearchButton"
               name="clearButton"
               type="button"
               className="delete"
               onClick={clearQuery}
-            >
-              <></>
-            </button>
+            />
           )}
         </span>
       </p>

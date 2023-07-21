@@ -1,18 +1,17 @@
 import React, { useMemo } from 'react';
-import classNames from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { TotoActions } from '../../features/currentTodo';
+// import classNames from 'classnames';
+import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { SelectValue } from '../../types/SelectValues';
+import { TodoItem } from '../TodoItem';
 
 export const TodoList: React.FC = () => {
-  const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
-  const currentTodo = useAppSelector(state => state.currentTodo);
   const { query, status } = useAppSelector(state => state.filter);
-  const setCurrentTodo = (todo: Todo) => dispatch(TotoActions.setTodo(todo));
+  // const currentTodo = useAppSelector(state => state.currentTodo);
+  // const setCurrentTodo = (todo: Todo) => dispatch(TotoActions.setTodo(todo));
 
-  const filterForStatusTodo = () => {
+  const filterForStatusTodo = useMemo(() => {
     switch (status) {
       case SelectValue.Completed:
         return todos.filter((todo) => todo.completed);
@@ -21,23 +20,25 @@ export const TodoList: React.FC = () => {
       default:
         return todos;
     }
-  };
+  }, [status]);
 
-  const todosFilter = (todosFromServer: Todo[], search: string) => {
-    const queryLower = search.toLowerCase().trim();
+  const todosFilter = useMemo(() => {
+    return (todosArr: Todo[], search: string) => {
+      const queryLower = search.toLowerCase().trim();
 
-    if (queryLower === '') {
-      return todosFromServer;
-    }
+      if (queryLower === '') {
+        return todosArr;
+      }
 
-    return todosFromServer.filter((todo:Todo) => todo.title
-      .toLowerCase()
-      .includes(queryLower));
-  };
+      return todosArr.filter((todo: Todo) => todo.title
+        .toLowerCase()
+        .includes(queryLower));
+    };
+  }, []);
 
   const visibleTodos = useMemo(() => {
-    return todosFilter(filterForStatusTodo(), query);
-  }, [todos, query, status]);
+    return todosFilter(filterForStatusTodo, query);
+  }, [query, status]);
 
   return (
     <>
@@ -63,57 +64,56 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {
-              visibleTodos.map((todo) => {
-                return (
-                  <tr
-                    key={todo.id}
-                    data-cy="todo"
-                    className={classNames({
-                      'has-background-info-light': currentTodo?.id === todo.id,
-                    })}
-                  >
-                    <td className="is-vcentered">{todo.id}</td>
-
-                    {todo.completed ? (
-                      <td className="is-vcentered">
-                        <span className="icon" data-cy="iconCompleted">
-                          <i className="fas fa-check" />
-                        </span>
-                      </td>
-                    ) : (
-                      <td className="is-vcentered" />
-                    )}
-                    <td className="is-vcentered is-expanded">
-                      <p className={classNames({
-                        'has-text-success': todo.completed,
-                        'has-text-danger': !todo.completed,
-                      })}
-                      >
-                        {todo.title}
-                      </p>
-                    </td>
-                    <td className="has-text-right is-vcentered">
-                      <button
-                        data-cy="selectButton"
-                        className="button"
-                        name="selectButton"
-                        onClick={() => setCurrentTodo(todo)}
-                        type="button"
-                      >
-                        <span className="icon">
-                          <i className={classNames('far', {
-                            'fa-eye-slash': currentTodo?.id === todo.id,
-                            'fa-eye': currentTodo?.id !== todo.id,
-                          })}
-                          />
-                        </span>
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })
-            }
+            {visibleTodos.map((todo) => {
+              return (
+                <TodoItem todoItem={todo} key={todo.id} />
+                // <tr
+                //   key={todo.id}
+                //   data-cy="todo"
+                //   className={classNames({
+                //     'has-background-info-light': currentTodo?.id === todo.id,
+                //   })}
+                // >
+                //   <td className="is-vcentered">{todo.id}</td>
+                //
+                //   {todo.completed ? (
+                //     <td className="is-vcentered">
+                //       <span className="icon" data-cy="iconCompleted">
+                //         <i className="fas fa-check" />
+                //       </span>
+                //     </td>
+                //   ) : (
+                //     <td className="is-vcentered" />
+                //   )}
+                //   <td className="is-vcentered is-expanded">
+                //     <p className={classNames({
+                //       'has-text-success': todo.completed,
+                //       'has-text-danger': !todo.completed,
+                //     })}
+                //     >
+                //       {todo.title}
+                //     </p>
+                //   </td>
+                //   <td className="has-text-right is-vcentered">
+                //     <button
+                //       data-cy="selectButton"
+                //       className="button"
+                //       name="selectButton"
+                //       onClick={() => setCurrentTodo(todo)}
+                //       type="button"
+                //     >
+                //       <span className="icon">
+                //         <i className={classNames('far', {
+                //           'fa-eye-slash': currentTodo?.id === todo.id,
+                //           'fa-eye': currentTodo?.id !== todo.id,
+                //         })}
+                //         />
+                //       </span>
+                //     </button>
+                //   </td>
+                // </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

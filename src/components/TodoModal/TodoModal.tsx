@@ -7,7 +7,7 @@ import { User } from '../../types/User';
 import { TotoActions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [isLoader, setIsLoader] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User>({
