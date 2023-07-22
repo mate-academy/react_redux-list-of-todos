@@ -6,7 +6,7 @@ import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
 type Props = {
-  todos: Todo[];
+  todos: Todo[],
 };
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
@@ -15,9 +15,11 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
 
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+      {!todos.length && (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria.
+        </p>
+      )}
 
       <table className="table is-narrow is-fullwidth">
         <thead>
@@ -65,30 +67,20 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
               </td>
 
               <td className="has-text-right is-vcentered">
-                {currentTodo?.id === todo.id
-                  ? (
-                    <button
-                      data-cy="selectButton"
-                      className="button is-link"
-                      type="button"
-                      onClick={() => dispatch(currentTodoActions.removeTodo())}
-                    >
-                      <span className="icon">
-                        <i className="far fa-eye-slash" />
-                      </span>
-                    </button>
-                  ) : (
-                    <button
-                      data-cy="selectButton"
-                      className="button"
-                      type="button"
-                      onClick={() => dispatch(currentTodoActions.setTodo(todo))}
-                    >
-                      <span className="icon">
-                        <i className="far fa-eye" />
-                      </span>
-                    </button>
-                  )}
+                <button
+                  data-cy="selectButton"
+                  className="button"
+                  type="button"
+                  onClick={() => dispatch(currentTodoActions.setTodo(todo))}
+                >
+                  <span className="icon">
+                    <i className={classNames('far', {
+                      'fa-eye-slash': currentTodo?.id === todo.id,
+                      'fa-eye': currentTodo?.id !== todo.id,
+                    })}
+                    />
+                  </span>
+                </button>
               </td>
             </tr>
           ))}

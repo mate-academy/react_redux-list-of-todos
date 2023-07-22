@@ -19,6 +19,7 @@ export const App: React.FC = () => {
   const filterState = useAppSelector((state) => state.filter);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const loadTodos = async () => {
@@ -26,12 +27,9 @@ export const App: React.FC = () => {
         const loadedTodos = await getTodos();
 
         dispatch(actionsTodos.setTodo(loadedTodos));
-        setIsLoading(false);
       } catch (error) {
-        if (error) {
-          throw new Error('Todos can not be loaded');
-        }
-
+        setIsError(true);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -75,10 +73,15 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoading && <Loader />}
-              <TodoList
-                todos={visibleTodos}
-              />
+              {isLoading
+                ? <Loader />
+                : <TodoList todos={visibleTodos} />}
+
+              {isError && (
+                <p className="notification is-warning">
+                  Todos can not be loaded from the server.
+                </p>
+              )}
             </div>
           </div>
         </div>

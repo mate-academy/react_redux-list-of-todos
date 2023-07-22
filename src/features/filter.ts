@@ -32,7 +32,7 @@ export const actions = { setQuery, setStatus, setClear };
 
 type Action = SetQueryAction | SetStatusAction | SetClearAction;
 
-interface FilterState {
+export interface FilterState {
   query: string;
   status: SortType;
 }
