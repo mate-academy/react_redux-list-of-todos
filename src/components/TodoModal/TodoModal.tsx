@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
 import { useAppSelector } from '../../app/hooks';
 import { getUser } from '../../api';
-import { User } from '../../types/User';
 import { actions as actionsActive } from '../../features/activeTodo';
+import { actions as actionsActiveUser } from '../../features/activeUser';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
   const activeTodo = useAppSelector(state => state.activeTodo);
-  const [users, setUsers] = useState<User>();
+  const user = useAppSelector(state => state.acitveUser);
 
   useEffect(() => {
     if (activeTodo) {
       getUser(activeTodo.userId)
-        .then(user => setUsers(user));
+        .then(userApi => dispatch(actionsActiveUser.addUser(userApi)));
     }
-  }, []);
+  }, [activeTodo]);
 
   const removeUser = () => {
+    dispatch(actionsActiveUser.removeUser());
     dispatch(actionsActive.removeTodo());
   };
 
@@ -26,9 +27,9 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {!users && <Loader />}
+      {!user && <Loader />}
 
-      {users && (
+      {user && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
@@ -51,14 +52,13 @@ export const TodoModal: React.FC = () => {
             <p className="block" data-cy="modal-title">{activeTodo?.title}</p>
 
             <p className="block" data-cy="modal-user">
-              {/* For not completed */}
               {activeTodo?.completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={`mailto:${users.email}`}>{users.name}</a>
+              <a href={`mailto:${user.email}`}>{user.name}</a>
             </p>
           </div>
         </div>
