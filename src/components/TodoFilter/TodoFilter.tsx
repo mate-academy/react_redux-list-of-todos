@@ -12,17 +12,18 @@ export const TodoFilter: React.FC = () => {
     const allTodos = [...todos];
 
     const filterTodos = allTodos.filter(todo => {
+      const isMathQuery = todo.title.toLowerCase()
+        .includes(query.toLowerCase());
+
       switch (filter) {
         case Filter.ALL:
-          return todo.title.toLowerCase().includes(query.toLowerCase());
+          return isMathQuery;
 
         case Filter.ACTIVE:
-          return !todo.completed && todo.title.toLowerCase()
-            .includes(query.toLowerCase());
+          return !todo.completed && isMathQuery;
 
         case Filter.COMPLETED:
-          return todo.completed && todo.title.toLowerCase()
-            .includes(query.toLowerCase());
+          return todo.completed && isMathQuery;
 
         default:
           return todo;

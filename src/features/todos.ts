@@ -1,12 +1,12 @@
 import { Todo } from '../types/Todo';
 
 type RemoveTodoAction = { type: 'allTodos/REMOVE' };
-type SetTodoAction = { type: 'allTodos/SET'; arr: Todo[] };
+type SetTodoAction = { type: 'allTodos/SET'; todos: Todo[] };
 
 // Action creator return type protect us from a mistype
 const removeTodos = (): RemoveTodoAction => ({ type: 'allTodos/REMOVE' });
-const setTodos = (todo: Todo[])
-: SetTodoAction => ({ type: 'allTodos/SET', arr: todo });
+const setTodos = (todos: Todo[])
+: SetTodoAction => ({ type: 'allTodos/SET', todos });
 
 // These actions will be used in the application
 export const actions = { setTodos, removeTodos };
@@ -20,7 +20,7 @@ export const allTodosReducer = (
 ): State => {
   switch (action.type) {
     case 'allTodos/SET':
-      return [...action.arr];
+      return [...action.todos];
 
     case 'allTodos/REMOVE':
       return [];

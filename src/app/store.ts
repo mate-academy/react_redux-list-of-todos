@@ -4,11 +4,11 @@ import thunk from 'redux-thunk';
 
 import { allTodosReducer } from '../features/todos';
 import { filterReducer } from '../features/filter';
-import { todosReducer } from '../features/activeTodo';
+import { activeTodoReducer } from '../features/activeTodo';
 import { userActiveReducer } from '../features/activeUser';
 
 const rootReducer = combineReducers({
-  activeTodo: todosReducer,
+  activeTodo: activeTodoReducer,
   acitveUser: userActiveReducer,
   filter: filterReducer,
   todos: allTodosReducer,

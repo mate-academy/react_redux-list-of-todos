@@ -11,7 +11,7 @@ export const actions = { addTodo, removeTodo };
 type Actions = AddTodo | RemoveTodo;
 type State = Todo | null;
 
-export const todosReducer = (state: State = null, payload: Actions) => {
+export const activeTodoReducer = (state: State = null, payload: Actions) => {
   switch (payload.type) {
     case 'todo/ADD':
       return payload.todo;
@@ -24,4 +24,4 @@ export const todosReducer = (state: State = null, payload: Actions) => {
   }
 };
 
-export default todosReducer;
+export default activeTodoReducer;
