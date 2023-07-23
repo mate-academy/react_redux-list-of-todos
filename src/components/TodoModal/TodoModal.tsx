@@ -10,6 +10,7 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -21,7 +22,7 @@ export const TodoModal: React.FC = () => {
         }
       } catch (error) {
         if (error) {
-          throw new Error('Users can not be loaded');
+          setIsError(true);
         }
 
         setIsLoading(false);
@@ -35,6 +36,10 @@ export const TodoModal: React.FC = () => {
 
   const { id, title, completed } = currentTodo || {};
   const { email, name } = user || {};
+
+  const handleCloseModal = () => {
+    dispatch(currentTodoActions.removeTodo());
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -58,7 +63,7 @@ export const TodoModal: React.FC = () => {
               className="delete"
               data-cy="modal-close"
               aria-label="delete"
-              onClick={() => dispatch(currentTodoActions.removeTodo())}
+              onClick={handleCloseModal}
             />
           </header>
 
@@ -72,7 +77,14 @@ export const TodoModal: React.FC = () => {
 
               {' by '}
 
-              <a href={`mailto:${email}`}>{name}</a>
+              {isError
+                ? (
+                  <p className="notification is-warning">
+                    User can not be loaded.
+                  </p>
+                ) : (
+                  <a href={`mailto:${email}`}>{name}</a>
+                )}
             </p>
           </div>
         </div>
