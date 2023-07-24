@@ -1,26 +1,27 @@
 import { ChangeEvent } from 'react';
 import { StatusFilter } from '../../types/StatusFilter';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
 
-interface Props {
-  query: string,
-  setQuery: (input: React.SetStateAction<string>) => void,
-  setTodoFilter: (status: React.SetStateAction<StatusFilter>) => void,
-}
+export const TodoFilter: React.FC = () => {
+  const filterQuery = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
 
-export const TodoFilter: React.FC<Props> = ({
-  query,
-  setQuery,
-  setTodoFilter,
-}) => {
-  const changeQuery = (event: ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
+  const changeFilterStatus = (
+    event: ChangeEvent<HTMLSelectElement>,
+  ) => dispatch(
+    filterActions.setTodoFilter(event.target.value as StatusFilter),
+  );
 
-  const clearQuery = () => setQuery('');
+  const changeFilterQuery = (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => dispatch(
+    filterActions.setTodoQuery(event.target.value),
+  );
 
-  const changeFilter = (event: ChangeEvent<HTMLSelectElement>) => {
-    setTodoFilter(event.target.value as StatusFilter);
-  };
+  const clearQuery = () => dispatch(
+    filterActions.clearTodoQuery(),
+  );
 
   return (
     <form className="field has-addons">
@@ -28,7 +29,7 @@ export const TodoFilter: React.FC<Props> = ({
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={changeFilter}
+            onChange={changeFilterStatus}
           >
             <option value={StatusFilter.All}>All</option>
             <option value={StatusFilter.ACTIVE}>Active</option>
@@ -43,14 +44,14 @@ export const TodoFilter: React.FC<Props> = ({
           type="text"
           className="input"
           placeholder="Search..."
-          value={query}
-          onChange={changeQuery}
+          value={filterQuery.query}
+          onChange={changeFilterQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {query && (
+        {filterQuery.query && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button

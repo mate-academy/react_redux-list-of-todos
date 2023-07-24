@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
-interface Props {
-  currentTodo: Todo | null,
-  setCurrentTodoId: (id: number | null) => void,
-}
-
-export const TodoModal: React.FC<Props> = ({
-  currentTodo,
-  setCurrentTodoId,
-}) => {
+export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
+
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
+
+  const removeTodo = () => dispatch(currentTodoActions.removeTodo());
 
   useEffect(() => {
     if (currentTodo) {
-      getUser(currentTodo.userId).then(curUser => {
-        setUser(curUser);
-      });
+      getUser(currentTodo.userId)
+        .then(curUser => {
+          setUser(curUser);
+        });
     }
   }, []);
 
@@ -56,7 +55,7 @@ export const TodoModal: React.FC<Props> = ({
               data-cy="modal-close"
               onClick={() => {
                 setUser(null);
-                setCurrentTodoId(null);
+                removeTodo();
               }}
             />
           </header>
