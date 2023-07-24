@@ -1,25 +1,27 @@
 import { Filters } from '../types/Filters';
 
-const SET_QUERY = 'Todos/SET_QUERY';
-const SET_FILTER = 'Todos/SET_FILTER';
+const enum ActionsType {
+  SET_QUERY = 'Todos/SET_QUERY',
+  SET_FILTER = 'Todos/SET_FILTER',
+}
 
 type TodoQuery = {
-  type: typeof SET_QUERY;
+  type: ActionsType.SET_QUERY,
   payload: string,
 };
 
 type TodoFilter = {
-  type: typeof SET_FILTER;
+  type: ActionsType.SET_FILTER,
   payload: Filters
 };
 
 const setQuery = (query: string): TodoQuery => ({
-  type: SET_QUERY,
+  type: ActionsType.SET_QUERY,
   payload: query,
 });
 
 const setFilter = (filter: Filters): TodoFilter => ({
-  type: SET_FILTER,
+  type: ActionsType.SET_FILTER,
   payload: filter,
 });
 
@@ -40,12 +42,12 @@ const initialState: FilterState = {
 
 const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case SET_FILTER:
+    case ActionsType.SET_FILTER:
       return {
         ...state,
         filter: action.payload,
       };
-    case SET_QUERY:
+    case ActionsType.SET_QUERY:
       return {
         ...state,
         query: action.payload,
