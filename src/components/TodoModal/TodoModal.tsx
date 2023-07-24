@@ -34,7 +34,7 @@ export const TodoModal: React.FC = () => {
                 data-cy="modal-header"
               >
                 Todo #
-                {todo?.id}
+                { todo?.id }
               </div>
 
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
