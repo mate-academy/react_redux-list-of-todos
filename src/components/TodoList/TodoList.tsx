@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -13,12 +14,12 @@ export const TodoList: React.FC = () => {
 
     // Step 1: Filter by status
     switch (filter) {
-      case 'active':
+      case Status.ACTIVE:
         filteredTodos = filteredTodos.filter((todo) => (
           !todo.completed
         ));
         break;
-      case 'completed':
+      case Status.COMPLETED:
         filteredTodos = filteredTodos.filter((todo) => (
           todo.completed
         ));

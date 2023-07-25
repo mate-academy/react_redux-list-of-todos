@@ -23,7 +23,7 @@ const setQuery = (query: string): QueryAction => ({
 });
 
 const initialState = {
-  filter: 'all',
+  filter: Status.ALL,
   query: '',
 };
 
