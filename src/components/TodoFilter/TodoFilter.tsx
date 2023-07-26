@@ -1,17 +1,47 @@
-import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const {
+    query,
+    status,
+  } = useAppSelector(state => state.filter);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    dispatch(filterActions.set({
+      query: value,
+      status,
+    }));
+  };
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={(event) => {
+              const { value } = event.target;
+
+              dispatch(filterActions.set({
+                query,
+                status: value as Status,
+              }));
+              // if (value !== todoStatusFilter) {
+              //   setStatusFilter(value as Status);
+              // }
+            }}
+          >
+            {Object.values(Status).map((st) => (
+              <option key={st} value={st}>
+                {st[0].toUpperCase() + st.slice(1)}
+              </option>
+            ))}
           </select>
         </span>
       </p>
@@ -22,19 +52,27 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(filterActions.set({
+                query: '',
+                status,
+              }))}
+            />
+          </span>
+        )}
       </p>
     </form>
   );

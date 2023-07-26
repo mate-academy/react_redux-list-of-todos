@@ -1,14 +1,41 @@
-/* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+import { useDispatch } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { TodoModal } from './components/TodoModal';
+import { getTodos } from './api';
+import { actions as todoActions } from './features/todos';
+import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const { currentTodo } = useAppSelector(state => state);
+  const [error, setError] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+
+  const loadTodos = async () => {
+    setError(false);
+    setLoading(true);
+
+    try {
+      const todosFromServer = await getTodos();
+
+      dispatch(todoActions.add(todosFromServer));
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadTodos();
+  }, []);
+
   return (
     <>
       <div className="section">
@@ -21,14 +48,22 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {error && 'Error on loading data from server'}
+
+              {!isLoading && !error
+                ? (
+                  <TodoList />
+                )
+                : <Loader /> }
             </div>
           </div>
         </div>
       </div>
-
-      <TodoModal />
+      {currentTodo && (
+        <TodoModal
+          todo={currentTodo}
+        />
+      )}
     </>
   );
 };
