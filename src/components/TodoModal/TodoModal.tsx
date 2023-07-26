@@ -24,7 +24,7 @@ export const TodoModal: React.FC<Props> = ({
     setError(false);
 
     try {
-      const userFromServer = await getUser(todo.id);
+      const userFromServer = await getUser(todo.userId);
 
       setModalUser(userFromServer);
     } catch {
