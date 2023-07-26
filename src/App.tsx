@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { getTodos } from './api';
 import { actions as todosActions } from './features/todos';
 import { normalizeValue } from './helpers/normalize';
+import { FilterStatus } from './types/FilterStatus';
 
 export const App: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -31,13 +32,13 @@ export const App: React.FC = () => {
   const todosFilteredByStatus = useMemo(() => {
     return todos.filter(todo => {
       switch (status) {
-        case 'active':
+        case FilterStatus.active:
           return !todo.completed;
 
-        case 'completed':
+        case FilterStatus.completed:
           return todo.completed;
 
-        case 'all':
+        case FilterStatus.all:
         default:
           return true;
       }
