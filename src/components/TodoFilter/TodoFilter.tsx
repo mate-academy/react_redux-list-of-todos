@@ -1,24 +1,20 @@
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
-interface Props {
-  query: string;
-  todoStatusFilter: Status;
-}
-
-export const TodoFilter: React.FC<Props> = ({
-  query,
-  todoStatusFilter,
-}) => {
+export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
+  const {
+    query,
+    status,
+  } = useAppSelector(state => state.filter);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
 
     dispatch(filterActions.set({
       query: value,
-      status: todoStatusFilter,
+      status,
     }));
   };
 
@@ -28,7 +24,7 @@ export const TodoFilter: React.FC<Props> = ({
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={todoStatusFilter}
+            value={status}
             onChange={(event) => {
               const { value } = event.target;
 
@@ -41,9 +37,9 @@ export const TodoFilter: React.FC<Props> = ({
               // }
             }}
           >
-            {Object.values(Status).map((status) => (
-              <option key={status} value={status}>
-                {status[0].toUpperCase() + status.slice(1)}
+            {Object.values(Status).map((st) => (
+              <option key={st} value={st}>
+                {st[0].toUpperCase() + st.slice(1)}
               </option>
             ))}
           </select>
@@ -72,7 +68,7 @@ export const TodoFilter: React.FC<Props> = ({
               className="delete"
               onClick={() => dispatch(filterActions.set({
                 query: '',
-                status: todoStatusFilter,
+                status,
               }))}
             />
           </span>

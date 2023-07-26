@@ -5,58 +5,15 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { useDispatch } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { Todo } from './types/Todo';
 import { Loader } from './components/Loader';
 import { TodoModal } from './components/TodoModal';
-import { Status } from './types/Status';
 import { getTodos } from './api';
-import { useAppSelector } from './app/hooks';
 import { actions as todoActions } from './features/todos';
-
-const getFilteredTodos = (
-  todos: Todo[],
-  filter: Status,
-  query: string,
-): Todo[] => {
-  let filteredTodos: Todo[] = [];
-
-  switch (filter) {
-    case Status.All:
-      filteredTodos = todos;
-      break;
-
-    case Status.Active:
-      filteredTodos = todos.filter(todo => !todo.completed);
-      break;
-
-    case Status.Complited:
-      filteredTodos = todos.filter(todo => todo.completed);
-      break;
-
-    default: throw new Error('Wrong todo status');
-  }
-
-  if (query) {
-    const lowerQuery = query.toLowerCase().trim();
-
-    filteredTodos = filteredTodos.filter(({ title }) => (
-      title.toLowerCase().includes(lowerQuery)
-    ));
-  }
-
-  return filteredTodos;
-};
+import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const {
-    currentTodo: selectedTodo,
-    todos,
-    filter,
-  } = useAppSelector(state => state);
-
-  const { query, status } = filter;
-
+  const { currentTodo } = useAppSelector(state => state);
   const [error, setError] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
@@ -79,8 +36,6 @@ export const App: React.FC = () => {
     loadTodos();
   }, []);
 
-  const filteredTodos = getFilteredTodos(todos, status, query);
-
   return (
     <>
       <div className="section">
@@ -89,10 +44,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                query={query}
-                todoStatusFilter={status}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
@@ -100,18 +52,16 @@ export const App: React.FC = () => {
 
               {!isLoading && !error
                 ? (
-                  <TodoList
-                    todos={filteredTodos}
-                  />
+                  <TodoList />
                 )
                 : <Loader /> }
             </div>
           </div>
         </div>
       </div>
-      {selectedTodo && (
+      {currentTodo && (
         <TodoModal
-          todo={selectedTodo}
+          todo={currentTodo}
         />
       )}
     </>

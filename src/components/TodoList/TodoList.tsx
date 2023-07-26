@@ -1,17 +1,21 @@
 import React from 'react';
-import { Todo } from '../../types/Todo';
 import { TodoInfo } from '../TodoInfo';
+import { useAppSelector } from '../../app/hooks';
+import { getFilteredTodos } from '../../features/filterTodos';
 
-interface Props {
-  todos: Todo[];
-}
+export const TodoList: React.FC = () => {
+  const {
+    todos,
+    filter,
+  } = useAppSelector(state => state);
 
-export const TodoList: React.FC<Props> = ({
-  todos,
-}) => {
+  const { query, status } = filter;
+
+  const filteredTodos = getFilteredTodos(todos, status, query);
+
   return (
     <>
-      {!todos.length ? (
+      {!filteredTodos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -31,7 +35,7 @@ export const TodoList: React.FC<Props> = ({
           </thead>
 
           <tbody>
-            {todos.map(todo => (
+            {filteredTodos.map(todo => (
               <TodoInfo
                 key={todo.id}
                 todo={todo}
