@@ -15,6 +15,12 @@ interface RemoveTodosAction {
   payload: Todo,
 }
 
+enum TodosActionTypes {
+  Set = 'todos/SET',
+  Add = 'todos/ADD',
+  Remove = 'todos/REMOVE',
+}
+
 type Action = SetTodosAction | AddTodosAction | RemoveTodosAction;
 
 const setTodos = (todos: Todo[]): SetTodosAction => ({
@@ -38,11 +44,11 @@ type State = Todo[];
 
 const todosReducer = (state: State = [], action: Action): State => {
   switch (action.type) {
-    case 'todos/SET':
+    case TodosActionTypes.Set:
       return [...action.payload];
-    case 'todos/ADD':
+    case TodosActionTypes.Add:
       return [...state, action.payload];
-    case 'todos/REMOVE':
+    case TodosActionTypes.Remove:
       return state.filter(tod => tod.id !== action.payload.id);
     default:
       return state;

@@ -6,6 +6,12 @@ import { Status } from '../../types/Status';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
 
+enum TodoStatusFilter {
+  All = 'all',
+  Active = 'active',
+  Completed = 'completed',
+}
+
 export const getVisibleTodos = (
   todos: Todo[],
   status: Status,
@@ -22,11 +28,11 @@ export const getVisibleTodos = (
 
   preparedTodos = preparedTodos.filter(todo => {
     switch (status) {
-      case 'all':
+      case TodoStatusFilter.All:
         return true;
-      case 'active':
+      case TodoStatusFilter.Active:
         return !todo.completed;
-      case 'completed':
+      case TodoStatusFilter.Completed:
         return todo.completed;
       default:
         throw new Error('Filter type is incorrect');
