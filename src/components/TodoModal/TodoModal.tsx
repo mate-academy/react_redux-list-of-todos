@@ -27,7 +27,7 @@ export const TodoModal: React.FC = () => {
     }
   }, []);
 
-  const { name, email } = user || {}
+  const { name, email } = user || {};
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -37,7 +37,10 @@ export const TodoModal: React.FC = () => {
       ) : (
         <div className="modal-card">
           <header className="modal-card-head">
-            <div className="modal-card-title has-text-weight-medium" data-cy="modal-header">
+            <div
+              className="modal-card-title has-text-weight-medium"
+              data-cy="modal-header"
+            >
               {`Todo #${todo?.id}`}
             </div>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -51,7 +54,11 @@ export const TodoModal: React.FC = () => {
 
           <div className="modal-card-body">
             {hasError ? (
-              <strong className="has-text-danger">Unable to load the user</strong>
+              <strong
+                className="has-text-danger"
+              >
+                Unable to load the user
+              </strong>
             ) : (
               <>
                 <p className="block" data-cy="modal-title">{todo?.title}</p>
