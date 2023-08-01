@@ -15,7 +15,7 @@ const getFilteredTodos = (query: string, status: Status, todos: Todo[]) => {
 
   if (trimQuery) {
     // eslint-disable-next-line max-len
-    filteredTodos = filteredTodos.filter((todo) => todo.title.includes(trimQuery));
+    filteredTodos = filteredTodos.filter((todo) => todo.title.toLowerCase().includes(trimQuery.toLowerCase()));
   }
 
   switch (status) {

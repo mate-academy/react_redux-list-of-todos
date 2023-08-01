@@ -6,7 +6,7 @@ import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { query } = useAppSelector(state => state.filter);
+  const { query } = useAppSelector((state) => state.filter);
 
   return (
     <form
@@ -39,15 +39,17 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={() => dispatch(actions.changeFilterQuery(''))}
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(actions.changeFilterQuery(''))}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
