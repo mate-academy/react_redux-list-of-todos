@@ -1,34 +1,58 @@
+/* eslint-disable no-alert */
 /* eslint-disable max-len */
-import React from 'react';
-import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import 'bulma/css/bulma.css';
+import React, { useEffect, useState } from 'react';
 
-import { TodoList } from './components/TodoList';
-import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
+import { getTodos } from './api';
 import { Loader } from './components/Loader';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoList } from './components/TodoList';
+import { TodoModal } from './components/TodoModal';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as todosActions } from './features/todos';
+import { actions as currentActions } from './features/currentTodo';
 
 export const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleCloseModal = () => dispatch(currentActions.removeTodo());
+
+  useEffect(() => {
+    setIsLoading(true);
+    getTodos()
+      .then(res => dispatch(todosActions.set(res)))
+      .catch(() => alert('Something went Wrong'))
+      .finally(() => setIsLoading(false));
+  }, []);
+
   return (
     <>
       <div className="section">
         <div className="container">
           <div className="box">
-            <h1 className="title">Todos:</h1>
+            {isLoading
+              ? <Loader />
+              : (
+                <>
+                  <h1 className="title">Todos:</h1>
 
-            <div className="block">
-              <TodoFilter />
-            </div>
+                  <div className="block">
+                    <TodoFilter />
+                  </div>
 
-            <div className="block">
-              <Loader />
-              <TodoList />
-            </div>
+                  <div className="block">
+                    <TodoList />
+                  </div>
+                </>
+              )}
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {currentTodo && <TodoModal onClose={handleCloseModal} />}
     </>
   );
 };
