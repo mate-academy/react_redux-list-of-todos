@@ -7,11 +7,14 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 
 export const TodoModal: React.FC = () => {
-  const dispach = useAppDispatch();
+  const dispatch = useAppDispatch();
   const currentTodo: Todo | null = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
   const {
-    id, title, completed, userId = 0,
+    id, 
+    title, 
+    completed, 
+    userId = 0,
   } = currentTodo || {};
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export const TodoModal: React.FC = () => {
               className="delete"
               data-cy="modal-close"
               onClick={() => {
-                dispach(actions.removeTodo());
+                dispatch(actions.removeTodo());
               }}
             />
           </header>

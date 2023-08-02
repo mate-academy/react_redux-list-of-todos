@@ -91,10 +91,10 @@ export const TodoList: React.FC = () => {
                     >
                       <span className="icon">
                         <i className={classNames(
-                          'far',
-                          { 'fa-eye-slash': isActive() },
-                          { 'fa-eye': !isActive() },
-                        )}
+                            'far',
+                            { 'fa-eye-slash': isActive() },
+                            { 'fa-eye': !isActive() },
+                          )}
                         />
                       </span>
                     </button>
