@@ -6,6 +6,12 @@ import { Status } from '../../types/Status';
 import { getTodos } from '../../api';
 import { Todo } from '../../types/Todo';
 
+enum Filter {
+  all = 'all',
+  active = 'active',
+  completed = 'completed',
+}
+
 export const TodoFilter: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
@@ -25,11 +31,11 @@ export const TodoFilter: React.FC = () => {
       }
 
       switch (newFilter) {
-        case 'all':
+        case Filter.all:
           return true;
-        case 'active':
+        case Filter.active:
           return !todo.completed;
-        case 'completed':
+        case Filter.completed:
           return todo.completed;
         default:
           throw new Error('wrong filter selected');
