@@ -8,7 +8,7 @@ import { User } from '../../types/User';
 
 export const TodoModal: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isProcessing, setIsProcesing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const { removeTodo } = actions;
@@ -17,10 +17,10 @@ export const TodoModal: React.FC = () => {
 
   useEffect(() => {
     if (currentTodo) {
-      setIsProcesing(true);
+      setIsProcessing(true);
       getUser(currentTodo.userId)
         .then(response => setCurrentUser(response))
-        .finally(() => setIsProcesing(false));
+        .finally(() => setIsProcessing(false));
     }
   }, [currentTodo]);
 

@@ -5,10 +5,8 @@ type SetTodos = {
   payload: Todo[],
 };
 
-export const setTodo
+const setTodo
 = (todos: Todo[]): SetTodos => ({ type: 'todos/set', payload: todos });
-
-export const actions = { setTodo };
 
 const todosReducer = (
   state: Todo[] = [],
@@ -18,3 +16,4 @@ const todosReducer = (
 };
 
 export default todosReducer;
+export const actions = { setTodo };

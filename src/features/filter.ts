@@ -25,8 +25,6 @@ const setQuery = (query: string): SetQuery => ({
   payload: query,
 });
 
-export const actions = { setQuery, setStatus };
-
 type Actions = SetQuery | SetStatus;
 
 const filterReducer = (
@@ -44,4 +42,5 @@ const filterReducer = (
   }
 };
 
+export const actions = { setQuery, setStatus };
 export default filterReducer;

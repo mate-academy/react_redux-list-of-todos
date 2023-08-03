@@ -6,7 +6,7 @@ import { TodoItem } from './TodoItem';
 import { Todo } from '../../types/Todo';
 import { filterBy } from '../../utils/filterBy';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { setTodo } from '../../features/todos';
+import { actions } from '../../features/todos';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -15,6 +15,7 @@ export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const [list, setList] = useState<Todo[]>([]);
   const [isProcesing, setIsProcesing] = useState(false);
+  const { setTodo } = actions;
 
   useEffect(() => {
     setIsProcesing(true);
@@ -33,14 +34,14 @@ export const TodoList: React.FC = () => {
   return (
     <>
       {isProcesing && <Loader />}
-      {list.length > 0 && !todos.length && (
+      {!!list.length && !todos.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
       <table className="table is-narrow is-fullwidth">
-        {(todos.length > 0) && (
+        {!!todos.length && (
           <TodoHead />
         )}
 
