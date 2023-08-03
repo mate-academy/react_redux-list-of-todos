@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 type Props = {
   todo: Todo;
 };
 
 export const TodoItem:React.FC<Props> = ({ todo }) => {
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const { setTodo } = actions;
 
@@ -50,7 +51,11 @@ export const TodoItem:React.FC<Props> = ({ todo }) => {
           onClick={handleSelectCurrentTodo}
         >
           <span className="icon">
-            <i className="far fa-eye" />
+            <i className={`far ${currentTodo?.id === todo.id
+              ? 'fa-eye-slash'
+              : 'fa-eye'
+            }`}
+            />
           </span>
         </button>
       </td>
