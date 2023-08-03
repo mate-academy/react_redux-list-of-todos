@@ -14,7 +14,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
 
   return (
-    <tr data-cy="todo" key={id}>
+    <tr data-cy="todo">
       <td className="is-vcentered">{id}</td>
       <td className="is-vcentered">
         {completed && (

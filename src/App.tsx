@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -10,6 +10,7 @@ import { Loader } from './components/Loader';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
 import { getTodos } from './api';
+import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
@@ -21,36 +22,15 @@ export const App: React.FC = () => {
 
   const lowerQuery = query.toLowerCase();
 
+  const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
+
   const getData = async () => {
     try {
       setIsLoader(true);
-      let loadedData = await getTodos();
-
-      switch (status) {
-        case 'all':
-          break;
-
-        case 'active':
-          loadedData = [...loadedData].filter((data) => !data.completed);
-          break;
-
-        case 'completed':
-          loadedData = [...loadedData].filter((data) => data.completed);
-          break;
-
-        default:
-          break;
-      }
-
-      if (query.length) {
-        loadedData = [...loadedData].filter((data) => {
-          const lowerTitle = data.title.toLowerCase();
-
-          return lowerTitle.includes(lowerQuery);
-        });
-      }
+      const loadedData = await getTodos();
 
       dispatch(todosActions.setTodos(loadedData));
+      setVisibleTodos(loadedData);
     } catch (error) {
       throw Error('Field to load todo data');
     } finally {
@@ -60,6 +40,32 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     getData();
+  }, []);
+
+  const queryFiltering = useCallback(() => {
+    setVisibleTodos((current) => [...current].filter((data) => {
+      const lowerTitle = data.title.toLowerCase();
+
+      return lowerTitle.includes(lowerQuery);
+    }));
+  }, [query]);
+
+  useEffect(() => {
+    switch (status) {
+      case 'active':
+        setVisibleTodos([...todos].filter((data) => !data.completed));
+        break;
+
+      case 'completed':
+        setVisibleTodos([...todos].filter((data) => data.completed));
+        break;
+
+      default:
+        setVisibleTodos(todos);
+        break;
+    }
+
+    queryFiltering();
   }, [status, query]);
 
   return (
@@ -77,7 +83,7 @@ export const App: React.FC = () => {
               {isLoader ? (
                 <Loader />
               ) : (
-                <TodoList todos={todos} />
+                <TodoList todos={visibleTodos} />
               )}
             </div>
           </div>
