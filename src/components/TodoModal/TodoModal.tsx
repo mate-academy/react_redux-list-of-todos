@@ -3,12 +3,17 @@ import { Loader } from '../Loader';
 import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoFeat } from '../../features/currentTodo';
+import { User } from '../../types/User';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const [user, setUser] = useState({ email: '', name: '' });
-  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<Pick<User, 'email' | 'name'>>(
+    { email: '', name: '' },
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const { email, name } = user;
 
   useEffect(() => {
     const getCurentUser = async () => {
@@ -64,7 +69,7 @@ export const TodoModal: React.FC = () => {
                   ? <strong className="has-text-danger">Planned</strong>
                   : <strong className="has-text-success">Done</strong>}
                 {' by '}
-                <a href={`mailto:${user.email}`}>{`${user.name}`}</a>
+                <a href={`mailto:${email}`}>{`${name}`}</a>
               </p>
             </div>
           </div>

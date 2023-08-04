@@ -1,6 +1,7 @@
 import React from 'react';
 import { actions as filterAction } from '../../features/filter';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -9,9 +10,9 @@ export const TodoFilter: React.FC = () => {
 
   const setFilter = (value: string) => {
     switch (value) {
-      case 'active':
+      case Status.Active:
         return dispatch(filterAction.active(filter.query));
-      case 'completed':
+      case Status.Completed:
         return dispatch(filterAction.completed(filter.query));
       default:
         return dispatch(filterAction.all(filter.query));

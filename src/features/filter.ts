@@ -1,3 +1,5 @@
+import { Status } from '../types/Status';
+
 type AllActions = { type: 'ALL', payload: string };
 type ActiveActions = { type: 'ACTIVE', payload: string };
 type CompletedActions = { type: 'COMPLETED', payload: string };
@@ -15,24 +17,24 @@ export const actions = {
   all, active, completed, input,
 };
 
-const initialState = { query: '', status: 'all' };
+const initialState = { query: '', status: Status.All };
 
 const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'ALL':
       return {
         query: action.payload,
-        status: 'all',
+        status: Status.All,
       };
     case 'ACTIVE':
       return {
         query: action.payload,
-        status: 'active',
+        status: Status.Active,
       };
     case 'COMPLETED':
       return {
         query: action.payload,
-        status: 'completed',
+        status: Status.Completed,
       };
     case 'INPUT':
       return {

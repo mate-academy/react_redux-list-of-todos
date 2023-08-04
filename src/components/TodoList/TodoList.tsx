@@ -3,6 +3,7 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as curentTodoFeat } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -19,11 +20,11 @@ export const TodoList: React.FC = () => {
 
   const visibleTodos = () => {
     switch (filter.status) {
-      case 'all':
+      case Status.All:
         return todos.filter((todo: Todo) => todo);
-      case 'active':
+      case Status.Active:
         return todos.filter((todo: Todo) => !todo.completed);
-      case 'completed':
+      case Status.Completed:
         return todos.filter((todo: Todo) => todo.completed);
       default:
         return todos;
@@ -57,11 +58,13 @@ export const TodoList: React.FC = () => {
 
         <tbody>
           {visibleTodos().map((todo: Todo) => {
+            const { title, completed, id } = todo;
+
             return (
-              <tr key={todo.id} data-cy="todo">
-                <td className="is-vcentered">{todo.id}</td>
+              <tr key={id} data-cy="todo">
+                <td className="is-vcentered">{id}</td>
                 <td className="is-vcentered">
-                  {todo.completed && (
+                  {completed && (
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
@@ -70,10 +73,10 @@ export const TodoList: React.FC = () => {
 
                 <td className="is-vcentered is-expanded">
                   <p className={
-                    todo.completed ? 'has-text-success' : 'has-text-danger'
+                    completed ? 'has-text-success' : 'has-text-danger'
                   }
                   >
-                    {todo.title}
+                    {title}
                   </p>
                 </td>
 
@@ -85,7 +88,7 @@ export const TodoList: React.FC = () => {
                     onClick={() => dispatch(curentTodoFeat.setTodo(todo))}
                   >
                     <span className="icon">
-                      <i className={`far ${isSelected(todo.id) ? 'fa-eye-slash' : 'fa-eye'}`} />
+                      <i className={`far ${isSelected(id) ? 'fa-eye-slash' : 'fa-eye'}`} />
                     </span>
                   </button>
                 </td>
