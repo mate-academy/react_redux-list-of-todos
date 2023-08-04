@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as actionsCurrent } from '../../features/currentTodo';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
 type Props = {
   todos: Todo[];
@@ -18,7 +18,7 @@ export const TodoList: React.FC<Props> = ({ todos, errorMessage }) => {
     const findTodo = todos.find(todo => todo.id === todoId);
 
     if (findTodo) {
-      dispatch(actionsCurrent.setTodo(findTodo));
+      dispatch(currentTodoActions.setTodo(findTodo));
     }
   };
 

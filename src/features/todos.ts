@@ -23,7 +23,7 @@ const todosReducer = (
       return [...action.payload, ...state];
 
     default:
-      return [...state];
+      return state;
   }
 };
 

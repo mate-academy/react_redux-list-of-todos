@@ -25,12 +25,13 @@ export const App: React.FC = () => {
         const loadedTodos = await getTodos();
 
         dispatch(actionTodos.SetAdd(loadedTodos));
-        setIsLoading(false);
       } catch (error) {
         if (error instanceof Error) {
           setErrorMessage(error.message);
+        } else {
+          alert('Something went Wrong');
         }
-
+      } finally {
         setIsLoading(false);
       }
     };
