@@ -20,17 +20,17 @@ const setTodosError = (message: string): FailedFetchingTodosAction => ({
 
 export const actions = { startFetchingTodos, setTodos, setTodosError };
 
-type State = { todos: Todo[]; isLoading: boolean; error: string };
+type State = { items: Todo[]; isLoading: boolean; error: string };
 type Action =
   | StartFetchingTodosAction
   | SuccessFetchingTodosAction
   | FailedFetchingTodosAction;
 
 const todosReducer = (
-  state: State = { todos: [], isLoading: false, error: '' },
+  state: State = { items: [], isLoading: false, error: '' },
   action: Action,
 ): {
-  todos: Todo[];
+  items: Todo[];
   isLoading: boolean;
   error: string;
 } => {
@@ -38,7 +38,7 @@ const todosReducer = (
     case 'todos/LOADING':
       return { ...state, isLoading: true };
     case 'todos/LOADED':
-      return { ...state, isLoading: false, todos: action.payload };
+      return { ...state, isLoading: false, items: action.payload };
     case 'todos/ERROR':
       return { ...state, isLoading: false, error: action.payload };
     default:

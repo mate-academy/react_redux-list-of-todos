@@ -1,25 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
 
-type TodoModalProps = {
-  currentTodo: Todo;
-};
-
-export const TodoModal: React.FC<TodoModalProps> = ({
-  currentTodo: {
-    userId, title, id, completed,
-  },
-}) => {
+export const TodoModal = () => {
+  const currentTodo = useAppSelector((state) => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
 
+  const {
+    userId, title, completed, id,
+  } = currentTodo as Todo;
+
+  const removeTodo = () => dispatch(actions.removeTodo());
+
+  const fetchUser = async () => {
+    const foundUser = await getUser(userId);
+
+    setUser(foundUser);
+  };
+
   useEffect(() => {
-    getUser(userId).then(setUser);
+    fetchUser();
   }, []);
 
   return (
@@ -43,7 +48,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(actions.removeTodo())}
+              onClick={removeTodo}
             />
           </header>
 

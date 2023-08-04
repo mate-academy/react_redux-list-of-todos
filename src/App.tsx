@@ -13,14 +13,22 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, todos } = useAppSelector((state) => state.todos);
-  const currentTodo = useAppSelector((state) => state.currentTodo);
+  const [{ isLoading }, currentTodo] = useAppSelector((state) => [state.todos, state.currentTodo]);
+
+  const fetchTodos = async () => {
+    dispatch(actions.startFetchingTodos());
+
+    try {
+      const data = await getTodos();
+
+      dispatch(actions.setTodos(data));
+    } catch (err) {
+      dispatch(actions.setTodosError('Something went wrong'));
+    }
+  };
 
   useEffect(() => {
-    dispatch(actions.startFetchingTodos());
-    getTodos()
-      .then((data) => dispatch(actions.setTodos(data)))
-      .catch(() => dispatch(actions.setTodosError('Something went wrong')));
+    fetchTodos();
   }, []);
 
   return (
@@ -38,14 +46,14 @@ export const App: React.FC = () => {
               {isLoading ? (
                 <Loader />
               ) : (
-                <TodoList currentTodo={currentTodo} todos={todos} />
+                <TodoList />
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {currentTodo && <TodoModal currentTodo={currentTodo} />}
+      {currentTodo && <TodoModal />}
     </>
   );
 };

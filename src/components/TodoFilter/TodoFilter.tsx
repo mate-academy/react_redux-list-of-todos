@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
 import { Status } from '../../types/Status';
@@ -8,6 +8,18 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query } = useAppSelector((state) => state.filter);
 
+  const setQuery = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
+    dispatch(actions.changeFilterQuery(value));
+  };
+
+  const clearQuery = () => {
+    dispatch(actions.changeFilterQuery(''));
+  };
+
+  const setFilterStatus = ({
+    target: { value },
+  }: ChangeEvent<HTMLSelectElement>) => dispatch(actions.changeFilterStatus(value as Status));
+
   return (
     <form
       className="field has-addons"
@@ -15,10 +27,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select
-            data-cy="statusSelect"
-            onChange={({ target: { value } }) => dispatch(actions.changeFilterStatus(value as Status))}
-          >
+          <select data-cy="statusSelect" onChange={setFilterStatus}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -33,7 +42,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           value={query}
           placeholder="Search..."
-          onChange={({ target: { value } }) => dispatch(actions.changeFilterQuery(value))}
+          onChange={setQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -46,7 +55,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(actions.changeFilterQuery(''))}
+              onClick={clearQuery}
             />
           </span>
         )}
