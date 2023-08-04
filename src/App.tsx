@@ -26,11 +26,7 @@ export const App: React.FC = () => {
 
         dispatch(actionTodos.SetAdd(loadedTodos));
       } catch (error) {
-        if (error instanceof Error) {
-          setErrorMessage(error.message);
-        } else {
-          alert('Something went Wrong');
-        }
+        setErrorMessage('An error occurred while loading todos.');
       } finally {
         setIsLoading(false);
       }

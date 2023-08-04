@@ -40,14 +40,14 @@ export const TodoList: React.FC<Props> = ({ todos, errorMessage }) => {
 
         <tbody>
           {!errorMessage
-            ? todos.map(todo => (
+            ? todos.map(({ id, completed, title }) => (
               <tr
-                key={todo.id}
+                key={id}
                 data-cy="todo"
               >
-                <td className="is-vcentered">{todo.id}</td>
+                <td className="is-vcentered">{id}</td>
                 <td className="is-vcentered">
-                  {todo.completed && (
+                  {completed && (
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
@@ -56,11 +56,11 @@ export const TodoList: React.FC<Props> = ({ todos, errorMessage }) => {
                 <td className="is-vcentered is-expanded">
                   <p
                     className={classNames({
-                      'has-text-danger': !todo.completed,
-                      'has-text-success': todo.completed,
+                      'has-text-danger': !completed,
+                      'has-text-success': completed,
                     })}
                   >
-                    {todo.title}
+                    {title}
                   </p>
                 </td>
                 <td className="has-text-right is-vcentered">
@@ -68,10 +68,10 @@ export const TodoList: React.FC<Props> = ({ todos, errorMessage }) => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => handleClick(todo.id)}
+                    onClick={() => handleClick(id)}
                   >
                     <span className="icon">
-                      {selectTodo && selectTodo.id === todo.id
+                      {selectTodo && selectTodo.id === id
                         ? <i className="far fa-eye-slash" />
                         : <i className="far fa-eye" />}
                     </span>
