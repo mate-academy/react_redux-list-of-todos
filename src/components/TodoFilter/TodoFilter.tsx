@@ -8,19 +8,8 @@ export const TodoFilter: React.FC = () => {
 
   const filter = useAppSelector(state => state.filter);
 
-  const setFilter = (value: string) => {
-    switch (value) {
-      case Status.Active:
-        return dispatch(filterAction.active(filter.query));
-      case Status.Completed:
-        return dispatch(filterAction.completed(filter.query));
-      default:
-        return dispatch(filterAction.all(filter.query));
-    }
-  };
-
-  const setInput = (value: string) => {
-    return dispatch(filterAction.input(value));
+  const setFilter = (status: Status, query: string) => {
+    dispatch(filterAction.filter(query, status));
   };
 
   return (
@@ -32,11 +21,11 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={(e) => setFilter(e.target.value)}
+            onChange={(e) => setFilter(e.target.value as Status, filter.query)}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Status.All}>All</option>
+            <option value={Status.Active}>Active</option>
+            <option value={Status.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -47,7 +36,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={filter.query}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => setFilter(filter.status, e.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -61,7 +50,7 @@ export const TodoFilter: React.FC = () => {
               aria-label="delete"
               type="button"
               className="delete"
-              onClick={() => setInput('')}
+              onClick={() => setFilter(filter.status, '')}
             />
           )}
         </span>
