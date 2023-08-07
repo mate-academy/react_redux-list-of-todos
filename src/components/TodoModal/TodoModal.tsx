@@ -34,11 +34,11 @@ export const TodoModal: React.FC = () => {
               {`Todo #${currentTodo.id}`}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"
               data-cy="modal-close"
+              aria-label="delete"
               onClick={() => dispatch(currentTodoActions.removeTodo())}
             />
           </header>

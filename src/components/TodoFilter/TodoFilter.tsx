@@ -7,15 +7,15 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const filter = useAppSelector(state => state.filter);
 
-  const onStatusSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleStatusSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(filterAactions.setStatus(event.target.value as Status));
   };
 
-  const onQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filterAactions.setQuery(event.target.value));
   };
 
-  const onDeleteQuery = () => dispatch(filterAactions.clearQuery());
+  const handleDeleteQuery = () => dispatch(filterAactions.clearQuery());
 
   return (
     <form
@@ -27,7 +27,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={filter.status}
-            onChange={onStatusSelect}
+            onChange={handleStatusSelect}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -43,7 +43,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={filter.query}
-          onChange={onQuery}
+          onChange={handleQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -55,7 +55,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={onDeleteQuery}
+              onClick={handleDeleteQuery}
               aria-label="delete"
             />
           </span>
