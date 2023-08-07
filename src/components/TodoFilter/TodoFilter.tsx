@@ -7,15 +7,16 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const filter = useAppSelector(state => state.filter);
+  const { query } = filter;
 
   const setFilter = (value: string) => {
     switch (value) {
       case FilterStatus.Active:
-        return dispatch(filterAction.active(filter.query));
+        return dispatch(filterAction.active(query));
       case FilterStatus.Completed:
-        return dispatch(filterAction.completed(filter.query));
+        return dispatch(filterAction.completed(query));
       default:
-        return dispatch(filterAction.all(filter.query));
+        return dispatch(filterAction.all(query));
     }
   };
 
@@ -47,7 +48,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={filter.query}
+          value={query}
           onChange={(e) => setInput(e.target.value)}
         />
         <span className="icon is-left">
@@ -55,8 +56,7 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          {filter.query && (
+          {query && (
             <button
               data-cy="clearSearchButton"
               aria-label="delete"

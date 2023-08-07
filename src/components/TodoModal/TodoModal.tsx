@@ -3,14 +3,11 @@ import { Loader } from '../Loader';
 import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoFeat } from '../../features/currentTodo';
-import { User } from '../../types/User';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const [user, setUser] = useState<Pick<User, 'email' | 'name'>>(
-    { email: '', name: '' },
-  );
+  const [user, setUser] = useState({ email: '', name: '' });
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { email, name } = user;
@@ -52,11 +49,11 @@ export const TodoModal: React.FC = () => {
                 {currentTodo.id}
               </div>
 
-              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button
                 type="button"
                 className="delete"
                 data-cy="modal-close"
+                aria-label="delete-button"
                 onClick={() => dispatch(currentTodoFeat.removeTodo())}
               />
             </header>

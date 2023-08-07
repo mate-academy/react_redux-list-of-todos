@@ -1,5 +1,4 @@
-/* eslint-disable max-len */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as curentTodoFeat } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
@@ -12,13 +11,15 @@ export const TodoList: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
   const todos = useAppSelector(state => state.todos.filter(
     (todo: Todo) => {
-      return todo.title.toLocaleLowerCase().includes(filter.query.toLocaleLowerCase());
+      const todoTitle = todo.title.toLocaleLowerCase();
+
+      return todoTitle.includes(filter.query.toLocaleLowerCase());
     },
   ));
 
   const isSelected = (id: number) => currentTodo?.id === id;
 
-  const visibleTodos = () => {
+  const visibleTodos = useMemo(() => {
     switch (filter.status) {
       case FilterStatus.All:
         return todos.filter((todo: Todo) => todo);
@@ -29,17 +30,17 @@ export const TodoList: React.FC = () => {
       default:
         return todos;
     }
-  };
+  }, [todos, filter.status]);
 
   return (
     <>
-      {filter.query && !visibleTodos().length && (
+      {filter.query && !visibleTodos.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
       <table className="table is-narrow is-fullwidth">
-        { !!visibleTodos().length && (
+        { !!visibleTodos.length && (
           <thead>
             <tr>
               <th>#</th>
@@ -57,7 +58,7 @@ export const TodoList: React.FC = () => {
         )}
 
         <tbody>
-          {visibleTodos().map((todo: Todo) => {
+          {visibleTodos.map((todo: Todo) => {
             const { title, completed, id } = todo;
 
             return (
