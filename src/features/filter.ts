@@ -11,9 +11,6 @@ type SetQueryFilterAction = {
 type ClearQueryFilterAction = {
   type: 'filter/CLEAR_QUERY_FILTER',
 };
-// type RemoveStatusFilterAction = {
-//   type: 'filter/REMOVE_STATUS_FILTER',
-// };
 
 const setStatusFilter = (status: Status): SetStatusFilterAction => ({
   type: 'filter/SET_STATUS_FILTER',
@@ -26,9 +23,6 @@ const setQueryFilter = (query: string): SetQueryFilterAction => ({
 const clearQueryFilter = (): ClearQueryFilterAction => ({
   type: 'filter/CLEAR_QUERY_FILTER',
 });
-// const removeStatusFilter = (): RemoveStatusFilterAction => ({
-//   type: 'filter/REMOVE_STATUS_FILTER',
-// });
 
 export const actions = { setStatusFilter, setQueryFilter, clearQueryFilter };
 
