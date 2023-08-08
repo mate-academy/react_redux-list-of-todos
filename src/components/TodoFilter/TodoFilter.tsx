@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-/* eslint-disable-next-line jsx-a11y/control-has-associated-label */
+/* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
