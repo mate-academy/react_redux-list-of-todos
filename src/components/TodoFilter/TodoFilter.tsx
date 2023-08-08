@@ -1,18 +1,19 @@
 import { FC, ChangeEvent } from 'react';
 import { Status } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as FilterActions } from '../../features/filter';
+import { actions as filterActions } from '../../features/filter/filter';
+import { selectFilter } from '../../features/filter/selectors';
 
 export const TodoFilter: FC = () => {
-  const filter = useAppSelector(state => state.filter);
+  const filter = useAppSelector(selectFilter);
   const dispatch = useAppDispatch();
 
   const changeFilterStatus = (event: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(FilterActions.changeStatus(event.target.value as Status));
+    dispatch(filterActions.changeStatus(event.target.value as Status));
   };
 
   const onQueryChange = (query: string) => {
-    dispatch(FilterActions.changeQuery(query));
+    dispatch(filterActions.changeQuery(query));
   };
 
   return (
@@ -22,7 +23,7 @@ export const TodoFilter: FC = () => {
           <select
             data-cy="statusSelect"
             value={filter.status}
-            onChange={(event) => changeFilterStatus(event)}
+            onChange={changeFilterStatus}
           >
             <option value={Status.All}>All</option>
             <option value={Status.Active}>Active</option>

@@ -1,4 +1,4 @@
-import { Status } from '../types';
+import { Status } from '../../types';
 
 type ChangeQueryAction = {
   type: 'filter/SET_QUERY',

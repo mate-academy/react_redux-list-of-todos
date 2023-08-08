@@ -14,7 +14,7 @@ export const getFilteredTodos = (
     query,
   } = option;
 
-  let filteredTodos = [...todos];
+  let filteredTodos = todos;
 
   if (todosStatus !== Status.All) {
     filteredTodos = filteredTodos.filter(todo => {

@@ -3,7 +3,9 @@ import { Loader } from '../Loader';
 import { Todo, User } from '../../types';
 import { getUser } from '../../api';
 import { useAppDispatch } from '../../app/hooks';
-import { actions as selectTodoActions } from '../../features/currentTodo';
+import {
+  actions as selectTodoActions,
+} from '../../features/currentTodo/currentTodo';
 
 type Props = {
   selectedTodo: Todo;

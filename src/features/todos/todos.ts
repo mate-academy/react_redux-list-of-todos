@@ -1,4 +1,4 @@
-import { Todo } from '../types';
+import { Todo } from '../../types';
 
 type SetTodosAction = {
   type: 'todos/SET',
