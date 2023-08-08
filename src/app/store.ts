@@ -2,9 +2,9 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import currentTodoReducer from '../features/currentTodo';
-import filterReducer from '../features/filter';
-import todosReducer from '../features/todos';
+import currentTodoReducer from '../features/currentTodo/currentTodo';
+import filterReducer from '../features/filter/filter';
+import todosReducer from '../features/todos/todos';
 
 const rootReducer = combineReducers({
   currentTodo: currentTodoReducer,
@@ -12,7 +12,6 @@ const rootReducer = combineReducers({
   todos: todosReducer,
 });
 
-// The `store` is passed to the Provider in `/src/index.tsx`
 export const store = createStore(
   rootReducer,
   composeWithDevTools(
