@@ -1,6 +1,26 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispach = useAppDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
+
+  const handleInputChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const str = ev.target.value;
+
+    dispach(filterActions.setQuery(str));
+  };
+
+  const handleInputClear = () => dispach(filterActions.clearQuery());
+
+  const handleSelectChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
+    const statusToSet = ev.target.value;
+
+    dispach(filterActions.setStatus(statusToSet));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +28,16 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleSelectChange}
+          >
+            {Object.keys(Status).map(key => (
+              <option value={key.toLowerCase()}>
+                {key}
+              </option>
+            ))}
           </select>
         </span>
       </p>
@@ -22,6 +48,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleInputChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -33,6 +61,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={handleInputClear}
           />
         </span>
       </p>
