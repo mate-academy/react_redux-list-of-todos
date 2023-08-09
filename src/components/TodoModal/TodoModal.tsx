@@ -10,12 +10,19 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const [author, setAuthor] = useState<User | null>(null);
+  const [hasError, setHasError] = useState(false);
   const handleClose = () => dispatch(currentTodoActions.removeTodo());
+  const completed = currentTodo?.completed;
+  const userId = currentTodo?.userId;
+  const id = currentTodo?.id;
+  const title = currentTodo?.title;
 
   useEffect(() => {
-    if (currentTodo) {
-      getUser(currentTodo.userId)
-        .then(setAuthor);
+    setHasError(false);
+    if (userId) {
+      getUser(userId)
+        .then(setAuthor)
+        .catch(() => setHasError(true));
     }
   }, []);
 
@@ -38,7 +45,7 @@ export const TodoModal: React.FC = () => {
                   data-cy="modal-header"
                 >
                   Todo #
-                  {currentTodo?.id}
+                  {id}
                 </div>
 
                 {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -52,19 +59,24 @@ export const TodoModal: React.FC = () => {
 
               <div className="modal-card-body">
                 <p className="block" data-cy="modal-title">
-                  {currentTodo?.title}
+                  {title}
                 </p>
 
                 <p className="block" data-cy="modal-user">
-                  {currentTodo?.completed
+                  {completed
                     ? (<strong className="has-text-success">Done</strong>)
-                    : (<strong className="has-text-danger">Planned</strong>)}
+                    : (<strong className="has-text-danger">Planned</strong>)
+                  }
 
                   {' by '}
 
-                  <a href={`mailto:${author?.email}`}>
-                    {author?.name}
-                  </a>
+                  {hasError
+                    ? (<p>Oops! An error occurred while fetching the data.</p>)
+                    : (
+                      <a href={`mailto:${author?.email}`}>
+                        {author?.name}
+                      </a>
+                    )}
                 </p>
               </div>
             </div>
