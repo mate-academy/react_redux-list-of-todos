@@ -1,7 +1,37 @@
 /* eslint-disable max-len */
 import React from 'react';
+import classNames from 'classnames';
+// import { getTodos } from '../../api';
+// import { actions } from '../../features/todos';
+import { useAppSelector } from '../../app/hooks';
+// import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
+  // const [todos, setTodos] = useState<Todo[]>();
+  // const [error, setError] = useState('');
+  // const [isLoading, setIsLoading] = useState(false);
+  const todos = useAppSelector(state => state.todos);
+  // const dispatch = useAppDispatch();
+
+  // const handleTodosFromServer = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const todosFromServer = await getTodos();
+
+  //     dispatch(actions.setTodos(todosFromServer));
+  //   } catch {
+  //     setError('failed to load todos');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   handleTodosFromServer();
+  // }, []);
+
+  // console.log(todos);
+
   return (
     <>
       <p className="notification is-warning">
@@ -25,6 +55,33 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
+          {todos?.map(todo => {
+            return (
+              <tr data-cy="todo" key={todo.id}>
+                <td className="is-vcentered">{todo.id}</td>
+                <td className="is-vcentered"> </td>
+
+                <td className="is-vcentered is-expanded">
+                  <p
+                    className={classNames({
+                      'has-text-danger': todo.completed,
+                      'has-text-success': !todo.completed,
+                    })}
+                  >
+                    {todo.title}
+                  </p>
+                </td>
+
+                <td className="has-text-right is-vcentered">
+                  <button data-cy="selectButton" className="button" type="button">
+                    <span className="icon">
+                      <i className="far fa-eye" />
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
           <tr data-cy="todo">
             <td className="is-vcentered">1</td>
             <td className="is-vcentered"> </td>
