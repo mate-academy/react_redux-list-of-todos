@@ -23,7 +23,7 @@ export const TodoList: React.FC = () => {
         case 'completed':
           return todo.completed && lowerCase.includes(filterLowerCase);
         default:
-          return true && lowerCase.includes(filterLowerCase);
+          return lowerCase.includes(filterLowerCase);
       }
     });
 
@@ -52,14 +52,14 @@ export const TodoList: React.FC = () => {
             {filteredTodos?.map((todo) => {
               const { id, title, completed } = todo;
 
-              const isActive = () => id === currentTodo?.id;
+              const isActive = id === currentTodo?.id;
 
               return (
                 <tr
                   data-cy="todo"
                   key={id}
                   className={classNames({
-                    'className="has-background-info-light': isActive(),
+                    'className="has-background-info-light': isActive,
                   })}
                 >
                   <td className="is-vcentered">{id}</td>
@@ -93,8 +93,8 @@ export const TodoList: React.FC = () => {
                         <i
                           className={classNames(
                             'far',
-                            { 'fa-eye-slash': isActive() },
-                            { 'fa-eye': !isActive() },
+                            { 'fa-eye-slash': isActive },
+                            { 'fa-eye': !isActive },
                           )}
                         />
                       </span>

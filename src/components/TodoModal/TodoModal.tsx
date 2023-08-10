@@ -7,7 +7,7 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 
 export const TodoModal: React.FC = () => {
-  const dispach = useAppDispatch();
+  const dispatch = useAppDispatch();
   const currentTodo: Todo | null = useAppSelector((state) => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
   const {
@@ -15,7 +15,12 @@ export const TodoModal: React.FC = () => {
   } = currentTodo || {};
 
   useEffect(() => {
-    getUser(userId).then(setUser);
+    getUser(userId)
+      .then(setUser)
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.log('Error fetching user:', err);
+      });
   }, []);
 
   return (
@@ -39,7 +44,7 @@ export const TodoModal: React.FC = () => {
               className="delete"
               data-cy="modal-close"
               onClick={() => {
-                dispach(actions.removeTodo());
+                dispatch(actions.removeTodo());
               }}
             />
           </header>

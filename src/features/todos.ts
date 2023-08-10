@@ -6,6 +6,7 @@ type SetTodosAction = {
 };
 
 const setTodos = (todos: Todo[]): SetTodosAction => ({
+
   type: 'currentTodos/SET',
   payload: todos,
 });

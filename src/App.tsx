@@ -12,13 +12,13 @@ import { actions } from './features/todos';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
-  const dispach = useAppDispatch();
+  const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     getTodos()
-      .then(result => (dispach(actions.setTodos(result))));
+      .then(result => (dispatch(actions.setTodos(result))));
   }, []);
 
   return (
@@ -31,13 +31,13 @@ export const App: React.FC = () => {
             <div className="block">
               <TodoFilter />
             </div>
-            {todos ? <TodoList /> : <Loader />}
+            {todos && todos.length > 0 ? <TodoList /> : <Loader />}
             <div className="block" />
           </div>
         </div>
       </div>
 
-      {currentTodo && <TodoModal />}
+      {currentTodo?.id && <TodoModal />}
     </>
   );
 };
