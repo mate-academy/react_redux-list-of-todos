@@ -10,20 +10,11 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
 
-  const getUsersFromServer = async () => {
-    if (!currentTodo?.userId) {
-      return;
-    }
-
-    try {
-      setUser(await getUser(currentTodo?.userId));
-    } catch (error) {
-      throw new Error('User loading error');
-    }
-  };
-
   useEffect(() => {
-    getUsersFromServer();
+    if (currentTodo) {
+      getUser(currentTodo.userId)
+        .then(loadUser => setUser(loadUser));
+    }
   }, []);
 
   return (

@@ -3,15 +3,44 @@ import React from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Todo } from '../../types/Todo';
+
+function searchTitle(title: string, search: string) {
+  return title.toLowerCase().includes(search.trim().toLowerCase());
+}
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
+  const filter = useAppSelector(state => state.filter);
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
+  let selectedTodos: Todo[];
+  let visibleTodos: Todo[];
+
+  switch (filter.status) {
+    case 'active':
+      selectedTodos = todos.filter(todo => !todo.completed);
+      break;
+
+    case 'completed':
+      selectedTodos = todos.filter(todo => todo.completed);
+      break;
+
+    default:
+      selectedTodos = todos;
+      break;
+  }
+
+  if (filter.query) {
+    visibleTodos = selectedTodos.filter(todo => searchTitle(todo.title, filter.query));
+  } else {
+    visibleTodos = selectedTodos;
+  }
+
   return (
     <>
-      {!todos.length ? (
+      {!visibleTodos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -33,7 +62,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {todos.map((todo) => {
+            {visibleTodos.map((todo) => {
               const { id, completed, title } = todo;
 
               return (
