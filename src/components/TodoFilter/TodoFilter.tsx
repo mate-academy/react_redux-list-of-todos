@@ -28,9 +28,11 @@ export const TodoFilter = () => {
             value={filterState.status}
             onChange={handleStatusChange}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            {Object.values(Status).map(value => (
+              <option value={value}>
+                {value.replace(/^\w/, c => c.toUpperCase())}
+              </option>
+            ))}
           </select>
         </span>
       </p>

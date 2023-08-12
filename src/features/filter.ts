@@ -30,7 +30,7 @@ export const actions = { setQuery, setStatus };
 
 const initialState: State = {
   query: '',
-  status: 'all',
+  status: Status.ALL,
 };
 
 const filterReducer = (

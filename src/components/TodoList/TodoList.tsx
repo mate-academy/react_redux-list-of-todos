@@ -3,11 +3,14 @@ import cn from 'classnames';
 import { actions as TodoActions } from '../../features/currentTodo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
+import { Status } from '../../types/Status';
 
 type Props = {
   todos: Todo[];
   currentTodo: Todo | null;
 };
+
+const compareId = (id: number, currentId: number): boolean => id === currentId;
 
 export const TodoList: FC<Props> = ({ todos, currentTodo }) => {
   const dispatch = useAppDispatch();
@@ -20,11 +23,11 @@ export const TodoList: FC<Props> = ({ todos, currentTodo }) => {
       const { completed } = todo;
 
       switch (filterState.status) {
-        case 'all':
+        case Status.ALL:
           return titleLow.includes(queryLow);
-        case 'active':
+        case Status.ACTIVE:
           return !completed && titleLow.includes(queryLow);
-        case 'completed':
+        case Status.COMPLETED:
           return completed && titleLow.includes(queryLow);
         default:
           return todo;
@@ -64,7 +67,7 @@ export const TodoList: FC<Props> = ({ todos, currentTodo }) => {
                 <tr
                   data-cy="todo"
                   className={cn({
-                    'has-background-info-light': id === currentId,
+                    'has-background-info-light': compareId(id, currentId),
                   })}
                   key={id}
                 >
@@ -96,8 +99,8 @@ export const TodoList: FC<Props> = ({ todos, currentTodo }) => {
                     >
                       <span className="icon">
                         <i className={cn('far', {
-                          'fa-eye': id !== currentId,
-                          'fa-eye-slash': id === currentId,
+                          'fa-eye': !compareId(id, currentId),
+                          'fa-eye-slash': compareId(id, currentId),
                         })}
                         />
                       </span>
