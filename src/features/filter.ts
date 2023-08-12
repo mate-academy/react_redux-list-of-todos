@@ -1,62 +1,67 @@
 // import { Todo } from '../types/Todo';
 
-// type FilterAllAction = {
-//   type: 'todos/ALL',
-//   payload: Todo[],
-// };
+import { Status } from '../types/Status';
 
-// type FilterActiveAction = {
-//   type: 'todos/ACTIVE',
-//   payload: Todo[],
-// };
-
-// type FilterCompletedAction = {
-//   type: 'todos/COMPLETED',
-//   payload: Todo[],
-// };
-
-// type Action = FilterAllAction
-//   | FilterActiveAction
-//   | FilterCompletedAction;
-
-// const filterActive = (todos: Todo[]): FilterActiveAction => ({
-//   type: 'todos/ACTIVE',
-//   payload: todos,
-// });
-
-// const filterCompleted = (todos: Todo[]): FilterCompletedAction => ({
-//   type: 'todos/COMPLETED',
-//   payload: todos,
-// });
-
-// const filterAll = (todos: Todo[]): FilterCompletedAction => ({
-//   type: 'todos/COMPLETED',
-//   payload: todos,
-// });
-
-const filterReducer = (
-  // todos: Todo[],
-  //  action: Action,
-) => {
-  // switch (action.type) {
-  //   case 'todos/ALL':
-  //     return todos;
-
-  //   case 'todos/ACTIVE':
-  //     return todos.filter(todo => !todo.completed);
-
-  //   case 'todos/COMPLETED':
-  //     return todos.filter(todo => todo.completed);
-
-  //   default: return todos;
-  // }
-
-  return {
-    query: '',
-    status: 'all',
-  };
+type SetQueryAction = {
+  type: 'query/SET',
+  payload: string,
 };
 
-export const actions = {};
+type ClearQueryAction = {
+  type: 'query/CLEAR',
+};
+
+type SetStatusAction = {
+  type: 'status/SET',
+  payload: Status,
+};
+
+type Action = SetQueryAction
+| SetStatusAction
+| ClearQueryAction;
+
+const setQueryFilter = (query: string): SetQueryAction => ({
+  type: 'query/SET',
+  payload: query,
+});
+
+const clearQueryFilter = (): ClearQueryAction => ({
+  type: 'query/CLEAR',
+});
+
+const setStatusFilter = (status: Status): SetStatusAction => ({
+  type: 'status/SET',
+  payload: status,
+});
+
+type State = {
+  query: string,
+  status: Status,
+};
+
+const initialState: State = {
+  query: '',
+  status: 'all',
+};
+
+const filterReducer = (
+  state = initialState,
+  action: Action,
+) => {
+  switch (action.type) {
+    case 'status/SET':
+      return { ...state, status: action.payload };
+
+    case 'query/SET':
+      return { ...state, query: action.payload };
+
+    case 'query/CLEAR':
+      return { ...state, query: '' };
+
+    default: return state;
+  }
+};
+
+export const actions = { setQueryFilter, setStatusFilter, clearQueryFilter };
 
 export default filterReducer;
