@@ -1,6 +1,21 @@
-import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
-export const TodoFilter: React.FC = () => {
+export const TodoFilter = () => {
+  const dispatch = useAppDispatch();
+  const filterState = useAppSelector(state => state.filter);
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.setStatus(event.target.value as Status));
+  };
+
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterActions.setQuery(event.target.value));
+  };
+
+  const handleQueryClear = () => dispatch(filterActions.setQuery(''));
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +23,16 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={filterState.status}
+            onChange={handleStatusChange}
+          >
+            {Object.values(Status).map(value => (
+              <option value={value}>
+                {value.replace(/^\w/, c => c.toUpperCase())}
+              </option>
+            ))}
           </select>
         </span>
       </p>
@@ -22,19 +43,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={filterState.query}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {filterState.query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              aria-label="delete button"
+              onClick={handleQueryClear}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
