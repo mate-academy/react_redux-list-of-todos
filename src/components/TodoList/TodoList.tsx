@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodActions } from '../../features/currentTodo';
@@ -10,7 +10,6 @@ export const TodoList: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const status = useAppSelector(state => state.filter.status);
   const query = useAppSelector(state => state.filter.query);
-  const [apliedQuery, setApliedQuery] = useState(query);
 
   const filterTodos = () => {
     let filteredTodos: Todo[] = [...todos];
@@ -39,18 +38,6 @@ export const TodoList: React.FC = () => {
     return filteredTodos;
   };
 
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      setApliedQuery(query);
-    }, 300);
-
-    return () => clearTimeout(debounceTimer);
-  }, [query]);
-
-  const filteredProducts = useMemo(() => (
-    filterTodos()
-  ), [todos, apliedQuery]);
-
   const handleTodoClick = (todo: Todo) => {
     return dispatch(currentTodActions.setTodo(todo));
   };
@@ -75,7 +62,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {filteredProducts.map(todo => {
+            {filterTodos().map(todo => {
               return (
                 <tr
                   data-cy="todo"
