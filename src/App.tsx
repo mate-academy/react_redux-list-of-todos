@@ -22,7 +22,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    if (initialStore.length === 0) {
+    if (!initialStore.length) {
       getTodos()
         .then((todos) => {
           dispatch(initialActions.set(todos));
