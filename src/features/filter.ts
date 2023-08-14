@@ -1,18 +1,17 @@
-// import { Todo } from '../types/Todo';
-
+import { ActionFilterType } from '../types/ActionFilterType';
 import { Status } from '../types/Status';
 
 type SetQueryAction = {
-  type: 'query/SET',
+  type: ActionFilterType.QuerySet,
   payload: string,
 };
 
 type ClearQueryAction = {
-  type: 'query/CLEAR',
+  type: ActionFilterType.QueryClear,
 };
 
 type SetStatusAction = {
-  type: 'status/SET',
+  type: ActionFilterType.StatusSet,
   payload: Status,
 };
 
@@ -21,16 +20,16 @@ type Action = SetQueryAction
 | ClearQueryAction;
 
 const setQueryFilter = (query: string): SetQueryAction => ({
-  type: 'query/SET',
+  type: ActionFilterType.QuerySet,
   payload: query,
 });
 
 const clearQueryFilter = (): ClearQueryAction => ({
-  type: 'query/CLEAR',
+  type: ActionFilterType.QueryClear,
 });
 
 const setStatusFilter = (status: Status): SetStatusAction => ({
-  type: 'status/SET',
+  type: ActionFilterType.StatusSet,
   payload: status,
 });
 
@@ -49,13 +48,13 @@ const filterReducer = (
   action: Action,
 ) => {
   switch (action.type) {
-    case 'status/SET':
+    case ActionFilterType.StatusSet:
       return { ...state, status: action.payload };
 
-    case 'query/SET':
+    case ActionFilterType.QuerySet:
       return { ...state, query: action.payload };
 
-    case 'query/CLEAR':
+    case ActionFilterType.QueryClear:
       return { ...state, query: '' };
 
     default: return state;

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { StatusType } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -15,15 +16,15 @@ export const TodoList: React.FC = () => {
     let filteredTodos: Todo[] = [...todos];
 
     switch (status) {
-      case 'active':
+      case StatusType.Active:
         filteredTodos = filteredTodos.filter(todo => !todo.completed);
         break;
 
-      case 'completed':
+      case StatusType.Completed:
         filteredTodos = filteredTodos.filter(todo => todo.completed);
         break;
 
-      case 'all':
+      case StatusType.All:
         break;
 
       default: break;
