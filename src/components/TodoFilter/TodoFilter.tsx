@@ -1,22 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Status } from '../../types/Status';
 import { actions as filterActions } from '../../features/filter';
 import { useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = React.memo(() => {
-  const [query, setQuery] = useState('');
   const sortBy = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
   const dispatch = useDispatch();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filterActions.queryChange(event.target.value.toLowerCase()));
-    setQuery(event.target.value);
   };
 
   const handleClearInput = () => {
     dispatch(filterActions.queryChange(''));
-    setQuery('');
   };
 
   const handleFilterSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
