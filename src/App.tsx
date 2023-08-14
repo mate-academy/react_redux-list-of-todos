@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { useDispatch } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { Todo } from './types/Todo';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
@@ -14,40 +13,35 @@ import { actions as todosActions } from './features/todos';
 import { Status } from './types/Status';
 
 export const App: React.FC = () => {
-  const [isTodosAreLoaded, setIsTodosAreLoaded] = useState(false);
-  const [filteredTodo, setFilteredTodos] = useState<Todo[]>([]);
   const dispatch = useDispatch();
   const todosFromServer = useAppSelector(state => state.todos);
   const query = useAppSelector(state => state.filter.query);
   const todosStatus = useAppSelector(state => state.filter.status);
   const todoModal = useAppSelector(state => state.currentTodo);
 
-  useEffect(() => {
-    let todosToFilter = todosFromServer;
+  const filteredTodos = useMemo(() => {
+    return todosFromServer.filter(todo => {
+      const todoWithQuery = todo.title.trim().toLowerCase()
+        .includes(query.trim().toLowerCase());
 
-    if (query) {
-      todosToFilter = todosToFilter.filter(
-        todo => todo.title.toLowerCase().includes(query.toLowerCase().trim()),
-      );
-    }
+      switch (todosStatus) {
+        case Status.Active:
+          return todoWithQuery && !todo.completed;
 
-    if (todosStatus === Status.Active) {
-      todosToFilter = todosToFilter.filter(todo => !todo.completed);
-    } else if (todosStatus === Status.Completed) {
-      todosToFilter = todosToFilter.filter(todo => todo.completed);
-    }
+        case Status.Completed:
+          return todoWithQuery && todo.completed;
 
-    setFilteredTodos(todosToFilter);
+        default:
+          return todoWithQuery;
+      }
+    });
   }, [todosFromServer, query, todosStatus]);
 
   useEffect(() => {
-    setIsTodosAreLoaded(false);
-
     getTodos()
       .then(allTodos => {
         dispatch(todosActions.add(allTodos));
-      })
-      .finally(() => setIsTodosAreLoaded(true));
+      });
   }, []);
 
   return (
@@ -62,11 +56,11 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!isTodosAreLoaded ? (
+              {!todosFromServer.length ? (
                 <Loader />
               ) : (
                 <TodoList
-                  todos={filteredTodo}
+                  todos={filteredTodos}
                   selectedTodo={todoModal}
                 />
               )}

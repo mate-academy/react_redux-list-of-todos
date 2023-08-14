@@ -21,10 +21,13 @@ type FilterConditions = {
   status: Status;
 };
 
-const filterReducer = (filterConditions: FilterConditions = {
-  query: '',
-  status: Status.All,
-}, action: Action) => {
+const filterReducer = (
+  filterConditions: FilterConditions = {
+    query: '',
+    status: Status.All,
+  },
+  action: Action,
+) => {
   switch (action.type) {
     case 'query/Change':
       return {
