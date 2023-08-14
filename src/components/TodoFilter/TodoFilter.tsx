@@ -4,7 +4,7 @@ import { Status } from '../../types/Status';
 import { actions as filterActions } from '../../features/filter';
 import { useAppSelector } from '../../app/hooks';
 
-export const TodoFilter: React.FC = React.memo(() => {
+export const TodoFilter: React.FC = () => {
   const sortBy = useAppSelector(state => state.filter.status);
   const query = useAppSelector(state => state.filter.query);
   const dispatch = useDispatch();
@@ -77,4 +77,4 @@ export const TodoFilter: React.FC = React.memo(() => {
       </p>
     </form>
   );
-});
+};
