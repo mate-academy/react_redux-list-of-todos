@@ -1,46 +1,79 @@
 import React, { ChangeEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
 import { actions as filterActions } from '../../features/filter';
 import { actions as todosActions } from '../../features/todos';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Todo } from '../../types/Todo';
+
+function findTodos(todos: Todo[], prompt: string) {
+  const searchBy = prompt.trim().toLowerCase();
+
+  if (searchBy) {
+    return todos.filter((todo) => todo.title.toLowerCase().includes(searchBy));
+  }
+
+  return todos;
+}
 
 export const TodoFilter: React.FC = () => {
-  const dispatch = useDispatch();
-  const initialStore = useSelector((state: RootState) => state.initialTodos);
+  const dispatch = useAppDispatch();
 
-  const query = useSelector((state: RootState) => state.filter.query);
+  const initialStore = useAppSelector(state => state.todos.initialArray);
+  const { query, status } = useAppSelector(state => state.filter);
+
   const [isSearched, setIsSearched] = useState(false);
 
-  const filter = useSelector((state: RootState) => state.filter.status);
+  const handleTodosChange = (filter: string, newQuery: string) => {
+    let initialCopy = [...initialStore];
+
+    switch (filter) {
+      case 'active': {
+        initialCopy = initialCopy.filter((todo) => !todo.completed);
+        break;
+      }
+
+      case 'completed': {
+        initialCopy = initialCopy.filter((todo) => todo.completed);
+        break;
+      }
+
+      case 'all':
+      default:
+        break;
+    }
+
+    initialCopy = findTodos(initialCopy, newQuery);
+    dispatch(todosActions.setFiltered(initialCopy));
+  };
 
   const handleFilterChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const newFilter = e.target.value;
 
     dispatch(filterActions.set(query, newFilter));
-    dispatch(todosActions.getFiltered(
-      initialStore, query, newFilter,
-    ));
+    handleTodosChange(newFilter, query);
+  };
+
+  const setNewPrompt = (value: string) => {
+    const prompt = value;
+
+    dispatch(filterActions.setQuery(prompt));
+    handleTodosChange(status, prompt);
   };
 
   const handleQueryChange = (e: ChangeEvent<HTMLInputElement>) => {
     const prompt = e.target.value;
 
-    dispatch(filterActions.setQuery(prompt));
-    dispatch(todosActions.getFiltered(initialStore, prompt, filter));
-    setIsSearched(true);
-
     if (prompt.length === 0) {
       setIsSearched(false);
     }
+
+    setNewPrompt(prompt);
+    setIsSearched(true);
   };
 
   const handleQueryReset = () => {
     const prompt = '';
 
-    dispatch(filterActions.setQuery(prompt));
-    dispatch(
-      todosActions.getFiltered(initialStore, prompt, filter),
-    );
+    setNewPrompt(prompt);
     setIsSearched(false);
   };
 
@@ -53,7 +86,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={filter}
+            value={status}
             onChange={(e) => handleFilterChange(e)}
           >
             <option value="all">All</option>

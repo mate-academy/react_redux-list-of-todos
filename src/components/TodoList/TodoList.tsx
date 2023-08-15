@@ -1,10 +1,9 @@
 /* eslint-disable max-len */
 import React from 'react';
 import classNames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions } from '../../features/currentTodo';
-import { RootState } from '../../app/store';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 type Props = {
   isLoading: boolean;
@@ -13,8 +12,8 @@ type Props = {
 
 export const TodoList: React.FC<Props> = ({ isLoading, todos }) => {
   const isEmpty = todos.length === 0;
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
-  const dispatch = useDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
 
   return (
     <>

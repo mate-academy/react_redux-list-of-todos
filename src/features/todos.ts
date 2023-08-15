@@ -2,79 +2,61 @@ import { Todo } from '../types/Todo';
 
 type SetTodos = {
   type: 'todos/set';
-  payload: Todo[];
+  payload: {
+    initialArray: Todo[];
+    filteredArray: Todo[];
+  }
+};
+
+type SetFilteredTodos = {
+  type: 'todos/filter';
+  payload: {
+    filteredArray: Todo[];
+  }
 };
 
 const set = (data: Todo[]): SetTodos => ({
   type: 'todos/set',
-  payload: data,
-});
-
-type FilterTodos = {
-  type: 'todos/filter';
   payload: {
-    data: Todo[],
-    query: string,
-    status: string,
-  }
-};
-
-const getFiltered = (
-  data: Todo[],
-  query: string,
-  status: string,
-): FilterTodos => ({
-  type: 'todos/filter',
-  payload: { data, query, status },
+    initialArray: data,
+    filteredArray: data,
+  },
 });
 
-type Action = SetTodos | FilterTodos;
+const setFiltered = (newArray: Todo[]): SetFilteredTodos => ({
+  type: 'todos/filter',
+  payload: {
+    filteredArray: newArray,
+  },
+});
 
-export const actions = {
-  set,
-  getFiltered,
+type Action = SetTodos | SetFilteredTodos;
+
+export const actions = { set, setFiltered };
+
+type TodosState = {
+  initialArray: Todo[];
+  filteredArray: Todo[];
 };
 
-function findTodos(todos: Todo[], prompt: string) {
-  const searchBy = prompt.trim().toLowerCase();
+const initialState: TodosState = {
+  initialArray: [],
+  filteredArray: [],
+};
 
-  if (searchBy) {
-    return todos.filter((todo) => todo.title.toLowerCase().includes(searchBy));
-  }
-
-  return todos;
-}
-
-const todosReducer = (state: Todo[] = [], action: Action): Todo[] => {
+const todosReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'todos/set':
-      return action.payload;
+      return {
+        ...state,
+        ...action.payload,
+      };
 
-    case 'todos/filter': {
-      const { data, query, status } = action.payload;
-
-      let filteredData = [...data];
-
-      switch (status) {
-        case 'active':
-          filteredData = filteredData.filter(
-            todo => !todo.completed,
-          );
-          break;
-
-        case 'completed':
-          filteredData = filteredData.filter(
-            todo => todo.completed,
-          );
-          break;
-
-        default:
-          break;
-      }
-
-      return findTodos(filteredData, query);
-    }
-
+    case 'todos/filter':
+      return {
+        ...state,
+        filteredArray: action.payload.filteredArray,
+      };
     default:
       return state;
   }

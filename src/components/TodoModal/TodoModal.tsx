@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { actions } from '../../features/currentTodo';
+import { useAppDispatch } from '../../app/hooks';
 
 type Props = {
   todos: Todo[];
@@ -20,7 +20,7 @@ export const TodoModal: React.FC<Props> = ({
 
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoading(true);
