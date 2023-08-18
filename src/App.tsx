@@ -16,7 +16,6 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(state => state.todos);
 
-  // console.log(test);
   useEffect(() => {
     getTodos()
       .then((data) => dispatch(actionsTodo.setTodos(data)));
