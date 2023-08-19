@@ -1,5 +1,5 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 
 import currentTodoReducer from '../features/currentTodo';
@@ -12,7 +12,6 @@ const rootReducer = combineReducers({
   todos: todosReducer,
 });
 
-// The `store` is passed to the Provider in `/src/index.tsx`
 export const store = createStore(
   rootReducer,
   composeWithDevTools(
