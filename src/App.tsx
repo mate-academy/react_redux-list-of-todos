@@ -12,6 +12,7 @@ import { useAppSelector } from './app/hooks';
 import { Todo } from './types/Todo';
 import { getTodos } from './api';
 import { actions as todosActions } from './features/todos';
+import { Status } from './types/Status';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ export const App: React.FC = () => {
           setEmptyMassive(true);
         }
       })
+      .catch()
       .finally(() => setLoading(false));
   };
 
@@ -54,16 +56,16 @@ export const App: React.FC = () => {
     };
 
     switch (type) {
-      case 'all':
+      case Status.ALL:
         return findQuery(formattedQuery, todos);
 
-      case 'active': {
+      case Status.ACTIVE: {
         const activeTodos = todos.filter((todo) => !todo.completed);
 
         return findQuery(formattedQuery, activeTodos);
       }
 
-      case 'completed': {
+      case Status.COMPLETED: {
         const completedTodos = todos.filter((todo) => todo.completed);
 
         return findQuery(formattedQuery, completedTodos);
