@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React, { useMemo } from 'react';
-import classNames from 'classnames';
+import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoFeat } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
@@ -11,18 +11,12 @@ export const TodoList: React.FC = () => {
 
   const currentTodo = useAppSelector(state => state.currentTodo);
   const filter = useAppSelector(state => state.filter);
-  const todos = useAppSelector(state => state.todos.filter(
-    (todo: Todo) => {
-      return todo.title.toLocaleLowerCase().includes(filter.query.toLocaleLowerCase());
-    },
-  ));
+  const todos = useAppSelector(state => state.todos);
 
   const isSelected = (id: number) => currentTodo?.id === id;
 
   const visibleTodos = useMemo(() => {
     switch (filter.status) {
-      case Status.All:
-        return todos.filter((todo: Todo) => todo);
       case Status.Active:
         return todos.filter((todo: Todo) => !todo.completed);
       case Status.Completed:
@@ -36,7 +30,7 @@ export const TodoList: React.FC = () => {
     <>
       {filter.query && !visibleTodos.length && (
         <p className="notification is-warning">
-          There are no todos matching current filter criteria
+          There are no todos matching the current filter criteria
         </p>
       )}
       <table className="table is-narrow is-fullwidth">
@@ -44,13 +38,11 @@ export const TodoList: React.FC = () => {
           <thead>
             <tr>
               <th>#</th>
-
               <th>
                 <span className="icon">
                   <i className="fas fa-check" />
                 </span>
               </th>
-
               <th>Title</th>
               <th> </th>
             </tr>
@@ -71,13 +63,11 @@ export const TodoList: React.FC = () => {
                     </span>
                   )}
                 </td>
-
                 <td className="is-vcentered is-expanded">
                   <p className={completed ? 'has-text-success' : 'has-text-danger'}>
                     {title}
                   </p>
                 </td>
-
                 <td className="has-text-right is-vcentered">
                   <button
                     data-cy="selectButton"
@@ -86,9 +76,7 @@ export const TodoList: React.FC = () => {
                     onClick={() => dispatch(currentTodoFeat.setTodo(todo))}
                   >
                     <span className="icon">
-                      <i
-                        className={classNames('far', { 'fa-eye-slash': isSelected(id), 'fa-eye': !isSelected(id) })}
-                      />
+                      <i className={cn('far', { 'fa-eye-slash': isSelected(id), 'fa-eye': !isSelected(id) })} />
                     </span>
                   </button>
                 </td>
