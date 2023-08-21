@@ -15,11 +15,11 @@ export const getVisibleTodos = (
     let isStatusMatch: boolean;
 
     switch (status) {
-      case 'active':
+      case Status.Active:
         isStatusMatch = !todo.completed;
         break;
 
-      case 'completed':
+      case Status.Completed:
         isStatusMatch = todo.completed;
         break;
 

@@ -46,9 +46,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               {isLoaded
-                ? (
-                  <TodoList todos={visibleTodos} />
-                )
+                ? <TodoList todos={visibleTodos} />
                 : <Loader />}
             </div>
           </div>

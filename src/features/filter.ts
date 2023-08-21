@@ -19,7 +19,7 @@ export const actions = {
 type State = { query: string, status: Status };
 type Action = SetQueryAction | ClearQueryAction | SetStatusAction ;
 
-const initialState: State = { query: '', status: 'all' };
+const initialState: State = { query: '', status: Status.All };
 
 const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {

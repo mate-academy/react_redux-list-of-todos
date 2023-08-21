@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 
 import { Todo } from '../../types/Todo';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
 type Props = {
@@ -12,8 +12,9 @@ type Props = {
 export const TodoInfo: React.FC<Props> = ({ todo }) => {
   const { id, title, completed } = todo;
   const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
-  const isTodoSelected = false;
+  const isTodoSelected = id === currentTodo?.id;
 
   const handleSelectClick = () => {
     dispatch(currentTodoActions.setTodo(todo));
