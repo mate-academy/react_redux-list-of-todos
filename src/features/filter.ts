@@ -22,13 +22,13 @@ type Filter = {
   status: Status,
 };
 
-const initiialFilter: Filter = {
+const initialFilter: Filter = {
   query: '',
   status: Status.ALL,
 };
 
 const filterReducer = (
-  filter: Filter = initiialFilter,
+  filter: Filter = initialFilter,
   action: Action,
 ) => {
   switch (action.type) {

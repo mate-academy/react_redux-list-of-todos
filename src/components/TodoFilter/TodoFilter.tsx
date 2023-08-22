@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+import debounce from 'lodash.debounce';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { query, status } = useAppSelector(state => state.filter);
+  const { status } = useAppSelector(state => state.filter);
+  const [uiQuery, setUiQuery] = useState('');
 
   const setQuery = (
     newQuery: string,
   ) => dispatch(filterActions.setQuery(newQuery));
 
-  const removeQuery = () => dispatch(filterActions.removeQuery());
+  const removeQuery = () => {
+    dispatch(filterActions.removeQuery());
+    setUiQuery('');
+  };
 
   const setStatus = (
     newStatus: Status,
   ) => dispatch(filterActions.setStatus(newStatus));
+
+  const applyQuery = useCallback(
+    debounce(setQuery, 300),
+    [],
+  );
+
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUiQuery(event.target.value);
+    applyQuery(event.target.value);
+  };
 
   return (
     <form
@@ -42,14 +57,14 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          value={uiQuery}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {query && (
+        {uiQuery && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button

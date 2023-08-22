@@ -18,6 +18,12 @@ export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
+  const clearError = () => {
+    setTimeout(() => {
+      setErrorMessage('');
+    }, 3000);
+  };
+
   const loadTodos = async () => {
     try {
       setIsLoading(true);
@@ -26,6 +32,8 @@ export const App: React.FC = () => {
       dispatch(todosActions.setTodos(todosFromServer));
     } catch (error) {
       setErrorMessage('Unable to load todos');
+
+      clearError();
     } finally {
       setIsLoading(false);
     }
@@ -50,7 +58,7 @@ export const App: React.FC = () => {
               {isLoading && (
                 <Loader />
               )}
-              {todos.length > 0 && (
+              {!!todos.length && (
                 <TodoList />
               )}
               {errorMessage && (
