@@ -32,7 +32,6 @@ export const App: React.FC = () => {
       dispatch(todosActions.setTodos(todosFromServer));
     } catch (error) {
       setErrorMessage('Unable to load todos');
-
       clearError();
     } finally {
       setIsLoading(false);

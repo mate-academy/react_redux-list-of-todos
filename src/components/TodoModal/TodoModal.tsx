@@ -4,15 +4,24 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Error } from '../Error';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const removeTodo = () => dispatch(currentTodoActions.removeTodo());
+
+  const clearError = () => {
+    setTimeout(() => {
+      setErrorMessage('');
+      removeTodo();
+    }, 3000);
+  };
 
   const loadUser = async () => {
     try {
@@ -22,8 +31,10 @@ export const TodoModal: React.FC = () => {
 
         setUser(userFromServer);
       }
-    } catch {
-      throw new Error();
+    } catch (error) {
+      setErrorMessage('Unable to load user');
+
+      clearError();
     } finally {
       setIsLoading(false);
     }
@@ -76,6 +87,9 @@ export const TodoModal: React.FC = () => {
               </p>
             </div>
           </div>
+        )}
+        {!isLoading && errorMessage && (
+          <Error errorMessage={errorMessage} />
         )}
       </div>
     </>
