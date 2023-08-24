@@ -14,7 +14,7 @@ export const TodoList: React.FC = () => {
   const setTodoActive = (todo: Todo) => dispatch(actions.setTodo(todo));
 
   const filterData = (data: Todo[], search: string, searchStatus: Status) => {
-    if (search === '' && searchStatus === 'all') {
+    if (search === '' && searchStatus === Status.All) {
       return data;
     }
 
