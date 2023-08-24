@@ -26,7 +26,7 @@ export const TodoFilter: React.FC<Props> = ({
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={(event) => handleChange(event)}
+            onChange={handleChange}
           >
             <option
               value={Filter.ALL}
@@ -61,12 +61,13 @@ export const TodoFilter: React.FC<Props> = ({
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
           <button
+            id="clearSearchButton"
             data-cy="clearSearchButton"
             type="button"
             className="delete has-text"
             onClick={() => changeQuery('')}
+            aria-label="Clear Search"
           />
         </span>
       </p>

@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { useEffect, useMemo, useState } from 'react';
@@ -7,8 +6,11 @@ import { Filter } from './types/Filter';
 import { actions as TodosReducer } from './store/TodosReducer';
 import { useTypedSelector } from './components/hooks/useTypedSelector';
 import {
-  Loader, TodoFilter, TodoList, TodoModal,
-} from './components/index';
+  Loader,
+  TodoFilter,
+  TodoList,
+  TodoModal,
+} from './components';
 import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
@@ -40,13 +42,16 @@ export const App: React.FC = () => {
   const visibleTodos = useMemo(() => {
     switch (filteredBy) {
       case Filter.ALL:
-        return todos.filter(todo => handleQueryFiltering(todo.title));
+        return todos
+          .filter(todo => handleQueryFiltering(todo.title));
 
       case Filter.ACTIVE:
-        return todos.filter(todo => !todo.completed && handleQueryFiltering(todo.title));
+        return todos
+          .filter(todo => !todo.completed && handleQueryFiltering(todo.title));
 
       case Filter.COMPLETED:
-        return todos.filter(todo => todo.completed && handleQueryFiltering(todo.title));
+        return todos
+          .filter(todo => todo.completed && handleQueryFiltering(todo.title));
 
       default:
         return todos;
