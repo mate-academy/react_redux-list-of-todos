@@ -27,8 +27,7 @@ export const App: React.FC = () => {
       const data = await getTodos();
 
       set(data);
-    } catch (error) {
-      window.console.log('error = ', error);
+    } catch {
       setErrorTitle(' please try again later');
     } finally {
       setIsLoader(false);
