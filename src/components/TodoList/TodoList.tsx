@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -8,7 +8,6 @@ import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const list = useAppSelector(state => state.todos);
-  const [todos, setTodos] = useState(list);
   const currentTodoId = useAppSelector(state => state.currentTodo?.id);
   const { query, status } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
@@ -20,26 +19,26 @@ export const TodoList: React.FC = () => {
     }
 
     return data.filter(el => {
-      switch (searchStatus) {
-        case 'active':
-          return !el.completed;
-        case 'completed':
-          return el.completed;
-        case 'all':
-        default:
-          return el;
-      }
-    }).filter(todo => (
-      todo.title.toLowerCase()
-        .includes(search.toLowerCase())
-    ));
+      const isActive = searchStatus === Status.Active;
+      const isCompleted = searchStatus === Status.Completed;
+
+      return (
+        searchStatus === Status.All
+        || (!el.completed && isActive)
+        || (el.completed && isCompleted)
+      ) && el.title.toLowerCase().includes(search.toLowerCase());
+    });
   };
 
-  const isListEmpty = !todos.length && !!list.length;
+  const visibleData = useMemo(
+    () => filterData(list, query, status),
+    [list, query, status],
+  );
 
-  useEffect(() => {
-    setTodos(filterData(list, query, status));
-  }, [list, query, status]);
+  const isListEmpty = useMemo(
+    () => !visibleData.length && !!list.length,
+    [list, query, status],
+  );
 
   return (
     <>
@@ -49,7 +48,7 @@ export const TodoList: React.FC = () => {
         </p>
       )}
 
-      {!!todos.length && (
+      {!!visibleData.length && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -67,7 +66,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {todos.map((todo) => {
+            {visibleData.map((todo) => {
               const {
                 id,
                 title,

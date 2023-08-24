@@ -5,13 +5,15 @@ import { getUser } from '../../api';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { ErrorModal } from '../ErrorModal';
 
 type Props = {
   currentTodo: Todo;
 };
 
 export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
-  const [userInfo, setUserInfo] = useState<User>();
+  const [userInfo, setUserInfo] = useState<User | null>(null);
+  const [errorStatus, setErrorStatus] = useState('');
   const [isLoader, setIsLoader] = useState(false);
   const {
     userId,
@@ -20,14 +22,16 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
     completed,
   } = currentTodo;
 
+  const { name, email } = userInfo || {};
+
   const loadDataUser = async (currentUserId: number) => {
     try {
       setIsLoader(true);
       const data = await getUser(currentUserId);
 
       setUserInfo(data);
-    } catch (error) {
-      window.console.log('error = ', error);
+    } catch {
+      setErrorStatus(' please try again later');
     } finally {
       setIsLoader(false);
     }
@@ -35,16 +39,25 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
 
   useEffect(() => {
     loadDataUser(userId);
-  }, []);
+  }, [userId]);
 
   const dispatch = useDispatch();
   const closeTodo = () => dispatch(currentTodoActions.removeTodo());
+
+  const closeError = () => {
+    setErrorStatus('');
+    closeTodo();
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
       {isLoader && <Loader />}
+
+      {!!errorStatus.length && (
+        <ErrorModal btnAction={closeError} errorText={errorStatus} />
+      )}
 
       {userInfo && (
         <div className="modal-card">
@@ -73,7 +86,7 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
                 ? (<strong className="has-text-success">Done</strong>)
                 : (<strong className="has-text-danger">Planned</strong>)}
               {' by '}
-              <a href={`mailto:${userInfo.email}`}>{userInfo.name}</a>
+              <a href={`mailto:${email}`}>{name}</a>
             </p>
           </div>
         </div>

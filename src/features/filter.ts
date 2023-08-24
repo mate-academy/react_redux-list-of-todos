@@ -28,7 +28,7 @@ type Filter = {
 };
 type Action = SetQueryAction | SetStatusAction;
 
-const startFilters: Filter = { query: '', status: 'all' };
+const startFilters: Filter = { query: '', status: Status.All };
 
 const filterReducer = (
   filter: Filter = startFilters,

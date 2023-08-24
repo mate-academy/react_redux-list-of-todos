@@ -11,10 +11,13 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
 import { actions as todosActions } from './features/todos';
+import { ErrorModal } from './components/ErrorModal';
 
 export const App: React.FC = () => {
   const [isLoader, setIsLoader] = useState(false);
+  const [errorTitle, setErrorTitle] = useState('');
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const todosData = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
   const set = (data: Todo[]) => dispatch(todosActions.setTodos(data));
 
@@ -26,6 +29,7 @@ export const App: React.FC = () => {
       set(data);
     } catch (error) {
       window.console.log('error = ', error);
+      setErrorTitle(' please try again later');
     } finally {
       setIsLoader(false);
     }
@@ -35,12 +39,17 @@ export const App: React.FC = () => {
     loadData();
   }, []);
 
+  const closeModalError = () => {
+    setErrorTitle('');
+  };
+
   return (
     <>
       <div className="section">
         <div className="container">
           <div className="box">
-            {!isLoader && (
+            {!!errorTitle.length && <ErrorModal btnAction={closeModalError} errorText={errorTitle} />}
+            {!!todosData.length && (
               <>
                 <h1 className="title">Todos:</h1>
 
