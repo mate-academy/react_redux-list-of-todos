@@ -4,6 +4,11 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
+enum TodoStatus {
+  Active = 'active',
+  Completed = 'completed',
+}
+
 function searchInTitle(title: string, search: string) {
   return title.toLowerCase().includes(search.trim().toLowerCase());
 }
@@ -18,11 +23,11 @@ export const TodoList: React.FC = () => {
   let visibleTodos: Todo[];
 
   switch (filter.status) {
-    case 'active':
+    case TodoStatus.Active:
       selectedTodos = todos.filter(todo => !todo.completed);
       break;
 
-    case 'completed':
+    case TodoStatus.Completed:
       selectedTodos = todos.filter(todo => todo.completed);
       break;
 
