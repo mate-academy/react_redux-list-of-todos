@@ -1,6 +1,24 @@
 import React from 'react';
+import { actions as filterActions } from '../../features/filter';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const query = useAppSelector(state => state.filter.query);
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.setStatus(event.target.value as Status));
+  };
+
+  const handleQueryInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterActions.setQuery(event.target.value));
+  };
+
+  const handleQueryRemoval = () => {
+    dispatch(filterActions.setQuery(''));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +26,10 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            onChange={handleStatusChange}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +43,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleQueryInput}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -29,11 +52,16 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {query && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              aria-label="clear search"
+              onClick={handleQueryRemoval}
+            />
+          )}
+
         </span>
       </p>
     </form>
