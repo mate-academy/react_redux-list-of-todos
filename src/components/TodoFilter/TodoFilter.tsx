@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as filterActions } from '../../features/filter';
-import { Status } from '../../types/Status';
+import { StatusEnum, actions as filterActions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -9,7 +8,7 @@ export const TodoFilter: React.FC = () => {
 
   const setStatus = (
     e: React.ChangeEvent<HTMLSelectElement>,
-  ) => dispatch(filterActions.setStatus(e.target.value as Status));
+  ) => dispatch(filterActions.setStatus(e.target.value as StatusEnum));
 
   const setQuery = (
     e: React.ChangeEvent<HTMLInputElement>,

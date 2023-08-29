@@ -1,9 +1,13 @@
-type Status = 'all' | 'completed' | 'active';
+export enum StatusEnum {
+  All = 'all',
+  Completed = 'completed',
+  Active = 'active',
+}
 
 type SetStatusAction = {
   type: 'filter/SET_STATUS';
   payload: {
-    status: Status
+    status: StatusEnum
   };
 };
 
@@ -14,7 +18,7 @@ type SetQueryAction = {
   };
 };
 
-const setStatus = (status: Status): SetStatusAction => (
+const setStatus = (status: StatusEnum): SetStatusAction => (
   {
     type: 'filter/SET_STATUS',
     payload: {
@@ -36,7 +40,7 @@ type Action = SetStatusAction | SetQueryAction;
 
 export type Filter = {
   query: string;
-  status: Status;
+  status: StatusEnum;
 };
 
 export const actions = { setStatus, setQuery };
@@ -44,7 +48,7 @@ export const actions = { setStatus, setQuery };
 const filterReducer = (
   filter: Filter = {
     query: '',
-    status: 'all',
+    status: StatusEnum.All,
   },
   action: Action,
 ) => {

@@ -15,12 +15,14 @@ export const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const todosFromServ = useAppSelector(store => store.todos);
   const currentTodo = useAppSelector(store => store.currentTodo);
 
   useEffect(() => {
     getTodos()
       .then(todos => dispatch(todosActions.setTodos(todos)))
+      .catch(() => setIsError(true))
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -31,6 +33,12 @@ export const App: React.FC = () => {
           <div className="box">
             {isLoading && (
               <Loader />
+            )}
+
+            {isError && (
+              <p className="notification is-warning">
+                Всьо ідьот по плану.
+              </p>
             )}
 
             {(!!todosFromServ.length && !isLoading) && (

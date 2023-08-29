@@ -10,6 +10,7 @@ type Props = {
 };
 
 export const TableRow: React.FC<Props> = ({ todo }) => {
+  const { id, title, completed } = todo;
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(store => store.currentTodo);
 
@@ -28,12 +29,12 @@ export const TableRow: React.FC<Props> = ({ todo }) => {
   return (
     <tr
       data-cy="todo"
-      key={todo.id}
+      key={id}
       className={classNames(
-        { 'has-background-info-light': currentTodo?.id === todo.id },
+        { 'has-background-info-light': currentTodo?.id === id },
       )}
     >
-      <td className="is-vcentered">{todo.id}</td>
+      <td className="is-vcentered">{id}</td>
       <td className="is-vcentered">
         {todo.completed && (
           <span
@@ -48,11 +49,11 @@ export const TableRow: React.FC<Props> = ({ todo }) => {
       <td className="is-vcentered is-expanded">
         <p
           className={classNames(
-            { 'has-text-danger': !todo.completed },
-            { 'has-text-success': todo.completed },
+            { 'has-text-danger': !completed },
+            { 'has-text-success': completed },
           )}
         >
-          {todo.title}
+          {title}
         </p>
       </td>
 
@@ -65,7 +66,7 @@ export const TableRow: React.FC<Props> = ({ todo }) => {
         >
           <span className="icon">
             {
-              currentTodo?.id === todo.id
+              currentTodo?.id === id
                 ? (<i className="far fa-eye-slash" />)
                 : (<i className="far fa-eye" />)
             }

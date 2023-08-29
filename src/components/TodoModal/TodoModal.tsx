@@ -12,13 +12,21 @@ type Props = {
 
 export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const {
+    userId,
+    id,
+    title,
+    completed,
+  } = currentTodo;
+
   const [user, setUser] = useState<User | null>(null);
+
   const dispatch = useAppDispatch();
 
   const unsetCurrentTodo = () => dispatch(currentTodoActions.removeTodo());
 
   useEffect(() => {
-    getUser(currentTodo.userId)
+    getUser(userId)
       .then(setUser)
       .finally(() => setIsLoading(false));
   }, []);
@@ -40,7 +48,7 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
               data-cy="modal-header"
             >
               Todo #
-              {`${currentTodo.id}`}
+              {`${id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -53,11 +61,11 @@ export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
           </header>
 
           <div className="modal-card-body">
-            <p className="block" data-cy="modal-title">{currentTodo.title}</p>
+            <p className="block" data-cy="modal-title">{title}</p>
 
             <p className="block" data-cy="modal-user">
               {
-                currentTodo.completed
+                completed
                   ? (<strong className="has-text-success">Done</strong>)
                   : (<strong className="has-text-danger">Planned</strong>)
               }
