@@ -1,16 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoAction } from '../../features/currentTodo';
+// eslint-disable-next-line max-len
+import { todosFilterdByQuery, todosFilteredByStatus } from '../../helpers/helpers';
 
 export const TodoList: React.FC = () => {
+  const status = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
+  const [visibleTodos, setVisibleTodos] = useState(todos);
+
+  useEffect(() => {
+    let filteredTodos = todosFilteredByStatus(todos, status);
+
+    filteredTodos = todosFilterdByQuery(filteredTodos, query);
+    setVisibleTodos(filteredTodos);
+  }, [todos, status, query]);
+
   return (
     <>
-      {!todos.length ? (
+      {!visibleTodos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -32,7 +45,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {todos.map(todo => {
+            {visibleTodos.map(todo => {
               const { id, completed, title } = todo;
 
               return (
