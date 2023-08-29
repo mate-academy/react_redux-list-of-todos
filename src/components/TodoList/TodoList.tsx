@@ -39,7 +39,7 @@ export const TodoList = () => {
 
             <tbody>
               {visibleTodos.map(todo => (
-                <TableRow todo={todo} />
+                <TableRow todo={todo} key={todo.id} />
               ))}
             </tbody>
           </table>
