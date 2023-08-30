@@ -11,7 +11,7 @@ export const ErrorModal: React.FC<Props> = ({ errorText = '', btnAction }) => {
         type="button"
         className="delete"
         data-cy="modal-close"
-        onClick={() => btnAction()}
+        onClick={btnAction}
       />
 
       <span className="modal-card-title fa-2x has-text-white">

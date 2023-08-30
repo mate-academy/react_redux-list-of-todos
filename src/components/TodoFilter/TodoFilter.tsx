@@ -16,10 +16,6 @@ export const TodoFilter: React.FC = () => {
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedStatusValue = event.target.value as Status;
 
-    if (status === selectedStatusValue) {
-      return;
-    }
-
     setStatus(selectedStatusValue);
   };
 
