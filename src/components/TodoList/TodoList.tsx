@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -15,7 +16,7 @@ export const TodoList: React.FC = () => {
   };
 
   const currentTodos = useMemo(() => {
-    if (filter.query === '' && filter.status === 'all') {
+    if (filter.query === '' && filter.status === Status.All) {
       return todos;
     }
 
@@ -26,13 +27,13 @@ export const TodoList: React.FC = () => {
     }
 
     switch (filter.status) {
-      case 'all':
+      case Status.All:
         return newTodos;
 
-      case 'active':
+      case Status.Active:
         return newTodos.filter(todo => !todo.completed);
 
-      case 'completed':
+      case Status.Completed:
         return newTodos.filter(todo => todo.completed);
 
       default:

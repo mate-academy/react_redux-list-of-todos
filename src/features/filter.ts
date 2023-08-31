@@ -22,7 +22,7 @@ type Action = SetQuery | SetStatus;
 
 const DefaultState: Filter = {
   query: '',
-  status: 'all',
+  status: Status.All,
 };
 
 const filterReducer = (
