@@ -21,7 +21,7 @@ export const TodoList: React.FC = () => {
   const visibleTodos = useMemo(() => {
     return todos.filter(todo => {
       const title = todo.title.toLowerCase();
-      const trimedQuery = query.trim().toLowerCase();
+      const trimedQuery = query.toLowerCase();
 
       switch (status) {
         case Status.Completed:
