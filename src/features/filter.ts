@@ -43,7 +43,7 @@ const filterReducer = (
       return { ...filterState, status: action.payload };
 
     default:
-      return { query: '', status: 'all' };
+      return filterState;
   }
 };
 
