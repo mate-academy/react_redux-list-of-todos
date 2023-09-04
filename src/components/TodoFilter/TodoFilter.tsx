@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Status } from '../../types/Status';
+import { SelectedName } from '../../types/SelectedName';
 
 type Props = {
   handleChangeSearch: (value: string) => void,
@@ -14,6 +15,10 @@ export const TodoFilter: FC<Props> = ({
   handleChangeSearch,
   handleChangeStatus,
 }) => {
+  const selectedName = [
+    SelectedName.All, SelectedName.Active, SelectedName.Completed,
+  ];
+
   return (
     <form
       className="field has-addons"
@@ -28,7 +33,7 @@ export const TodoFilter: FC<Props> = ({
               target.value as Status,
             )}
           >
-            {['All', 'Active', 'Completed'].map(value => (
+            {selectedName.map(value => (
               <option key={value} value={value}>{value}</option>
             ))}
           </select>

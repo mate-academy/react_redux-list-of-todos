@@ -1,9 +1,10 @@
+import { SelectedName } from '../../types/SelectedName';
 import { Todo } from '../../types/Todo';
 
 const filteredTodos = (
   todos: Todo[],
   query: string,
-  filterBy: string,
+  filterBy: SelectedName,
 ) => {
   let filteredArray = [...todos];
 
@@ -14,10 +15,10 @@ const filteredTodos = (
   }
 
   switch (filterBy) {
-    case 'Completed':
+    case SelectedName.Completed:
       filteredArray = filteredArray.filter(item => item.completed);
       break;
-    case 'Active':
+    case SelectedName.Active:
       filteredArray = filteredArray.filter(item => !item.completed);
       break;
     default:

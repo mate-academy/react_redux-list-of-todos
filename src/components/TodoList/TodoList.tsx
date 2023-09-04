@@ -4,12 +4,13 @@ import { Todo } from '../../types/Todo';
 import filteredTodos from '../callBackFunctions/IsIncludes';
 import { Loader } from '../Loader';
 import { TodoItem } from '../TodoItem/TodoItem';
+import { SelectedName } from '../../types/SelectedName';
 
 type Props = {
   showTodoUser: (value: Todo) => void,
   todos: Todo[],
   value: string,
-  status: string,
+  status: SelectedName,
   isLoader: boolean,
   currentTodo: Todo | null,
 };

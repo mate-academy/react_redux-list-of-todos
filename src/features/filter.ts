@@ -5,10 +5,12 @@ const INITIAL_STATE = { query: '', status: 'all' };
 type SetQuery = { type: 'query/SET', payload: string };
 type SetStatus = { type: 'all/SET', payload: string };
 
-const setStatus = (status: Status):
-SetStatus => ({ type: 'all/SET', payload: status });
-const setQuery = (query: string):
-SetQuery => ({ type: 'query/SET', payload: query });
+const setStatus = (status: Status):SetStatus => (
+  { type: 'all/SET', payload: status }
+);
+const setQuery = (query: string):SetQuery => (
+  { type: 'query/SET', payload: query }
+);
 
 export const actions = { setQuery, setStatus };
 type ActionFilter = SetQuery | SetStatus;

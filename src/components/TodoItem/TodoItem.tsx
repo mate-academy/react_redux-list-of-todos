@@ -15,11 +15,7 @@ export const TodoItem: FC<Props> = ({ todo, currentTodo, showTodoUser }) => {
       <td className="is-vcentered">{id}</td>
       <td className="is-vcentered">
         <span className="icon" data-cy="iconCompleted">
-          {completed
-            ? (
-              <i className="fas fa-check" />
-            )
-            : ''}
+          {completed && (<i className="fas fa-check" />)}
         </span>
       </td>
 
