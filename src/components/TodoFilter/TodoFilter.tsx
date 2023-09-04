@@ -8,7 +8,7 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { status, query } = useAppSelector(state => state.filter);
 
-  const setFilter = (newStatus: string) => dispatch(filterActions.setStatus(newStatus));
+  const setFilter = (newStatus: Status) => dispatch(filterActions.setStatus(newStatus));
   const setQuery = (newQuery: string) => dispatch(filterActions.setQuery(newQuery));
 
   return (
@@ -21,7 +21,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={status}
-            onChange={(event) => setFilter(event.target.value)}
+            onChange={(event) => setFilter(event.target.value as Status)}
           >
             <option value={Status.All}>All</option>
             <option value={Status.Active}>Active</option>

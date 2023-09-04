@@ -47,11 +47,9 @@ export const TodoList: React.FC = () => {
                 <tr
                   data-cy="todo"
                   key={todo.id}
-                  className={selectedTodo ? (
-                    classNames(
-                      { 'has-background-info-light': selectedTodo.id === todo.id },
-                    )
-                  ) : ''}
+                  className={classNames(
+                    { 'has-background-info-light': selectedTodo?.id === todo.id },
+                  )}
                 >
                   <td className="is-vcentered">{todo.id}</td>
                   <td className="is-vcentered">
@@ -79,7 +77,7 @@ export const TodoList: React.FC = () => {
                       onClick={() => setSelectedTodo(todo)}
                     >
                       <span className="icon">
-                        {selectedTodo && selectedTodo.id === todo.id ? (
+                        {selectedTodo?.id === todo.id ? (
                           <i className="far fa-eye-slash" />
                         ) : (
                           <i className="far fa-eye" />

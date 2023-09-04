@@ -2,7 +2,7 @@ import { Status } from '../types/Status';
 
 type SetStatusAction = {
   type: 'filter/SET_STATUS';
-  payload: string;
+  payload: Status;
 };
 
 type SetQueryAction = {
@@ -10,7 +10,7 @@ type SetQueryAction = {
   payload: string;
 };
 
-const setStatus = (status: string): SetStatusAction => ({
+const setStatus = (status: Status): SetStatusAction => ({
   type: 'filter/SET_STATUS',
   payload: status,
 });
@@ -23,7 +23,7 @@ const setQuery = (query: string): SetQueryAction => ({
 export const actions = { setStatus, setQuery };
 
 type Filter = {
-  status: string;
+  status: Status;
   query: string;
 };
 

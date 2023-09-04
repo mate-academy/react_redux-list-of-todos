@@ -21,9 +21,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     getTodos()
-      .then(todosFromServer => {
-        setTodosFromServer(todosFromServer);
-      });
+      .then(setTodosFromServer);
   }, []);
 
   return (
