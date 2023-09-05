@@ -12,7 +12,7 @@ export const TodoList: React.FC = () => {
 
   const filteredTodos = useMemo(() => {
     return todos.filter(todo => {
-      const statusFilter = filter.status === Status.all
+      const statusMatches = filter.status === Status.all
         || (filter.status === Status.completed
           ? todo.completed : !todo.completed);
 
@@ -23,7 +23,7 @@ export const TodoList: React.FC = () => {
             .toLowerCase(),
         );
 
-      return statusFilter && queryMatches;
+      return statusMatches && queryMatches;
     });
   }, [todos, filter.status, filter.query]);
 
