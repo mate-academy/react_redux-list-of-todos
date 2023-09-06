@@ -11,7 +11,7 @@ type ClearQueryAction = {
 
 type SetStatusAction = {
   type: 'filter/STATUS_SET',
-  payload: string,
+  payload: Status,
 };
 
 const setQuery = (query: string): SetQueryAction => ({
@@ -23,7 +23,7 @@ const clearQuery = (): ClearQueryAction => ({
   type: 'filter/QUERY_CLEAR',
 });
 
-const setStatus = (status: string): SetStatusAction => ({
+const setStatus = (status: Status): SetStatusAction => ({
   type: 'filter/STATUS_SET',
   payload: status,
 });

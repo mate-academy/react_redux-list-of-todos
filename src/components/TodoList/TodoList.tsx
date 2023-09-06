@@ -7,12 +7,12 @@ import { Todo } from '../../types/Todo';
 import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
-  const dispach = useAppDispatch();
+  const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const [visibleTodos, setVisibleTodos] = useState(todos);
   const { query, status } = useAppSelector(state => state.filter);
 
-  const setTodo = (todo: Todo) => dispach(todoActions.setTodo(todo));
+  const setTodo = (todo: Todo) => dispatch(todoActions.setTodo(todo));
 
   useEffect(() => {
     const queryNormalized = query.trim().toLowerCase();
@@ -26,7 +26,7 @@ export const TodoList: React.FC = () => {
 
         case Status.All:
         default:
-          return todo;
+          return true;
       }
     });
 
@@ -35,7 +35,7 @@ export const TodoList: React.FC = () => {
       .includes(queryNormalized));
 
     setVisibleTodos(filteredTodosByQuery);
-  }, [query, status]);
+  }, [todos, query, status]);
 
   const isTodosNotFound = visibleTodos.length === 0;
 

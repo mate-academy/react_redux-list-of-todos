@@ -14,11 +14,11 @@ import { todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const dispach = useAppDispatch();
+  const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
-  const setTodos = (newTodos: Todo[]) => dispach(todosActions.setTodos(newTodos));
+  const setTodos = (newTodos: Todo[]) => dispatch(todosActions.setTodos(newTodos));
 
   async function loadTodos() {
     try {
@@ -35,7 +35,7 @@ export const App: React.FC = () => {
     loadTodos();
   }, []);
 
-  const isTodosFound = todos && !isLoading;
+  const isTodosFound = todos.length > 0 && !isLoading;
 
   return (
     <>

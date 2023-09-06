@@ -4,21 +4,21 @@ import { filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const dispach = useAppDispatch();
+  const dispatch = useAppDispatch();
   const { query, status } = useAppSelector(state => state.filter);
 
   const handleInputChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const str = ev.target.value;
 
-    dispach(filterActions.setQuery(str));
+    dispatch(filterActions.setQuery(str));
   };
 
-  const handleInputClear = () => dispach(filterActions.clearQuery());
+  const handleInputClear = () => dispatch(filterActions.clearQuery());
 
   const handleSelectChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
-    const statusToSet = ev.target.value;
+    const statusToSet = ev.target.value as Status;
 
-    dispach(filterActions.setStatus(statusToSet));
+    dispatch(filterActions.setStatus(statusToSet as Status));
   };
 
   return (
@@ -34,7 +34,7 @@ export const TodoFilter: React.FC = () => {
             onChange={handleSelectChange}
           >
             {Object.keys(Status).map(key => (
-              <option value={key.toLowerCase()}>
+              <option key={key} value={key.toLowerCase()}>
                 {key}
               </option>
             ))}

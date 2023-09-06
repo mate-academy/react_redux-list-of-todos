@@ -8,10 +8,10 @@ import { User } from '../../types/User';
 export const TodoModal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const dispach = useAppDispatch();
+  const dispatch = useAppDispatch();
   const todo = useAppSelector(state => state.currentTodo);
 
-  const removeTodo = () => dispach(todoActions.removeTodo());
+  const removeTodo = () => dispatch(todoActions.removeTodo());
 
   async function loadUser(id: number) {
     try {
