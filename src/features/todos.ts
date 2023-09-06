@@ -1,15 +1,19 @@
 import { Todo } from '../types/Todo';
 
-type AddTodos = { type: 'todos/ADD', payload: Todo[] };
+enum Type {
+  addTodos = 'todos/ADD',
+}
+
+type AddTodos = { type: Type.addTodos, payload: Todo[] };
 
 const addTodos = (todos: Todo[]): AddTodos => (
-  { type: 'todos/ADD', payload: todos }
+  { type: Type.addTodos, payload: todos }
 );
 
 export const actions = { addTodos };
 
 const todosReducer = (todos: Todo[] = [], action: AddTodos): Todo[] => {
-  if (action.type === 'todos/ADD') {
+  if (action.type === Type.addTodos) {
     return action.payload;
   }
 
