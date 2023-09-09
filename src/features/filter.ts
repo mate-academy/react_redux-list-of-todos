@@ -1,4 +1,4 @@
-import { Status } from "../types/Status";
+import { Status } from '../types/Status';
 
 enum Type {
   query = 'add/query',

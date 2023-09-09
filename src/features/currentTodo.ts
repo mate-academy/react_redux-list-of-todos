@@ -1,4 +1,5 @@
 import { Todo } from '../types/Todo';
+
 enum Type {
   set = 'currentTodo/SET',
   remove = 'currentTodo/REMOVE',

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Loader } from "../Loader";
-import { useAppSelector } from "../../app/hooks";
-import { User } from "../../types/User";
-import { getUser } from "../../api";
-import { actions } from "../../features/currentTodo";
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Loader } from '../Loader';
+import { useAppSelector } from '../../app/hooks';
+import { User } from '../../types/User';
+import { getUser } from '../../api';
+import { actions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector((state) => state.currentTodo);
@@ -64,7 +64,7 @@ export const TodoModal: React.FC = () => {
                 <strong className="has-text-success">Done</strong>
               )}
 
-              {" by "}
+              {' by '}
 
               <a href={`mailto:${user.email}`}>{user.name}</a>
             </p>

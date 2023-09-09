@@ -1,12 +1,11 @@
-import React, {useState } from "react";
-import { useDispatch } from "react-redux";
-import { actions as filterActions } from "../../features/filter";
-import { Status } from "../../types/Status";
-
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -14,12 +13,12 @@ export const TodoFilter: React.FC = () => {
   };
 
   const handleInputClear = () => {
-    setSearchQuery("");
+    setSearchQuery('');
     dispatch(filterActions.clearQuery());
   };
 
-  const hanleStatusChange = (value: Status ) => {
-    dispatch(filterActions.addStatus(value))
+  const hanleStatusChange = (value: Status) => {
+    dispatch(filterActions.addStatus(value));
   };
 
   return (
@@ -30,7 +29,8 @@ export const TodoFilter: React.FC = () => {
             data-cy="statusSelect"
             onChange={(e) => {
               const value = e.target.value as Status;
-              hanleStatusChange(value)
+
+              hanleStatusChange(value);
             }}
           >
             <option value="all">All</option>
@@ -53,7 +53,7 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: "all" }}>
+        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {searchQuery && (
             // eslint-disable-next-line jsx-a11y/control-has-associated-label
             <button

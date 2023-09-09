@@ -1,10 +1,10 @@
-import React from "react";
-import classNames from "classnames";
+import React from 'react';
+import classNames from 'classnames';
 
-import { Todo } from "../../types/Todo";
-import { actions as currentTodoAction } from "../../features/currentTodo";
-import { useAppSelector } from "../../app/hooks";
-import { useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { Todo } from '../../types/Todo';
+import { actions as currentTodoAction } from '../../features/currentTodo';
+import { useAppSelector } from '../../app/hooks';
 
 type Props = {
   todo: Todo;
@@ -31,8 +31,8 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
         <td className="is-vcentered is-expanded">
           <p
             className={classNames({
-              "has-text-danger": !completed,
-              "has-text-success": completed,
+              'has-text-danger': !completed,
+              'has-text-success': completed,
             })}
           >
             {title}
@@ -48,7 +48,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
             <span className="icon">
               <i
                 className={
-                  id === currentTodo?.id ? "far fa-eye-slash" : "far fa-eye"
+                  id === currentTodo?.id ? 'far fa-eye-slash' : 'far fa-eye'
                 }
               />
             </span>

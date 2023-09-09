@@ -1,16 +1,16 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { TodoItem } from "../TodoItem/TodoItem";
-import { Todo } from "../../types/Todo";
-import { useAppSelector } from "../../app/hooks";
-import { useDispatch } from "react-redux";
-import { Loader } from "../Loader";
-import { getTodos } from "../../api";
-import { actions as todosAction } from "../../features/todos";
+import React, { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { TodoItem } from '../TodoItem/TodoItem';
+import { Todo } from '../../types/Todo';
+import { useAppSelector } from '../../app/hooks';
+import { Loader } from '../Loader';
+import { getTodos } from '../../api';
+import { actions as todosAction } from '../../features/todos';
 
 enum Status {
-  all = "all",
-  active = "active",
-  completed = "completed",
+  all = 'all',
+  active = 'active',
+  completed = 'completed',
 }
 
 export const TodoList: React.FC = () => {
