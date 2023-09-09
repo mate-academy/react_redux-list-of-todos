@@ -22,7 +22,7 @@ export const TodoList: React.FC = () => {
 
   const filteredTodos = useMemo(() => {
     const newTodos = query
-      ? [...todos].filter((todo) => todo.title.toLowerCase().includes(query))
+      ? todos.filter((todo) => todo.title.toLowerCase().includes(query))
       : [...todos];
 
     switch (filterStatus) {

@@ -21,7 +21,8 @@ export const TodoModal: React.FC = () => {
         .catch(() => setError(true))
         .finally(() => setIsLoading(false));
     }
-  }, []);
+  }, [
+  ]);
   const onClosingModal = () => {
     dispatch(currentTodoActions.removeTodo());
   };
