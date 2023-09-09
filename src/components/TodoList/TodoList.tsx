@@ -32,8 +32,8 @@ export const TodoList: React.FC = () => {
 
   const visibleTodos = useMemo(() => {
     const newTodos = query
-      ? [...todos].filter((todo) => todo.title.toLowerCase().includes(query))
-      : [...todos];
+      ? todos.filter((todo) => todo.title.toLowerCase().includes(query))
+      : todos;
 
     switch (status) {
       case Status.active:
