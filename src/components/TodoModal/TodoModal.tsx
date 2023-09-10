@@ -14,6 +14,7 @@ export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   const [user, setUser] = useState<User | null>(null);
   const clearTodo = () => dispatch(currentTodoActions.removeTodo());
 
@@ -21,6 +22,7 @@ export const TodoModal: React.FC = () => {
     if (currentTodo) {
       getUser(currentTodo.userId)
         .then(fetchedUser => setUser(fetchedUser))
+        .catch(() => setError('Error loading user'))
         .finally(() => setIsLoading(false));
     }
   }, [currentTodo]);
@@ -28,49 +30,54 @@ export const TodoModal: React.FC = () => {
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
+      {isLoading && <Loader />}
 
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <div
-              className="modal-card-title has-text-weight-medium"
-              data-cy="modal-header"
-            >
-              {`Todo #${currentTodo?.id}`}
-            </div>
-
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-            <button
-              type="button"
-              className="delete"
-              data-cy="modal-close"
-              onClick={clearTodo}
-            />
-          </header>
-
-          <div className="modal-card-body">
-            <p className="block" data-cy="modal-title">{currentTodo?.title}</p>
-
-            <p className="block" data-cy="modal-user">
-              <strong className={cn({
-                'has-text-success': currentTodo?.completed,
-                'has-text-danger': !currentTodo?.completed,
-              })}
+      {!isLoading && error
+        ? (<p>{error}</p>)
+        : (
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <div
+                className="modal-card-title has-text-weight-medium"
+                data-cy="modal-header"
               >
-                {currentTodo?.completed ? 'Done' : 'Planned'}
-              </strong>
+                {currentTodo && `Todo #${currentTodo.id}`}
+              </div>
 
-              {' by '}
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+              <button
+                type="button"
+                className="delete"
+                data-cy="modal-close"
+                onClick={clearTodo}
+              />
+            </header>
 
-              {user && (
-                <a href={`mailto:${user.email}`}>{user.name}</a>
-              )}
-            </p>
+            <div className="modal-card-body">
+              <p className="block" data-cy="modal-title">
+                {currentTodo && currentTodo.title}
+              </p>
+
+              <p className="block" data-cy="modal-user">
+                <strong className={cn(
+                  currentTodo && {
+                    'has-text-success': currentTodo.completed,
+                    'has-text-danger': !currentTodo.completed,
+                  },
+                )}
+                >
+                  {currentTodo && currentTodo.completed ? 'Done' : 'Planned'}
+                </strong>
+
+                {' by '}
+
+                {user && (
+                  <a href={`mailto:${user.email}`}>{user.name}</a>
+                )}
+              </p>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };
