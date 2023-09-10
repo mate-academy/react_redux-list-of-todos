@@ -1,28 +1,34 @@
 import { ShowTodos } from '../types/ShowTodos';
 
+const enum Filter {
+  querySET = 'filterQuery/SET',
+  queryREMOVE = 'filterQuery/REMOVE',
+  statusSET = 'filterStatus/SET',
+}
+
 type SetQueryAction = {
-  type: 'filterQuery/SET';
+  type: Filter.querySET;
   payload: string;
 };
 type RemoveQueryAction = {
-  type: 'filterQuery/REMOVE';
+  type: Filter.queryREMOVE;
 };
 type SetStatusAction = {
-  type: 'filterStatus/SET';
+  type: Filter.statusSET;
   payload: ShowTodos;
 };
 
 const setQuery = (query: string): SetQueryAction => ({
-  type: 'filterQuery/SET',
+  type: Filter.querySET,
   payload: query,
 });
 
 const removeQuery = (): RemoveQueryAction => ({
-  type: 'filterQuery/REMOVE',
+  type: Filter.queryREMOVE,
 });
 
 const setStatus = (status: ShowTodos): SetStatusAction => ({
-  type: 'filterStatus/SET',
+  type: Filter.statusSET,
   payload: status,
 });
 
