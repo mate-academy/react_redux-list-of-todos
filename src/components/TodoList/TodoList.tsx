@@ -43,8 +43,6 @@ export const TodoList: React.FC = () => {
         return newTodos.filter((todo) => todo.completed);
 
       case Status.all:
-        return newTodos;
-
       default:
         return newTodos;
     }

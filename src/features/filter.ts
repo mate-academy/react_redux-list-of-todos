@@ -7,7 +7,7 @@ enum Type {
 }
 
 type QueryAction = { type: Type.query, payload: string };
-type StatusAction = { type: Type.status, payload: string };
+type StatusAction = { type: Type.status, payload: Status };
 type ClearAction = { type: Type.clearQuery };
 
 type Actions = QueryAction | StatusAction | ClearAction;
@@ -33,7 +33,7 @@ const filterReducer = (
     case Type.query:
       return { ...state, query: action.payload };
     case Type.status:
-      return { ...state, status: action.payload as Status };
+      return { ...state, status: action.payload };
     case Type.clearQuery:
       return { ...state, query: '' };
     default:
