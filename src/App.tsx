@@ -17,10 +17,12 @@ export const App: React.FC = () => {
   const dispatch = useDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getTodos()
       .then(fetchedTodos => dispatch(todosActions.getTodos(fetchedTodos)))
+      .catch(() => setError('Error loading todos'))
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -36,7 +38,10 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoading ? <Loader /> : <TodoList />}
+              {isLoading && <Loader />}
+              {!isLoading && error
+                ? <p>{error}</p>
+                : <TodoList />}
             </div>
           </div>
         </div>
