@@ -20,19 +20,16 @@ export const TodoFilter: React.FC = () => {
   const hanleStatusChange = (value: Status) => {
     dispatch(filterActions.addStatus(value));
   };
+  const onSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value as Status;
 
+    hanleStatusChange(value);
+  };
   return (
     <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select
-            data-cy="statusSelect"
-            onChange={(e) => {
-              const value = e.target.value as Status;
-
-              hanleStatusChange(value);
-            }}
-          >
+          <select data-cy="statusSelect" onChange={onSelect}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -53,7 +50,7 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+        <span className="icon is-right" style={{ pointerEvents: "all" }}>
           {searchQuery && (
             // eslint-disable-next-line jsx-a11y/control-has-associated-label
             <button
