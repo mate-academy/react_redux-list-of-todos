@@ -10,8 +10,7 @@ import { ShowTodos } from '../../types/ShowTodos';
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const todos = useAppSelector(state => state.todos);
-  const selectedStatus = useAppSelector(state => state.filter.status);
-  const query = useAppSelector(state => state.filter.query);
+  const { status, query } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const getVisibleTodos = (showTodos: ShowTodos) => {
@@ -28,8 +27,8 @@ export const TodoList: React.FC = () => {
   };
 
   const visibleTodos = React.useMemo(
-    () => getVisibleTodos(selectedStatus),
-    [selectedStatus, todos],
+    () => getVisibleTodos(status),
+    [status, todos],
   );
 
   const getFilteredTodos = (filterQuery: null | string) => {
