@@ -33,7 +33,10 @@ export const TodoFilter: React.FC = () => {
   const clearQuery = () => dispatch(setQuery(''));
 
   return (
-    <form className="field has-addons">
+    <form
+      className="field has-addons"
+      onSubmit={event => event.preventDefault()}
+    >
       <p className="control">
         <span className="select">
           <select
