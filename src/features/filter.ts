@@ -2,7 +2,7 @@ import { ShowTodos } from '../types/ShowTodos';
 
 type SetQueryAction = {
   type: 'filterQuery/SET';
-  payload: string | null
+  payload: string;
 };
 type RemoveQueryAction = {
   type: 'filterQuery/REMOVE';
@@ -12,7 +12,7 @@ type SetStatusAction = {
   payload: ShowTodos;
 };
 
-const setQuery = (query: string | null): SetQueryAction => ({
+const setQuery = (query: string): SetQueryAction => ({
   type: 'filterQuery/SET',
   payload: query,
 });
@@ -29,13 +29,13 @@ const setStatus = (status: ShowTodos): SetStatusAction => ({
 export const actions = { setQuery, removeQuery, setStatus };
 
 type State = {
-  query: string | null,
+  query: string,
   status: ShowTodos,
 };
 type Action = SetQueryAction | RemoveQueryAction | SetStatusAction;
 
 const filterReducer = (
-  state: State = { query: null, status: ShowTodos.All },
+  state: State = { query: '', status: ShowTodos.All },
   action: Action,
 ): State => {
   switch (action.type) {
@@ -43,7 +43,7 @@ const filterReducer = (
       return { ...state, query: action.payload };
 
     case 'filterQuery/REMOVE':
-      return { ...state, query: null };
+      return { ...state, query: '' };
 
     case 'filterStatus/SET':
       return { ...state, status: action.payload };

@@ -8,28 +8,29 @@ import { ShowTodos } from '../../types/ShowTodos';
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
   const query = useAppSelector(state => state.filter.query);
+  const { setQuery, setStatus } = filterActions;
 
   const handleFilterStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
     switch (event.target.value) {
       case StatusTodos.Active:
-        dispatch(filterActions.setStatus(ShowTodos.Active));
+        dispatch(setStatus(ShowTodos.Active));
         break;
 
       case StatusTodos.Completed:
-        dispatch(filterActions.setStatus(ShowTodos.Completed));
+        dispatch(setStatus(ShowTodos.Completed));
         break;
 
       default:
-        dispatch(filterActions.setStatus(ShowTodos.All));
+        dispatch(setStatus(ShowTodos.All));
         break;
     }
   };
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(filterActions.setQuery(event.target.value));
+    dispatch(setQuery(event.target.value));
   };
 
-  const clearQuery = () => dispatch(filterActions.setQuery(null));
+  const clearQuery = () => dispatch(setQuery(''));
 
   return (
     <form className="field has-addons">
@@ -48,7 +49,7 @@ export const TodoFilter: React.FC = () => {
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
-          value={query ?? ''}
+          value={query}
           onChange={handleQueryChange}
           data-cy="searchInput"
           type="text"
