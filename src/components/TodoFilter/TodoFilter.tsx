@@ -30,6 +30,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={status}
+            defaultValue="all"
             onChange={(event) => handleChangeStatus(event.target.value as Status)}
           >
             <option value="all">All</option>
