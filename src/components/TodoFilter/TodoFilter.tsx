@@ -14,7 +14,7 @@ export const TodoFilter = () => {
             data-cy="statusSelect"
             value={status}
             onChange={(e) => dispatch(actions.setStatus(
-              e.target.value as Status
+              e.target.value as Status,
             ))}
           >
             <option value={Status.All}>All</option>
