@@ -11,6 +11,7 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
+
   const [visibleTodos, setVisibleTodos] = useState(todos);
 
   useEffect(() => {
@@ -37,6 +38,7 @@ export const TodoList: React.FC = () => {
                   <i className="fas fa-check" />
                 </span>
               </th>
+              
               <th>Title</th>
               <th> </th>
             </tr>
