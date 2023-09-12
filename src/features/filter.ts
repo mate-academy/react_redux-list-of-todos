@@ -4,8 +4,8 @@ export const actions = {
 
 const filterReducer = () => {
   return {
-    query: "",
-    status: "all",
+    query: '',
+    status: 'all',
   };
 };
 
