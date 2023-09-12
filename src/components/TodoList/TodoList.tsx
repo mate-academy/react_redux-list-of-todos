@@ -38,7 +38,7 @@ export const TodoList: React.FC = () => {
                   <i className="fas fa-check" />
                 </span>
               </th>
-              
+
               <th>Title</th>
               <th> </th>
             </tr>
