@@ -1,9 +1,11 @@
-export const actions = { /* put action creators here */};
+export const actions = {
+  /* put action creators here */
+};
 
 const filterReducer = () => {
   return {
-    query: '',
-    status: 'all',
+    query: "",
+    status: "all",
   };
 };
 

@@ -28,7 +28,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      <TodoModal />
+      {false && <TodoModal />}
     </>
   );
 };
