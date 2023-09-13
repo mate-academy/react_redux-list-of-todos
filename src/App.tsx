@@ -1,5 +1,10 @@
 /* eslint-disable max-len */
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -25,6 +30,7 @@ export const App: React.FC = () => {
 
   const [user, setUser] = useState<User | null>(null);
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  let visibleTodos = todos;
 
   const addTodos = (value: Todo[]) => dispatch(todosActions.add(value));
   const setQuery = (text: string) => dispatch(filterActions.filterQuery(text));
@@ -43,6 +49,24 @@ export const App: React.FC = () => {
       setQuery('');
     }
   }, [query]);
+
+  useMemo(() => {
+    if (status === Status.active) {
+      visibleTodos = todos.filter(
+        (todo: Todo) => todo.completed === false,
+      );
+    }
+
+    if (status === Status.completed) {
+      visibleTodos = todos.filter(
+        (todo: Todo) => todo.completed === true,
+      );
+    }
+
+    visibleTodos = visibleTodos.filter(
+      (todo: Todo) => todo.title.toLocaleLowerCase().includes(query.toLowerCase().trim()),
+    );
+  }, [status, query]);
 
   const loadUser = async () => {
     if (selectedUserId !== null) {
@@ -69,28 +93,6 @@ export const App: React.FC = () => {
     setUser(null);
   };
 
-  const updateTodos = () => {
-    let visibleTodos = [...todos];
-
-    if (status === Status.active) {
-      visibleTodos = [...todos].filter(
-        (todo: Todo) => todo.completed === false,
-      );
-    }
-
-    if (status === Status.completed) {
-      visibleTodos = [...todos].filter(
-        (todo: Todo) => todo.completed === true,
-      );
-    }
-
-    visibleTodos = visibleTodos.filter(
-      (todo: Todo) => todo.title.toLocaleLowerCase().includes(query.toLowerCase().trim()),
-    );
-
-    return visibleTodos;
-  };
-
   return (
     <div className="section">
       <div className="container">
@@ -109,7 +111,7 @@ export const App: React.FC = () => {
           <div className="block">
             {todos.length ? (
               <TodoList
-                todos={updateTodos()}
+                todos={visibleTodos}
                 changeUserId={changeUserId}
               />
             ) : (

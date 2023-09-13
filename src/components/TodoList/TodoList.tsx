@@ -24,7 +24,11 @@ export const TodoList: React.FC<Props> = (
   ) => dispatch(CurrentTodoActions.setTodo(value));
 
   const changeTodo = (todoId: number) => {
-    setCurrentTodo(todos.find(todo => todo.id === todoId) as Todo);
+    const foundTodo = todos.find(todo => todo.id === todoId);
+
+    if (foundTodo !== undefined) {
+      setCurrentTodo(foundTodo);
+    }
   };
 
   return (

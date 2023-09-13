@@ -12,7 +12,7 @@ type ClearTodosAction = {
 type Action = AddTodosAction
 | ClearTodosAction;
 
-type State = Todo[] | [];
+type State = Todo[];
 
 const add = (todos: Todo[]): AddTodosAction => (
   { type: 'todos/ADD', payload: todos }

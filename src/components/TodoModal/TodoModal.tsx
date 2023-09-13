@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { Loader } from '../Loader';
@@ -21,7 +21,7 @@ export const TodoModal: React.FC<Props> = (
     resetUser,
   },
 ) => {
-  useMemo(() => {
+  useEffect(() => {
     loadUser();
   }, []);
 
