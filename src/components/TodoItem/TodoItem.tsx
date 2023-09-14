@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { useAppSelector } from '../../app/hooks';
 
 type Props = {
   todo: Todo;
@@ -11,6 +12,7 @@ type Props = {
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
   const dispatch = useDispatch();
+  const current = useAppSelector((state) => state.currentTodo);
 
   const onOpenModal = (currentTodo: Todo) => {
     dispatch(currentTodoActions.setTodo(currentTodo));
@@ -46,7 +48,12 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           type="button"
         >
           <span className="icon">
-            <i className="far fa-eye" />
+            <i
+              className={classNames({
+                'far fa-eye': !current,
+                'far fa-eye-slash': current,
+              })}
+            />
           </span>
         </button>
       </td>
