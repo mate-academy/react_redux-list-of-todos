@@ -2,7 +2,6 @@
 import React, {
   ChangeEvent,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import 'bulma/css/bulma.css';
@@ -50,7 +49,7 @@ export const App: React.FC = () => {
     }
   }, [query]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (status === Status.active) {
       visibleTodos = todos.filter(
         (todo: Todo) => todo.completed === false,
@@ -70,7 +69,6 @@ export const App: React.FC = () => {
 
   const loadUser = async () => {
     if (selectedUserId !== null) {
-      // eslint-disable-next-line
       const userFromServer = await api.getUser(selectedUserId);
 
       setUser(userFromServer);
