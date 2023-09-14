@@ -8,11 +8,11 @@ export const SearchInput: React.FC = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
 
-    dispatch(filterActions.setQuery(query) as any);
+    dispatch(filterActions.setQuery(query));
   };
 
   const handleClearSearch = () => {
-    dispatch(filterActions.removeQuery() as any);
+    dispatch(filterActions.removeQuery());
   };
 
   return (

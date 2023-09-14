@@ -1,4 +1,7 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+// prettier-ignore
+import {
+  createStore, applyMiddleware, combineReducers, Store,
+} from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
@@ -12,8 +15,7 @@ const rootReducer = combineReducers({
   todos: todosReducer,
 });
 
-// The `store` is passed to the Provider in `/src/index.tsx`
-export const store = createStore(
+export const store: Store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk)),
 );

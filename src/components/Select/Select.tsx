@@ -16,7 +16,7 @@ export const Select: React.FC = () => {
   const onSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const status = e.target.value as Status;
 
-    dispatch(filterActions.setStatus(status) as any);
+    dispatch(filterActions.setStatus(status));
   };
 
   return (
