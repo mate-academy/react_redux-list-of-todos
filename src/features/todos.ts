@@ -1,9 +1,22 @@
-import { Todo } from '../types/Todo';
+/*eslint-disable*/
+import { Todo } from "../types/Todo";
 
-export const actions = {};
+type FetchAction = { type: "todos/LOAD"; payload: Todo[] };
 
-const todosReducer = (): Todo[] => {
-  return [];
+const set = (todos: Todo[]): FetchAction => ({
+  type: "todos/LOAD",
+  payload: todos,
+});
+
+export const actions = { set };
+
+const todosReducer = (todos: Todo[] = [], action: FetchAction) => {
+  switch (action.type) {
+    case "todos/LOAD":
+      return [...todos, ...action.payload];
+    default:
+      return todos;
+  }
 };
 
 export default todosReducer;
