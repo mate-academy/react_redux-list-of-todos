@@ -14,7 +14,7 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const setQuery = (newQuery: string) => {
-    return dispatch(filterActions.setQuery(newQuery));
+    return dispatch(filterActions.setQuery(newQuery.trim()));
   };
 
   const setStatus = (newStatus: Status) => {
@@ -58,15 +58,17 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          <button
-            aria-label="clearquery"
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={() => setQuery('')}
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              aria-label="clearquery"
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => setQuery('')}
+            />
+          </span>
+        )}
       </p>
     </form>
   );

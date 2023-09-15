@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import { Todo } from '../../types/Todo';
+import { useAppSelector } from '../../app/hooks';
 
 type Props = {
   todo: Todo,
@@ -11,6 +12,8 @@ export const TodoItem: React.FC<Props> = ({
   todo,
   setCurrent,
 }) => {
+  const selectedTodoId = useAppSelector(state => state.currentTodo?.id);
+
   return (
     <tr data-cy="todo">
       <td className="is-vcentered">{todo.id}</td>
@@ -41,7 +44,11 @@ export const TodoItem: React.FC<Props> = ({
           onClick={() => setCurrent(todo)}
         >
           <span className="icon">
-            <i className="far fa-eye" />
+            <i className={cn('far', {
+              'fa-eye': todo.id !== selectedTodoId,
+              'fa-eye-slash': todo.id === selectedTodoId,
+            })}
+            />
           </span>
         </button>
       </td>

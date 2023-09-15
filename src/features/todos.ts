@@ -1,32 +1,38 @@
 import { Todo } from '../types/Todo';
 
+enum TodosActionTypes {
+  ADD = 'todos/ADD',
+  REMOVE = 'todos/REMOVE',
+  SET = 'todos/SET',
+}
+
 type AddTodosAction = {
-  type: 'todos/ADD',
+  type: TodosActionTypes.ADD,
   payload: Todo,
 };
 
 const add = (payload: Todo): AddTodosAction => ({
-  type: 'todos/ADD',
+  type: TodosActionTypes.ADD,
   payload,
 });
 
 type RemoveTodosAction = {
-  type: 'todos/REMOVE',
+  type: TodosActionTypes.REMOVE,
   payload: number,
 };
 
 const remove = (payload: number): RemoveTodosAction => ({
-  type: 'todos/REMOVE',
+  type: TodosActionTypes.REMOVE,
   payload,
 });
 
 type SetTodosAction = {
-  type: 'todos/SET',
+  type: TodosActionTypes.SET,
   payload: Todo[],
 };
 
 const set = (payload: Todo[]): SetTodosAction => ({
-  type: 'todos/SET',
+  type: TodosActionTypes.SET,
   payload,
 });
 
@@ -39,13 +45,13 @@ const todosReducer = (
   action: Action,
 ): Todo[] => {
   switch (action.type) {
-    case 'todos/SET':
+    case TodosActionTypes.SET:
       return action.payload;
 
-    case 'todos/ADD':
+    case TodosActionTypes.ADD:
       return [...state, action.payload];
 
-    case 'todos/REMOVE':
+    case TodosActionTypes.REMOVE:
       return state.filter(todo => todo.id !== action.payload);
 
     default:
