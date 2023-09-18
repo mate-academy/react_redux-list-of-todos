@@ -43,7 +43,11 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-        {
+        {visibleTodos.length === 0 ? (
+          <p>
+            There are no todos matching current filter criteria
+          </p>
+        ) : (
           visibleTodos.map(todo => (
             <tr
               data-cy="todo"
@@ -87,8 +91,7 @@ export const TodoList: React.FC = () => {
                 </button>
               </td>
             </tr>
-          ))
-        }
+          )))}
       </tbody>
     </table>
   );
