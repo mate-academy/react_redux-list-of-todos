@@ -68,12 +68,12 @@ export const TodoList: React.FC = () => {
             </thead>
 
             <tbody>
-              {visibleTodos.map((todo) => {
-                const {
+              {visibleTodos.map(( {
                   id,
                   title,
                   completed,
-                } = todo;
+                }) => {
+                
 
                 return (
                   <tr
