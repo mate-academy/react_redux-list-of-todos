@@ -13,19 +13,19 @@ export const TodoList: React.FC = () => {
   const filteredTodos = todos.filter(todo => {
     const matchesQuery = todo.title.toLowerCase().includes(query.toLowerCase());
 
-    if (status === 'all') {
-      return matchesQuery;
-    }
+    switch (status) {
+      case 'all':
+        return matchesQuery;
 
-    if (status === 'completed') {
-      return todo.completed && matchesQuery;
-    }
+      case 'completed':
+        return todo.completed && matchesQuery;
 
-    if (status === 'active') {
-      return !todo.completed && matchesQuery;
-    }
+      case 'active':
+        return !todo.completed && matchesQuery;
 
-    return true;
+      default:
+        return true;
+    }
   });
 
   return (

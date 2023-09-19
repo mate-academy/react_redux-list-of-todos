@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import cn from 'classnames';
 import { Loader } from '../Loader';
 import { User } from '../../types/User';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -17,10 +16,6 @@ export const TodoModal: React.FC = () => {
         .then(users => setUser(users));
     }
   }, []);
-
-  // const handlerClosePost = () => {
-  //   dispatch(actions.removeTodo());
-  // };
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -51,10 +46,10 @@ export const TodoModal: React.FC = () => {
 
           <p className="block" data-cy="modal-user">
             {/* For not completed */}
-            <strong className={cn({
-              'has-text-success': currentTodo?.completed,
-              'has-text-danger': !currentTodo?.completed,
-            })}
+            <strong
+              className={
+                currentTodo?.completed ? 'has-text-success' : 'has-text-danger'
+              }
             >
               {currentTodo?.completed ? ('Done') : ('Planned')}
             </strong>
