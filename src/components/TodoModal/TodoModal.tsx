@@ -15,9 +15,13 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getUser(todo?.userId).then(data => {
-      setUser(data);
-    });
+    getUser(todo?.userId)
+      .then(data => {
+        setUser(data);
+      })
+      .catch(err => {
+        throw err;
+      });
   }, []);
 
   const closeModal = () => {
@@ -46,6 +50,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               className="delete"
               data-cy="modal-close"
               onClick={closeModal}
+              area-label
             />
           </header>
 

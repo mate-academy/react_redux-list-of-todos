@@ -1,5 +1,8 @@
 import { Status } from '../types/Status';
 
+const SET_STATUS = 'filter/SET_STATUS';
+const SET_QUERY = 'filter/SET_QUERY';
+
 type SetStatus = {
   type: 'filter/SET_STATUS',
   payload: Status,
@@ -26,25 +29,25 @@ const setQuery = (query: string): SetQuery => {
 
 export const actions = { setStatus, setQuery };
 
-const initialState = {
+const initialState: FilterState = {
   query: '',
-  status: 'all' as Status,
+  status: Status.All,
 };
 
-type InitialState = {
+type FilterState = {
   query: string,
   status: Status,
 };
 type Action = SetStatus | SetQuery;
 
-const filterReducer = (state = initialState, action: Action): InitialState => {
+const filterReducer = (state = initialState, action: Action): FilterState => {
   switch (action.type) {
-    case 'filter/SET_STATUS':
+    case SET_STATUS:
       return {
         ...state,
         status: action.payload,
       };
-    case 'filter/SET_QUERY':
+    case SET_QUERY:
       return {
         ...state,
         query: action.payload,

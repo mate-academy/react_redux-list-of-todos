@@ -16,8 +16,8 @@ export const TodoItem: React.FC<Props> = ({
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
-  const selectTodoHandler = (currentTodo: Todo) => {
-    dispatch(actions.setTodo(currentTodo));
+  const selectTodoHandler = () => {
+    dispatch(actions.setTodo(todo));
   };
 
   return (
@@ -52,7 +52,7 @@ export const TodoItem: React.FC<Props> = ({
           data-cy="selectButton"
           className="button"
           type="button"
-          onClick={() => selectTodoHandler(todo)}
+          onClick={selectTodoHandler}
         >
           <span className="icon">
             <i className={classNames({

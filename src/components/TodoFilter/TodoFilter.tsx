@@ -7,7 +7,10 @@ export const TodoFilter = () => {
   const { status, query } = useAppSelector(state => state.filter);
 
   return (
-    <form className="field has-addons">
+    <form
+      className="field has-addons"
+      onSubmit={event => event.preventDefault()}
+    >
       <p className="control">
         <span className="select">
           <select

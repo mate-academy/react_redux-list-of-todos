@@ -19,10 +19,17 @@ export const App: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    getTodos().then(data => {
-      dispatch(todosActions.setTodos(data));
-      setIsLoading(false);
-    });
+    getTodos()
+      .then(data => {
+        if (data) {
+          dispatch(todosActions.setTodos(data));
+        }
+
+        setIsLoading(false);
+      })
+      .catch(err => {
+        throw err;
+      });
   }, []);
 
   return (
