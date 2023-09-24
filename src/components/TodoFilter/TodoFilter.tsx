@@ -1,23 +1,22 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { filterActions } from '../../features/filter';
+import { Filter, filterActions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const filter = useAppSelector((state) => state.filter);
-  const query = useAppSelector((state) => state.filter.query);
+  const { query, status } = useAppSelector((state) => state.filter);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedFilter = event.target.value;
 
     if (selectedFilter === 'all') {
-      dispatch(filterActions.setAllTodos());
+      dispatch(filterActions.setStatus(Filter.ALL));
     } else if (selectedFilter === 'active') {
-      dispatch(filterActions.setActiveTodo());
+      dispatch(filterActions.setStatus(Filter.ACTIVE));
       dispatch(filterActions.setFilterQuery(''));
     } else if (selectedFilter === 'completed') {
-      dispatch(filterActions.setCompletedTodo());
+      dispatch(filterActions.setStatus(Filter.COMPLETED));
       dispatch(filterActions.setFilterQuery(''));
     }
   };
@@ -41,7 +40,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={filter.status}
+            value={status}
             onChange={handleFilterChange}
           >
             <option value="all">All</option>

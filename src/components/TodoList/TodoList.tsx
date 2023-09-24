@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-nested-ternary */
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
@@ -11,7 +13,6 @@ import { Loader } from '../Loader';
 export const TodoList = (
 ) => {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [clickedTodoId, setClickedTodoId] = useState<number | null>(null);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export const TodoList = (
 
   const filter = useAppSelector((state) => state.filter);
   const query = useAppSelector((state) => state.filter.query);
-
+  const currentTodo = useAppSelector((state) => state.currentTodo);
   const filteredTodos = todos.filter((todo) => {
     const isMatchingStatus
       = (filter.status === 'active' && !todo.completed)
@@ -36,35 +37,37 @@ export const TodoList = (
 
   const handleViewButtonClick = (selectedTodo: Todo) => {
     dispatch(currentTodoActions.setTodo(selectedTodo));
-    setClickedTodoId(selectedTodo.id);
   };
 
   return (
     <>
-      {filteredTodos
-        .some((todo) => todo.title
-          .toLowerCase().includes(query.toLowerCase()))
-        ? (
-          <table className="table is-narrow is-fullwidth">
-            <thead>
-              <tr>
-                <th>#</th>
+      {filteredTodos.length === 0 ? (
+        <Loader />
+      ) : (
+        filteredTodos
+          .some((todo) => todo.title
+            .toLowerCase().includes(query.toLowerCase()))
+          ? (
+            <table className="table is-narrow is-fullwidth">
+              <thead>
+                <tr>
+                  <th>#</th>
 
-                <th>
-                  <span className="icon">
-                    <i className="fas fa-check" />
-                  </span>
-                </th>
+                  <th>
+                    <span className="icon">
+                      <i className="fas fa-check" />
+                    </span>
+                  </th>
 
-                <th>Title</th>
-                <th> </th>
-              </tr>
-            </thead>
+                  <th>Title</th>
+                  <th> </th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {!filteredTodos.length ? <Loader /> : (
-                filteredTodos.map((todo) => {
-                  const isTodoClicked = todo.id === clickedTodoId;
+              <tbody>
+
+                {filteredTodos.map((todo) => {
+                  const isTodoClicked = todo.id === currentTodo?.id;
 
                   return (
                     <tr data-cy="todo">
@@ -73,8 +76,8 @@ export const TodoList = (
 
                       <td className="is-vcentered is-expanded">
                         <p className={classNames({
-                          'has-text-danger': todo.completed,
-                          'has-text-success': !todo.completed,
+                          'has-text-danger': !todo.completed,
+                          'has-text-success': todo.completed,
                         })}
                         >
                           {todo.title}
@@ -102,17 +105,18 @@ export const TodoList = (
                     </tr>
 
                   );
-                })
+                })}
 
-              )}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
 
-        ) : (
-          <p className="notification is-warning">
-            There are no todos matching current filter criteria
-          </p>
-        )}
+          ) : (
+            <p className="notification is-warning">
+              There are no todos matching current filter criteria
+            </p>
+          )
+
+      )}
 
     </>
   );
