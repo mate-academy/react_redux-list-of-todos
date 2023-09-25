@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -13,15 +13,21 @@ import { getTodos } from './api';
 import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
-  const todos = useAppSelector(state => state.todos);
 
   const setTodosFromServer = (loadedTodos: Todo[]) => dispatch(todosActions.setTodos(loadedTodos));
 
   useEffect(() => {
+    setLoading(true);
+
     getTodos()
-      .then(setTodosFromServer);
+      .then(setTodosFromServer)
+      .catch((error) => {
+        throw new Error(error.message);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -36,9 +42,11 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {todos.length ? (
-                <TodoList />
-              ) : <Loader />}
+              {loading
+                ? <Loader />
+                : (
+                  <TodoList />
+                )}
             </div>
           </div>
         </div>
