@@ -2,19 +2,14 @@
 import React from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import { TodoItem } from '../TodoItem';
-import { getFilter, getTodos } from '../../redux/selectors';
-import { getFilteredTodos } from '../../utils/getFilteredTodos';
-import { Status } from '../../types/Status';
+import { getFilteredTodos } from '../../redux/selectors';
 
 interface TodoListProps {
   loading: boolean;
 }
 
 export const TodoList: React.FC<TodoListProps> = ({ loading }) => {
-  const todos = useAppSelector(getTodos);
-  const { query, status } = useAppSelector(getFilter);
-
-  const filteredTodos = getFilteredTodos(todos, query, status as Status);
+  const filteredTodos = useAppSelector(getFilteredTodos);
 
   return (
     <>
