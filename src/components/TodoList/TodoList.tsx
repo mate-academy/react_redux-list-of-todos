@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
-import { getFilteredTodos } from '../../utils';
+import { filterTodos } from '../../utils';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -10,7 +10,10 @@ export const TodoList: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
-  const visibleTodos = getFilteredTodos(todos, filter.query, filter.status);
+  const visibleTodos = useMemo(
+    () => filterTodos(todos, filter.query, filter.status),
+    [todos, filter.query, filter.status],
+  );
 
   return (
     <>
