@@ -34,11 +34,11 @@ export const App: React.FC = () => {
       const matchesQuery = isInQuery(todo.title || '');
 
       if (status === 'completed') {
-        return !todo.completed && matchesQuery;
+        return todo.completed && matchesQuery;
       }
 
       if (status === 'active') {
-        return todo.completed && matchesQuery;
+        return !todo.completed && matchesQuery;
       }
 
       return matchesQuery;

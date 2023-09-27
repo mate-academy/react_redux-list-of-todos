@@ -17,13 +17,13 @@ export const TodoList: React.FC<Props> = ({
 }) => {
   return (
     <>
-      {visibleTodos?.length === 0 && (
+      {!visibleTodos?.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
-      {visibleTodos !== undefined && visibleTodos?.length > 0 && (
+      {!!visibleTodos && !!visibleTodos?.length && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>

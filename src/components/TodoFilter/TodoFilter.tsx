@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
-// import { Todo } from '../../types/Todo';
 
 type Props = {
   query: string;
