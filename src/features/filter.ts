@@ -4,25 +4,25 @@ const SET_STATUS = 'filter/SET_STATUS';
 const SET_QUERY = 'filter/SET_QUERY';
 
 type SetStatus = {
-  type: 'filter/SET_STATUS',
+  type: typeof SET_STATUS,
   payload: Status,
 };
 
 const setStatus = (status: Status): SetStatus => {
   return {
-    type: 'filter/SET_STATUS',
+    type: SET_STATUS,
     payload: status,
   };
 };
 
 type SetQuery = {
-  type: 'filter/SET_QUERY',
+  type: typeof SET_QUERY,
   payload: string,
 };
 
 const setQuery = (query: string): SetQuery => {
   return {
-    type: 'filter/SET_QUERY',
+    type: SET_QUERY,
     payload: query,
   };
 };

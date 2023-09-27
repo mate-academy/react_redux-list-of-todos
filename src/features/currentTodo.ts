@@ -1,19 +1,22 @@
 import { Todo } from '../types/Todo';
 
+const SET_CURRENT_TODO = 'currentTodo/SET';
+const REMOVE_CURRENT_TODO = 'currentTodo/REMOVE';
+
 // we use string literal as a type to avoid mistype in future
-type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
+type RemoveTodoAction = { type: typeof REMOVE_CURRENT_TODO };
 
 // payload is a typical name for an action data
 type SetTodoAction = {
-  type: 'currentTodo/SET';
+  type: typeof SET_CURRENT_TODO;
   payload: Todo;
 };
 
 // Action creator return type protect us from a mistype
-const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
+const removeTodo = (): RemoveTodoAction => ({ type: REMOVE_CURRENT_TODO });
 
 const setTodo = (todo: Todo): SetTodoAction => ({
-  type: 'currentTodo/SET',
+  type: SET_CURRENT_TODO,
   payload: todo,
 });
 
@@ -28,10 +31,10 @@ const currentTodoReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    case 'currentTodo/SET':
+    case SET_CURRENT_TODO:
       return action.payload;
 
-    case 'currentTodo/REMOVE':
+    case REMOVE_CURRENT_TODO:
       return null;
 
     default:
