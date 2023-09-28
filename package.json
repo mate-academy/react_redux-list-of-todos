@@ -66,6 +66,9 @@
       "last 1 safari version"
     ]
   },
+  "prettier": {
+    "singleQuote": true
+  },
   "mateAcademy": {
     "_comment": "Replace 'reactTypescript' with 'react' if you want use React without Typescript",
     "projectType": "reactTypescript",
