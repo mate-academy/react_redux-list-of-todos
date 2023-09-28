@@ -1,17 +1,45 @@
-import React from 'react';
+/* eslint-disable max-len */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ChangeEvent } from 'react';
+import { Select } from '../../types/Select';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const query = useAppSelector(state => state.filter.query);
+  const setQuery = (q: string) => dispatch(filterActions.setQuery(q));
+
+  const selectedCategory = useAppSelector(state => state.filter.status);
+  const setSelectedCategory = (category: Select) => dispatch(filterActions.setStatus(category));
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+  };
+
+  const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(event.target.value as Select);
+  };
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={selectedCategory}
+            onChange={handleSelectChange}
+          >
+            <option value={`${Select.All}`}>
+              All
+            </option>
+            <option value={`${Select.Active}`}>
+              Active
+            </option>
+            <option value={`${Select.Completed}`}>
+              Completed
+            </option>
           </select>
         </span>
       </p>
@@ -22,19 +50,26 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleInputChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {
+          query && (
+            <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+              <button
+                data-cy="clearSearchButton"
+                type="button"
+                className="delete"
+                onClick={() => setQuery('')}
+              />
+            </span>
+          )
+        }
       </p>
     </form>
   );
