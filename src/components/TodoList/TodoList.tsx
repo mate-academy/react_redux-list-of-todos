@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>();
@@ -20,13 +21,13 @@ export const TodoList: React.FC = () => {
         .includes(filter.query.toLowerCase());
 
       switch (filter.status) {
-        case 'all':
+        case Status.ALL:
           return filterByQuery;
 
-        case 'active':
+        case Status.ACTIVE:
           return !todo.completed && filterByQuery;
 
-        case 'completed':
+        case Status.COMPLETED:
           return todo.completed && filterByQuery;
 
         default:
