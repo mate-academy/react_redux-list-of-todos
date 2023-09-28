@@ -1,10 +1,52 @@
-export const actions = { /* put action creators here */};
+import { Filter, Status } from '../types';
 
-const filterReducer = () => {
-  return {
-    query: '',
-    status: 'all',
-  };
+type RemoveQueryAction = { type: 'filter/REMOVE_QUERY' };
+
+type SetQueryAction = {
+  type: 'filter/SET_QUERY',
+  payload: string,
+};
+
+type SetStatusAction = {
+  type: 'filter/SET_STATUS',
+  payload: Status,
+};
+
+type Action = RemoveQueryAction | SetQueryAction | SetStatusAction;
+
+const removeQuery = (): RemoveQueryAction => (
+  { type: 'filter/REMOVE_QUERY' });
+
+const SetQuery = (query: string): SetQueryAction => (
+  { type: 'filter/SET_QUERY', payload: query });
+
+const setStatus = (status: Status): SetStatusAction => (
+  { type: 'filter/SET_STATUS', payload: status });
+
+export const actionFilter = { removeQuery, SetQuery, setStatus };
+
+const initialState: Filter = {
+  query: '',
+  status: 'all',
+};
+
+const filterReducer = (
+  state: Filter = initialState,
+  action: Action,
+): Filter => {
+  switch (action.type) {
+    case 'filter/REMOVE_QUERY':
+      return { ...state, query: '' };
+
+    case 'filter/SET_QUERY':
+      return { ...state, query: action.payload };
+
+    case 'filter/SET_STATUS':
+      return { ...state, status: action.payload };
+
+    default:
+      return state;
+  }
 };
 
 export default filterReducer;
