@@ -32,9 +32,6 @@ export const TodoFilter: React.FC = () => {
             value={filter.status}
             onChange={onChangeSelectHandler}
           >
-            {/* <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option> */}
             {
               statusArr.map(status => (
                 <option

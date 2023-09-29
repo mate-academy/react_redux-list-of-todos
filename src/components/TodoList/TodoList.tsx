@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -15,7 +15,9 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
   const filter = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
 
-  const preparedTodos = prepareTodos(todos, filter);
+  const preparedTodos = useMemo(
+    () => prepareTodos(todos, filter), [todos, filter],
+  );
 
   return (
     <>

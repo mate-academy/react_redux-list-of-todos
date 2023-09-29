@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions } from './features/todos';
 
 export const App: React.FC = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
