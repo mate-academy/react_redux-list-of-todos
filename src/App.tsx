@@ -26,7 +26,7 @@ export const App: React.FC = () => {
         setAllTodos(gotTodos);
         dispatch(actionsTodos.setTodos(gotTodos));
       })
-      .catch(() => new Error())
+      .catch(() => new Error('Could not get todos from server :('))
       .finally(() => setIsLoading(false));
   }, []);
 

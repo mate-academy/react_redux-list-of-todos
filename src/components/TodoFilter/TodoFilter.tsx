@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { Filter, actions as actionsFilter } from '../../features/filter';
@@ -13,28 +13,6 @@ export const TodoFilter: React.FC<Props> = ({ allTodos }) => {
   const { query, status }: Filter = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
 
-  const getFiltered = () => allTodos.filter(todo => {
-    const correctQuery = query.toLowerCase();
-
-    return query
-      ? todo.title.toLowerCase().includes(correctQuery)
-      : true;
-  }).filter(todo => {
-    switch (status) {
-      case Status.All:
-        return true;
-
-      case Status.Active:
-        return todo.completed === false;
-
-      case Status.Completed:
-        return todo.completed === true;
-
-      default:
-        return true;
-    }
-  });
-
   const handlerChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(actionsFilter.setStatus(e.target.value as Status));
   };
@@ -47,8 +25,30 @@ export const TodoFilter: React.FC<Props> = ({ allTodos }) => {
     dispatch(actionsFilter.removeQuery());
   };
 
+  const getFiltered = useMemo(() => allTodos.filter(todo => {
+    const correctQuery = query.toLowerCase();
+
+    return query
+      ? todo.title.toLowerCase().includes(correctQuery)
+      : true;
+  }).filter(todo => {
+    switch (status) {
+      case Status.All:
+        return true;
+
+      case Status.Active:
+        return !todo.completed;
+
+      case Status.Completed:
+        return todo.completed;
+
+      default:
+        return true;
+    }
+  }), [status, query]);
+
   useEffect(() => {
-    dispatch(actionsTodos.setTodos(getFiltered()));
+    dispatch(actionsTodos.setTodos(getFiltered));
   }, [query, status]);
 
   return (

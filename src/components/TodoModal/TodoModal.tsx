@@ -22,7 +22,7 @@ export const TodoModal: React.FC = () => {
 
       getUser(currentTodo.userId)
         .then(setUser)
-        .catch(() => new Error())
+        .catch(() => new Error('Could not get user from server :('))
         .finally(() => setIsLoading(false));
     }
   }, []);
