@@ -1,11 +1,11 @@
 type AddQueryAction = {
   type: 'filter/ADD_QUERY',
-  payload: string,
+  payload: string;
 };
 
 type AddStatusAction = {
   type: 'filter/ADD_STATUS',
-  payload: string,
+  payload: string;
 };
 
 type Action = AddQueryAction | AddStatusAction;
@@ -15,7 +15,7 @@ const addQuery = (query: string): AddQueryAction => ({
   payload: query,
 });
 
-const addStatus = (status: string): AddStatusAction =>({
+const addStatus = (status: string): AddStatusAction => ({
   type: 'filter/ADD_STATUS',
   payload: status,
 });
@@ -34,11 +34,13 @@ const filterReducer = (state = initialFilters, action: Action) => {
         ...state,
         query: action.payload,
       };
+
     case 'filter/ADD_STATUS':
       return {
         ...state,
         status: action.payload,
       };
+
     default:
       return state;
   }

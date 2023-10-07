@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
 import { User } from '../../types/User';
-import { useAppSelector } from '../../app/hooks';
-import { useDispatch } from 'react-redux';
-import { actions as currentTodoAction } from '../../features/currentTodo';
 import { getUser } from '../../api';
+import { useAppSelector } from '../../app/hooks';
+import { actions as currentTodoAction } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const currentTodo = useAppSelector((state) => state.currentTodo);
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export const TodoModal: React.FC = () => {
 
   const handleRemoveTodo = () => {
     dispatch(currentTodoAction.removeTodo());
-  }
+  };
 
   return (
     <>

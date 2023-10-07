@@ -12,11 +12,11 @@ const addTodos = (todos: Todo[]): AddTodosAction => ({
 
 export const actions = { addTodos };
 
-
 const todosReducer = (state: Todo[] = [], action: AddTodosAction): Todo[] => {
   switch (action.type) {
     case 'todos/ADD':
-      return[...action.payload];
+      return [...action.payload];
+
     default:
       return state;
   }

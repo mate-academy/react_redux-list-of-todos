@@ -1,14 +1,15 @@
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import { Todo } from '../../types/Todo';
+import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { Status } from '../../types/Status';
+import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
-import classNames from 'classnames';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>();
+
   const dispatch = useDispatch();
   const filter = useAppSelector(state => state.filter);
   const todos = useAppSelector(state => state.todos);
@@ -18,15 +19,18 @@ export const TodoList: React.FC = () => {
     return todos.filter((todo) => {
       const filterByQuery = todo.title
         .toLowerCase()
-        .includes(filter.query.toLocaleLowerCase());
+        .includes(filter.query.toLowerCase());
 
       switch (filter.status) {
         case Status.ALL:
           return filterByQuery;
+
         case Status.ACTIVE:
           return !todo.completed && filterByQuery;
+
         case Status.COMPLETED:
           return todo.completed && filterByQuery;
+
         default:
           return filterByQuery;
       }
@@ -48,13 +52,11 @@ export const TodoList: React.FC = () => {
           <thead>
             <tr>
               <th>#</th>
-
               <th>
                 <span className="icon">
                   <i className="fas fa-check" />
                 </span>
               </th>
-
               <th>Title</th>
               <th> </th>
             </tr>
@@ -63,24 +65,20 @@ export const TodoList: React.FC = () => {
           <tbody>
             {filteredTodos.map((todo) => (
               <tr
-                key={todo.id}
                 data-cy="todo"
                 className={classNames({
                   'has-background-info-light': currentTodo?.id === todo.id,
                 })}
+                key={todo.id}
               >
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {todo.completed && (
-                    <span
-                      className="icon"
-                      data-cy="iconCompleted"
-                    >
+                    <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
                   )}
                 </td>
-
                 <td className="is-vcentered is-expanded">
                   <p
                     className={classNames({
@@ -91,7 +89,6 @@ export const TodoList: React.FC = () => {
                     {todo.title}
                   </p>
                 </td>
-
                 <td className="has-text-right is-vcentered">
                   <button
                     data-cy="selectButton"
@@ -103,7 +100,7 @@ export const TodoList: React.FC = () => {
                       <i
                         className={classNames('far', {
                           'fa-eye': todo.id !== currentTodo?.id,
-                          'fa-eye-slash': todo.id !== currentTodo?.id,
+                          'fa-eye-slash': todo.id === currentTodo?.id,
                         })}
                       />
                     </span>
@@ -111,7 +108,6 @@ export const TodoList: React.FC = () => {
                 </td>
               </tr>
             ))}
-
           </tbody>
         </table>
       ) : (
