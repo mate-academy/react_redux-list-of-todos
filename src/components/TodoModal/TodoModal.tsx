@@ -25,23 +25,6 @@ export const TodoModal: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (currentTodo) {
-      setIsLoading(true);
-
-      try {
-        getUser(currentTodo.userId)
-          .then((user) => setCurrentUser(user))
-          .catch(() => {
-            throw new Error('Something went wrong');
-          })
-          .finally(() => setIsLoading(false));
-      } catch (error) {
-        throw new Error('Something went wrong');
-      }
-    }
-  }, []);
-
   const handleRemoveTodo = () => {
     dispatch(currentTodoAction.removeTodo());
   };
