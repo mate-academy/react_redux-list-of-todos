@@ -14,19 +14,24 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
 import { SortType } from './types/SortType';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [todos, setTodos] = useState<Todo[]>([]);
+  // const [todos, setTodos] = useState<Todo[]>([]);
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
   const [sortType, setSortType] = useState(SortType.ALL);
+
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos);
 
   useEffect(() => {
     setLoading(true);
 
     getTodos()
-      .then(setTodos)
+      .then(fetchetTodos => dispatch(todosActions.add(fetchetTodos)))
       .finally(() => setLoading(false));
   }, []);
 
