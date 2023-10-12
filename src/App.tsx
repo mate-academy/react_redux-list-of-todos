@@ -1,47 +1,38 @@
 /* eslint-disable max-len */
 import React, {
-  useCallback,
   useEffect,
-  useMemo,
-  useState,
 } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import { useDispatch } from 'react-redux';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
-// import { getTodos } from './api';
 import { Loader } from './components/Loader';
-import { Todo } from './types/Todo';
-import { FilterQuery } from './enums';
+// import { Todo } from './types/Todo';
+import { FilterStatus } from './enums';
 import { getTodos } from './features/todos';
+import { removeTodo } from './features/currentTodo';
 
 export const App: React.FC = () => {
-  // const [todos, setTodos] = useState<Todo[]>([]);
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
-  const [isLoading] = useState(true);
-  const [filterQuery, setFilterQuery] = useState(FilterQuery.ALL);
-  const [searchQuery, setSearchQuery] = useState<null | string>(null);
-  const [selectedTodo, setSelectedTodo] = useState<null | Todo>(null);
+  const defaultDispatch = useDispatch();
+  const todos = useAppSelector(state => state.todos.todos);
+  const isLoading = useAppSelector(state => state.todos.isLoading);
+  const filterStatus = useAppSelector(state => state.filter.status);
+  const searchQuery = useAppSelector(state => state.filter.query);
+  const { todo: selectedTodo } = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    // getTodos()
-    //   .then(setTodos)
-    //   .catch(error => {
-    //     // eslint-disable-next-line no-console
-    //     console.error(error);
-    //   })
-    //   .finally(() => setIsLoading(false));
-    dispatch(getTodos());
+    defaultDispatch(getTodos());
   }, [dispatch]);
 
-  const visibleTodos = useMemo(() => {
-    const preparedTodos = filterQuery === FilterQuery.ALL
+  const visibleTodos = () => {
+    const preparedTodos = filterStatus === FilterStatus.ALL
       ? todos
       : todos.filter(todo => {
-        if (filterQuery === FilterQuery.ACTIVE) {
+        if (filterStatus === FilterStatus.ACTIVE) {
           return !todo.completed;
         }
 
@@ -55,11 +46,9 @@ export const App: React.FC = () => {
     }
 
     return preparedTodos;
-  }, [todos, filterQuery, searchQuery]);
+  };
 
-  const applyFilter = useCallback((value) => setFilterQuery(value), []);
-  const applyQuery = useCallback((value) => setSearchQuery(value), []);
-  const clearSelectedTodo = useCallback(() => setSelectedTodo(null), []);
+  const clearSelectedTodo = () => defaultDispatch(removeTodo());
 
   return (
     <>
@@ -69,11 +58,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                filterQuery={filterQuery}
-                applyFilter={applyFilter}
-                applyQuery={applyQuery}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
@@ -81,9 +66,7 @@ export const App: React.FC = () => {
                 ? <Loader />
                 : (
                   <TodoList
-                    todos={visibleTodos}
-                    selectedTodo={selectedTodo}
-                    selectTodo={setSelectedTodo}
+                    todos={visibleTodos()}
                   />
                 )}
             </div>

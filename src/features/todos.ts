@@ -1,51 +1,68 @@
-import { ThunkAction } from 'redux-thunk';
-// eslint-disable-next-line import/no-cycle
-import { RootState } from '../app/store';
-import { Todo } from '../types/Todo';
+import { Action, Dispatch } from 'redux';
+import { Todo, TodoPayload, TodosAction } from '../types/Todo';
+import { TodoActionTypes } from '../enums';
+import { fetchTodos } from '../api';
 
-// type TodoPayload = {
-//   todos: Todo[],
-//   isLoading: boolean,
-//   isError: boolean,
-// };
+export const loadTodos = () => ({
+  type: TodoActionTypes.LOAD_TODOS,
+  payload: {
+    todos: [],
+    isLoading: true,
+    isError: false,
+  },
+});
 
-type SetTodosAction = {
-  type: 'todos/SET';
-  payload: Todo[];
-};
+export const setTodos = (todos: Todo[]) => ({
+  type: TodoActionTypes.SET_TODOS,
+  payload: {
+    todos,
+    isLoading: false,
+    isError: false,
+  },
+});
 
-// eslint-disable-next-line max-len
-export const getTodos = (): ThunkAction<void, RootState, unknown, Action<any>> => {
-  return dispatch => {
-    // eslint-disable-next-line max-len
-    fetch('https://mate-academy.github.io/react_dynamic-list-of-todos/api/todos.json')
-      .then(response => dispatch({
-        type: 'todos/SET',
-        payload: {
-          todos: response,
-          // isLoading: false,
-          // isError: false,
-        },
-      }));
+export const errorTodos = () => ({
+  type: TodoActionTypes.SET_TODOS,
+  payload: {
+    todos: [],
+    isLoading: false,
+    isError: true,
+  },
+});
+
+export const getTodos = () => {
+  return async (dispatch: Dispatch<Action<TodoActionTypes>>) => {
+    try {
+      dispatch(loadTodos());
+
+      const todos = await fetchTodos();
+
+      dispatch(setTodos(todos.data));
+    } catch (error) {
+      dispatch(errorTodos());
+    }
   };
 };
 
-const setTodos = (todos: Todo[]): SetTodosAction => ({
-  type: 'todos/SET',
-  payload: todos,
-});
+export const actions = { setTodos, loadTodos, errorTodos };
 
-export const actions = { setTodos };
+const initialState: TodoPayload = {
+  todos: [],
+  isLoading: false,
+  isError: false,
+};
 
 const todosReducer = (
-  state: Todo[],
-  action: SetTodosAction,
-): Todo[] => {
+  state = initialState,
+  action: TodosAction,
+): TodoPayload => {
   switch (action.type) {
-    case 'todos/SET':
-      return [...action.payload];
+    case TodoActionTypes.SET_TODOS:
+    case TodoActionTypes.LOAD_TODOS:
+    case TodoActionTypes.ERROR_TODOS:
+      return { ...action.payload };
     default:
-      return [...state];
+      return { ...state };
   }
 };
 
