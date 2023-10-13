@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as actionsCurrentTodo } from '../../features/currentTodo';
@@ -9,23 +9,21 @@ export const TodoList: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
-  const [filteredTodos, setFilteredTodos] = useState(todos);
 
-  useEffect(() => {
-    setFilteredTodos(
-      todos.filter(todo => todo.title.toLowerCase().includes(filter.query)),
+  const filteredTodos = useMemo(() => {
+    const filtered = todos.filter(
+      todo => todo.title.toLowerCase().includes(filter.query),
     );
 
     switch (filter.status) {
       case Status.active:
-        setFilteredTodos(current => current.filter(todo => !todo.completed));
-        break;
+        return filtered.filter(todo => !todo.completed);
 
       case Status.completed:
-        setFilteredTodos(current => current.filter(todo => todo.completed));
-        break;
+        return filtered.filter(todo => todo.completed);
 
       default:
+        return filtered;
     }
   }, [filter, todos]);
 
@@ -85,7 +83,7 @@ export const TodoList: React.FC = () => {
                       onClick={() => dispatch(actionsCurrentTodo.setTodo(todo))}
                     >
                       <span className="icon">
-                        {todo.id === currentTodo?.id ? (
+                        {id === currentTodo?.id ? (
                           <i className="far fa-eye-slash" />
                         ) : (
                           <i className="far fa-eye" />
