@@ -11,9 +11,9 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const filteredTodos = useMemo(() => {
-    const filtered = todos.filter(
-      todo => todo.title.toLowerCase().includes(filter.query),
-    );
+    const filtered = filter.query
+      ? todos.filter(todo => todo.title.toLowerCase().includes(filter.query))
+      : todos;
 
     switch (filter.status) {
       case Status.active:
