@@ -28,7 +28,7 @@ export const TodoList = (
       || (filter.status === 'completed' && todo.completed)
       || filter.status === 'all';
 
-    if (isMatchingStatus && query.trim() !== '') {
+    if (isMatchingStatus && query.trim()) {
       return todo.title.toLowerCase().includes(query.toLowerCase());
     }
 
@@ -72,7 +72,17 @@ export const TodoList = (
                   return (
                     <tr data-cy="todo">
                       <td className="is-vcentered">{todo.id}</td>
-                      <td className="is-vcentered"> </td>
+                      <td className="is-vcentered">
+                        {todo.completed
+                        && (
+                          <th>
+                            <span className="icon">
+                              <i className="fas fa-check" />
+                            </span>
+
+                          </th>
+                        )}
+                      </td>
 
                       <td className="is-vcentered is-expanded">
                         <p className={classNames({

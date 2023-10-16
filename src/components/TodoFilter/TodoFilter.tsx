@@ -10,14 +10,17 @@ export const TodoFilter: React.FC = () => {
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedFilter = event.target.value;
 
-    if (selectedFilter === 'all') {
-      dispatch(filterActions.setStatus(Filter.ALL));
-    } else if (selectedFilter === 'active') {
-      dispatch(filterActions.setStatus(Filter.ACTIVE));
-      dispatch(filterActions.setFilterQuery(''));
-    } else if (selectedFilter === 'completed') {
-      dispatch(filterActions.setStatus(Filter.COMPLETED));
-      dispatch(filterActions.setFilterQuery(''));
+    switch (selectedFilter) {
+      case Filter.ALL:
+        dispatch(filterActions.setStatus(Filter.ALL));
+        break;
+      case Filter.ACTIVE:
+      case Filter.COMPLETED:
+        dispatch(filterActions.setStatus(selectedFilter));
+        dispatch(filterActions.setFilterQuery(''));
+        break;
+      default:
+      //
     }
   };
 
@@ -63,15 +66,19 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={handleDeleteQuery}
-          />
-        </span>
+        {query
+          && (
+            <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+              <button
+                data-cy="clearSearchButton"
+                type="button"
+                className="delete"
+                onClick={handleDeleteQuery}
+              />
+            </span>
+          )}
+
       </p>
     </form>
   );
