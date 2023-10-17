@@ -9,18 +9,18 @@ export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(state => state.todos);
-  const filter = useAppSelector(state => state.filter);
+  const { query, status } = useAppSelector(state => state.filter);
 
   const filteredTodos = useMemo(() => {
     let newTodos = [...todos];
 
-    if (filter.query) {
+    if (query) {
       newTodos = newTodos.filter(
-        todo => todo.title.toLowerCase().includes(filter.query),
+        todo => todo.title.toLowerCase().includes(query),
       );
     }
 
-    switch (filter.status) {
+    switch (status) {
       case 'active':
         return newTodos.filter(todo => !todo.completed);
 
@@ -30,7 +30,7 @@ export const TodoList: React.FC = () => {
       default:
         return newTodos;
     }
-  }, [filter]);
+  }, [status, query]);
 
   const handleSelectedTodo = (todo: Todo) => {
     dispatch(currentTodoActions.setTodo(todo));
