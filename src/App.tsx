@@ -12,6 +12,7 @@ import { TodoModal } from './components/TodoModal';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -31,15 +32,20 @@ export const App: React.FC = () => {
         <div className="container">
           <div className="box">
             <h1 className="title">Todos:</h1>
+            {isLoading && <Loader />}
 
-            <div className="block">
-              <TodoFilter />
-            </div>
+            {todos.length > 0
+              && (
+                <>
+                  <div className="block">
+                    <TodoFilter />
+                  </div>
 
-            <div className="block">
-              {isLoading && <Loader />}
-              <TodoList />
-            </div>
+                  <div className="block">
+                    <TodoList />
+                  </div>
+                </>
+              )}
           </div>
         </div>
       </div>
