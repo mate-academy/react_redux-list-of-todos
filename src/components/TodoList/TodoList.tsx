@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { StatusFilter } from '../../enum/StatusFilter';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,10 +22,10 @@ export const TodoList: React.FC = () => {
     }
 
     switch (status) {
-      case 'active':
+      case StatusFilter.Active:
         return newTodos.filter(todo => !todo.completed);
 
-      case 'completed':
+      case StatusFilter.Completed:
         return newTodos.filter(todo => todo.completed);
 
       default:
@@ -58,19 +59,20 @@ export const TodoList: React.FC = () => {
 
             <tbody>
               {filteredTodos.map(todo => {
-                const isSelectedTodo = currentTodo?.id === todo.id;
+                const { id, title, completed } = todo;
+                const isSelectedTodo = currentTodo?.id === id;
 
                 return (
                   <tr
-                    key={todo.id}
+                    key={id}
                     data-cy="todo"
                     className={cn({
                       'has-background-info-light': isSelectedTodo,
                     })}
                   >
-                    <td className="is-vcentered">{todo.id}</td>
+                    <td className="is-vcentered">{id}</td>
                     <td className="is-vcentered">
-                      {todo.completed && (
+                      {completed && (
                         <span className="icon" data-cy="iconCompleted">
                           <i className="fas fa-check" />
                         </span>
@@ -78,13 +80,13 @@ export const TodoList: React.FC = () => {
                     </td>
 
                     <td className="is-vcentered is-expanded">
-                      {todo.completed ? (
+                      {completed ? (
                         <p className="has-text-success">
-                          {todo.title}
+                          {title}
                         </p>
                       ) : (
                         <p className="has-text-danger">
-                          {todo.title}
+                          {title}
                         </p>
                       )}
                     </td>

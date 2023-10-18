@@ -34,7 +34,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
             {isLoading && <Loader />}
 
-            {todos.length > 0
+            {!!todos.length
               && (
                 <>
                   <div className="block">
