@@ -20,7 +20,6 @@ export const TodoFilter: React.FC = () => {
         dispatch(filterActions.setFilterQuery(''));
         break;
       default:
-      //
     }
   };
 
