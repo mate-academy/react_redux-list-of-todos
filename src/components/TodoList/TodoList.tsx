@@ -12,7 +12,7 @@ export const TodoList: React.FC = () => {
 
   const filteredTodos = useMemo(() => {
     return getFilteredTodos(todos, searchParams);
-  }, [searchParams]);
+  }, [searchParams, todos]);
 
   const setTodo = (
     newTodo: Todo,

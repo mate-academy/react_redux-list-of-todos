@@ -25,7 +25,7 @@ export const App: React.FC = () => {
       .then(todosFromServer => dispatch(todosActions.load(todosFromServer)))
       .catch(() => setError(ERROR_MESSAGE))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
