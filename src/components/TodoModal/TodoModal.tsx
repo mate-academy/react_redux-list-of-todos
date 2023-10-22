@@ -58,7 +58,9 @@ export const TodoModal: React.FC = () => {
                 ? (<strong className="has-text-success">Done</strong>)
                 : (<strong className="has-text-danger">Planned</strong>)}
 
-              {' by '}
+              <span>
+                {' by '}
+              </span>
 
               {users && (
                 <a href={`${users.email}`}>

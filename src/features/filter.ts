@@ -1,22 +1,32 @@
-type SetQueryAction = { type: 'filter/SET_FILTER_QUERY', payload: string };
-type RemoveQueryAction = {
-  type: 'filter/SET_FILTER_REMOVE_QUERY'
+import { FilterField } from '../types/FilterField';
+
+type SetQueryAction = {
+  type: FilterField.setQuery,
+  payload: string
 };
-type SetFilterStatus = { type: 'filter/SET_FILTER_STATUS', payload: string };
+
+type RemoveQueryAction = {
+  type: FilterField.removeQuery
+};
+
+type SetFilterStatus = {
+  type: FilterField.setStatus,
+  payload: string
+};
 
 type Action = SetQueryAction | RemoveQueryAction | SetFilterStatus;
 
 const setQuery = (query: string): Action => ({
-  type: 'filter/SET_FILTER_QUERY',
+  type: FilterField.setQuery,
   payload: query,
 });
 
 const removeQuery = (): Action => ({
-  type: 'filter/SET_FILTER_REMOVE_QUERY',
+  type: FilterField.removeQuery,
 });
 
 const setStatus = (status: string): Action => ({
-  type: 'filter/SET_FILTER_STATUS',
+  type: FilterField.setStatus,
   payload: status,
 });
 
@@ -34,19 +44,19 @@ const initialFilter: Filter = {
 
 const filterReducer = (filter: Filter = initialFilter, action: Action) => {
   switch (action.type) {
-    case 'filter/SET_FILTER_QUERY':
+    case FilterField.setQuery:
       return {
         ...filter,
         query: action.payload,
       };
 
-    case 'filter/SET_FILTER_STATUS':
+    case FilterField.setStatus:
       return {
         ...filter,
         status: action.payload,
       };
 
-    case 'filter/SET_FILTER_REMOVE_QUERY':
+    case FilterField.removeQuery:
       return {
         query: '',
         status: filter.status,
