@@ -10,7 +10,7 @@ export const TodoList: React.FC = () => {
   const { status, query } = useAppSelector(state => state.filter);
 
   const preparedTodos = todos.filter(todo => {
-    const normalTodo = todo.title.toLowerCase().includes(query);
+    const normalTodo = todo.title.toLowerCase().includes(query.toLowerCase());
 
     switch (status) {
       case SearchField.ALL:
@@ -52,7 +52,7 @@ export const TodoList: React.FC = () => {
 
           <tbody>
             {preparedTodos.map(todo => (
-              <CurrentTodo todo={todo} />
+              <CurrentTodo key={todo.id} todo={todo} />
             ))}
           </tbody>
         </table>
