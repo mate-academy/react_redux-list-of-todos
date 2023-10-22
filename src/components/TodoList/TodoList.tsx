@@ -22,7 +22,7 @@ export const TodoList: React.FC = () => {
 
     if (query) {
       newTodos = newTodos.filter(
-        todo => todo.title.toLowerCase().includes(query),
+        todo => todo.title.toLowerCase().includes(query.toLowerCase()),
       );
     }
 
@@ -81,30 +81,12 @@ export const TodoList: React.FC = () => {
               <td className="has-text-right is-vcentered">
                 <button data-cy="selectButton" className="button" type="button" onClick={() => setCurrentTodo(todo)}>
                   <span className="icon">
-                    {currentTodo?.id === todo.id ? <i className="far fa-eye-slash" /> : <i className="far fa-eye" />}
+                    <i className={`far ${currentTodo?.id === todo.id ? 'fa-eye-slash' : 'fa-eye'}`} />
                   </span>
                 </button>
               </td>
             </tr>
           ))}
-
-          {/* <tr data-cy="todo" className="has-background-info-light">
-            <td className="is-vcentered">3</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">fugiat veniam minus</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye-slash" />
-                </span>
-              </button>
-            </td>
-          </tr> */}
-
         </tbody>
       </table>
     </>

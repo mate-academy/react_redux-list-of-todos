@@ -37,7 +37,7 @@ const filterReducer = (filter: State = initialState, action: Action) => {
     case 'filter/QUERY':
       return {
         ...filter,
-        query: action.payload.toLowerCase(),
+        query: action.payload,
       };
 
     default:
