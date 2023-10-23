@@ -1,26 +1,19 @@
 import React from 'react';
 import { SortType } from '../../types/SortType';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/filter';
 
-type Props = {
-  value: string,
-  setValue: React.Dispatch<React.SetStateAction<string>>,
-  setSortType: React.Dispatch<React.SetStateAction<SortType>>,
-};
+export const TodoFilter: React.FC = React.memo(() => {
+  const dispatch = useAppDispatch();
+  const { query: value } = useAppSelector(state => state.filter);
 
-export const TodoFilter: React.FC<Props> = React.memo(({
-  value,
-  setValue,
-  setSortType,
-}) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const normalizedInput = event.target.value;
-
-    setValue(normalizedInput);
+  const handleDeleteClick = () => dispatch(actions.changeQueryAction(''));
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(actions.changeQueryAction(event.target.value));
   };
 
-  const handleDeleteClick = () => setValue('');
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortType(event.target.value as SortType);
+    dispatch(actions.changeStatusAction(event.target.value as SortType));
   };
 
   return (
@@ -42,7 +35,7 @@ export const TodoFilter: React.FC<Props> = React.memo(({
           className="input"
           placeholder="Search..."
           value={value}
-          onChange={handleChange}
+          onChange={handleInputChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

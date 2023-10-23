@@ -7,7 +7,10 @@ type AddAction = {
 
 type Actions = AddAction;
 
-const add = (todos: Todo[]) => ({ type: 'todos/ADD', payload: todos });
+const add = (todos: Todo[]): AddAction => ({
+  type: 'todos/ADD',
+  payload: todos,
+});
 
 export const actions = { add };
 

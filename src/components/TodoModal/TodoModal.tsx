@@ -2,33 +2,33 @@ import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Loader } from '../Loader';
 import { User } from '../../types/User';
-import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/currentTodo';
 
 type Props = {
   loading: boolean,
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>
-  todo: Todo | null,
-  setTodo: React.Dispatch<React.SetStateAction<Todo | null>>,
+  changeLoading: () => void,
 };
 
 export const TodoModal: React.FC<Props> = ({
   loading,
-  setLoading,
-  todo,
-  setTodo,
+  changeLoading,
 }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const handleCLick = () => {
-    setTodo(null);
-  };
+  const dispatch = useAppDispatch();
+  const todo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     getUser(todo?.userId as number)
       .then(setUser)
-      .finally(() => setLoading(false));
+      .finally(changeLoading);
   }, []);
+
+  const handleCLick = () => {
+    dispatch(actions.removeTodo());
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">

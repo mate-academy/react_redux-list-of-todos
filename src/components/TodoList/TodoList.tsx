@@ -1,23 +1,24 @@
 import React from 'react';
 import cn from 'classnames';
 import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/currentTodo';
 
 type Props = {
   todos: Todo[],
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  currentTodo: Todo | null
-  setCurrentTodo: React.Dispatch<React.SetStateAction<Todo | null>>,
+  changeLoading: () => void,
 };
 
 export const TodoList: React.FC<Props> = React.memo(({
   todos,
-  setLoading,
-  currentTodo,
-  setCurrentTodo,
+  changeLoading,
 }) => {
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
   const handleClick = (clickedTodo: Todo) => {
-    setCurrentTodo(clickedTodo);
-    setLoading(true);
+    dispatch(actions.setTodo(clickedTodo));
+    changeLoading();
   };
 
   return (
