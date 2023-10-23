@@ -10,15 +10,17 @@ type SetTodoAction = {
 };
 
 // Action creator return type protect us from a mistype
-const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
+const removeCurrentTodo = (): RemoveTodoAction => ({
+  type: 'currentTodo/REMOVE',
+});
 
-const setTodo = (todo: Todo): SetTodoAction => ({
+const setCurrentTodo = (todo: Todo): SetTodoAction => ({
   type: 'currentTodo/SET',
   payload: todo,
 });
 
 // These actions will be used in the application
-export const actions = { setTodo, removeTodo };
+export const actions = { setCurrentTodo, removeCurrentTodo };
 
 type State = Todo | null;
 type Action = SetTodoAction | RemoveTodoAction;
@@ -28,8 +30,10 @@ const currentTodoReducer = (
   action: Action,
 ): State => {
   switch (action.type) {
-    // Implement all actions here
-
+    case 'currentTodo/REMOVE':
+      return null;
+    case 'currentTodo/SET':
+      return action.payload;
     default:
       return state;
   }
