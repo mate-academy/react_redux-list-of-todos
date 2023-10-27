@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Loader } from '../Loader';
 import { getUser } from '../../utils/api';
 import { User } from '../../types/User';
-import { TodosContext } from '../TodosContext';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  const { shownTodo, setShownTodo } = useContext(TodosContext);
+  const dispatch = useAppDispatch();
+  const shownTodo = useAppSelector(state => state.currentTodo);
 
   const [isLoading, setIsLoading] = useState(false);
   const [shownUser, setShownUser] = useState<User | null>(null);
@@ -22,7 +24,7 @@ export const TodoModal: React.FC = () => {
   }, [shownTodo]);
 
   const handleRemoveButton = () => {
-    setShownTodo(null);
+    dispatch(currentTodoActions.removeTodo());
   };
 
   return (

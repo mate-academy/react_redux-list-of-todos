@@ -1,27 +1,30 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import { getTodos } from './utils/api';
-import { getVisibleTodos } from './utils/getVisibleTodos';
-import { Todo } from './types/Todo';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { TodosContext } from './components/TodosContext';
+
+import { getTodos } from './utils/api';
+import { getVisibleTodos } from './utils/getVisibleTodos';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
-  const { shownTodo, filter } = useContext(TodosContext);
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos);
+  const filter = useAppSelector(state => state.filter);
+  const shownTodo = useAppSelector(state => state.currentTodo);
 
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
 
     getTodos()
-      .then(setTodos)
+      .then((response) => dispatch(todosActions.setTodos(response)))
       .finally(() => setIsLoading(false));
   }, []);
 

@@ -1,20 +1,22 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 import { Todo } from '../../types/Todo';
-import { TodosContext } from '../TodosContext';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
 type Props = {
   todo: Todo;
 };
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
-  const { shownTodo, setShownTodo } = useContext(TodosContext);
+  const dispatch = useAppDispatch();
+  const shownTodo = useAppSelector(state => state.currentTodo);
 
   const isShown = shownTodo?.id === todo.id;
 
   const handleShowButton = () => {
-    setShownTodo(todo);
+    dispatch(currentTodoActions.setTodo(todo));
   };
 
   return (

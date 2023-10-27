@@ -1,32 +1,25 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { TodosContext } from '../TodosContext';
 import { Status } from '../../types/Status';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/filter';
 
 export const TodoFilter = () => {
-  const { filter, setFilter } = useContext(TodosContext);
+  const dispatch = useAppDispatch();
+  const filter = useAppSelector(state => state.filter);
 
   const handleGlobalFilterChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
-    setFilter({
-      ...filter,
-      global: event.target.value as Status,
-    });
+    dispatch(actions.changeGlobal(event.target.value as Status));
   };
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter({
-      ...filter,
-      query: event.target.value,
-    });
+    dispatch(actions.changeQuery(event.target.value));
   };
 
   const handleClearSearch = () => {
-    setFilter({
-      ...filter,
-      query: '',
-    });
+    dispatch(actions.clearQuery());
   };
 
   return (
