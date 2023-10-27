@@ -11,7 +11,10 @@ export const TodoFilter: React.FC = () => {
   useEffect(() => {
     window.clearTimeout(timeoutId.current);
 
-    setTimeout(() => dispatch(filterActions.setQuery(inputValue)), 500);
+    timeoutId.current = window.setTimeout(
+      () => dispatch(filterActions.setQuery(inputValue)),
+      500,
+    );
   }, [inputValue]);
 
   return (
