@@ -29,7 +29,6 @@ export const TodoModal: React.FC<Props> = ({
   } = todo;
 
   useEffect(() => {
-    setIsLoading(true);
     getPosts(userId)
       .then(data => setPost(data))
       .finally(() => setIsLoading(false));
