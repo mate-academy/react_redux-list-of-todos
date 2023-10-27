@@ -54,9 +54,11 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           onClick={handleShowButton}
         >
           <span className="icon">
-            <i className={`far ${isShown
-              ? 'fa-eye-slash'
-              : 'fa-eye'}`}
+            <i
+              className={classNames('far', {
+                'fa-eye-slash': isShown,
+                'fa-eye': !isShown,
+              })}
             />
           </span>
         </button>

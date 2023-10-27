@@ -2,35 +2,35 @@ import { Filter } from '../types/Filter';
 import { Status } from '../types/Status';
 import { Todo } from '../types/Todo';
 
-export const getVisibleTodos = (allTodos: Todo[], visibleFilter: Filter) => {
-  let shownTodos: Todo[] = [];
+export const getVisibleTodos = (todos: Todo[], filter: Filter) => {
+  let visibleTodos: Todo[] = [];
 
-  switch (visibleFilter.global) {
+  switch (filter.global) {
     case Status.All:
-      shownTodos = [...allTodos];
+      visibleTodos = [...todos];
       break;
 
     case Status.Active:
-      shownTodos = allTodos.filter(todo => !todo.completed);
+      visibleTodos = todos.filter(todo => !todo.completed);
       break;
 
     case Status.Completed:
-      shownTodos = allTodos.filter(todo => todo.completed);
+      visibleTodos = todos.filter(todo => todo.completed);
       break;
 
     default:
       throw new Error('Unknown filter!');
   }
 
-  if (visibleFilter.query) {
-    const lowerQuery = visibleFilter.query.toLowerCase();
+  if (filter.query) {
+    const lowerQuery = filter.query.toLowerCase().trim();
 
-    shownTodos = shownTodos.filter(todo => {
+    visibleTodos = visibleTodos.filter(todo => {
       const lowerTitle = todo.title.toLowerCase();
 
       return lowerTitle.includes(lowerQuery);
     });
   }
 
-  return shownTodos;
+  return visibleTodos;
 };
