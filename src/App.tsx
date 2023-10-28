@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -12,6 +13,8 @@ import { Todo } from './types/Todo';
 import { TodoWithUser } from './types/TodoWithUser';
 import { FilterType } from './types/FilterType';
 import { ifInclude } from './components/IfInclude';
+import { RootState } from './app/store';
+import { actions } from './features/currentTodo';
 
 async function loadTodos() {
   const todosFromServer = await getTodos();
@@ -27,7 +30,15 @@ async function loadUserForTodo(todo:Todo) {
 
 export const App: React.FC = () => {
   const [isOpenedModal, setIsOpenedModal] = useState(false);
-  const [openedTodo, setOpenedTodo] = useState<TodoWithUser | null>(null);
+
+  // const [openedTodo, setOpenedTodo] = useState<TodoWithUser | null>(null);
+
+  const openedTodo = useSelector<RootState>(state => state.currentTodo);
+  const dispatch = useDispatch();
+
+  const setOpenedTodo = (value: TodoWithUser) => dispatch(actions.setTodo(value));
+  const removeOpenedTodo = () => dispatch(actions.removeTodo());
+
   const [isDataLoad, setIsDataLoaded] = useState(false);
   const [isUserLoad, setIsUserLoaded] = useState(false);
   const [todosServer, setTodosServer] = useState<Todo[]>([]);
@@ -49,7 +60,7 @@ export const App: React.FC = () => {
   const closeModal = () => {
     setIsOpenedModal(false);
     if (openedTodo) {
-      setOpenedTodo(null);
+      removeOpenedTodo();
     }
   };
 
