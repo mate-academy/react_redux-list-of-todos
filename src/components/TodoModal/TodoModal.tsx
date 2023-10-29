@@ -1,18 +1,25 @@
 import React from 'react';
 import { Loader } from '../Loader';
-import { TodoWithUser } from '../../types/TodoWithUser';
+// import { TodoWithUser } from '../../types/TodoWithUser';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { actions } from '../../features/currentTodo';
 
 type Props = {
-  todo:TodoWithUser | null,
+  // todo:TodoWithUser | null,
   isDataLoad:boolean,
-  closeModal:() => void,
+  // closeModal:() => void,
 };
 
 export const TodoModal: React.FC<Props> = ({
-  todo,
+  // todo,
   isDataLoad,
-  closeModal,
+  // closeModal,
 }) => {
+  const todo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
+
+  const closeModal = () => dispatch(actions.removeTodo());
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
