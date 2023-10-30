@@ -31,11 +31,11 @@ export const TodoFilter: React.FC = () => {
   const getfilteredTodos = (): Todo[] => {
     let filteredTodos = [...allTodos];
 
-    if (status === 'completed') {
+    if (status === Statuses.completed) {
       filteredTodos = filteredTodos.filter((todo) => todo.completed);
     }
 
-    if (status === 'active') {
+    if (status === Statuses.active) {
       filteredTodos = filteredTodos.filter((todo) => !todo.completed);
     }
 
