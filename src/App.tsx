@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect, useMemo } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -13,7 +12,6 @@ import { Todo } from './types/Todo';
 import { TodoWithUser } from './types/TodoWithUser';
 import { FilterType } from './types/FilterType';
 import { ifInclude } from './components/IfInclude';
-// import { RootState } from './app/store';
 import { actions } from './features/currentTodo';
 import { useAppSelector, useAppDispatch } from './app/hooks';
 
@@ -30,40 +28,21 @@ async function loadUserForTodo(todo:Todo) {
 }
 
 export const App: React.FC = () => {
-  // const [isOpenedModal, setIsOpenedModal] = useState(false);
-
-  // const [openedTodo, setOpenedTodo] = useState<TodoWithUser | null>(null);
-
   const openedTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
-
   const setOpenedTodo = (value: TodoWithUser) => dispatch(actions.setTodo(value));
-  // const removeOpenedTodo = () => dispatch(actions.removeTodo());
 
   const [isDataLoad, setIsDataLoaded] = useState(false);
-  // const [isUserLoad, setIsUserLoaded] = useState(false);
   const [todosServer, setTodosServer] = useState<Todo[]>([]);
   const openModal = (todo:Todo) => {
-    // setIsOpenedModal(true);
     loadUserForTodo(todo)
       .then(res => {
         setOpenedTodo({
           ...todo,
           user: res,
         });
-        // setIsUserLoaded(true);
-      })
-      .finally(() => {
-        // setIsUserLoaded(true);
       });
   };
-
-  // const closeModal = () => {
-  //   // setIsOpenedModal(false);
-  //   if (openedTodo) {
-  //     removeOpenedTodo();
-  //   }
-  // };
 
   const [statusFilter, setStatusFilter] = useState<string>(FilterType.All);
   const [input, setInput] = useState('');
