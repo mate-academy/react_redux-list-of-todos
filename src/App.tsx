@@ -41,7 +41,7 @@ export const App: React.FC = () => {
   // const removeOpenedTodo = () => dispatch(actions.removeTodo());
 
   const [isDataLoad, setIsDataLoaded] = useState(false);
-  const [isUserLoad, setIsUserLoaded] = useState(false);
+  // const [isUserLoad, setIsUserLoaded] = useState(false);
   const [todosServer, setTodosServer] = useState<Todo[]>([]);
   const openModal = (todo:Todo) => {
     // setIsOpenedModal(true);
@@ -51,10 +51,10 @@ export const App: React.FC = () => {
           ...todo,
           user: res,
         });
-        setIsUserLoaded(true);
+        // setIsUserLoaded(true);
       })
       .finally(() => {
-        setIsUserLoaded(true);
+        // setIsUserLoaded(true);
       });
   };
 
@@ -127,7 +127,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {openedTodo && <TodoModal isDataLoad={isUserLoad} />}
+      {openedTodo && <TodoModal />}
     </>
   );
 };
