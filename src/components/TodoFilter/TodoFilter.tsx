@@ -31,12 +31,14 @@ export const TodoFilter: React.FC = () => {
   const getfilteredTodos = (): Todo[] => {
     let filteredTodos = [...allTodos];
 
-    if (status === Statuses.completed) {
-      filteredTodos = filteredTodos.filter((todo) => todo.completed);
-    }
-
-    if (status === Statuses.active) {
-      filteredTodos = filteredTodos.filter((todo) => !todo.completed);
+    switch (status) {
+      case 'completed':
+        filteredTodos = filteredTodos.filter((todo) => todo.completed);
+        break;
+      case 'active':
+        filteredTodos = filteredTodos.filter((todo) => !todo.completed);
+        break;
+      default: break;
     }
 
     if (query.trim()) {
