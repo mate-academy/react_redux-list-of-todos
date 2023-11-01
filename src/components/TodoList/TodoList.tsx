@@ -21,8 +21,6 @@ export const TodoList: React.FC = () => {
         .includes(filter.query.toLowerCase());
 
       switch (filter.status) {
-        case Status.ALL:
-          return filterQuery;
         case Status.ACTIVE:
           return !todo.completed && filterQuery;
         case Status.COMPLETED:

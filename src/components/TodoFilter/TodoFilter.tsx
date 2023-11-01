@@ -11,7 +11,11 @@ export const TodoFilter: React.FC = () => {
     dispatch(actions.addStatus(event.target.value));
   };
 
-  const handleQuery = (query = '') => {
+  const handleClear = () => {
+    dispatch(actions.addQuery(''));
+  };
+
+  const handleQuery = (query: string) => {
     dispatch(actions.addQuery(query));
   };
 
@@ -41,7 +45,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={filter.query}
-          onChange={(e) => handleQuery(e.target.value)}
+          onChange={event => handleQuery(event.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -54,7 +58,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => handleQuery()}
+              onClick={handleClear}
             />
           </span>
         )}
