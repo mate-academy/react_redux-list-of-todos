@@ -1,14 +1,36 @@
 /* eslint-disable max-len */
-import React from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
+import { useEffect, useState } from 'react';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { Todo } from './types/Todo';
+import { actions as todoActions } from './features/todos';
+import { getTodos } from './api';
+import { TodoModal } from './components/TodoModal';
 
 export const App: React.FC = () => {
+  const [isLoad, setIsLoad] = useState(false);
+  const dispatch = useAppDispatch();
+  const selectedTodo = useAppSelector((state) => state.currentTodo);
+
+  const setTodos = (todos: Todo[]) => {
+    dispatch(todoActions.setTodos(todos));
+  };
+
+  useEffect(() => {
+    setIsLoad(true);
+
+    getTodos()
+      .then(setTodos)
+      .catch(error => {
+        throw new Error(error.message);
+      })
+      .finally(() => setIsLoad(false));
+  }, []);
+
   return (
     <>
       <div className="section">
@@ -21,14 +43,14 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
+              {isLoad && <Loader />}
               <TodoList />
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {selectedTodo && <TodoModal />}
     </>
   );
 };
