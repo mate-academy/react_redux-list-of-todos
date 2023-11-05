@@ -7,6 +7,12 @@ import { actions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
 import { Status } from '../../types/Status';
 
+enum TodosFilterBy {
+  All = 'all',
+  Completed = 'completed',
+  Active = 'active',
+}
+
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const todos = useAppSelector(state => state.todos);
@@ -27,14 +33,14 @@ export const TodoList: React.FC = () => {
     }
 
     switch (statusForVisible) {
-      case 'all':
+      case TodosFilterBy.All:
       default:
         return visibleTodos;
 
-      case 'completed':
+      case TodosFilterBy.Completed:
         return visibleTodos.filter(todo => todo.completed);
 
-      case 'active':
+      case TodosFilterBy.Active:
         return visibleTodos.filter(todo => !todo.completed);
     }
   };

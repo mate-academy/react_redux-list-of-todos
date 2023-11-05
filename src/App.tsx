@@ -12,7 +12,7 @@ import { getTodos } from './api';
 import { TodoModal } from './components/TodoModal';
 
 export const App: React.FC = () => {
-  const [isLoad, setIsLoad] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector((state) => state.currentTodo);
 
@@ -21,14 +21,14 @@ export const App: React.FC = () => {
   };
 
   useEffect(() => {
-    setIsLoad(true);
+    setIsLoading(true);
 
     getTodos()
       .then(setTodos)
       .catch(error => {
         throw new Error(error.message);
       })
-      .finally(() => setIsLoad(false));
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -43,7 +43,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoad && <Loader />}
+              {isLoading && <Loader />}
               <TodoList />
             </div>
           </div>
