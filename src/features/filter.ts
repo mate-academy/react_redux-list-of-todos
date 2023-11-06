@@ -10,8 +10,7 @@ type SetTodoQuery = {
   payload: Status;
 };
 
-// eslint-disable-next-line
-type resetTodoQuery = {
+type ResetTodoQuery = {
   type: 'filterTodo/ResetQuery';
 };
 
@@ -25,7 +24,7 @@ const setQuery = (status: Status): SetTodoQuery => ({
   payload: status,
 });
 
-const resetQuery = (): resetTodoQuery => ({
+const resetQuery = (): ResetTodoQuery => ({
   type: 'filterTodo/ResetQuery',
 });
 
@@ -35,7 +34,7 @@ type State = {
   query: string,
   status: Status
 };
-type Action = SetTodoStatus | SetTodoQuery | resetTodoQuery;
+type Action = SetTodoStatus | SetTodoQuery | ResetTodoQuery;
 
 const filterReducer = (
   state: State = {

@@ -37,7 +37,7 @@ export const TodoList: React.FC = () => {
         break;
 
       default:
-        throw new Error('There is an issue with todo status type definition');
+        return todos;
     }
 
     if (query) {
@@ -49,11 +49,9 @@ export const TodoList: React.FC = () => {
     return copyTodo;
   }, [todos, status, query]);
 
-
-  // eslint-disable-next-line
   return (
     <>
-      {filteredTodos.length === 0 && (
+      {!filteredTodos.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -76,7 +74,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {filteredTodos.map((todo) => (
+          {filteredTodos?.map((todo) => (
             <tr
               data-cy="todo"
               key={todo.id}

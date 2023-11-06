@@ -1,18 +1,17 @@
 import { Todo } from '../types/Todo';
 
-// eslint-disable-next-line
-type setAction = {
+type SetAction = {
   type: 'todos/SET';
   payload: Todo[];
 };
 
-const setTodoAction = (todos: Todo[]): setAction => ({
+const setTodoAction = (todos: Todo[]): SetAction => ({
   type: 'todos/SET',
   payload: todos,
 });
 
 type State = Todo[];
-type Action = setAction;
+type Action = SetAction;
 
 export const actions = { setTodoAction };
 
