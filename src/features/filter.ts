@@ -10,7 +10,7 @@ type SetTodoQuery = {
   payload: Status;
 };
 
-     // eslint-disable-next-line
+// eslint-disable-next-line
 type resetTodoQuery = {
   type: 'filterTodo/ResetQuery';
 };

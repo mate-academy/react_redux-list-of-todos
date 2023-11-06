@@ -1,40 +1,10 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
-import { Status } from '../../types/Status';
 import { actions as currentTodoActions } from '../../features/currentTodo';
-
-function getVisibleTodos(todos: Todo[], query: string, status: Status) {
-  let copyTodo = [...todos];
-
-  switch (status) {
-    case 'active':
-      // eslint-disable-next-line
-      return copyTodo = copyTodo.filter((todo) => !todo.completed);
-
-    case 'completed':
-      // eslint-disable-next-line
-      return copyTodo = copyTodo.filter((todo) => todo.completed);
-
-    case 'all':
-      break;
-
-    default:
-      throw new Error('There is an issue with todo status type definition(');
-  }
-
-  if (query) {
-    // eslint-disable-next-line
-    copyTodo = copyTodo.filter((todo) => {
-      todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase().trim());
-    });
-  }
-
-  return copyTodo;
-}
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -47,16 +17,43 @@ export const TodoList: React.FC = () => {
     currentTodo,
   } = useAppSelector((state) => state);
 
-  const visibleTodos = getVisibleTodos(todos, query, status);
-
   const handleEye = (todo: Todo) => {
     dispatch(currentTodoActions.setTodo(todo));
   };
 
+  const filteredTodos = useMemo(() => {
+    let copyTodo = [...todos];
+
+    switch (status) {
+      case 'active':
+        copyTodo = copyTodo.filter((todo) => !todo.completed);
+        break;
+
+      case 'completed':
+        copyTodo = copyTodo.filter((todo) => todo.completed);
+        break;
+
+      case 'all':
+        break;
+
+      default:
+        throw new Error('There is an issue with todo status type definition');
+    }
+
+    if (query) {
+      copyTodo = copyTodo.filter((todo) => {
+        return todo.title.toLowerCase().includes(query.toLowerCase().trim());
+      });
+    }
+
+    return copyTodo;
+  }, [todos, status, query]);
+
+
   // eslint-disable-next-line
   return (
     <>
-      {visibleTodos.length = 0 && (
+      {filteredTodos.length === 0 && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -79,7 +76,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {visibleTodos.map((todo) => (
+          {filteredTodos.map((todo) => (
             <tr
               data-cy="todo"
               key={todo.id}
