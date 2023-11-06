@@ -8,18 +8,14 @@ import { actions as TodoActions } from '../../features/currentTodo';
 
 export const TodoModal = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [areLoadingUsers, setAreLoadingUsers] = useState(false);
 
   const dispatch = useDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    setAreLoadingUsers(true);
-
     if (selectedTodo) {
       getUser(selectedTodo.userId)
-        .then(setUser)
-        .finally(() => setAreLoadingUsers(false));
+        .then(setUser);
     }
   }, []);
 
@@ -27,7 +23,7 @@ export const TodoModal = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {areLoadingUsers ? (
+      {!user ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -62,8 +58,8 @@ export const TodoModal = () => {
 
               {' by '}
 
-              <a href={`mailto:${user?.email}`}>
-                {user?.name}
+              <a href={`mailto:${user.email}`}>
+                {user.name}
               </a>
             </p>
           </div>
