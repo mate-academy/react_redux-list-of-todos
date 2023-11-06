@@ -7,6 +7,7 @@ import { useAppSelector } from '../../app/hooks';
 export const TodoList = () => {
   const dispatch = useDispatch();
   const todos = useAppSelector(state => state.todos);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
   const { query, status } = useAppSelector(state => state.filter);
 
   const getVisibleTodos = () => {
@@ -74,7 +75,10 @@ export const TodoList = () => {
                 onClick={() => dispatch(actions.setTodo(todo))}
               >
                 <span className="icon">
-                  <i className="far fa-eye" />
+                  <i className={todo === selectedTodo
+                    ? 'far fa-eye-slash'
+                    : 'far fa-eye'}
+                  />
                 </span>
               </button>
             </td>

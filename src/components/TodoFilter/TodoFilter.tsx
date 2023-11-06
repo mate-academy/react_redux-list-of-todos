@@ -5,7 +5,7 @@ import { actions } from '../../features/filter';
 
 export const TodoFilter = () => {
   const dispatch = useDispatch();
-  const filter = useAppSelector(state => state.filter);
+  const { query, status } = useAppSelector(state => state.filter);
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => (
     dispatch(actions.setStatus(event.target.value as Status))
@@ -21,7 +21,7 @@ export const TodoFilter = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={filter.status}
+            value={status}
             onChange={handleSelect}
           >
             <option value={Status.all}>All</option>
@@ -37,7 +37,7 @@ export const TodoFilter = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={filter.query}
+          value={query}
           onChange={handleQueryChange}
         />
         <span className="icon is-left">
@@ -45,7 +45,7 @@ export const TodoFilter = () => {
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {filter && (
+          {query && (
             <button
               data-cy="clearSearchButton"
               type="button"
