@@ -32,7 +32,7 @@ export const TodoModal: React.FC<Props> = ({ todo, handleDeleteClick }) => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {(user === null) ? (
+      {!user ? (
         <Loader />
       ) : (
         <div className="modal-card">

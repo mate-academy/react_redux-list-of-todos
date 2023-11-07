@@ -42,7 +42,7 @@ export const TodoFilter: React.FC<Props> = ({
         {query && (
           <span
             className="icon is-right"
-            style={{ pointerEvents: 'all' }}
+            style={{ pointerEvents: Status.ALL }}
           >
             {/* eslint-disable-next-line */}
             <button

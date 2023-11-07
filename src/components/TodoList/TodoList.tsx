@@ -2,6 +2,7 @@ import React from 'react';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { currentTodoActions } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 type Props = {
   todos: Todo[],
@@ -22,8 +23,8 @@ export const TodoList: React.FC<Props> = ({
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
-  if (filter !== 'all') {
-    const completed = filter === 'completed';
+  if (filter !== Status.ALL) {
+    const completed = filter === Status.COMPLETED;
 
     filteredTodos = filteredTodos.filter(
       todo => todo.completed === completed,
@@ -38,6 +39,11 @@ export const TodoList: React.FC<Props> = ({
 
   const selectButtonClick = (todo: Todo) => {
     dispatch(currentTodoActions.setTodo(todo));
+  };
+
+  const handleSelectButton = (todo: Todo) => {
+    onChosenTodo(todo);
+    selectButtonClick(todo);
   };
 
   return (
@@ -86,10 +92,7 @@ export const TodoList: React.FC<Props> = ({
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => {
-                    onChosenTodo(todo);
-                    selectButtonClick(todo);
-                  }}
+                  onClick={() => handleSelectButton(todo)}
                 >
                   <span className="icon">
                     <i className={`far fa-eye${higtlightEye ? '-slash' : ''}`} />

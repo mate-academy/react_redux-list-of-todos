@@ -37,7 +37,7 @@ type Filter = {
 
 const initialState: Filter = {
   query: '',
-  status: 'all',
+  status: Status.ALL,
 };
 
 const filterReducer = (
