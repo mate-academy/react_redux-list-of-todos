@@ -7,7 +7,7 @@ type SetTodoStatus = {
 
 type SetTodoQuery = {
   type: 'filterTodo/Query';
-  payload: Status;
+  payload: string;
 };
 
 type ResetTodoQuery = {
@@ -19,9 +19,9 @@ const setStatus = (status: Status): SetTodoStatus => ({
   payload: status,
 });
 
-const setQuery = (status: Status): SetTodoQuery => ({
+const setQuery = (query: string): SetTodoQuery => ({
   type: 'filterTodo/Query',
-  payload: status,
+  payload: query,
 });
 
 const resetQuery = (): ResetTodoQuery => ({

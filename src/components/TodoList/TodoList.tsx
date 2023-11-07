@@ -22,31 +22,18 @@ export const TodoList: React.FC = () => {
   };
 
   const filteredTodos = useMemo(() => {
-    let copyTodo = [...todos];
+    const isMatch = (title: string) => (query ? title.toLowerCase().includes(query.toLowerCase().trim()) : true);
 
-    switch (status) {
-      case 'active':
-        copyTodo = copyTodo.filter((todo) => !todo.completed);
-        break;
-
-      case 'completed':
-        copyTodo = copyTodo.filter((todo) => todo.completed);
-        break;
-
-      case 'all':
-        break;
-
-      default:
-        return todos;
-    }
-
-    if (query) {
-      copyTodo = copyTodo.filter((todo) => {
-        return todo.title.toLowerCase().includes(query.toLowerCase().trim());
-      });
-    }
-
-    return copyTodo;
+    return todos.filter(({ title, completed }) => {
+      switch (status) {
+        case 'active':
+          return !completed && isMatch(title);
+        case 'completed':
+          return completed && isMatch(title);
+        default:
+          return isMatch(title);
+      }
+    });
   }, [todos, status, query]);
 
   return (
@@ -105,7 +92,7 @@ export const TodoList: React.FC = () => {
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => handleEye(todo as Todo)}
+                  onClick={() => handleEye(todo)}
                 >
                   <span className="icon">
                     <i className="far fa-eye" />

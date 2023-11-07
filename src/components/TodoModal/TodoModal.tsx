@@ -17,6 +17,9 @@ export const TodoModal: React.FC = () => {
     if (currentTodo) {
       getUser(currentTodo.userId)
         .then(setUser)
+        .catch((error) => {
+          throw new Error('An error occurred while fetching the user:', error);
+        })
         .finally(() => setIsLoading(false));
     }
   }, []);
@@ -58,7 +61,6 @@ export const TodoModal: React.FC = () => {
                 {currentTodo?.completed
                   ? <strong className="has-text-success">Done</strong>
                   : (<strong className="has-text-danger">Planned</strong>)}
-                ()
                 {' by '}
                 <a href={`mailto:${user?.email}`}>{user?.name}</a>
               </p>
