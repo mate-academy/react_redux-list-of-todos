@@ -48,11 +48,13 @@ export const TodoFilter: React.FC = () => {
           value={query}
           onChange={handleChangeQuery}
         />
+
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+       {query &&(
+       <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
           <button
             data-cy="clearSearchButton"
@@ -60,7 +62,7 @@ export const TodoFilter: React.FC = () => {
             className="delete"
             onClick={handleReset}
           />
-        </span>
+        </span>)}
       </p>
     </form>
   );

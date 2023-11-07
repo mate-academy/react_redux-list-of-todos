@@ -16,6 +16,7 @@ export const TodoList: React.FC = () => {
     },
     currentTodo,
   } = useAppSelector((state) => state);
+  const selectedTodo = useAppSelector((state) => state.currentTodo);
 
   const handleEye = (todo: Todo) => {
     dispatch(currentTodoActions.setTodo(todo));
@@ -95,7 +96,12 @@ export const TodoList: React.FC = () => {
                   onClick={() => handleEye(todo)}
                 >
                   <span className="icon">
-                    <i className="far fa-eye" />
+                  <i
+                        className={classNames('far', {
+                          'fa-eye-slash': selectedTodo?.id === todo.id,
+                          'fa-eye': selectedTodo?.id !== todo.id,
+                        })}
+                      />
                   </span>
                 </button>
               </td>
