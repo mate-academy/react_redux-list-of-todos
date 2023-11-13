@@ -28,9 +28,9 @@ export const TodoFilter: React.FC = () => {
             onChange={hadnleSelectChange}
             value={sortType}
           >
-            <option value={SortType.ALL}>All</option>
-            <option value={SortType.ACTIVE}>Active</option>
-            <option value={SortType.COMPLETED}>Completed</option>
+            <option value={SortType.all}>All</option>
+            <option value={SortType.active}>Active</option>
+            <option value={SortType.completed}>Completed</option>
           </select>
         </span>
       </p>

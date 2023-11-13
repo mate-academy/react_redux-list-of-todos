@@ -9,17 +9,17 @@ export const getFilteredTodos = (
   let visibleTodos = [...todos];
 
   switch (sortType) {
-    case SortType.ACTIVE: {
+    case SortType.active: {
       visibleTodos = visibleTodos.filter(todo => todo.completed === false);
       break;
     }
 
-    case SortType.COMPLETED: {
+    case SortType.completed: {
       visibleTodos = visibleTodos.filter(todo => todo.completed);
       break;
     }
 
-    case SortType.ALL:
+    case SortType.all:
     default: {
       break;
     }

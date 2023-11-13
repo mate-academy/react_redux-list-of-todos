@@ -39,7 +39,7 @@ type State = { query: string, status: SortType };
 type Action = SetFilterAction | RemoveFilterAction;
 
 export const filterReducer = (
-  state: State = { query: '', status: SortType.ALL },
+  state: State = { query: '', status: SortType.all },
   action: Action,
 ) => {
   switch (action.type) {
