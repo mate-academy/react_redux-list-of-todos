@@ -1,17 +1,41 @@
-import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as actionsQuery } from '../../features/queryReducer';
+import { actions as actionsFilter } from '../../features/filterReducer';
+import { SortType } from '../../types/SortType';
 
 export const TodoFilter: React.FC = () => {
+  const { query } = useAppSelector((state) => state.query);
+  const { status } = useAppSelector((state) => state.status);
+
+  const dispatchQuery = useAppDispatch();
+  const dispatchStatus = useAppDispatch();
+
+  const handleSelectFilter = (event: React.ChangeEvent<HTMLSelectElement>) => (
+    dispatchStatus(actionsFilter.setStatus(event.target.value as SortType))
+  );
+
+  const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => (
+    dispatchQuery(actionsQuery.setQuery(event.target.value))
+  );
+
+  const handleResetQuery = () => (
+    dispatchQuery(actionsQuery.clearQuery())
+  );
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleSelectFilter}
+          >
+            {Object.values(SortType).map((selectedType) => (
+              <option key={selectedType} value={selectedType}>
+                {selectedType.charAt(0).toUpperCase() + selectedType.slice(1)}
+              </option>
+            ))}
           </select>
         </span>
       </p>
@@ -22,19 +46,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleResetQuery}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
