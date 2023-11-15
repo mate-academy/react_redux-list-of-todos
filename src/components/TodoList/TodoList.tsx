@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
-import { Status } from '../../types/Status';
+import { filterTodos } from '../../functions/filterTodos';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -17,35 +17,6 @@ export const TodoList: React.FC = () => {
   const handleOpenModal = (chosenTodo: Todo) => {
     dispatch(currentTodoActions.setTodo(chosenTodo));
   };
-
-  function filterTodos(
-    items: Todo[],
-    status: Status,
-    queryValue: string,
-  ) {
-    const filteredByStatus = items.filter(item => {
-      switch (status) {
-        case Status.Active:
-          return !item.completed;
-
-        case Status.Completed:
-          return item.completed;
-
-        case Status.All:
-        default:
-          return item;
-      }
-    });
-
-    if (queryValue.trim()) {
-      return filteredByStatus.filter(item => {
-        return item.title.toLowerCase()
-          .includes(queryValue?.trim().toLowerCase());
-      });
-    }
-
-    return filteredByStatus;
-  }
 
   const filteredTodos = useMemo(() => {
     return filterTodos(todos, currentStatus, currentQuery);
@@ -79,7 +50,10 @@ export const TodoList: React.FC = () => {
             const { id, title, completed } = todo;
 
             return (
-              <tr data-cy="todo">
+              <tr
+                key={id}
+                data-cy="todo"
+              >
                 <td className="is-vcentered">{id}</td>
                 <td className="is-vcentered">
                   {completed && (
