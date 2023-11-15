@@ -46,13 +46,11 @@ export const actions = {
 type State = { query: string, status: Status };
 type Action = SetStatus | RemoveStatus | ChangeQuery | ClearQuery;
 
-const defaultState: State = {
-  query: '',
-  status: Status.All,
-};
-
 const filterReducer = (
-  state: State = defaultState,
+  state: State = {
+    query: '',
+    status: Status.All,
+  },
   action: Action,
 ) => {
   switch (action.type) {
@@ -77,7 +75,7 @@ const filterReducer = (
         query: '',
       };
     default:
-      return defaultState;
+      return state;
   }
 };
 
