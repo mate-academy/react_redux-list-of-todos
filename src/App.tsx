@@ -45,7 +45,6 @@ export const App: React.FC = () => {
                 <TodoList />
               </div>
             )}
-
           </div>
         </div>
       </div>

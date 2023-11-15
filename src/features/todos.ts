@@ -7,7 +7,6 @@ type AddAction = {
 
 type Action = AddAction;
 
-// Define action creators
 const add = (todos: Todo[]): AddAction => ({
   type: 'todo/ADD',
   payload: todos,

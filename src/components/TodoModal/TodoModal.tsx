@@ -13,6 +13,7 @@ export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setLoading(true);
     if (currentTodo?.id) {
       getUser(currentTodo.userId)
         .then(setUser)
