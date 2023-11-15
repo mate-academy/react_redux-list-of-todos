@@ -5,7 +5,7 @@ import { actions as actionFilter } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const filter = useAppSelector(state => state.filter);
+  const query = useAppSelector(state => state.filter.query);
   const dispatch = useDispatch();
   const handleChangeSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(actionFilter.addStatus(event.target.value as Status));
@@ -21,10 +21,9 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={filter.status}
             onChange={handleChangeSelect}
           >
-            <option value="all">All </option>
+            <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
           </select>
@@ -35,7 +34,7 @@ export const TodoFilter: React.FC = () => {
         <input
           data-cy="searchInput"
           type="text"
-          value={filter.query}
+          value={query}
           className="input"
           placeholder="Search..."
           onChange={handleChangeQuery}
@@ -44,7 +43,7 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {filter.query.length > 0 && (
+        {query.length > 0 && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button

@@ -8,14 +8,15 @@ import { getPreparedTodos } from '../../utils/getPreparedTodos';
 
 export const TodoList: React.FC = () => {
   const todos:Todo[] = useAppSelector(state => state.todos);
-  const filter = useAppSelector(state => state.filter);
+  const status = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useDispatch();
   const visibleTodos = useMemo(() => {
-    return getPreparedTodos(todos, filter.status, filter.query);
-  }, [todos, filter.status, filter.query]);
+    return getPreparedTodos(todos, status, query);
+  }, [todos, status, query]);
 
-  const handleEye = (todo: Todo) => {
+  const handleChangeSelectTodo = (todo: Todo) => {
     dispatch(actions.setTodo(todo));
   };
 
@@ -62,7 +63,7 @@ export const TodoList: React.FC = () => {
                 data-cy="selectButton"
                 className="button"
                 type="button"
-                onClick={() => handleEye(todo)}
+                onClick={() => handleChangeSelectTodo(todo)}
               >
                 <span className="icon">
                   <i className={classNames(todo.id !== currentTodo?.id

@@ -3,13 +3,15 @@ import { useDispatch } from 'react-redux';
 import { getUser } from '../../api';
 import { useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/currentTodo';
+import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector((state: {
+    currentTodo: Todo | null; }) => state.currentTodo);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -56,10 +58,12 @@ export const TodoModal: React.FC = () => {
             </p>
 
             <p className="block" data-cy="modal-user">
-              {!currentTodo?.completed
-                ? (<strong className="has-text-success">Planned</strong>)
-                : (<strong className="has-text-danger">Done</strong>)}
-              {' by '}
+              <strong
+                className={`has-text-${currentTodo?.completed ? 'success' : 'danger'}`}
+              >
+                {currentTodo?.completed ? 'Done ' : 'Planned '}
+              </strong>
+              {'by '}
               {user && (
                 <a href={`mailto:${user.email}`}>
                   {user.name}

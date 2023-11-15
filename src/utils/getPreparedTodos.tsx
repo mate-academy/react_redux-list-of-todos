@@ -1,4 +1,3 @@
-// import { Status } from '../types/Status';
 import { Todo } from '../types/Todo';
 
 export function getPreparedTodos(
