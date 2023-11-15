@@ -14,7 +14,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
   const dispatch = useAppDispatch();
 
   return (
-    todos
+    todos.length
       ? (
         <table className="table is-narrow is-fullwidth">
           <thead>
