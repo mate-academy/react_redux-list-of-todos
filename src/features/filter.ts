@@ -1,5 +1,5 @@
 import { FiltersType } from 'types/Filters';
-import { Filters } from 'types/Filters.enum';
+import { CompletionStatus } from 'types/CompletionStatus.enum';
 
 type SetQueryAction = {
   type: 'filter/SET-QUERY'
@@ -11,8 +11,8 @@ type ClearQuery = {
 };
 
 type SelectFilter = {
-  type: 'filter/SELECT-FILTER',
-  payload: Filters,
+  type: 'filter/SELECT-COMPLETION-STATUS',
+  payload: CompletionStatus,
 };
 
 const setQuery = (query: string): SetQueryAction => ({
@@ -24,8 +24,8 @@ const clearQuery = (): ClearQuery => ({
   type: 'filter/CLEAR-QUERY',
 });
 
-const selectFilter = (filter: Filters): SelectFilter => ({
-  type: 'filter/SELECT-FILTER',
+const selectFilter = (filter: CompletionStatus): SelectFilter => ({
+  type: 'filter/SELECT-COMPLETION-STATUS',
   payload: filter,
 });
 
@@ -39,7 +39,7 @@ type Action = SetQueryAction | ClearQuery | SelectFilter;
 
 const initialState: FiltersType = {
   query: '',
-  filter: Filters.All,
+  filter: CompletionStatus.All,
 };
 
 const filterReducer
@@ -57,7 +57,7 @@ const filterReducer
         query: '',
       });
 
-    case 'filter/SELECT-FILTER':
+    case 'filter/SELECT-COMPLETION-STATUS':
       return ({
         ...filters,
         filter: action.payload,

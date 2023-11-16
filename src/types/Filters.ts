@@ -1,6 +1,6 @@
-import { Filters } from './Filters.enum';
+import { CompletionStatus } from './CompletionStatus.enum';
 
 export type FiltersType = {
   query: string,
-  filter: Filters
+  filter: CompletionStatus
 };

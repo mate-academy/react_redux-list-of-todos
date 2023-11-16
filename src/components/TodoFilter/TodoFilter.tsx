@@ -2,22 +2,19 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { actions as filterActions } from 'features/filter';
 
-import { Filters } from 'types/Filters.enum';
+import { CompletionStatus } from 'types/CompletionStatus.enum';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query, filter } = useAppSelector((state) => state.filter);
 
-  // prettier-ignore
   const setQuery = (searchData: string) => dispatch(
     filterActions.setQuery(searchData),
   );
-  // prettier-ignore
   const clearQuery = () => dispatch(
     filterActions.clearQuery(),
   );
-  // prettier-ignore
-  const setFilter = (currentFilter: Filters) => dispatch(
+  const setFilter = (currentFilter: CompletionStatus) => dispatch(
     filterActions.selectFilter(currentFilter),
   );
 
@@ -30,10 +27,12 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             value={filter}
-            onChange={(event) => setFilter(event.target.value as Filters)}
+            onChange={
+              (event) => setFilter(event.target.value as CompletionStatus)
+            }
             data-cy="statusSelect"
           >
-            {Object.entries(Filters).map(([key, value]) => (
+            {Object.entries(CompletionStatus).map(([key, value]) => (
               <option key={key} value={value}>
                 {key}
               </option>

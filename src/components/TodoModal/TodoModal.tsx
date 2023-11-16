@@ -12,13 +12,11 @@ type Props = {
 };
 
 export const TodoModal: React.FC<Props> = ({ todo }) => {
-  // prettier-ignore
   const {
     id, title, completed, userId,
   } = todo;
 
   const dispatch = useAppDispatch();
-  // prettier-ignore
   const removeTodo = () => dispatch(
     currentTodoActions.removeTodo(),
   );
@@ -58,8 +56,8 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
             {`Todo #${id}`}
           </div>
 
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
           <button
+            aria-label="close"
             onClick={removeTodo}
             type="button"
             className="delete"
