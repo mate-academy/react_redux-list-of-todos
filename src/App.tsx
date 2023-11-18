@@ -36,11 +36,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {
-                loading && (
-                  <Loader />
-                )
-              }
+              {loading && <Loader />}
 
               {!loading && !!todos.length && (
                 <TodoList />

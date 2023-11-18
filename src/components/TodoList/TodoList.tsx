@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
-import { StatusFilterSelect } from '../../enums/StatusFilterSelect';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as actionsCurrentTodo } from '../../features/currentTodo';
+import { filteringTodos } from '../../app/filter';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -9,25 +9,8 @@ export const TodoList: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
-
-  const filterTodos = useMemo(() => {
-    const filteredByTodos = todos.filter((todo) => {
-      const { completed } = todo;
-
-      switch (status) {
-        case StatusFilterSelect.ALL: return true;
-        case StatusFilterSelect.ACTIVE: return !completed;
-        case StatusFilterSelect.COMPLETED: return completed;
-        default: return true;
-      }
-    });
-
-    const filteredByQueryTodos = query
-      ? filteredByTodos.filter((todo) => todo.title
-        .toLowerCase().includes(query.toLowerCase())) : filteredByTodos;
-
-    return filteredByQueryTodos;
-  }, [query, status, todos]);
+  const filterTodos = useMemo(() => filteringTodos(todos, query, status),
+    [query, status, todos]);
 
   return (
     !filterTodos.length ? (
@@ -86,7 +69,7 @@ export const TodoList: React.FC = () => {
                   >
                     <span className="icon">
                       <i className={
-                        currentTodo && currentTodo.id === todo.id
+                        currentTodo?.id === todo.id
                           ? 'far fa-eye-slash'
                           : 'far fa-eye'
                       }

@@ -21,5 +21,4 @@ function get<T>(url: string): Promise<T> {
 
 export const getTodos = () => get<Todo[]>('/todos');
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const getUser = (userId: any) => get<User>(`/users/${userId}`);
+export const getUser = (userId: number) => get<User>(`/users/${userId}`);
