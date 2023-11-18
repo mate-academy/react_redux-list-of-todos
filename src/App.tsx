@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -14,14 +14,12 @@ import { actions as todosActions } from './features/todos';
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
-
-  const [isTodosLoaded, setIsTodosLoaded] = useState(false);
+  const todos = useAppSelector(state => state.todos);
 
   useEffect(() => {
     getTodos()
-      .then(todos => {
-        dispatch(todosActions.initTodosAction(todos));
-        setIsTodosLoaded(true);
+      .then(res => {
+        dispatch(todosActions.initTodosAction(res));
       });
   }, []);
 
@@ -37,7 +35,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!isTodosLoaded && <Loader />}
+              {!todos.length && <Loader />}
 
               <TodoList />
             </div>

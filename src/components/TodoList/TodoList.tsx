@@ -35,9 +35,11 @@ export const TodoList: React.FC = () => {
     });
   }, [todos, query, status]);
 
+  const isNoMatchingTodos = !!todos.length && !filterdTodos.length;
+
   return (
     <>
-      {!!todos.length && !filterdTodos.length && (
+      {isNoMatchingTodos && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
