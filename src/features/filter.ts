@@ -13,7 +13,12 @@ const AddQuery = (payload: string): AddQueryAction => (
   { type: 'filter/ADD_QUERY', payload });
 const ClearQuery = (): ClearQueryAction => ({ type: 'filter/CLEAR_QUERY' });
 
-const filterReducer = (filter: Filter, action: Action) => {
+const initialFilter: Filter = {
+  query: '',
+  status: 'all',
+};
+
+const filterReducer = (filter: Filter = initialFilter, action: Action) => {
   switch (action.type) {
     case 'filter/ADD_STATUS':
       return { ...filter, status: action.payload };
@@ -25,10 +30,7 @@ const filterReducer = (filter: Filter, action: Action) => {
       return { ...filter, query: '' };
 
     default:
-      return {
-        query: '',
-        status: 'all',
-      };
+      return filter;
   }
 };
 
