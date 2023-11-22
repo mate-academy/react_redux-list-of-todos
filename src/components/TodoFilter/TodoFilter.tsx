@@ -1,6 +1,19 @@
 import React from 'react';
+import { useAppDispatch } from '../../app/hooks';
+import { actions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+
+  const handleSelectStatus = (isDone: Status) => {
+    dispatch(actions.isDoneAction(isDone));
+  };
+
+  const handleQuery = (query: string) => {
+    dispatch(actions.queryAction(query));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +21,10 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            onChange={(e) => handleSelectStatus(e.target.value as Status)}
+            data-cy="statusSelect"
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -18,6 +34,7 @@ export const TodoFilter: React.FC = () => {
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
+          onChange={(e) => handleQuery(e.target.value)}
           data-cy="searchInput"
           type="text"
           className="input"
