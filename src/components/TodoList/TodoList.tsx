@@ -1,7 +1,4 @@
-/* eslint-disable no-console */
-/* eslint-disable max-len */
 import React from 'react';
-// import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
@@ -78,7 +75,12 @@ export const TodoList: React.FC = () => {
                 </td>
 
                 <td className="has-text-right is-vcentered">
-                  <button data-cy="selectButton" className="button" onClick={() => handleSelect(todo)} type="button">
+                  <button
+                    data-cy="selectButton"
+                    className="button"
+                    onClick={() => handleSelect(todo)}
+                    type="button"
+                  >
                     <span className="icon">
                       {modalTodo === todo
                         ? <i className="far fa-eye-slash" />

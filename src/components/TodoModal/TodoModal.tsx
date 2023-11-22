@@ -30,7 +30,6 @@ export const TodoModal: React.FC = () => {
 
     fetchData();
 
-    // Cleanup function to cancel any ongoing asynchronous tasks
     return () => {
       isMounted = false;
     };

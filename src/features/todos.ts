@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Todo } from '../types/Todo';
 
 const LOAD = 'todos/load';
