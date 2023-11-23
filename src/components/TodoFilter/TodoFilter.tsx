@@ -1,14 +1,47 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { actions as filterActions } from '../../features/filter';
+import { useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
+
+  const handleChangeStatus = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const selectedValue: Status = event.target.value as Status;
+
+    dispatch(filterActions.setStatus(selectedValue));
+  };
+
+  const handleChangeQuery = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    dispatch(filterActions.setQuery(event.target.value));
+  };
+
+  const reset = () => {
+    dispatch(filterActions.setQuery(''));
+    dispatch(filterActions.setStatus('all'));
+  };
+
   return (
     <form
       className="field has-addons"
-      onSubmit={event => event.preventDefault()}
+      onSubmit={(event) => {
+        event.preventDefault();
+      }}
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            onChange={handleChangeStatus}
+            value={status}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +55,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleChangeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -33,6 +68,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={reset}
           />
         </span>
       </p>
