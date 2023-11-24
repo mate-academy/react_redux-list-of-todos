@@ -13,6 +13,7 @@ import { getTodos } from './api';
 import { actions as todosAction } from './features/todos';
 import { filterAndSortTodos } from './services/Filter';
 import { Todo } from './types/Todo';
+import { ErrorNotification } from './components/ErrorNotification/ErrorNotification';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,20 +21,20 @@ export const App: React.FC = () => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const { query, status } = useAppSelector(state => state.filter);
 
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasErrorMessage, setHasErrorMessage] = useState('');
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
-    setLoading(true);
-    setErrorMessage('');
+    setIsLoading(true);
+    setHasErrorMessage('');
 
     getTodos()
       .then(date => {
         dispatch(todosAction.setTodos(date));
       })
-      .catch(() => setErrorMessage('Try again later'))
-      .finally(() => setLoading(false));
+      .catch(() => setHasErrorMessage('Try again later'))
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
@@ -52,20 +53,16 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loading && (<Loader />)}
+              {isLoading && (<Loader />)}
 
-              {!loading && !errorMessage && (
+              {!isLoading && !hasErrorMessage && (
                 <TodoList
                   todos={filteredTodos}
-                  loading={loading}
+                  isloading={isLoading}
                 />
               )}
 
-              {!!errorMessage && (
-                <p className="notification is-danger">
-                  {errorMessage}
-                </p>
-              )}
+              {!!hasErrorMessage && <ErrorNotification errorMessage={hasErrorMessage} />}
             </div>
           </div>
         </div>

@@ -8,12 +8,12 @@ import { actions as currentTodoActions } from '../../features/currentTodo';
 
 type Props = {
   todos: Todo[] | null,
-  loading: boolean,
+  isloading: boolean,
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
-  loading,
+  isloading,
 }) => {
   const dispatch = useDispatch();
   const selected = useAppSelector(state => state.currentTodo);
@@ -24,7 +24,7 @@ export const TodoList: React.FC<Props> = ({
 
   return (
     <>
-      {!todos?.length && !loading ? (
+      {!todos?.length && !isloading ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -46,26 +46,28 @@ export const TodoList: React.FC<Props> = ({
           </thead>
 
           <tbody>
-            {todos?.map(todo => (
+            {todos?.map(({
+              id, completed, title, userId,
+            }) => (
               <tr
-                key={todo.id}
+                key={id}
                 data-cy="todo"
                 className={cn({ 'has-background-info-light': selected })}
               >
-                <td className="is-vcentered">{todo.id}</td>
+                <td className="is-vcentered">{id}</td>
                 <td className="is-vcentered">
                   <span className="icon" data-cy="iconCompleted">
-                    {todo.completed && (
+                    {completed && (
                       <i className="fas fa-check" />
                     )}
                   </span>
                 </td>
                 <td className="is-vcentered is-expanded">
                   <p className={
-                    todo.completed ? 'has-text-success' : 'has-text-danger'
+                    completed ? 'has-text-success' : 'has-text-danger'
                   }
                   >
-                    {todo.title}
+                    {title}
                   </p>
                 </td>
                 <td className="has-text-right is-vcentered">
@@ -73,12 +75,14 @@ export const TodoList: React.FC<Props> = ({
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => onSelectedTodo(todo)}
+                    onClick={() => onSelectedTodo({
+                      id, completed, title, userId,
+                    })}
                   >
                     <span className="icon">
                       <i className={cn('far', {
-                        'fa-eye-slash': selected?.id === todo.id,
-                        'far fa-eye': selected !== todo,
+                        'fa-eye-slash': selected?.id === id,
+                        'far fa-eye': selected?.id !== id,
                       })}
                       />
                     </span>
