@@ -15,12 +15,13 @@ import { actions as todoActions } from './features/todos';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  const allToodo = useAppSelector(state => state.todos);
-  const setAllToodo = (todos: Todo[]) => dispatch(todoActions.add(todos));
+  const allTodo = useAppSelector(state => state.todos);
+  const setAllTodo = (todos: Todo[]) => dispatch(todoActions.add(todos));
   const formItems = useAppSelector(state => state.filter);
 
-  const [filterToodo, setFilterToodo] = useState(allToodo);
-  const [visibleToodo, setVisibleToodo] = useState(filterToodo);
+  const [isLoading, setIsLoading] = useState(false);
+  const [filterTodo, setFilterTodo] = useState(allTodo);
+  const [visibleTodo, setVisibleTodo] = useState(filterTodo);
   const [selectUserId, setSelectUserId] = useState(0);
   const [selectTodoId, setSelectTodoId] = useState(0);
   const selectItems = (UserId: number, todoId: number) => {
@@ -29,36 +30,40 @@ export const App: React.FC = () => {
   };
 
   const handleSelect = () => {
-    switch (true) {
-      case formItems.statusSelect === 'active':
-        setFilterToodo(allToodo.filter(todo => !todo.completed));
+    switch (formItems.statusSelect) {
+      case 'active':
+        setFilterTodo(allTodo.filter(todo => !todo.completed));
         break;
 
-      case formItems.statusSelect === 'completed':
-        setFilterToodo(allToodo.filter(todo => todo.completed));
+      case 'completed':
+        setFilterTodo(allTodo.filter(todo => todo.completed));
         break;
 
       default:
-        setFilterToodo(allToodo);
+        setFilterTodo(allTodo);
     }
   };
 
   const handleSearch = () => {
-    setVisibleToodo(filterToodo.filter(todo => todo.title.toLocaleLowerCase()
-      .includes(formItems.input.toLocaleLowerCase())));
+    setVisibleTodo(filterTodo.filter(todo => todo.title.toLocaleLowerCase().trim()
+      .includes(formItems.input.toLocaleLowerCase().trim())));
   };
 
   useEffect(() => {
-    getTodos().then(res => setAllToodo(res));
+    setIsLoading(true);
+
+    getTodos()
+      .then(res => setAllTodo(res))
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
     handleSelect();
-  }, [formItems, allToodo]);
+  }, [formItems, allTodo]);
 
   useEffect(() => {
     handleSearch();
-  }, [filterToodo, formItems]);
+  }, [filterTodo, formItems]);
 
   return (
     <>
@@ -72,13 +77,21 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {allToodo.length !== 0 ? (
-                <TodoList
-                  todos={visibleToodo}
-                  selectTodo={selectTodoId}
-                  selectItems={selectItems}
-                />
-              ) : <Loader />}
+              {isLoading ? <Loader /> : (
+                <>
+                  {visibleTodo.length ? (
+                    <TodoList
+                      todos={visibleTodo}
+                      selectTodo={selectTodoId}
+                      selectItems={selectItems}
+                    />
+                  ) : (
+                    <p className="notification is-warning">
+                      There are no todos matching current filter criteria
+                    </p>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
