@@ -1,17 +1,21 @@
 import { Filter } from '../types/Filter';
-import { OptionValue } from '../types/OptionValue';
+import { Status } from '../types/Status';
 import { Todo } from '../types/Todo';
 
 export const getFilteredTodos = (todos: Todo[], filter: Filter) => {
-  if (filter.status === OptionValue.Active) {
-    return todos.filter(todo => todo.title.toLowerCase().includes(filter.query)
+  const { status, query } = filter;
+
+  const trimedQuery = query.toLowerCase().trim();
+
+  if (status === Status.Active) {
+    return todos.filter(todo => todo.title.toLowerCase().includes(trimedQuery)
       && todo.completed === false);
   }
 
-  if (filter.status === OptionValue.Completed) {
-    return todos.filter(todo => todo.title.toLowerCase().includes(filter.query)
+  if (status === Status.Completed) {
+    return todos.filter(todo => todo.title.toLowerCase().includes(trimedQuery)
       && todo.completed === true);
   }
 
-  return todos.filter(todo => todo.title.toLowerCase().includes(filter.query));
+  return todos.filter(todo => todo.title.toLowerCase().includes(trimedQuery));
 };

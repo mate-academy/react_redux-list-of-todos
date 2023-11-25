@@ -1,9 +1,9 @@
 import { Filter } from '../types/Filter';
-import { OptionValue } from '../types/OptionValue';
+import { Status } from '../types/Status';
 
 type SetStatus = {
   type: 'filter/SET_STATUS';
-  payload: OptionValue;
+  payload: Status;
 };
 
 type SetQuery = {
@@ -15,7 +15,7 @@ type ResetFilterQuery = {
   type: 'filter/RESET_QUERY',
 };
 
-const setStatus = (value: OptionValue): SetStatus => ({
+const setStatus = (value: Status): SetStatus => ({
   type: 'filter/SET_STATUS',
   payload: value,
 });
@@ -36,13 +36,13 @@ type Action = SetStatus | SetQuery | ResetFilterQuery;
 const filterReducer = (
   filter: Filter = {
     query: '',
-    status: OptionValue.All,
+    status: Status.All,
   },
   action: Action,
 ): Filter => {
   switch (action.type) {
     case 'filter/SET_QUERY':
-      return { ...filter, query: action.payload.toLowerCase() };
+      return { ...filter, query: action.payload };
 
     case 'filter/SET_STATUS':
       return { ...filter, status: action.payload };

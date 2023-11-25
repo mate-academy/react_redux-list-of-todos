@@ -1,3 +1,3 @@
-import { OptionValue } from './OptionValue';
+import { Status } from './Status';
 
-export type Filter = { query: string, status: OptionValue };
+export type Filter = { query: string, status: Status };
