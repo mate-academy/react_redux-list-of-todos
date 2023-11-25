@@ -14,9 +14,7 @@ export const TodoFilter: React.FC = () => {
   }
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = event.target.value.trimStart();
-
-    dispatch(filterActions.setQuery(value));
+    dispatch(filterActions.setQuery(event.target.value));
   }
 
   function handleCloseSearch() {

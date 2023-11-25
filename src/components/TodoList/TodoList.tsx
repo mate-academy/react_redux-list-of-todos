@@ -35,7 +35,7 @@ export const TodoList: React.FC = () => {
     }
 
     if (query.trim()) {
-      preparedTodos = preparedTodos.filter((todo) => todo.title.toLowerCase().includes(query.toLowerCase()));
+      preparedTodos = preparedTodos.filter((todo) => todo.title.toLowerCase().trim().includes(query.toLowerCase().trim()));
     }
 
     return preparedTodos;
