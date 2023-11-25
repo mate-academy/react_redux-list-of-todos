@@ -1,6 +1,24 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const handleChangeSelected = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => (
+    dispatch(actions.setStatus(event.target.value as Status))
+  );
+  const { query } = useAppSelector(state => state.filter);
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(actions.setQuery(event.target.value));
+  };
+
+  const handleQueryClear = () => {
+    dispatch(actions.setQuery(''));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +26,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" onChange={handleChangeSelected}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +40,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -33,6 +53,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={handleQueryClear}
           />
         </span>
       </p>
