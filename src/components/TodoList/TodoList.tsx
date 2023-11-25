@@ -13,7 +13,8 @@ export const TodoList: React.FC = () => {
     let todosToFilter = [...todos];
 
     if (text) {
-      todosToFilter = todosToFilter.filter(todo => todo.title.includes(text));
+      todosToFilter = todosToFilter.filter(todo => todo.title.toLowerCase()
+        .includes(text.toLowerCase()));
     }
 
     switch (isDone) {
@@ -32,9 +33,11 @@ export const TodoList: React.FC = () => {
     dispatch(actions.setTodo(todo));
   };
 
+  const filteredTodos = filterTodos(query, status, allTodos);
+
   return (
     <>
-      {allTodos.length > 0 ? (
+      {filteredTodos.length > 0 ? (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -52,7 +55,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {filterTodos(query, status, allTodos).map(todo => (
+            {filteredTodos.map(todo => (
               <tr key={todo.id} data-cy="todo">
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
