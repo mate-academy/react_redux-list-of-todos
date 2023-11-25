@@ -6,7 +6,8 @@ import { getFilteredTodos } from '../../utils/services';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const { filter, todos, currentTodo } = useAppSelector(state => state);
+  const { filter, currentTodo } = useAppSelector(state => state);
+  const { todos } = useAppSelector(state => state.todos);
   const dispatch = useDispatch();
 
   const [filteredTodos, setFilteredTodos] = useState(todos);

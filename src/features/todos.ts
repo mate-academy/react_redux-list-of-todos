@@ -1,8 +1,24 @@
 import { Todo } from '../types/Todo';
 
+type TodosState = {
+  todos: Todo[],
+  isLoading: boolean,
+  error: string,
+};
+
 type SetTodosAction = {
   type: 'todos/SET';
   payload: Todo[];
+};
+
+type SetLoadingAction = {
+  type: 'todos/LOADING',
+  payload: boolean,
+};
+
+type SetErrorAction = {
+  type: 'todos/ERROR',
+  payload: string,
 };
 
 const setTodos = (todos: Todo[]): SetTodosAction => ({
@@ -10,20 +26,40 @@ const setTodos = (todos: Todo[]): SetTodosAction => ({
   payload: todos,
 });
 
-export const actions = { setTodos };
+const setLoading = (value: boolean): SetLoadingAction => ({
+  type: 'todos/LOADING',
+  payload: value,
+});
 
-type Action = SetTodosAction;
+const setError = (value: string): SetErrorAction => ({
+  type: 'todos/ERROR',
+  payload: value,
+});
+
+export const actions = { setTodos, setLoading, setError };
+
+type Action = SetTodosAction | SetLoadingAction | SetErrorAction;
 
 const todosReducer = (
-  todos: Todo[] = [],
+  todosState: TodosState = {
+    todos: [],
+    isLoading: false,
+    error: '',
+  },
   action: Action,
-): Todo[] => {
+): TodosState => {
   switch (action.type) {
     case 'todos/SET':
-      return action.payload;
+      return { ...todosState, todos: action.payload };
+
+    case 'todos/LOADING':
+      return { ...todosState, isLoading: action.payload };
+
+    case 'todos/ERROR':
+      return { ...todosState, error: action.payload };
 
     default:
-      return todos;
+      return todosState;
   }
 };
 

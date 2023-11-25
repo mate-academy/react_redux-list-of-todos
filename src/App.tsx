@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -12,23 +12,21 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const todos = useAppSelector(state => state.todos);
+  const { todos, isLoading, error } = useAppSelector(state => state.todos);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
+    dispatch(todosActions.setLoading(true));
 
     getTodos()
       .then(todosFromServer => dispatch(todosActions.setTodos(todosFromServer)))
-      .catch(() => setIsError(true))
-      .finally(() => setIsLoading(false));
+      .catch((err) => dispatch(todosActions.setError(err)))
+      .finally(() => dispatch(todosActions.setLoading(false)));
   }, []);
 
-  const hasError = !isLoading && isError;
-  const hasTodoList = !isLoading && !isError && todos.length;
+  const hasError = !isLoading && !!error.length;
+  const hasTodoList = !isLoading && !error.length && !!todos.length;
 
   return (
     <>
