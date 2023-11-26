@@ -8,14 +8,14 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
 type Props = {
-  selectUser: number
-  selectTodo: number,
+  selectedUser: number
+  selectedTodo: number,
   selectItems: (UserId: number, todoId: number) => void,
 };
 
 export const TodoModal: React.FC<Props> = ({
-  selectUser,
-  selectTodo,
+  selectedUser,
+  selectedTodo,
   selectItems,
 }) => {
   const dispatch = useAppDispatch();
@@ -37,9 +37,9 @@ export const TodoModal: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    getUser(selectUser).then(res => setUser(res));
-    getTodos().then(res => setTodo(res.find(el => el.id === selectTodo)));
-  }, [selectUser]);
+    getUser(selectedUser).then(setUser);
+    getTodos().then(res => setTodo(res.find(el => el.id === selectedTodo)));
+  }, [selectedUser]);
 
   return (
     <div className="modal is-active" data-cy="modal">

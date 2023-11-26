@@ -13,6 +13,8 @@ import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todoActions } from './features/todos';
 
+import { StatusEnum } from './enums/StatusEnum';
+
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const allTodo = useAppSelector(state => state.todos);
@@ -22,20 +24,20 @@ export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [filterTodo, setFilterTodo] = useState(allTodo);
   const [visibleTodo, setVisibleTodo] = useState(filterTodo);
-  const [selectUserId, setSelectUserId] = useState(0);
-  const [selectTodoId, setSelectTodoId] = useState(0);
+  const [selectedUserId, setSelectedUserId] = useState(0);
+  const [selectedTodoId, setSelectedTodoId] = useState(0);
   const selectItems = (UserId: number, todoId: number) => {
-    setSelectUserId(UserId);
-    setSelectTodoId(todoId);
+    setSelectedUserId(UserId);
+    setSelectedTodoId(todoId);
   };
 
   const handleSelect = () => {
     switch (formItems.statusSelect) {
-      case 'active':
+      case StatusEnum.active:
         setFilterTodo(allTodo.filter(todo => !todo.completed));
         break;
 
-      case 'completed':
+      case StatusEnum.completed:
         setFilterTodo(allTodo.filter(todo => todo.completed));
         break;
 
@@ -82,7 +84,7 @@ export const App: React.FC = () => {
                   {visibleTodo.length ? (
                     <TodoList
                       todos={visibleTodo}
-                      selectTodo={selectTodoId}
+                      selectedTodo={selectedTodoId}
                       selectItems={selectItems}
                     />
                   ) : (
@@ -97,10 +99,10 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {selectUserId && (
+      {selectedUserId && (
         <TodoModal
-          selectUser={selectUserId}
-          selectTodo={selectTodoId}
+          selectedUser={selectedUserId}
+          selectedTodo={selectedTodoId}
           selectItems={selectItems}
         />
       )}

@@ -4,13 +4,13 @@ import { Todo } from '../../types/Todo';
 
 type Props = {
   todos: Todo[];
-  selectTodo: number,
+  selectedTodo: number,
   selectItems: (UserId: number, todoId: number) => void,
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
-  selectTodo,
+  selectedTodo,
   selectItems,
 }) => {
   return (
@@ -34,7 +34,7 @@ export const TodoList: React.FC<Props> = ({
             data-cy="todo"
             key={todo.id}
             className={classNames({
-              'has-background-info-light': todo.id === selectTodo,
+              'has-background-info-light': todo.id === selectedTodo,
             })}
           >
             <td className="is-vcentered">{todo.id}</td>
@@ -56,7 +56,7 @@ export const TodoList: React.FC<Props> = ({
               </p>
             </td>
             <td className="has-text-right is-vcentered">
-              {todo.id !== selectTodo ? (
+              {todo.id !== selectedTodo ? (
                 <button
                   data-cy="selectButton"
                   className="button"

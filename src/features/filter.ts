@@ -1,3 +1,4 @@
+import { StatusEnum } from '../enums/StatusEnum';
 import { Form } from '../types/Form';
 
 type StatusSelectAction = { type: 'features/STATUS'; payload: string };
@@ -15,7 +16,7 @@ export const actions = {
 
 const initialFilter = {
   input: '',
-  statusSelect: 'all',
+  statusSelect: StatusEnum.all,
 };
 
 const filterReducer = (filter: Form = initialFilter, action: Action) => {
