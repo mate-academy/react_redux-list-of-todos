@@ -40,7 +40,7 @@ export const App: React.FC = () => {
               {(loading && !currentTodo) && (
                 <Loader />
               )}
-              {todos.length !== 0 && (
+              {!!todos.length && (
                 <TodoList />
               )}
             </div>
