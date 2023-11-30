@@ -36,7 +36,7 @@ export const TodoList: React.FC = () => {
           <tbody>
 
             {filteredTodos.map(todo => (
-              <TodoItem todo={todo} />
+              <TodoItem todo={todo} key={todo.id} />
             ))}
           </tbody>
         </table>
