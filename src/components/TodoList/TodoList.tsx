@@ -72,7 +72,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {filteredTodos.length && filteredTodos.map((todo) => (
+            {!!filteredTodos.length && filteredTodos.map((todo) => (
               <tr
                 data-cy="todo"
                 key={todo.id}
