@@ -30,26 +30,11 @@ export const TodoList: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
   const { status, query } = filter;
 
-  // const filteredTodos = useMemo(() => {
-  //   return todos.filter(todo => {
-  //     switch (status) {
-  //       case 'all':
-  //         return true;
-  //       case 'active':
-  //         return !todo.completed;
-  //       case 'completed':
-  //         return todo.completed;
-  //       default:
-  //         return true;
-  //     }
-  //   }).filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
-  // }, [todos, status, query]);
-
   const filteredTodos = useMemo(() => {
     let preparedTodos = [...todos];
 
     preparedTodos = preparedTodos.filter(todo => {
-      switch(status) {
+      switch (status) {
         case 'all':
           return preparedTodos;
         case 'active':
@@ -59,11 +44,10 @@ export const TodoList: React.FC = () => {
         default:
           return preparedTodos;
       }
-    })
+    });
 
     if (query) {
-      preparedTodos = preparedTodos.filter(todo =>
-        todo.title.toLowerCase().includes(query.toLowerCase()));
+      preparedTodos = preparedTodos.filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
     }
 
     return preparedTodos;
