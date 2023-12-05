@@ -1,26 +1,47 @@
-/* eslint-disable max-len */
-import React, { useEffect } from 'react';
-import 'bulma/css/bulma.css';
+import React, {
+  useState,
+  useMemo,
+  useEffect,
+  useContext,
+} from 'react';
 import '@fortawesome/fontawesome-free/css/all.css';
+import 'bulma/css/bulma.css';
 
-import { useAppDispatch, useAppSelector } from './app/hooks';
+import {
+  TodoList,
+  TodoFilter,
+  TodoModal,
+  Loader,
+} from './components';
+import { getFilteredTodos } from './helpers/getFilteredTodos';
+import { Todo, TodoStatus } from './types';
 import { getTodos } from './api';
-import { actions as TodosActions } from './features/todos';
-
-import { TodoList } from './components/TodoList';
-import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
-import { Loader } from './components/Loader';
+import { TodoContext } from './TodoContext';
 
 export const App: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const [todoItems, setTodoItems] = useState<Todo[]>([]);
+  const [filterByCategory, setFilterByCategory] = useState(TodoStatus.All);
+  const [isLoading, setIsLoading] = useState(false);
+  const [query, setQuery] = useState('');
+
+  const visibleTodos = useMemo(() => getFilteredTodos(
+    filterByCategory,
+    query,
+    todoItems,
+  ), [query, filterByCategory, todoItems]);
 
   useEffect(() => {
+    setIsLoading(true);
     getTodos()
-      .then(data => dispatch(TodosActions.setTodos(data)));
+      .then(setTodoItems)
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.warn(error);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
+
+  const { selectedTodo } = useContext(TodoContext);
 
   return (
     <>
@@ -30,19 +51,28 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter />
+              <TodoFilter
+                selectCategory={setFilterByCategory}
+                filter={filterByCategory}
+                setQuery={setQuery}
+                query={query}
+              />
             </div>
 
             <div className="block">
-              {todos.length === 0
-                ? <Loader />
-                : <TodoList todos={todos} />}
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <TodoList todos={visibleTodos} />
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {currentTodo && <TodoModal />}
+      {selectedTodo && (
+        <TodoModal />
+      )}
     </>
   );
 };

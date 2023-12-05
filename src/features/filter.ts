@@ -1,10 +1,10 @@
-import { Status } from '../types/Status';
+import { TodoStatus } from '../types/TodoStatus';
 
-type ChangeStatusAction = { type: 'filter/SET'; payload: Status };
+type ChangeStatusAction = { type: 'filter/SET'; payload: TodoStatus };
 type ChangeQueryAction = { type: 'query/SET' | 'query/CLEAR'; payload: string };
 type Action = ChangeQueryAction | ChangeStatusAction;
-type State = { query: string; status: Status };
-const changeStatus = (status: Status): ChangeStatusAction => ({
+type State = { query: string; status: TodoStatus };
+const changeStatus = (status: TodoStatus): ChangeStatusAction => ({
   type: 'filter/SET',
   payload: status,
 });
@@ -20,7 +20,7 @@ export const clearQuery = (): ChangeQueryAction => ({
 });
 export const actions = { changeStatus, changeQuery, clearQuery };
 
-const initialFilter: State = { query: '', status: 'all' };
+const initialFilter: State = { query: '', status: TodoStatus.All };
 
 const filterReducer = (state: State = initialFilter, action: Action) => {
   switch (action.type) {
