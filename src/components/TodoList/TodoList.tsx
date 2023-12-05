@@ -30,24 +30,48 @@ export const TodoList: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
   const { status, query } = filter;
 
+  // const filteredTodos = useMemo(() => {
+  //   return todos.filter(todo => {
+  //     switch (status) {
+  //       case 'all':
+  //         return true;
+  //       case 'active':
+  //         return !todo.completed;
+  //       case 'completed':
+  //         return todo.completed;
+  //       default:
+  //         return true;
+  //     }
+  //   }).filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
+  // }, [todos, status, query]);
+
   const filteredTodos = useMemo(() => {
-    return todos.filter(todo => {
-      switch (status) {
+    let preparedTodos = [...todos];
+
+    preparedTodos = preparedTodos.filter(todo => {
+      switch(status) {
         case 'all':
-          return true;
+          return preparedTodos;
         case 'active':
           return !todo.completed;
         case 'completed':
           return todo.completed;
         default:
-          return true;
+          return preparedTodos;
       }
-    }).filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
+    })
+
+    if (query) {
+      preparedTodos = preparedTodos.filter(todo =>
+        todo.title.toLowerCase().includes(query.toLowerCase()));
+    }
+
+    return preparedTodos;
   }, [todos, status, query]);
 
   return (
     <>
-      { !filteredTodos.length && !isLoading && (
+      {!filteredTodos.length && !isLoading && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -55,7 +79,7 @@ export const TodoList: React.FC = () => {
 
       {isLoading && <Loader />}
 
-      {filteredTodos.length && !isLoading && (
+      {filteredTodos.length > 0 && !isLoading && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -72,7 +96,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {!!filteredTodos.length && filteredTodos.map((todo) => (
+            {filteredTodos.length && filteredTodos.map((todo) => (
               <tr
                 data-cy="todo"
                 key={todo.id}
