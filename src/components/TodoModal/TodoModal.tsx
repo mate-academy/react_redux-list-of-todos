@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Loader } from '../Loader';
-import { User } from '../../types';
-import { getUser } from '../../api';
+
 import { TodoContext } from '../../TodoContext';
+import { getUser } from '../../api';
+import { Loader } from '../Loader';
+
+import { User } from '../../types';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -21,7 +23,7 @@ export const TodoModal: React.FC = () => {
         })
         .finally(() => setIsLoading(false));
     }
-  }, []);
+  }, [selectedTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">

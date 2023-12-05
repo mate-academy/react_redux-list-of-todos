@@ -1,10 +1,12 @@
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
+
 import { App } from './App';
 import { TodoProvider } from './TodoContext';
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root') as HTMLElement);
+
+root.render(
   <TodoProvider>
     <App />
   </TodoProvider>,
-  document.getElementById('root'),
 );

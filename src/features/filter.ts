@@ -1,35 +1,32 @@
 import { TodoStatus } from '../types/TodoStatus';
 
-type ChangeStatusAction = { type: 'filter/SET'; payload: TodoStatus };
-type ChangeQueryAction = { type: 'query/SET' | 'query/CLEAR'; payload: string };
-type Action = ChangeQueryAction | ChangeStatusAction;
-type State = { query: string; status: TodoStatus };
-const changeStatus = (status: TodoStatus): ChangeStatusAction => ({
-  type: 'filter/SET',
+type SetStatusAction = { type: 'status/SET'; payload: TodoStatus };
+type SetQueryAction = { type: 'query/SET'; payload: string };
+type Action = SetStatusAction | SetQueryAction;
+
+const setStatus = (status: TodoStatus): SetStatusAction => ({
+  type: 'status/SET',
   payload: status,
 });
 
-export const changeQuery = (query: string): ChangeQueryAction => ({
+export const changeQuery = (query: string): SetQueryAction => ({
   type: 'query/SET',
   payload: query,
 });
 
-export const clearQuery = (): ChangeQueryAction => ({
-  type: 'query/CLEAR',
-  payload: '',
-});
-export const actions = { changeStatus, changeQuery, clearQuery };
+export const actions = {
+  setStatus,
+  changeQuery,
+};
 
-const initialFilter: State = { query: '', status: TodoStatus.All };
+const initialState = { status: TodoStatus.All, query: '' };
 
-const filterReducer = (state: State = initialFilter, action: Action) => {
+const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case 'filter/SET':
+    case 'status/SET':
       return { ...state, status: action.payload };
     case 'query/SET':
       return { ...state, query: action.payload };
-    case 'query/CLEAR':
-      return { ...state, query: '' };
     default:
       return state;
   }

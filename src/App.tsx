@@ -4,8 +4,6 @@ import React, {
   useEffect,
   useContext,
 } from 'react';
-import '@fortawesome/fontawesome-free/css/all.css';
-import 'bulma/css/bulma.css';
 
 import {
   TodoList,
@@ -14,9 +12,13 @@ import {
   Loader,
 } from './components';
 import { getFilteredTodos } from './helpers/getFilteredTodos';
-import { Todo, TodoStatus } from './types';
-import { getTodos } from './api';
 import { TodoContext } from './TodoContext';
+import { getTodos } from './api';
+
+import { Todo, TodoStatus } from './types';
+
+import '@fortawesome/fontawesome-free/css/all.css';
+import 'bulma/css/bulma.css';
 
 export const App: React.FC = () => {
   const [todoItems, setTodoItems] = useState<Todo[]>([]);
