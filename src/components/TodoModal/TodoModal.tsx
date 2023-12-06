@@ -10,7 +10,7 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(state => state.todos);
   const [user, setUser] = useState<User>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const selectedTodo = todos.find(todo => todo.id === currentTodo?.id);
 

@@ -10,7 +10,7 @@ import { Loader } from '../Loader';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector((state) => state.todos);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
@@ -80,7 +80,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {filteredTodos.length && filteredTodos.map((todo) => (
+            {!!filteredTodos.length && filteredTodos.map((todo) => (
               <tr
                 data-cy="todo"
                 key={todo.id}
