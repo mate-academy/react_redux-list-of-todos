@@ -68,7 +68,7 @@ export const TodoList: React.FC = () => {
           <thead>
             <tr>
               <th>#</th>
-              <th>
+              <th aria-label="title">
                 <span className="icon">
                   <i className="fas fa-check" />
                 </span>
@@ -104,7 +104,7 @@ export const TodoList: React.FC = () => {
                   </p>
                 </td>
 
-                <td className="has-text-right is-vcentered">
+                <td aria-label="title" className="has-text-right is-vcentered">
                   <button
                     data-cy="selectButton"
                     className="button"
