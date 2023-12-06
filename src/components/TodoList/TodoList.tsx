@@ -106,6 +106,7 @@ export const TodoList: React.FC = () => {
 
                 <td aria-label="title" className="has-text-right is-vcentered">
                   <button
+                    aria-label="button"
                     data-cy="selectButton"
                     className="button"
                     type="button"
