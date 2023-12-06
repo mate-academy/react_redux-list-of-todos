@@ -1,5 +1,6 @@
-/* eslint-disable max-len */
-import React, { useMemo } from 'react';
+import React, {
+  useMemo,
+} from 'react';
 import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';

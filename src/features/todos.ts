@@ -16,8 +16,10 @@ export const actions = { setTodos };
 
 const todosReducer = (todos: Todo[] = [], action: Action) => {
   switch (action.type) {
-    case 'todos/SET': return [...todos, ...action.payload];
-    default: return todos;
+    case
+      'todos/SET': return [...todos, ...action.payload];
+    default:
+      return todos;
   }
 };
 
