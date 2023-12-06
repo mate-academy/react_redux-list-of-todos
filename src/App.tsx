@@ -38,7 +38,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               {isLoading && <Loader />}
-              {!isLoading && !!todos.length && <TodoList />}
+              {!isLoading && !!todos.data.length && <TodoList />}
             </div>
           </div>
         </div>
