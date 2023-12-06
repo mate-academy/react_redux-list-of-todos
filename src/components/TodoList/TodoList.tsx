@@ -75,7 +75,7 @@ export const TodoList: React.FC = () => {
               </th>
 
               <th>Title</th>
-              <th> </th>
+              <th aria-label="title" />
             </tr>
           </thead>
 

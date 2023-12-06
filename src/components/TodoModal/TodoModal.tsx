@@ -17,7 +17,7 @@ export const TodoModal: React.FC = () => {
   useEffect(() => {
     if (selectedTodo) {
       setIsLoading(true);
-      getUser(selectedTodo.id)
+      getUser(selectedTodo.userId)
         .then(response => setUser(response))
         .finally(() => setIsLoading(false));
     }
