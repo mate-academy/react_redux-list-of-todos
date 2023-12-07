@@ -10,11 +10,6 @@ type ActionQuery = {
   payload: string;
 };
 
-// type ActionDone = {
-//   type: 'filter/done';
-//   payload: Status;
-// };
-
 type ActionClear = {
   type: 'query/CLEAR';
 };

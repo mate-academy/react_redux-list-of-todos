@@ -9,6 +9,7 @@ import { actions } from '../../features/currentTodo';
 export const TodoModal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState(false);
 
   const dispatch = useDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
@@ -20,7 +21,7 @@ export const TodoModal: React.FC = () => {
       getUser(selectedTodo.userId)
         .then(data => setUser(data))
         .catch(() => {
-          throw new Error('error');
+          setError(true);
         })
         .finally(() => setIsLoading(false));
     } else {
@@ -29,7 +30,7 @@ export const TodoModal: React.FC = () => {
   }, [selectedTodo]);
 
   const renderTodoHeader = () => {
-    if (selectedTodo) {
+    if (selectedTodo && !error) {
       return `Todo #${selectedTodo.id}`;
     }
 
@@ -37,7 +38,7 @@ export const TodoModal: React.FC = () => {
   };
 
   const renderTodoTitle = () => {
-    if (selectedTodo) {
+    if (selectedTodo && !error) {
       return selectedTodo.title || '';
     }
 
@@ -45,7 +46,7 @@ export const TodoModal: React.FC = () => {
   };
 
   const renderTodoStatus = () => {
-    if (selectedTodo) {
+    if (selectedTodo && !error) {
       return selectedTodo.completed ? (
         <strong className="has-text-success">Done</strong>
       ) : (
@@ -57,7 +58,7 @@ export const TodoModal: React.FC = () => {
   };
 
   const renderTodoUser = () => {
-    if (selectedTodo) {
+    if (selectedTodo && !error) {
       return (
         <>
           {renderTodoStatus()}
