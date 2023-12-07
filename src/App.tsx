@@ -20,6 +20,7 @@ export const App: React.FC = () => {
     getTodos().then((res) => {
       dispatch(todosActions.initTodosAction(res));
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

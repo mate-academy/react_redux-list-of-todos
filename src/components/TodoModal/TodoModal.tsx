@@ -15,6 +15,7 @@ export const TodoModal: React.FC = () => {
     if (currentTodo) {
       getUser(currentTodo.userId).then(setSelectedUser);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!currentTodo) {

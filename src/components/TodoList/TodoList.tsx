@@ -50,13 +50,17 @@ export const TodoList: React.FC = () => {
           <thead>
             <tr>
               <th>#</th>
-              <th>
-                <span className="icon">
-                  <i className="fas fa-check" />
-                </span>
-              </th>
+              {// eslint-disable-next-line jsx-a11y/control-has-associated-label
+                <th>
+                  <span className="icon">
+                    <i className="fas fa-check" />
+                  </span>
+                </th>
+              }
               <th>Title</th>
-              <th> </th>
+              {// eslint-disable-next-line jsx-a11y/control-has-associated-label
+                <th> </th>
+              }
             </tr>
           </thead>
 
