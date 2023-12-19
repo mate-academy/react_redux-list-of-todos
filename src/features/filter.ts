@@ -24,7 +24,7 @@ type Filter = {
 
 const initialState: Filter = {
   query: '',
-  status: 'all' as Status,
+  status: Status.All,
 };
 
 const filterReducer = (state = initialState, action: Action) => {
