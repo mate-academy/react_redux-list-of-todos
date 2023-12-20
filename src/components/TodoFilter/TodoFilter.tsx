@@ -3,12 +3,6 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
-enum FilterStatus {
-  All = 'all',
-  Active = 'active',
-  Completed = 'completed',
-}
-
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query, status } = useAppSelector(store => store.filter);
@@ -39,9 +33,9 @@ export const TodoFilter: React.FC = () => {
             value={status}
             onChange={handleOnStatusChange}
           >
-            <option value={FilterStatus.All}>All</option>
-            <option value={FilterStatus.Active}>Active</option>
-            <option value={FilterStatus.Completed}>Completed</option>
+            <option value={Status.All}>All</option>
+            <option value={Status.Active}>Active</option>
+            <option value={Status.Completed}>Completed</option>
           </select>
         </span>
       </p>

@@ -15,10 +15,10 @@ export const getFilteredTodos = (
   }
 
   switch (status) {
-    case 'active':
+    case Status.Active:
       return filteredTodos.filter(todo => !todo.completed);
 
-    case 'completed':
+    case Status.Completed:
       return filteredTodos.filter(todo => todo.completed);
 
     default:
