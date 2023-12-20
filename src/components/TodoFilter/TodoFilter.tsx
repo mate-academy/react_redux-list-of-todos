@@ -1,6 +1,32 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/filter';
+import { Status } from '../../types/Status';
+
+enum FilterStatus {
+  All = 'all',
+  Active = 'active',
+  Completed = 'completed',
+}
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector(store => store.filter);
+
+  const handleOnStatusChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    dispatch(actions.setStatus(event.target.value as Status));
+  };
+
+  const handleOnQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(actions.setQuery(event.target.value));
+  };
+
+  const handleOnDelete = () => {
+    dispatch(actions.setQuery(''));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +34,14 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleOnStatusChange}
+          >
+            <option value={FilterStatus.All}>All</option>
+            <option value={FilterStatus.Active}>Active</option>
+            <option value={FilterStatus.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,19 +52,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleOnQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right">
+            <button
+              aria-label="Clear Search Button "
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleOnDelete}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
