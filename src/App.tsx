@@ -16,6 +16,12 @@ import { Status } from './types/Status';
 import { Todo } from './types/Todo';
 import { actions } from './features/currentTodo';
 
+enum FilterTypes {
+  All = 'all',
+  Active = 'active',
+  Completed = 'completed',
+}
+
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const todos = useAppSelector(state => state.todos);
@@ -58,11 +64,11 @@ export const App: React.FC = () => {
     .filter(todo => todo.title.toLowerCase().includes(filters.query.toLowerCase()))
     .filter(todo => {
       switch (filters.status) {
-        case 'all':
+        case FilterTypes.All:
           return todo;
-        case 'active':
+        case FilterTypes.Active:
           return !todo.completed;
-        case 'completed':
+        case FilterTypes.Completed:
           return todo.completed;
         default:
           return todo;

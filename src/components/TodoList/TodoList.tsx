@@ -14,13 +14,13 @@ export const TodoList: React.FC<Props> = ({
   currentTodo,
 }) => {
   const todoCompletedClass = (value: boolean) => cn(
-    { 'has-text-danger': value === false },
-    { 'has-text-success': value === true },
+    { 'has-text-danger': !value },
+    { 'has-text-success': value },
   );
 
   const eyeClass = (selectedTodo: Todo | null, filteredTodo: Todo) => cn(
     'far',
-    { 'fa-eye': selectedTodo === null },
+    { 'fa-eye': !selectedTodo },
     { 'fa-eye-slash': selectedTodo && selectedTodo.id === filteredTodo.id },
   );
 
