@@ -20,18 +20,18 @@ const setStatus = (value: Status): SetStatus => (
 
 type Filter = { query: string, status: Status };
 
-const filterState: Filter = {
+const initialState: Filter = {
   query: '',
   status: Status.All,
 };
 
-const filterReducer = (state = filterState, action: Action) => {
+const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'query/SET':
       return { ...state, query: action.payload };
 
     case 'query/ClEAR':
-      return { ...state };
+      return { ...state, query: '' };
 
     case 'status/SET':
       return { ...state, status: action.payload };

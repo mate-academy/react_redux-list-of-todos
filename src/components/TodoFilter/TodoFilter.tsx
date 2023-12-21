@@ -22,6 +22,10 @@ export const TodoFilter: React.FC<Props> = () => {
     dispatch(actions.setQuery(event.target.value));
   };
 
+  const handleClearQuery = () => {
+    dispatch(actions.clearQuery());
+  };
+
   return (
     <form
       className="field has-addons"
@@ -61,7 +65,7 @@ export const TodoFilter: React.FC<Props> = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(actions.clearQuery())}
+              onClick={handleClearQuery}
             />
           </span>
         )}
