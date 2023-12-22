@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
@@ -12,7 +13,6 @@ const rootReducer = combineReducers({
   todos: todosReducer,
 });
 
-// The `store` is passed to the Provider in `/src/index.tsx`
 export const store = createStore(
   rootReducer,
   composeWithDevTools(
