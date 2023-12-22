@@ -14,7 +14,7 @@ export const App: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const { status, query } = useAppSelector(state => state.filter);
   const [errorMessage, setErrorMessage] = useState('');
@@ -41,11 +41,11 @@ export const App: React.FC = () => {
   }
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     getTodos()
       .then(fetchingTodos => dispatch(todosActions.setTodos(fetchingTodos)))
       .catch(() => setErrorMessage('Try again later'))
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   }, [updateAt, dispatch]);
 
   const filteredTodos = filterTodos();
@@ -62,10 +62,10 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loading && (
+              {isLoading && (
                 <Loader />
               )}
-              {!loading && !!todos.length && (
+              {!isLoading && !!todos.length && (
                 <TodoList todos={filteredTodos} />
               )}
 

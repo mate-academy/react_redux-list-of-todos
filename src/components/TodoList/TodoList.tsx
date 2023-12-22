@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import 'bulma/css/bulma.css';
 import { actions as currentTodoActions } from '../../features/currentTodo';
@@ -12,7 +13,7 @@ export const TodoList: React.FC<Props> = ({
   todos,
 }) => {
   const selectedTodo
-  = useAppSelector(state => state.currentTodo);
+    = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   return (
@@ -33,10 +34,15 @@ export const TodoList: React.FC<Props> = ({
           </thead>
 
           <tbody>
-            {todos.map(todo => (
-              <tr key={todo.id} data-cy="todo" className="">
-                <td className="is-vcentered">{todo.id}</td>
-                {todo.completed ? (
+            {todos.map(({
+              id,
+              title,
+              completed,
+              userId,
+            }) => (
+              <tr key={id} data-cy="todo" className="">
+                <td className="is-vcentered">{id}</td>
+                {completed ? (
                   <td
                     className="is-vcentered"
                     role="button"
@@ -55,15 +61,16 @@ export const TodoList: React.FC<Props> = ({
                 )}
                 <td className="is-vcentered is-expanded">
                   <p
-                    className={
-                      todo.completed ? 'has-text-success' : 'has-text-danger'
-                    }
+                    className={classNames({
+                      'has-text-success': completed,
+                      'has-text-danger': !completed,
+                    })}
                   >
-                    {todo.title}
+                    {title}
                   </p>
                 </td>
                 <td className="has-text-right is-vcentered">
-                  {todo.id === selectedTodo?.id ? (
+                  {id === selectedTodo?.id ? (
                     <button
                       data-cy="selectButton"
                       className="button"
@@ -80,7 +87,14 @@ export const TodoList: React.FC<Props> = ({
                       data-cy="selectButton"
                       className="button"
                       type="button"
-                      onClick={() => dispatch(currentTodoActions.setTodo(todo))}
+                      onClick={() => {
+                        dispatch(currentTodoActions.setTodo({
+                          id,
+                          title,
+                          completed,
+                          userId,
+                        }));
+                      }}
                       aria-label="Select task"
                     >
                       <span className="icon">
