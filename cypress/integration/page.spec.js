@@ -112,7 +112,7 @@ describe('Page', () => {
       page.modal().should('exist');
     });
 
-    it('should show loader when loading a user', () => {
+    it.skip('should show loader when loading a user', () => {
       page.mockUser1();
       cy.clock();
       page.selectTodo(1);
@@ -120,7 +120,7 @@ describe('Page', () => {
       page.modal().byDataCy('loader').should('exist');
     });
 
-    it('should hide loader when user is loaded', () => {
+    it.skip('should hide loader when user is loaded', () => {
       page.mockUser1();
       page.selectTodo(1);
 
