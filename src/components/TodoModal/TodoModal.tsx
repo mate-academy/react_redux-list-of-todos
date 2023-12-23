@@ -9,15 +9,23 @@ export const TodoModal: React.FC = () => {
   const selectedTodo
     = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
-
   const [user, setUser] = useState<User | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setUser(null);
     if (selectedTodo?.userId) {
+      setIsLoading(true);
       getUser(selectedTodo.userId)
-        .then(setUser)
-        .catch(() => setErrorMessage('Error fetching user data'));
+        .then(fetchUser => {
+          setUser(fetchUser);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setErrorMessage('Error fetching user data');
+          setIsLoading(false);
+        });
     }
   }, [selectedTodo]);
 
@@ -25,7 +33,7 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {!user ? (
+      {isLoading && !user ? (
         <Loader />
       ) : (
         <div className="modal-card">

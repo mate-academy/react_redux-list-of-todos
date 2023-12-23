@@ -21,17 +21,22 @@ export const App: React.FC = () => {
   const [updateAt, setUpdateAt] = useState(new Date());
 
   const filterTodos = () => {
-    return todos.filter((todo) => {
-      switch (status) {
-        case FilterBy.active:
-          return !todo.completed;
-        case FilterBy.completed:
-          return todo.completed;
-        default:
-          return true;
-      }
-    }).filter((todo) => {
-      return todo.title.toLowerCase().includes(query.toLowerCase());
+    return todos.filter(todo => {
+      const matchesStatus = (() => {
+        switch (status) {
+          case FilterBy.active:
+            return !todo.completed;
+          case FilterBy.completed:
+            return todo.completed;
+          default:
+            return true;
+        }
+      })();
+
+      const matchesQuery
+      = todo.title.toLowerCase().includes(query.toLowerCase());
+
+      return matchesStatus && matchesQuery;
     });
   };
 
