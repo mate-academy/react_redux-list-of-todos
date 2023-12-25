@@ -11,8 +11,6 @@ export function filterTodos(
     filteredTodos = filteredTodos.filter(
       todo => todo.title.toLowerCase().includes(filter.query.toLowerCase()),
     );
-
-    return filteredTodos;
   }
 
   switch (filter.status) {
