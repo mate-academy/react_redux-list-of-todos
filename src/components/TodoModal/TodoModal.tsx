@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { actions } from '../../features/currentTodo';
+import { actions as todosActions } from '../../features/todos';
 
 export const TodoModal: FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -18,9 +19,7 @@ export const TodoModal: FC = () => {
 
     getUser(currentTodo.userId)
       .then(item => setUser(item))
-      .catch(() => {
-        throw new Error('Something went wrong');
-      });
+      .catch(err => dispatch(todosActions.setError(err)));
   });
 
   if (!currentTodo) {

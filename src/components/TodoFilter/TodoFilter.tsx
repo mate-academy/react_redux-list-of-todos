@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 import { Status } from '../../types/Status';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
@@ -6,6 +6,18 @@ import { actions as filterActions } from '../../features/filter';
 export const TodoFilter: FC = () => {
   const { query } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
+
+  const handleChangeStatus = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.setStatus(e.target.value as Status));
+  };
+
+  const handleChangeQuery = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterActions.setQuery(e.target.value));
+  };
+
+  const handleResetQuery = () => {
+    dispatch(filterActions.resetQuery());
+  };
 
   return (
     <form
@@ -15,10 +27,7 @@ export const TodoFilter: FC = () => {
       <p className="control">
         <span className="select">
           <select
-            onChange={
-              e => dispatch(filterActions
-                .setStatus(e.target.value as Status))
-            }
+            onChange={handleChangeStatus}
             data-cy="statusSelect"
           >
             <option value={Status.All}>All</option>
@@ -35,9 +44,7 @@ export const TodoFilter: FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={
-            (event) => dispatch(filterActions.setQuery(event.target.value))
-          }
+          onChange={handleChangeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -49,7 +56,7 @@ export const TodoFilter: FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(filterActions.resetQuery())}
+              onClick={handleResetQuery}
             >
               {}
             </button>
