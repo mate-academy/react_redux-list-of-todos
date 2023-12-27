@@ -1,14 +1,60 @@
-/* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
+import { getTodos } from './api';
 import { Loader } from './components/Loader';
+import { TodoModal } from './components/TodoModal';
+import { useSortAndSearch } from './app/useSortAndSearch';
+import { LoadingError } from './components/LoadingError';
+import { SearchError } from './components/SearchError';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasLoadingError, setHasLoadingError] = useState(false);
+
+  const { query, sort } = useAppSelector(state => state.filter);
+  const todos = useAppSelector(state => state.todos);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+
+  const dispatch = useAppDispatch();
+
+  async function fetchTodos() {
+    setIsLoading(true);
+    setHasLoadingError(false);
+    try {
+      const todosFromServer = await getTodos();
+
+      dispatch(todosActions.loadTodos(todosFromServer));
+      setIsLoading(false);
+    } catch (error) {
+      setHasLoadingError(true);
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  const sortedAndSearchedTodos = useSortAndSearch(
+    todos,
+    sort,
+    query,
+  );
+
+  const todoListOnPage = sortedAndSearchedTodos.length === 0
+    ? <SearchError />
+    : <TodoList todos={sortedAndSearchedTodos} />;
+
+  const loadedTodos = isLoading
+    ? <Loader />
+    : todoListOnPage;
+
   return (
     <>
       <div className="section">
@@ -20,15 +66,14 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">
-              <Loader />
-              <TodoList />
-            </div>
+            {hasLoadingError
+              ? <LoadingError />
+              : loadedTodos}
+
+            {selectedTodo && <TodoModal />}
           </div>
         </div>
       </div>
-
-      <TodoModal />
     </>
   );
 };
