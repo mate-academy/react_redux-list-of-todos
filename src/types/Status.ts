@@ -1,1 +1,7 @@
-export type Status = 'all' | 'active' | 'completed';
+export type Status = 'All' | 'Active' | 'Completed';
+
+export enum FilterStatus {
+  All = 'All',
+  Active = 'Active',
+  Completed = 'Completed',
+}
