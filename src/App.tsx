@@ -29,8 +29,7 @@ export const App: React.FC = () => {
       .finally(() => {
         setIsLoading(false);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const filteredTodos = getFilteredTodos(todos, filter);
 
@@ -46,11 +45,9 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoading && (
+              {isLoading ? (
                 <Loader />
-              )}
-
-              {!isLoading && (
+              ) : (
                 <TodoList todos={filteredTodos} />
               )}
             </div>
