@@ -16,7 +16,6 @@ export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useAppDispatch();
-  const todos: Todo[] = useAppSelector(state => state.todos);
   const currentTodo: Todo | null = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
@@ -42,14 +41,14 @@ export const App: React.FC = () => {
               {isLoading ? (
                 <Loader />
               )
-                : (<TodoList todos={todos} dispatch={dispatch} currentTodo={currentTodo} />)}
+                : (<TodoList />)}
             </div>
           </div>
         </div>
       </div>
 
       {currentTodo && (
-        <TodoModal todo={currentTodo} dispatch={dispatch} />
+        <TodoModal />
       )}
     </>
   );

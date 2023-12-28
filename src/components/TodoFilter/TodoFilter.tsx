@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
+import { Select } from '../../types/helper';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -34,9 +35,9 @@ export const TodoFilter: React.FC = () => {
       <p className="control">
         <span className="select">
           <select data-cy="statusSelect" value={status} onChange={handleStatusChange}>
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Select.all}>All</option>
+            <option value={Select.active}>Active</option>
+            <option value={Select.completed}>Completed</option>
           </select>
         </span>
       </p>

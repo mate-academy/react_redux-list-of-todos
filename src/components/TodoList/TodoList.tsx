@@ -2,19 +2,15 @@
 /* eslint-disable max-len */
 import cn from 'classnames';
 import React from 'react';
-import { useAppSelector } from '../../app/hooks';
-import { AppDispatch } from '../../app/store';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
 
-type Props = {
-  todos: Todo[],
-  dispatch: AppDispatch,
-  currentTodo: Todo | null,
-};
-
-export const TodoList: React.FC<Props> = ({ todos, dispatch, currentTodo }) => {
+export const TodoList: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
+  const currentTodo: Todo | null = useAppSelector(state => state.currentTodo);
+  const todos: Todo[] = useAppSelector(state => state.todos);
+  const dispatch = useAppDispatch();
 
   const searchValidation = (todo: Todo) => {
     return todo.title.toLowerCase().includes(filter.query.trim().toLowerCase());
