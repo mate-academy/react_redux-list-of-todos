@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -52,6 +52,8 @@ export const App: React.FC = () => {
         const todoData = await getTodos();
 
         dispatch(actionsTodos.addTodos(todoData));
+      } catch {
+        throw new Error('Failed to fetch todos. Please try again later.');
       } finally {
         setIsLoading(false);
       }
@@ -60,20 +62,17 @@ export const App: React.FC = () => {
     fetchData();
   }, [dispatch]);
 
-  const filteredTodos = todos
-    .filter(todo => todo.title.toLowerCase().includes(filters.query.toLowerCase()))
-    .filter(todo => {
-      switch (filters.status) {
-        case FilterTypes.All:
-          return todo;
-        case FilterTypes.Active:
-          return !todo.completed;
-        case FilterTypes.Completed:
-          return todo.completed;
-        default:
-          return todo;
-      }
+  const filteredTodos = useMemo(() => {
+    return todos.filter(todo => {
+      const lowerCaseQuery = filters.query.toLowerCase();
+      const lowerCaseTitle = todo.title.toLowerCase();
+
+      return lowerCaseTitle.includes(lowerCaseQuery)
+      && (filters.status === FilterTypes.All
+          || (filters.status === FilterTypes.Active && !todo.completed)
+          || (filters.status === FilterTypes.Completed && todo.completed));
     });
+  }, [todos, filters.query, filters.status]);
 
   return (
     <>

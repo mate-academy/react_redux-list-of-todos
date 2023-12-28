@@ -42,7 +42,7 @@ export const TodoFilter: React.FC<Props> = ({
           placeholder="Search..."
           value={filters.query}
           onChange={(e) => handleFilter(
-            filters.status as Status, e.target.value,
+            filters.status, e.target.value,
           )}
         />
         <span className="icon is-left">
@@ -56,7 +56,7 @@ export const TodoFilter: React.FC<Props> = ({
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => handleClearQuery(filters.status as Status)}
+              onClick={() => handleClearQuery(filters.status)}
             />
           </span>
         )}
