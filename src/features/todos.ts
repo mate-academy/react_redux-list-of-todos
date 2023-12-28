@@ -1,9 +1,20 @@
+/* eslint-disable max-len */
 import { Todo } from '../types/Todo';
 
-export const actions = {};
+type LoadAction = { type: 'todos/LOAD', payload: Todo[] };
 
-const todosReducer = (): Todo[] => {
-  return [];
+type Action = LoadAction;
+
+const loadTodos = (todos: Todo[]): LoadAction => ({ type: 'todos/LOAD', payload: todos });
+
+export const actions = { loadTodos };
+
+const todosReducer = (state: Todo[] = [], action: Action): Todo[] => {
+  switch (action.type) {
+    case 'todos/LOAD': return action.payload;
+
+    default: return state;
+  }
 };
 
 export default todosReducer;
