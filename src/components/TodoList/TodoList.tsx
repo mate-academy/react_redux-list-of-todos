@@ -71,6 +71,7 @@ export const TodoList: React.FC<Props> = ({ todos, dispatch, currentTodo }) => {
                 </td>
 
                 <td className="has-text-right is-vcentered">
+                  {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                   <button
                     data-cy="selectButton"
                     className="button"
