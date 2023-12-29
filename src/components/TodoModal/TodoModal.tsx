@@ -7,7 +7,6 @@ import { actions as ActionCurrentTodo } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User>();
-  const [hasError, setHasError] = useState(false);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
@@ -17,20 +16,20 @@ export const TodoModal: React.FC = () => {
         getUser(currentTodo.userId)
           .then(setUser);
       }
-    } catch {
-      setHasError(true);
+    } catch (error) {
+      throw new Error(`User: ${currentTodo?.userId} not found. Error: ${error}`);
     }
   }, [currentTodo]);
 
-  const close = () => {
-    dispatch(ActionCurrentTodo.removeTodo());
-  };
-
-  if (!currentTodo || hasError) {
+  if (!currentTodo) {
     return (
       <p>No todo found</p>
     );
   }
+
+  const close = () => {
+    dispatch(ActionCurrentTodo.removeTodo());
+  };
 
   const {
     id,

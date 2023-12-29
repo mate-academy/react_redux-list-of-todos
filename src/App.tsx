@@ -13,23 +13,15 @@ import { actions as TodosDispatch } from './features/todos';
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     (async () => {
-      try {
-        setHasError(false);
+      const todos = await getTodos();
 
-        const todos = await getTodos();
-
-        dispatch(TodosDispatch.addTodos(todos));
-      } catch {
-        setHasError(true);
-      } finally {
-        setIsLoading(false);
-      }
+      dispatch(TodosDispatch.addTodos(todos));
+      setIsLoading(false);
     })();
   }, []);
 
@@ -44,17 +36,10 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
-            {hasError && (
-              <div className="block">
-                Unable to download todos. Try again.
-              </div>
-            )}
-
             <div className="block">
-              {isLoading && <Loader />}
-
-              {(!isLoading && !hasError)
-                && <TodoList />}
+              {isLoading
+                ? <Loader />
+                : <TodoList />}
             </div>
           </div>
         </div>
