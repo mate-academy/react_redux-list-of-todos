@@ -1,48 +1,109 @@
 /* eslint-disable max-len */
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import cn from 'classnames';
+
+import { useAppSelector } from '../../app/hooks';
+import { actions as crntTodoActions } from '../../features/currentTodo';
+// import { store } from '../../app/store';
 
 export const TodoList: React.FC = () => {
+  const dispatch = useDispatch();
+  let visibleTodos = useAppSelector(state => state.todos);
+  const crntTodo = useAppSelector(state => state.currentTodo);
+  const filter = useAppSelector(state => state.filter);
+
+  const queryPrepared = filter.query.trim().toLowerCase();
+
+  if (filter.status !== 'all') {
+    visibleTodos = visibleTodos
+      .filter(todo => {
+        switch (filter.status) {
+          case 'active':
+            return !todo.completed;
+
+          case 'completed':
+            return todo.completed;
+
+          default:
+            return true;
+        }
+      });
+  }
+
+  visibleTodos = visibleTodos
+    .filter(todo => todo.title.toLowerCase().includes(queryPrepared));
+
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+      {!visibleTodos.length ? (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      ) : (
+        <table className="table is-narrow is-fullwidth">
+          <thead>
+            <tr>
+              <th>#</th>
 
-      <table className="table is-narrow is-fullwidth">
-        <thead>
-          <tr>
-            <th>#</th>
-
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
-
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr data-cy="todo">
-            <td className="is-vcentered">1</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">delectus aut autem</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
+              <th aria-label="status">
                 <span className="icon">
-                  <i className="far fa-eye" />
+                  <i className="fas fa-check" />
                 </span>
-              </button>
-            </td>
-          </tr>
+              </th>
 
-          <tr data-cy="todo">
+              <th>Title</th>
+              <th aria-label="details" />
+            </tr>
+          </thead>
+
+          <tbody>
+            {visibleTodos.map((todo => {
+              return (
+                <tr data-cy="todo" key={todo.id}>
+                  <td className="is-vcentered">{todo.id}</td>
+                  <td
+                    aria-label="status"
+                    className="is-vcentered"
+                  >
+                    {todo.completed && (
+                      <span className="icon" data-cy="iconCompleted">
+                        <i className="fas fa-check" />
+                      </span>
+                    )}
+                  </td>
+
+                  <td className="is-vcentered is-expanded">
+                    <p className={`has-text-${todo.completed ? 'success' : 'danger'}`}>
+                      {todo.title}
+                    </p>
+                  </td>
+
+                  <td
+                    aria-label="details"
+                    className="has-text-right is-vcentered"
+                  >
+                    <button
+                      aria-label="detailsButton"
+                      data-cy="selectButton"
+                      type="button"
+                      className="button"
+                      onClick={() => dispatch(crntTodoActions.setTodo(todo))}
+                    >
+                      <span className="icon">
+                        <i className={cn('far', {
+                          'fa-eye': crntTodo?.id !== todo.id,
+                          'fa-eye-slash': crntTodo?.id === todo.id,
+                        })}
+                        />
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              );
+            }))}
+
+            {/*       <tr data-cy="todo">
             <td className="is-vcentered">2</td>
             <td className="is-vcentered"> </td>
 
@@ -78,7 +139,11 @@ export const TodoList: React.FC = () => {
 
           <tr data-cy="todo">
             <td className="is-vcentered">4</td>
-            <td className="is-vcentered"><span className="icon" data-cy="iconCompleted"><i className="fas fa-check" /></span></td>
+            <td className="is-vcentered">
+              <span className="icon" data-cy="iconCompleted">
+                <i className="fas fa-check" />
+              </span>
+            </td>
             <td className="is-vcentered is-expanded">
               <p className="has-text-success">et porro tempora</p>
             </td>
@@ -202,9 +267,10 @@ export const TodoList: React.FC = () => {
                 </span>
               </button>
             </td>
-          </tr>
-        </tbody>
-      </table>
+          </tr> */}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
