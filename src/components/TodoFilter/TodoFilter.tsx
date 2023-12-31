@@ -1,13 +1,20 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-// import { store } from '../../app/store';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 import { useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const filter = useAppSelector(state => state.filter);
+  const query = useAppSelector(state => state.filter.query);
+
+  const onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.setStatus(event.target.value as Status));
+  };
+
+  const onQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterActions.setQuery(event.target.value));
+  };
 
   return (
     <form
@@ -18,9 +25,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={(event) => {
-              dispatch(filterActions.setStatus(event.target.value as Status));
-            }}
+            onChange={onSelectChange}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -35,16 +40,14 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={filter.query}
-          onChange={(event) => {
-            dispatch(filterActions.setQuery(event.target.value));
-          }}
+          value={query}
+          onChange={onQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {!!filter.query && (
+        {!!query && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button

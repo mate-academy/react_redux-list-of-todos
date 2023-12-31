@@ -11,16 +11,24 @@ type SetStatusAction = {
 type Action = SetQueryAction | SetStatusAction;
 type State = Filter;
 
-const setQuery = (
-  query: Filter['query'],
-): SetQueryAction => ({ type: 'filter/SET_QUERY', payload: query });
-const setStatus = (
-  status: Filter['status'],
-): SetStatusAction => ({ type: 'filter/SET_STATUS', payload: status });
-
 export const actions = {
-  setQuery,
-  setStatus,
+  setQuery(
+    query: Filter['query'],
+  ): SetQueryAction {
+    return {
+      type: 'filter/SET_QUERY',
+      payload: query,
+    };
+  },
+
+  setStatus(
+    status: Filter['status'],
+  ): SetStatusAction {
+    return {
+      type: 'filter/SET_STATUS',
+      payload: status,
+    };
+  },
 };
 
 const filterReducer = (
