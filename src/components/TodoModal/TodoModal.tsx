@@ -1,40 +1,62 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
+import { Todo } from '../../types/Todo';
+import { actions } from '../../features/currentTodo';
+import { User } from '../../types/User';
 
-export const TodoModal: React.FC = () => {
+type T = {
+  thisTodo: Todo
+  isLoading: boolean
+  user: User | null
+};
+
+export const TodoModal: React.FC<T> = ({ thisTodo, isLoading, user }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <div
+              className="modal-card-title has-text-weight-medium"
+              data-cy="modal-header"
+            >
+              {`Todo #${thisTodo.id}`}
+            </div>
 
-      <Loader />
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              type="button"
+              className="delete"
+              data-cy="modal-close"
+              onClick={() => dispatch(actions.removeTodo())}
+            />
+          </header>
 
-      <div className="modal-card">
-        <header className="modal-card-head">
-          <div
-            className="modal-card-title has-text-weight-medium"
-            data-cy="modal-header"
-          >
-            Todo #3
+          <div className="modal-card-body">
+            <p className="block" data-cy="modal-title">
+              {thisTodo.title}
+            </p>
+
+            <p className="block" data-cy="modal-user">
+              <strong className={`has-text-${thisTodo.completed ? 'success' : 'danger'}`}>
+                {thisTodo.completed ? 'Done' : 'Planned'}
+              </strong>
+
+              {' by '}
+
+              <a href={`mailto:${user?.email}`}>
+                {user?.name}
+              </a>
+            </p>
           </div>
-
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
-        </header>
-
-        <div className="modal-card-body">
-          <p className="block" data-cy="modal-title">fugiat veniam minus</p>
-
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
-
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
-            {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-          </p>
         </div>
-      </div>
+      )}
     </div>
   );
 };
