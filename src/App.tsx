@@ -9,6 +9,7 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { Loader } from './components/Loader';
 import { Todo } from './types/Todo';
+import { Filter } from './types/Filter';
 import { getTodos } from './api';
 import { useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
@@ -32,12 +33,12 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     switch (filter.status) {
-      case 'active':
+      case Filter.ACTIVE:
         dispatch(todosActions.setTodos(startTodos.filter(todo => !todo.completed
           && todo.title.toLowerCase().includes(filter.query.toLowerCase()))));
         break;
 
-      case 'completed':
+      case Filter.COMPLETED:
         dispatch(todosActions.setTodos(startTodos.filter(todo => todo.completed
           && todo.title.toLowerCase().includes(filter.query.toLowerCase()))));
         break;

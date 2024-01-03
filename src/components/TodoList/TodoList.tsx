@@ -50,17 +50,22 @@ export const TodoList: React.FC<Props> = ({
         </thead>
 
         <tbody>
-          {todos.map(todo => (
+          {todos.map(({
+            id,
+            completed,
+            title,
+            userId,
+          }) => (
             <tr
-              key={todo.id}
+              key={id}
               data-cy="todo"
               className={classNames({
-                'has-background-info-light': selectedTodo?.id === todo.id,
+                'has-background-info-light': selectedTodo?.id === id,
               })}
             >
-              <td className="is-vcentered">{todo.id}</td>
+              <td className="is-vcentered">{id}</td>
               <td className="is-vcentered">
-                {todo.completed && (
+                {completed && (
                   <span className="icon" data-cy="iconCompleted">
                     <i className="fas fa-check" />
                   </span>
@@ -68,11 +73,11 @@ export const TodoList: React.FC<Props> = ({
               </td>
               <td className="is-vcentered is-expanded">
                 <p className={classNames({
-                  'has-text-danger': !todo.completed,
-                  'has-text-success': todo.completed,
+                  'has-text-danger': !completed,
+                  'has-text-success': completed,
                 })}
                 >
-                  {todo.title}
+                  {title}
                 </p>
               </td>
 
@@ -81,7 +86,12 @@ export const TodoList: React.FC<Props> = ({
                 className="has-text-right is-vcentered"
               >
                 <button
-                  onClick={handleOpenModal(todo)}
+                  onClick={handleOpenModal({
+                    id,
+                    completed,
+                    title,
+                    userId,
+                  })}
                   data-cy="selectButton"
                   className="button"
                   type="button"
@@ -90,8 +100,8 @@ export const TodoList: React.FC<Props> = ({
                   <span className="icon">
                     <i className={classNames(
                       'far', {
-                        'fa-eye': selectedTodo?.id !== todo.id,
-                        'fa-eye-slash': selectedTodo?.id === todo.id,
+                        'fa-eye': selectedTodo?.id !== id,
+                        'fa-eye-slash': selectedTodo?.id === id,
                       },
                     )}
                     />

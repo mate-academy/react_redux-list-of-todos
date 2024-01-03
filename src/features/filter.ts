@@ -25,7 +25,7 @@ export const actions = { setQuery, setStatus };
 type State = { query: string, status: Filter };
 type Action = SetQueryAction | SetStatusAction;
 
-const initialState = { query: '', status: 'all' as Filter };
+const initialState = { query: '', status: Filter.ALL };
 
 const filterReducer = (
   state: State = initialState,
