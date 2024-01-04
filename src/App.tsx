@@ -103,7 +103,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {currentTodo !== null && (
+      {currentTodo && (
         <TodoModal
           currentTodo={currentTodo}
           removeCurrentTodo={removeCurrentTodo}
