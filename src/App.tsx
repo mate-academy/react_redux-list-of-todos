@@ -25,7 +25,7 @@ export const App: React.FC = () => {
       // eslint-disable-next-line no-console
       .catch((e) => console.log(`${e}`))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
