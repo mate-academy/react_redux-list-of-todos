@@ -1,14 +1,37 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
+import { getTodos } from './api';
+// import { RootState } from './app/store';
+// import { data } from 'cypress/types/jquery';
+import { actions } from './features/todos';
+import { Todo } from './types/Todo';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
+  // const [todos, setTodos] = useState<Todo[]>([]);
+  const todos: Todo[] = useAppSelector((state) => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    getTodos()
+      .then((data) => dispatch(actions.geAllTodos(data)))
+      .finally(() => setIsLoading(false));
+  }, [dispatch]);
+
+  const shouldDisplayTodoList = !isLoading && todos.length > 0;
+
   return (
     <>
       <div className="section">
@@ -21,14 +44,19 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {isLoading && <Loader />}
+
+              {shouldDisplayTodoList && (
+                <TodoList />
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {currentTodo && (
+        <TodoModal />
+      )}
     </>
   );
 };
