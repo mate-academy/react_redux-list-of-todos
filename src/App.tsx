@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -8,8 +5,6 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { getTodos } from './api';
-// import { RootState } from './app/store';
-// import { data } from 'cypress/types/jquery';
 import { actions } from './features/todos';
 import { Todo } from './types/Todo';
 import { useAppDispatch, useAppSelector } from './app/hooks';
@@ -17,7 +12,6 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
-  // const [todos, setTodos] = useState<Todo[]>([]);
   const todos: Todo[] = useAppSelector((state) => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();

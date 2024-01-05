@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable max-len */
 import React from 'react';
 import cn from 'classnames';
 import { Todo } from '../../types/Todo';
@@ -11,14 +10,16 @@ export const TodoList: React.FC = () => {
   const currentTodo = useAppSelector((state) => state.currentTodo);
   const { query, status } = useAppSelector((state) => state.filter);
   const dispatch = useAppDispatch();
-  const setCurrentTodo = (todo: Todo) => dispatch(currentTodoActions.setTodo(todo));
+  const setCurrentTodo = (todo: Todo) => dispatch(currentTodoActions
+    .setTodo(todo));
 
   let visibleTodos = [...todos];
 
   if (query) {
     const normalizedQuery = query.trim().toLowerCase();
 
-    visibleTodos = visibleTodos.filter((todo) => todo.title.toLowerCase().includes(normalizedQuery));
+    visibleTodos = visibleTodos
+      .filter((todo) => todo.title.toLowerCase().includes(normalizedQuery));
   }
 
   if (status) {
