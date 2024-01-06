@@ -62,13 +62,11 @@ export const TodoList: React.FC = () => {
                   <tr data-cy="todo" key={todo.id}>
                     <td className="is-vcentered">{todo.id}</td>
                     <td className="is-vcentered">
-                      {todo.completed
-                        ? (
-                          <span className="icon" data-cy="iconCompleted">
-                            <i className="fas fa-check" />
-                          </span>
-                        )
-                        : ''}
+                      {todo.completed && (
+                        <span className="icon" data-cy="iconCompleted">
+                          <i className="fas fa-check" />
+                        </span>
+                      )}
                     </td>
 
                     <td className="is-vcentered is-expanded">
