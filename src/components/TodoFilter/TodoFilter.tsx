@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const query = useAppSelector(store => store.filter.query);
+  const status = useAppSelector(store => store.filter.status);
+
+  const handleChangeQuery = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterActions.setQuery(e.target.value.trim()));
+  };
+
+  const handleChangeStatus = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.setStatus(e.target.value as Status));
+  };
+
+  const handleCrearInput = () => {
+    dispatch(filterActions.setQuery(''));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +27,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleChangeStatus}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,18 +45,23 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleChangeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {query && (
+            // eslint-disable-next-line jsx-a11y/control-has-associated-label
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleCrearInput}
+            />
+          )}
         </span>
       </p>
     </form>
