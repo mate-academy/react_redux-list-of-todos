@@ -1,12 +1,113 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable max-len */
 import React from 'react';
+import classNames from 'classnames';
+import { Todo } from '../../types/Todo';
 
-export const TodoList: React.FC = () => {
+type Props = {
+  todos: Todo[],
+  stringFilter: string,
+  modalId: number | undefined,
+  setModalId: (a: number | undefined) => void,
+};
+
+export const TodoList: React.FC<Props> = ({
+  todos,
+  stringFilter,
+  modalId,
+  setModalId,
+}) => {
+  const noFilterMatch = (stringFilter.length > 0 && todos.length === 0);
+
+  const todoMarkup = (todo:Todo) => {
+    return (
+      <tr data-cy="todo" className={classNames({ 'has-background-info-light': todo.id === modalId })}>
+        <td className="is-vcentered">{todo.id}</td>
+        <td className="is-vcentered">
+          {todo.completed && <span className="icon" data-cy="iconCompleted"><i className="fas fa-check" /></span>}
+        </td>
+
+        <td className="is-vcentered is-expanded">
+          <p className={classNames({
+            'has-text-danger': !todo.completed,
+            'has-text-success': todo.completed,
+          })}
+          >
+            {todo.title}
+          </p>
+        </td>
+
+        <td className="has-text-right is-vcentered">
+          <button
+            data-cy="selectButton"
+            className="button"
+            type="button"
+            onClick={() => setModalId(todo.id)}
+          >
+            <span className="icon">
+              {todo.id !== modalId ? (<i className="far fa-eye" />) : <i className="far fa-eye-slash" />}
+            </span>
+          </button>
+        </td>
+      </tr>
+    );
+
+    /*
+    return (
+      <tr data-cy="todo" className="has-background-info-light">
+        <td className="is-vcentered">{todo.id}</td>
+        <td className="is-vcentered">
+          {todo.completed && <span className="icon" data-cy="iconCompleted"><i className="fas fa-check" /></span>}
+        </td>
+
+        <td className="is-vcentered is-expanded">
+          <p className={classNames({
+            'has-text-danger': !todo.completed,
+            'has-text-success': todo.completed,
+          })}
+          >
+            {todo.title}
+          </p>
+        </td>
+
+        <td className="has-text-right is-vcentered">
+          <button data-cy="selectButton" className="button" type="button">
+            <span className="icon">
+              <i className="far fa-eye-slash" />
+            </span>
+          </button>
+        </td>
+      </tr>
+    ); */
+
+    /* THIS IS A STYLE OF SELECTED TODO WHEN MODAL IS OPENED
+          <tr data-cy="todo" className="has-background-info-light">
+            <td className="is-vcentered">3</td>
+            <td className="is-vcentered"> </td>
+
+            <td className="is-vcentered is-expanded">
+              <p className="has-text-danger">fugiat veniam minus</p>
+            </td>
+
+            <td className="has-text-right is-vcentered">
+              <button data-cy="selectButton" className="button" type="button">
+                <span className="icon">
+                  <i className="far fa-eye-slash" />
+                </span>
+              </button>
+            </td>
+          </tr>
+      */
+  };
+
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+      {noFilterMatch
+      && (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      )}
 
       <table className="table is-narrow is-fullwidth">
         <thead>
@@ -25,7 +126,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          <tr data-cy="todo">
+          {/* <tr data-cy="todo">
             <td className="is-vcentered">1</td>
             <td className="is-vcentered"> </td>
 
@@ -57,9 +158,9 @@ export const TodoList: React.FC = () => {
                 </span>
               </button>
             </td>
-          </tr>
+          </tr> */}
 
-          <tr data-cy="todo" className="has-background-info-light">
+          {/*           <tr data-cy="todo" className="has-background-info-light">
             <td className="is-vcentered">3</td>
             <td className="is-vcentered"> </td>
 
@@ -74,9 +175,9 @@ export const TodoList: React.FC = () => {
                 </span>
               </button>
             </td>
-          </tr>
+          </tr> */}
 
-          <tr data-cy="todo">
+          {/* <tr data-cy="todo">
             <td className="is-vcentered">4</td>
             <td className="is-vcentered"><span className="icon" data-cy="iconCompleted"><i className="fas fa-check" /></span></td>
             <td className="is-vcentered is-expanded">
@@ -202,7 +303,8 @@ export const TodoList: React.FC = () => {
                 </span>
               </button>
             </td>
-          </tr>
+          </tr> */}
+          {todos.map((todo:Todo) => todoMarkup(todo))}
         </tbody>
       </table>
     </>
