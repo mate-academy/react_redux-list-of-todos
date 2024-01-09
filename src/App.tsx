@@ -20,7 +20,9 @@ const getPreparedData = (
   let filtered = todos;
 
   if (query) {
-    filtered = filtered.filter(todo => todo.title.includes(query.trim()));
+    filtered = filtered.filter(todo => (
+      todo.title.toLowerCase().includes(query.toLowerCase().trim())
+    ));
   }
 
   switch (status) {
