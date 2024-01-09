@@ -9,6 +9,8 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
+import { useAppDispatch } from './app/hooks';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -17,13 +19,16 @@ export const App: React.FC = () => {
   const [completedFilter, setCompletedFilter] = useState('all');
   const [modalId, setModalId] = useState<undefined | number>(undefined);
 
+  const dispatch = useAppDispatch;
+
   const handleLoadTodos = () => {
     setLoader(true);
     getTodos()
-      .then(todosFromServer => {
+      .then((todosFromServer:Todo[]) => {
         setTodos(todosFromServer);
+        dispatch(todosActions.setTodos(todosFromServer));
       })
-      .then(() => {
+      .finally(() => {
         setLoader(false);
       });
   };
@@ -39,14 +44,12 @@ export const App: React.FC = () => {
       visTodos = todos.filter(todo => todo.title.includes(stringFilter));
     }
 
-    if (completedFilter !== 'all') {
-      if (completedFilter === 'completed') {
-        visTodos = visTodos.filter(todo => todo.completed === true);
-      }
+    if (completedFilter === 'completed') {
+      visTodos = visTodos.filter(todo => todo.completed === true);
+    }
 
-      if (completedFilter === 'active') {
-        visTodos = visTodos.filter(todo => todo.completed === false);
-      }
+    if (completedFilter === 'active') {
+      visTodos = visTodos.filter(todo => todo.completed === false);
     }
 
     return visTodos;
