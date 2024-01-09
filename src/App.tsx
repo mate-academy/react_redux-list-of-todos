@@ -8,24 +8,57 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions } from './features/todos';
 import { Todo } from './types/Todo';
-import { useAppSelector } from './app/hooks';
+import { Status } from './types/Status';
+
+const getPreparedData = (
+  todos: Todo[],
+  { query, status }: { query: string, status: Status },
+) => {
+  let filtered = todos;
+
+  if (query) {
+    filtered = filtered.filter(todo => todo.title.includes(query.trim()));
+  }
+
+  switch (status) {
+    case 'active':
+      filtered = filtered.filter(todo => !todo.completed);
+      break;
+
+    case 'completed':
+      filtered = filtered.filter(todo => todo.completed);
+      break;
+
+    default:
+      return filtered;
+  }
+
+  return filtered;
+};
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const dispatch = useAppDispatch();
+  const filter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+
+  const preparedTodos = getPreparedData(todos, filter);
 
   useEffect(() => {
     getTodos()
-      .then(setTodos)
+      .then((response) => dispatch(actions.setTodos(response)))
       .catch(() => {
         throw new Error('Unable to load todos');
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -39,8 +72,14 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoading && <Loader />}
-              <TodoList todos={todos} currentTodo={currentTodo} />
+              {isLoading
+                ? <Loader />
+                : (
+                  <TodoList
+                    todos={preparedTodos}
+                    currentTodo={currentTodo}
+                  />
+                )}
             </div>
           </div>
         </div>
