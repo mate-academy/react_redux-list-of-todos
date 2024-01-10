@@ -3,19 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
-type Props = {
-  stringFilter: string,
-  setStringFilter: (a: string) => void,
-  completedFilter: string,
-  setCompletedFilter: (a:string) => void,
-};
-
-export const TodoFilter: React.FC<Props> = ({
-  stringFilter,
-  setStringFilter,
-  completedFilter,
-  setCompletedFilter,
-}) => {
+export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const getfilter = useAppSelector(state => state.filter);
   const setFilter = (status: Status) => {
@@ -27,20 +15,12 @@ export const TodoFilter: React.FC<Props> = ({
   };
 
   const filterInputHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setStringFilter(event.target.value);
     setQuery(event.target.value);
   };
 
   const clearFilter = () => {
-    setStringFilter('');
     setQuery('');
   };
-
-  /*   const selectOptions: Status = {
-    all: 'all',
-    active: 'active',
-    completed: 'completed',
-  }; */
 
   return (
     <form
@@ -53,7 +33,6 @@ export const TodoFilter: React.FC<Props> = ({
             data-cy="statusSelect"
             value={getfilter.filter}
             onChange={e => {
-              // setCompletedFilter(e.target.value);
               setFilter(e.target.value as Status);
             }}
           >

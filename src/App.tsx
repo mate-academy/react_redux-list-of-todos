@@ -11,28 +11,18 @@ import { getTodos } from './api';
 import { Todo } from './types/Todo';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
-// import { actions as modalActions } from './features/currentTodo';
 
 export const App: React.FC = () => {
-  //  const [todos, setTodos] = useState<Todo[]>([]);
   const [loader, setLoader] = useState(false);
-  const [stringFilter, setStringFilter] = useState('');
-  const [completedFilter, setCompletedFilter] = useState('all');
-  // const [modalId, setModalId] = useState<undefined | number>(undefined);
-
   const dispatch = useAppDispatch();
   const getTodosFromRedux = useAppSelector(state => state.todos);
   const getModal = useAppSelector(state => state.currentTodo);
-  /* const setModal = (todo: Todo) => {
-    dispatch(modalActions.setTodo(todo));
-  }; */
 
   const handleLoadTodos = useCallback(() => {
     setLoader(true);
     getTodos()
       .then((todosFromServer:Todo[]) => {
         dispatch(todosActions.setTodos(todosFromServer));
-        // setTodos(todosFromServer);
       })
       .finally(() => {
         setLoader(false);
@@ -49,7 +39,7 @@ export const App: React.FC = () => {
     let visTodos = getTodosFromRedux;
 
     if (getfilter.query.length !== 0) {
-      visTodos = visTodos.filter((todo:Todo) => todo.title.includes(stringFilter));
+      visTodos = visTodos.filter((todo:Todo) => todo.title.includes(getfilter.query));
     }
 
     if (getfilter.filter === 'completed') {
@@ -63,8 +53,6 @@ export const App: React.FC = () => {
     return visTodos;
   };
 
-  const modalTodo = getTodosFromRedux.filter(todo => todo.id === getModal?.id)[0];
-
   return (
     <>
       <div className="section">
@@ -73,12 +61,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                stringFilter={stringFilter}
-                setStringFilter={setStringFilter}
-                completedFilter={completedFilter}
-                setCompletedFilter={setCompletedFilter}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
@@ -87,9 +70,6 @@ export const App: React.FC = () => {
                 : (
                   <TodoList
                     todos={visibleTodos()}
-                    stringFilter={stringFilter}
-                    // modalId={modalId}
-                    // setModalId={setModalId}
                   />
                 )}
             </div>
@@ -97,8 +77,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {getModal !== null && <TodoModal mainTodo={modalTodo}/* setModalId={setModalId} */ />}
-      {/* <TodoModal setModalId={setModalId} mainTodo={modalTodo} /> */}
+      {getModal !== null && <TodoModal />}
     </>
   );
 };

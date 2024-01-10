@@ -1,17 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as modalActions } from '../../features/currentTodo';
 
-type Props = {
-  // setModalId: (a: number | undefined) => void,
-  mainTodo: Todo,
-};
-
-export const TodoModal: React.FC<Props> = ({ mainTodo }) => {
+export const TodoModal: React.FC = () => {
   const [loader, setLoader] = useState(true);
   const [user, setUser] = useState<undefined | User>(undefined);
 
@@ -20,15 +14,17 @@ export const TodoModal: React.FC<Props> = ({ mainTodo }) => {
     dispatch(modalActions.removeTodo());
   };
 
+  const getModal = useAppSelector(state => state.currentTodo);
+
   const loadUser = useCallback(() => {
-    getUser(mainTodo.userId)
+    getUser(getModal?.userId || 0)
       .then(userFromServer => {
         setUser(userFromServer);
       })
       .then(() => {
         setLoader(false);
       });
-  }, [mainTodo]);
+  }, [getModal]);
 
   useEffect(() => {
     loadUser();
@@ -47,7 +43,7 @@ export const TodoModal: React.FC<Props> = ({ mainTodo }) => {
                 className="modal-card-title has-text-weight-medium"
                 data-cy="modal-header"
               >
-                {`Todo #${mainTodo.id}`}
+                {`Todo #${getModal?.id}`}
               </div>
 
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -64,7 +60,7 @@ export const TodoModal: React.FC<Props> = ({ mainTodo }) => {
 
               <p className="block" data-cy="modal-user">
                 {/* For not completed */}
-                {mainTodo.completed
+                {getModal?.completed
                   ? <strong className="has-text-success">Done</strong>
                   : <strong className="has-text-danger">Planned</strong>}
                 {/* For completed */}

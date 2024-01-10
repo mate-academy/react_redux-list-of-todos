@@ -4,24 +4,17 @@ import React from 'react';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { actions as modalActions } from '../../features/currentTodo';
-// import { actions as todosActions } from '../../features/todos';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
 type Props = {
   todos: Todo[],
-  stringFilter: string,
-  /* modalId: number | undefined,
-  setModalId: (a: number | undefined) => void, */
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
-  stringFilter,
-  // modalId,
-  // setModalId,
 }) => {
-  // const getTodosFromRedux = useAppSelector(state => state.todos);
-  const noFilterMatch = (stringFilter.length > 0 && todos.length === 0);
+  const getfilter = useAppSelector(state => state.filter);
+  const noFilterMatch = (getfilter.query.length > 0 && todos.length === 0);
   const currentModal = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const setModal = (todo: Todo) => {
