@@ -12,16 +12,16 @@ const setTodos = (todos: Todo[]): SetTodosAction => ({
 
 export const actions = { setTodos };
 
-type State = Todo[] | [];
+type State = Todo[];
 type Action = SetTodosAction;
 
 const todosReducer = (
   todos: State = [],
   action: Action,
-) => {
+): State => {
   switch (action.type) {
     case 'todos/SET':
-      return [...todos, action.payload];
+      return action.payload;
     default:
       return todos;
   }

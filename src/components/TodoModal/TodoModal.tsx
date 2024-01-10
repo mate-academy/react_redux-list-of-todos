@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
+import { useAppDispatch } from '../../app/hooks';
+import { actions as modalActions } from '../../features/currentTodo';
 
 type Props = {
-  setModalId: (a: number | undefined) => void,
+  // setModalId: (a: number | undefined) => void,
   mainTodo: Todo,
 };
 
-export const TodoModal: React.FC<Props> = ({ setModalId, mainTodo }) => {
+export const TodoModal: React.FC<Props> = ({ mainTodo }) => {
   const [loader, setLoader] = useState(true);
   const [user, setUser] = useState<undefined | User>(undefined);
 
-  const loadUser = () => {
+  const dispatch = useAppDispatch();
+  const removeModal = () => {
+    dispatch(modalActions.removeTodo());
+  };
+
+  const loadUser = useCallback(() => {
     getUser(mainTodo.userId)
       .then(userFromServer => {
         setUser(userFromServer);
@@ -21,11 +28,11 @@ export const TodoModal: React.FC<Props> = ({ setModalId, mainTodo }) => {
       .then(() => {
         setLoader(false);
       });
-  };
+  }, [mainTodo]);
 
   useEffect(() => {
     loadUser();
-  });
+  }, [loadUser]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -48,7 +55,7 @@ export const TodoModal: React.FC<Props> = ({ setModalId, mainTodo }) => {
                 type="button"
                 className="delete"
                 data-cy="modal-close"
-                onClick={() => setModalId(undefined)}
+                onClick={() => removeModal()}
               />
             </header>
 

@@ -3,25 +3,38 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
+import { actions as modalActions } from '../../features/currentTodo';
+// import { actions as todosActions } from '../../features/todos';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
 
 type Props = {
   todos: Todo[],
   stringFilter: string,
-  modalId: number | undefined,
-  setModalId: (a: number | undefined) => void,
+  /* modalId: number | undefined,
+  setModalId: (a: number | undefined) => void, */
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
   stringFilter,
-  modalId,
-  setModalId,
+  // modalId,
+  // setModalId,
 }) => {
+  // const getTodosFromRedux = useAppSelector(state => state.todos);
   const noFilterMatch = (stringFilter.length > 0 && todos.length === 0);
+  const currentModal = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
+  const setModal = (todo: Todo) => {
+    dispatch(modalActions.setTodo(todo));
+  };
 
   const todoMarkup = (todo:Todo) => {
     return (
-      <tr data-cy="todo" className={classNames({ 'has-background-info-light': todo.id === modalId })}>
+      <tr
+        data-cy="todo"
+        className={classNames({ 'has-background-info-light': todo.id === currentModal?.id })}
+        key={todo.id}
+      >
         <td className="is-vcentered">{todo.id}</td>
         <td className="is-vcentered">
           {todo.completed && <span className="icon" data-cy="iconCompleted"><i className="fas fa-check" /></span>}
@@ -42,10 +55,10 @@ export const TodoList: React.FC<Props> = ({
             data-cy="selectButton"
             className="button"
             type="button"
-            onClick={() => setModalId(todo.id)}
+            onClick={() => setModal(todo)}
           >
             <span className="icon">
-              {todo.id !== modalId ? (<i className="far fa-eye" />) : <i className="far fa-eye-slash" />}
+              {todo.id !== currentModal?.id ? (<i className="far fa-eye" />) : <i className="far fa-eye-slash" />}
             </span>
           </button>
         </td>

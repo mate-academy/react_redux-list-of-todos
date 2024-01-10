@@ -1,4 +1,7 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 type Props = {
   stringFilter: string,
@@ -13,13 +16,31 @@ export const TodoFilter: React.FC<Props> = ({
   completedFilter,
   setCompletedFilter,
 }) => {
+  const dispatch = useAppDispatch();
+  const getfilter = useAppSelector(state => state.filter);
+  const setFilter = (status: Status) => {
+    dispatch(filterActions.setFilter(status));
+  };
+
+  const setQuery = (query: string) => {
+    dispatch(filterActions.setQuery(query));
+  };
+
   const filterInputHandle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStringFilter(event.target.value);
+    setQuery(event.target.value);
   };
 
   const clearFilter = () => {
     setStringFilter('');
+    setQuery('');
   };
+
+  /*   const selectOptions: Status = {
+    all: 'all',
+    active: 'active',
+    completed: 'completed',
+  }; */
 
   return (
     <form
@@ -30,12 +51,15 @@ export const TodoFilter: React.FC<Props> = ({
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={completedFilter}
-            onChange={e => setCompletedFilter(e.target.value)}
+            value={getfilter.filter}
+            onChange={e => {
+              // setCompletedFilter(e.target.value);
+              setFilter(e.target.value as Status);
+            }}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={'all' as Status}>All</option>
+            <option value={'active' as Status}>Active</option>
+            <option value={'completed' as Status}>Completed</option>
           </select>
         </span>
       </p>
@@ -46,7 +70,7 @@ export const TodoFilter: React.FC<Props> = ({
           type="text"
           className="input"
           placeholder="Search..."
-          value={stringFilter}
+          value={getfilter.query}
           onChange={filterInputHandle}
         />
         <span className="icon is-left">
