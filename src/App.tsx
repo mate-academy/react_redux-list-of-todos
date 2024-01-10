@@ -15,8 +15,8 @@ import { actions as todosActions } from './features/todos';
 export const App: React.FC = () => {
   const [loader, setLoader] = useState(false);
   const dispatch = useAppDispatch();
-  const getTodosFromRedux = useAppSelector(state => state.todos);
-  const getModal = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const handleLoadTodos = useCallback(() => {
     setLoader(true);
@@ -33,21 +33,21 @@ export const App: React.FC = () => {
     handleLoadTodos();
   }, [handleLoadTodos]);
 
-  const getfilter = useAppSelector(state => state.filter);
+  const todosFilter = useAppSelector(state => state.filter);
 
   const visibleTodos = () => {
-    let visTodos = getTodosFromRedux;
+    let visTodos = todos;
 
-    if (getfilter.query.length !== 0) {
-      visTodos = visTodos.filter((todo:Todo) => todo.title.toLowerCase().includes(getfilter.query.toLowerCase()));
+    if (todosFilter.query.length !== 0) {
+      visTodos = visTodos.filter((todo:Todo) => todo.title.toLowerCase().includes(todosFilter.query.toLowerCase()));
     }
 
-    if (getfilter.filter === 'completed') {
-      visTodos = visTodos.filter(todo => todo.completed === true);
+    if (todosFilter.filter === 'completed') {
+      visTodos = visTodos.filter(todo => todo.completed);
     }
 
-    if (getfilter.filter === 'active') {
-      visTodos = visTodos.filter(todo => todo.completed === false);
+    if (todosFilter.filter === 'active') {
+      visTodos = visTodos.filter(todo => !todo.completed);
     }
 
     return visTodos;
@@ -77,7 +77,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {getModal !== null && <TodoModal />}
+      {currentTodo !== null && <TodoModal />}
     </>
   );
 };

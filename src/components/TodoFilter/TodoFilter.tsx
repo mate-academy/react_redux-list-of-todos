@@ -6,7 +6,7 @@ import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const getfilter = useAppSelector(state => state.filter);
+  const todoFilter = useAppSelector(state => state.filter);
   const setFilter = (status: Status) => {
     dispatch(filterActions.setFilter(status));
   };
@@ -32,7 +32,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={getfilter.filter}
+            value={todoFilter.filter}
             onChange={e => {
               setFilter(e.target.value as Status);
             }}
@@ -50,7 +50,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={getfilter.query}
+          value={todoFilter.query}
           onChange={filterInputHandle}
         />
         <span className="icon is-left">
@@ -59,7 +59,7 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          {getfilter.query.length > 0 && (
+          {todoFilter.query.length > 0 && (
             <button
               data-cy="clearSearchButton"
               type="button"
