@@ -39,7 +39,7 @@ export const App: React.FC = () => {
     let visTodos = getTodosFromRedux;
 
     if (getfilter.query.length !== 0) {
-      visTodos = visTodos.filter((todo:Todo) => todo.title.includes(getfilter.query));
+      visTodos = visTodos.filter((todo:Todo) => todo.title.toLowerCase().includes(getfilter.query.toLowerCase()));
     }
 
     if (getfilter.filter === 'completed') {
