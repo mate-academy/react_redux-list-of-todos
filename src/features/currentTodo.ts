@@ -6,13 +6,13 @@ type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
 // payload is a typical name for an action data
 type SetTodoAction = {
   type: 'currentTodo/SET';
-  payload: Todo;
+  payload: Todo | null;
 };
 
 // Action creator return type protect us from a mistype
 const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
 
-const setTodo = (todo: Todo): SetTodoAction => ({
+const setTodo = (todo: Todo | null): SetTodoAction => ({
   type: 'currentTodo/SET',
   payload: todo,
 });
@@ -29,7 +29,10 @@ const currentTodoReducer = (
 ): State => {
   switch (action.type) {
     // Implement all actions here
-
+    case 'currentTodo/REMOVE':
+      return null;
+    case 'currentTodo/SET':
+      return action.payload;
     default:
       return state;
   }
