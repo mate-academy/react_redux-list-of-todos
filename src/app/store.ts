@@ -2,9 +2,11 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 
-import currentTodoReducer from '../features/currentTodo';
-import filterReducer from '../features/filter';
-import todosReducer from '../features/todos';
+import currentTodoReducer, {
+  Action as CurrentTodoAction,
+} from '../features/currentTodo';
+import filterReducer, { Action as FilterAction } from '../features/filter';
+import todosReducer, { Action as TodosAction } from '../features/todos';
 
 const rootReducer = combineReducers({
   currentTodo: currentTodoReducer,
@@ -20,5 +22,6 @@ export const store = createStore(
   ),
 );
 
+export type RootAction = CurrentTodoAction | FilterAction | TodosAction;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
