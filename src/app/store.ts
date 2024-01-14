@@ -5,11 +5,13 @@ import thunk from 'redux-thunk';
 import currentTodoReducer from '../features/currentTodo';
 import filterReducer from '../features/filter';
 import todosReducer from '../features/todos';
+import userReducer from '../features/selectedUser';
 
 const rootReducer = combineReducers({
   currentTodo: currentTodoReducer,
   filter: filterReducer,
   todos: todosReducer,
+  selectedUser: userReducer,
 });
 
 // The `store` is passed to the Provider in `/src/index.tsx`
