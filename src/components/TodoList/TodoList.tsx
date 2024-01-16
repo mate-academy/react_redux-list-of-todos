@@ -104,7 +104,12 @@ export const TodoList: React.FC = () => {
                       onClick={() => handleSelectTodo(todo.id)}
                     >
                       <span className="icon">
-                        <i className="far fa-eye" />
+                        <i
+                          className={cn('far', {
+                            'fa-eye': todo.id !== currentTodoState.todo?.id,
+                            'fa-eye-slash': todo.id === currentTodoState.todo?.id,
+                          })}
+                        />
                       </span>
                     </button>
                   </td>
