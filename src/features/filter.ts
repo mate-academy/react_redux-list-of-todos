@@ -3,22 +3,22 @@ const QUERY = 'filter/QUERY';
 
 type Status = 'all' | 'active' | 'completed';
 
-type StatusAction = {
-  type: 'filter/STATUS',
-  payload: Status
+type StatusesAction = {
+  type: typeof STATUS;
+  payload: Status;
 };
 
 type QueryAction = {
-  type: 'filter/QUERY',
-  payload: Status
+  type: typeof QUERY;
+  payload: string;
 };
 
-const setStatus = (status: Status) => ({
+const setStatus = (status: Status): StatusesAction => ({
   type: STATUS,
   payload: status,
 });
 
-const setQuery = (query: string) => ({
+const setQuery = (query: string): QueryAction => ({
   type: QUERY,
   payload: query,
 });
@@ -33,7 +33,7 @@ const initialState: State = {
   status: 'all',
 };
 
-type Action = StatusAction | QueryAction;
+type Action = StatusesAction | QueryAction;
 
 const filterReducer = (state: State = initialState, action: Action) => {
   switch (action.type) {

@@ -7,8 +7,8 @@ interface SetTodos {
   payload: Todo[];
 }
 
-const setTodos = (todos: Todo[]) => ({
-  type: 'todos/SET',
+const setTodos = (todos: Todo[]): SetTodos => ({
+  type: SET,
   payload: todos,
 });
 
