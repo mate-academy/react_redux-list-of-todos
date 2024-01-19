@@ -63,7 +63,7 @@ export const TodoModal: React.FC = () => {
               )}
 
               {' by '}
-              <a href={`mailto:${user.email}`}>Leanne Graham</a>
+              <a href={`mailto:${user.email}`}>{user.name}</a>
             </p>
           </div>
         </div>
