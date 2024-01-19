@@ -1,7 +1,6 @@
 import { Status } from '../types/Status';
 
 type SetQuery = { type: 'filter/SET_QUERY', payload: string };
-type RemoveQuery = { type: 'filter/REMOVE_QUERY' };
 type SetStatus = { type: 'filter/SET_STATUS', payload: Status };
 
 const setQuery = (query: string): SetQuery => ({
@@ -9,34 +8,29 @@ const setQuery = (query: string): SetQuery => ({
   payload: query,
 });
 
-const removeQuery = (): RemoveQuery => ({ type: 'filter/REMOVE_QUERY' });
-
 const setStatus = (status: Status): SetStatus => ({
   type: 'filter/SET_STATUS',
   payload: status,
 });
 
-export const actions = { setQuery, removeQuery, setStatus };
+export const actions = { setQuery, setStatus };
 
-type Action = SetQuery | RemoveQuery | SetStatus;
+type Action = SetQuery | SetStatus;
+const initialState = { query: '', status: 'all' };
 
 const filterReducer = (
-  query = '',
-  status: Status = 'all',
+  state = initialState,
   action: Action,
 ) => {
   switch (action.type) {
     case 'filter/SET_QUERY':
-      return { query: action.payload, status };
-
-    case 'filter/REMOVE_QUERY':
-      return { query: '', status };
+      return { ...state, query: action.payload };
 
     case 'filter/SET_STATUS':
-      return { query, status: action.payload };
+      return { ...state, status: action.payload };
 
     default:
-      return { query: '', status: 'all' };
+      return state;
   }
 };
 
