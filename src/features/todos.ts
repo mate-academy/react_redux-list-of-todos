@@ -34,12 +34,12 @@ type Filter = {
   query: string | null,
   status: string,
   todos: Todo [],
-  loading: boolean,
+  isLoading: boolean,
 };
 
 type State = {
   todos: Todo[],
-  loading: boolean,
+  isLoading: boolean,
 };
 
 const getVisibleTodos = (filter: Filter): GetVisibleTodosAction => ({
@@ -52,7 +52,7 @@ type Action = GetVisibleTodosAction;
 export const actions = { getVisibleTodos };
 
 const todosReducer = (
-  state: State = { todos: [], loading: true },
+  state: State = { todos: [], isLoading: true },
   action: Action,
 ): State => {
   switch (action.type) {
@@ -63,7 +63,7 @@ const todosReducer = (
           action.payload.status,
           action.payload.query,
         ),
-        loading: action.payload.loading,
+        isLoading: action.payload.isLoading,
       };
     default:
       return state;

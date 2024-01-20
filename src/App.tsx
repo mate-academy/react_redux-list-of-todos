@@ -17,18 +17,18 @@ export const App: React.FC = () => {
   const dispatch = useDispatch();
   const { query, status } = useAppSelector(state => state.filter);
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
 
     getTodos()
       .then(setTodos)
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   }, []);
 
   const filter = {
-    query, status, todos, loading,
+    query, status, todos, isLoading,
   };
 
   dispatch(todosActions.getVisibleTodos(filter));
@@ -49,8 +49,8 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loading && <Loader />}
-              <TodoList />
+              {isLoading && <Loader />}
+              {!isLoading && <TodoList />}
             </div>
           </div>
         </div>
