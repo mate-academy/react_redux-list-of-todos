@@ -59,8 +59,6 @@ export const App: React.FC = () => {
 
   const [loaderIsShown, setLoaderIsShown] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-  // const [todosStatus, setTodosStatus] = useState<Status>('all');
-  // const [query, setQuery] = useState('');
 
   const setTodo = (todo: Todo) => dispatch(currTodoActions.setTodo(todo));
   const removeTodo = () => dispatch(currTodoActions.removeTodo());
@@ -96,10 +94,6 @@ export const App: React.FC = () => {
     removeTodo();
   };
 
-  // const clearQuery = () => {
-  //   setQuery('');
-  // };
-
   return (
     <>
       <div className="section">
@@ -108,12 +102,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                // handleChange={setTodosStatus}
-                // queryChange={setQuery}
-                // clearQuery={clearQuery}
-                // query={query}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
