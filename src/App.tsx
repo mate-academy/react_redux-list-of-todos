@@ -2,29 +2,23 @@
 import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { useDispatch } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { getTodos, getUser } from './api';
+import { getTodos as uploadFromAPITodos, getUser } from './api';
 import { Todo } from './types/Todo';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { User } from './types/User';
 import { Status } from './types/Status';
-import { useAppSelector } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as currTodoActions } from './features/currentTodo';
+import { actions as getTodosActions } from './features/todos';
 
-type FilterParams = {
+function getFilteredTodos(
   todosFromServer: Todo[],
   status: Status,
   query: string,
-};
-
-function getFilteredTodos({
-  todosFromServer,
-  status,
-  query,
-}: FilterParams) {
+) {
   let filteredTodos = todosFromServer;
 
   switch (status) {
@@ -50,37 +44,26 @@ function getFilteredTodos({
 }
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-
-  const dispatch = useDispatch();
+  const todos = useAppSelector(state => state.todos);
   const selectedTodo = useAppSelector(state => state.currentTodo);
-
   const { status, query } = useAppSelector(state => state.filter);
-
-  const [loaderIsShown, setLoaderIsShown] = useState(true);
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>(todos);
   const [user, setUser] = useState<User | null>(null);
 
+  const dispatch = useAppDispatch();
+
+  const getTodos = (arrOfTodos: Todo[]) => dispatch(getTodosActions.getTodos(arrOfTodos));
   const setTodo = (todo: Todo) => dispatch(currTodoActions.setTodo(todo));
   const removeTodo = () => dispatch(currTodoActions.removeTodo());
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoaderIsShown(false);
-    }, 300);
-  }, []);
+    setFilteredTodos(getFilteredTodos(todos, status, query));
+  }, [status, query, todos]);
 
   useEffect(() => {
-    getTodos()
-      .then(todosFromServer => {
-        const filteredTodos = getFilteredTodos({
-          todosFromServer,
-          status,
-          query,
-        });
-
-        setTodos(filteredTodos);
-      });
-  }, [todos, status, query]);
+    uploadFromAPITodos()
+      .then((response: Todo[]) => getTodos(response));
+  }, []);
 
   const handleClick = async (todo: Todo) => {
     setTodo(todo);
@@ -106,12 +89,12 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loaderIsShown
+              {todos.length === 0
                 ? (
                   <Loader />
                 ) : (
                   <TodoList
-                    todos={todos}
+                    todos={filteredTodos}
                     selectedId={selectedTodo?.id}
                     handleClick={handleClick}
                   />

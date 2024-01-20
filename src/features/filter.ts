@@ -23,7 +23,7 @@ type State = {
   status: Status,
 };
 
-type Action = SetStatusAction | SetQueryAction | ClearQueryAction;
+type FilterAction = SetStatusAction | SetQueryAction | ClearQueryAction;
 
 const defaultState = {
   query: '',
@@ -32,7 +32,7 @@ const defaultState = {
 
 const filterReducer = (
   state: State = defaultState,
-  action: Action,
+  action: FilterAction,
 ): State => {
   switch (action.type) {
     case 'currentStatus/SET':
