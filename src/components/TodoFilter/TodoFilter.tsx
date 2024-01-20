@@ -1,35 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { actions } from '../../features/filter';
 import { useAppDispatch } from '../../app/hooks';
+import { FilterStatus } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const [value, setValue] = useState('all');
+  const [value, setValue] = useState<FilterStatus>(FilterStatus.All);
   const [searchValue, setSearchValue] = useState('');
 
   const {
-    setStatusActive,
-    setStatusAll,
-    setStatusCompleted,
+    setStatus,
     getQuery,
   } = actions;
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    switch (value) {
-      case 'active':
-        dispatch(setStatusActive());
-        break;
-
-      case 'completed':
-        dispatch(setStatusCompleted());
-        break;
-
-      default:
-        dispatch(setStatusAll());
-        break;
-    }
-  }, [value, dispatch, setStatusActive, setStatusAll, setStatusCompleted]);
+    dispatch(setStatus(value));
+  }, [value, dispatch, setStatus]);
 
   useEffect(() => {
     dispatch(getQuery(searchValue));
@@ -44,11 +31,11 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={event => setValue(event.target.value)}
+            onChange={event => setValue(event.target.value as FilterStatus)}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={FilterStatus.All}>All</option>
+            <option value={FilterStatus.Active}>Active</option>
+            <option value={FilterStatus.Completed}>Completed</option>
           </select>
         </span>
       </p>

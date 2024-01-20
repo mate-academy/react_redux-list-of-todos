@@ -8,12 +8,14 @@ import { TodoFilter } from './components/TodoFilter';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { actions } from './features/todos';
-import { useAppDispatch } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { TodoModal } from './components/TodoModal';
 
 export const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { getData } = actions;
   const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     setLoading(true);
@@ -42,6 +44,9 @@ export const App: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {currentTodo
+        && <TodoModal />}
     </>
   );
 };

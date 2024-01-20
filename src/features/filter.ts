@@ -1,21 +1,10 @@
-import { Status } from '../types/Status';
+import { FilterStatus } from '../types/Status';
 
-type SetAllFilterAction = { type: 'filter/ALL' };
+type SetStatus = { type: 'filter/SET', payload: FilterStatus };
 
-const setStatusAll = (): SetAllFilterAction => ({
-  type: 'filter/ALL',
-});
-
-type SetActiveFilterAction = { type: 'filter/ACTIVE' };
-
-const setStatusActive = (): SetActiveFilterAction => ({
-  type: 'filter/ACTIVE',
-});
-
-type SetCompletedFilterAction = { type: 'filter/COMPLETED' };
-
-const setStatusCompleted = (): SetCompletedFilterAction => ({
-  type: 'filter/COMPLETED',
+const setStatus = (status: FilterStatus): SetStatus => ({
+  type: 'filter/SET',
+  payload: status,
 });
 
 type GetQueryAction = { type: 'filter/GET', payload: string };
@@ -26,47 +15,31 @@ const getQuery = (query: string): GetQueryAction => ({
 });
 
 export const actions = {
-  setStatusAll,
-  setStatusActive,
-  setStatusCompleted,
+  setStatus,
   getQuery,
 };
 
 type Action =
-  SetAllFilterAction
-  | SetActiveFilterAction
-  | SetCompletedFilterAction
+  SetStatus
   | GetQueryAction;
 
 type State = {
   query: string,
-  status: Status,
+  status: FilterStatus,
 };
 
 const filterReducer = (
   state: State = {
     query: '',
-    status: 'all',
+    status: FilterStatus.All,
   },
   action: Action,
 ): State => {
   switch (action.type) {
-    case 'filter/ALL':
+    case 'filter/SET':
       return {
         query: state.query,
-        status: 'all',
-      };
-
-    case 'filter/ACTIVE':
-      return {
-        query: state.query,
-        status: 'active',
-      };
-
-    case 'filter/COMPLETED':
-      return {
-        query: state.query,
-        status: 'completed',
+        status: action.payload,
       };
 
     case 'filter/GET':

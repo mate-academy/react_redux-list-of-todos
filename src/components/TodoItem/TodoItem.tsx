@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
-import { TodoModal } from '../TodoModal';
 import { actions } from '../../features/currentTodo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
@@ -61,9 +60,6 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           </button>
         </td>
       </tr>
-
-      {currentTodo
-        && <TodoModal />}
     </>
   );
 };
