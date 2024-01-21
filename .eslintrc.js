@@ -9,12 +9,4 @@ module.exports = {
       assert: "either",
     }],
   },
-  overrides: [
-    {
-      // feel free to replace with your preferred file pattern - eg. 'src/**/*Slice.ts'
-      files: ['src/**/*.slice.ts'],
-      // avoid state param assignment
-      rules: { 'no-param-reassign': ['error', { props: false }] },
-    },
-  ],
 };
