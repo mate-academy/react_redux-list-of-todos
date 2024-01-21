@@ -1,38 +1,48 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from '../types/User';
 import { Todo } from '../types/Todo';
 
-// we use string literal as a type to avoid mistype in future
-type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
-
-// payload is a typical name for an action data
-type SetTodoAction = {
-  type: 'currentTodo/SET';
-  payload: Todo;
+type CurrentTodoState = {
+  modalDisplay: boolean;
+  currentTodo: Todo | null;
+  currentUser: User | null;
+  userLoading: boolean;
+  userError: string;
 };
 
-// Action creator return type protect us from a mistype
-const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
-
-const setTodo = (todo: Todo): SetTodoAction => ({
-  type: 'currentTodo/SET',
-  payload: todo,
+const initialState: CurrentTodoState = {
+  modalDisplay: false,
+  currentTodo: null,
+  currentUser: null,
+  userLoading: false,
+  userError: '',
+};
+/* eslint-disable no-param-reassign */
+const currentTodoSlice = createSlice({
+  name: 'currentTodo',
+  initialState,
+  reducers: {
+    showModal: (state: CurrentTodoState, action: PayloadAction<boolean>) => {
+      state.modalDisplay = action.payload;
+    },
+    setUserLoading: (
+      state: CurrentTodoState,
+      action: PayloadAction<boolean>,
+    ) => {
+      state.userLoading = action.payload;
+    },
+    setUserError: (state: CurrentTodoState, action: PayloadAction<string>) => {
+      state.userError = action.payload;
+    },
+    setCurrentUser: (state: CurrentTodoState, action: PayloadAction<User>) => {
+      state.currentUser = action.payload;
+    },
+    setCurrenTodo: (state: CurrentTodoState, action: PayloadAction<Todo>) => {
+      state.currentTodo = action.payload;
+    },
+  },
 });
 
-// These actions will be used in the application
-export const actions = { setTodo, removeTodo };
+export const { actions } = currentTodoSlice;
 
-type State = Todo | null;
-type Action = SetTodoAction | RemoveTodoAction;
-
-const currentTodoReducer = (
-  state: State = null,
-  action: Action,
-): State => {
-  switch (action.type) {
-    // Implement all actions here
-
-    default:
-      return state;
-  }
-};
-
-export default currentTodoReducer;
+export default currentTodoSlice.reducer;
