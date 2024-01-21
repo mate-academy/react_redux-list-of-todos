@@ -10,7 +10,7 @@ const initialState: FilterState = {
   query: '',
   status: Status.all,
 };
-
+/* eslint-disable no-param-reassign */
 const filterSlice = createSlice({
   name: 'filter',
   initialState,

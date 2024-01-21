@@ -17,7 +17,7 @@ const initialState: CurrentTodoState = {
   userLoading: false,
   userError: '',
 };
-
+/* eslint-disable no-param-reassign */
 const currentTodoSlice = createSlice({
   name: 'currentTodo',
   initialState,

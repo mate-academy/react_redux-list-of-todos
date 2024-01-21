@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import cn from 'classnames';
 import { getTodos } from '../../api';
 import { Todo } from '../../types/Todo';
@@ -8,7 +8,7 @@ import { actions as todosActions } from '../../features/todos';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import filterTodos from '../../utils/filterTodos';
 
-export const TodoList: React.FC = () => {
+export const TodoList:React.FC = () => {
   const dispatch = useAppDispatch();
   const { todos, loading } = useAppSelector((state) => state.todos);
   const { query, status } = useAppSelector((state) => state.filter);
@@ -52,7 +52,7 @@ export const TodoList: React.FC = () => {
               </th>
 
               <th>Title</th>
-              <th> </th>
+              <th aria-label="Empty header"> </th>
             </tr>
           </thead>
 
@@ -108,3 +108,5 @@ export const TodoList: React.FC = () => {
     </>
   );
 };
+
+export default memo(TodoList);

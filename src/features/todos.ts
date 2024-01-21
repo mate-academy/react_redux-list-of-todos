@@ -12,7 +12,7 @@ const initialState: TodosState = {
   loading: false,
   error: '',
 };
-
+/* eslint-disable no-param-reassign */
 const todosSlice = createSlice({
   name: 'todos',
   initialState,
