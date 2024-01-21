@@ -28,7 +28,7 @@ export const TodoModal: React.FC = () => {
 
   useEffect(() => {
     getCurrentUser();
-  }, [getCurrentUser]);
+  }, []);
 
   const handleCloseModal = () => {
     dispatch(currentTodoActions.showModal(false));

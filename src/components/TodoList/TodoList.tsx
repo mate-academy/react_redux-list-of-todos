@@ -30,7 +30,7 @@ export const TodoList:React.FC = () => {
 
   useEffect(() => {
     getTodosFromServer();
-  }, [getTodosFromServer]);
+  }, []);
 
   const handleModal = (todo: Todo) => {
     dispatch(currentTodoActions.setCurrenTodo(todo));
