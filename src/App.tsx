@@ -16,13 +16,13 @@ export const App: React.FC = () => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
-  const setTodos = (value: Todo[]) => {
-    dispatch(todosAction.setTodos(value));
-  };
-
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const setTodos = (value: Todo[]) => {
+      dispatch(todosAction.setTodos(value));
+    };
+
     setIsLoading(true);
 
     getTodos()
@@ -30,7 +30,7 @@ export const App: React.FC = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
