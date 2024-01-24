@@ -59,7 +59,7 @@ export const TodoList = () => {
               ? 'has-background-info-light'
               : ''}
           >
-            <td className="is-vcentered">1</td>
+            <td className="is-vcentered">{todo.id}</td>
             <td className="is-vcentered">
               {todo.completed && (
                 <span className="icon" data-cy="iconCompleted">
