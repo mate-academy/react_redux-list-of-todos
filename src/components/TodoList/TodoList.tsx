@@ -13,7 +13,10 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
   const filter = useAppSelector(state => state.filter);
   const isModalShow = useAppSelector(state => state.modalStatus);
   const filteredTodos = todos.filter(todo => {
-    if (!todo.title.includes(filter.query)) {
+    const normalizeTodoTitle = todo.title.toLowerCase();
+    const normalizeFilterQuery = filter.query.toLowerCase();
+
+    if (!normalizeTodoTitle.includes(normalizeFilterQuery)) {
       return false;
     }
 

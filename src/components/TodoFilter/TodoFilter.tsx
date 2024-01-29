@@ -32,10 +32,14 @@ export const TodoFilter: React.FC = () => {
     dispatch(filterActions.query(e.target.value));
   };
 
+  const clearSearchHandler = () => {
+    dispatch(filterActions.queryClear());
+  };
+
   return (
     <form
       className="field has-addons"
-      onSubmit={event => event.preventDefault()}
+      onSubmit={(event) => event.preventDefault()}
     >
       <p className="control">
         <span className="select">
@@ -64,15 +68,17 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={() => dispatch(filterActions.queryClear())}
-          />
-        </span>
+        {selectValue.query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={clearSearchHandler}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
