@@ -20,7 +20,7 @@ const setStatus = (status: Status): SetStatusAction => ({
   payload: status,
 });
 
-export const actions = { setQuery, setStatus };
+export const filterActions = { setQuery, setStatus };
 
 type State = {
   query: string,
@@ -30,7 +30,7 @@ type State = {
 type Action = SetQueryAction | SetStatusAction;
 
 const filterReducer = (
-  state: State = { query: '', status: 'All' },
+  state: State = { query: '', status: 'all' },
   action: Action,
 ) => {
   switch (action.type) {

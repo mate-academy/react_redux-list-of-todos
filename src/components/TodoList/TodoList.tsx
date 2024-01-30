@@ -1,4 +1,5 @@
 /* eslint-disable max-len */
+import classNames from 'classnames';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
@@ -10,30 +11,34 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query, status } = useAppSelector((state) => state.filter);
 
-  let visibleTodos = [...todos];
+  const getFilteredTodos = () => {
+    let visibleTodos = [...todos];
 
-  if (query) {
-    visibleTodos = visibleTodos.filter(currTodo => (
-      currTodo.title.toLowerCase().includes(query.trim().toLowerCase())
-    ));
-  }
+    if (query) {
+      visibleTodos = visibleTodos.filter(currTodo => (
+        currTodo.title.toLowerCase().includes(query.trim().toLowerCase())
+      ));
+    }
 
-  if (status) {
-    visibleTodos = visibleTodos.filter((todo) => {
-      switch (status) {
-        case 'active':
-          return !todo.completed;
-        case 'completed':
-          return todo.completed;
-        default:
-          return visibleTodos;
-      }
-    });
-  }
+    if (status) {
+      visibleTodos = visibleTodos.filter((todo) => {
+        switch (status) {
+          case 'active':
+            return !todo.completed;
+          case 'completed':
+            return todo.completed;
+          default:
+            return visibleTodos;
+        }
+      });
+    }
+
+    return visibleTodos;
+  };
 
   return (
     <>
-      {!visibleTodos.length
+      {!getFilteredTodos().length
         ? (
           <p className="notification is-warning">
             There are no todos matching current filter criteria
@@ -57,7 +62,7 @@ export const TodoList: React.FC = () => {
             </thead>
 
             <tbody>
-              {visibleTodos.map((todo: Todo) => (
+              {getFilteredTodos().map((todo: Todo) => (
                 <tr data-cy="todo" key={todo.id}>
                   <td className="is-vcentered">{todo.id}</td>
                   <td className="is-vcentered">
@@ -70,9 +75,10 @@ export const TodoList: React.FC = () => {
 
                   <td className="is-vcentered is-expanded">
                     <p
-                      className={todo.completed
-                        ? 'has-text-success'
-                        : 'has-text-danger'}
+                      className={classNames({
+                        'has-text-success': todo.completed,
+                        'has-text-danger': !todo.completed,
+                      })}
                     >
                       {todo.title}
                     </p>
@@ -88,11 +94,10 @@ export const TodoList: React.FC = () => {
                     >
                       <span className="icon">
                         <i
-                          className={
-                            `far ${todo.id === currentTodo?.id
-                              ? 'fa-eye-slash'
-                              : 'fa-eye'}`
-                          }
+                          className={classNames('far', {
+                            'fa-eye-slash': todo.id === currentTodo?.id,
+                            'fa-eye': todo.id !== currentTodo?.id,
+                          })}
                         />
                       </span>
                     </button>
