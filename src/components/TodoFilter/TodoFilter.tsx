@@ -1,6 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Status } from '../../enum/Status';
 
-export const TodoFilter: React.FC = () => {
+export const TodoFilter: React.FC = ({
+  onStatus,
+  onQuery,
+}) => {
+  const [status, setStatus] = useState(Status.All);
+  const [query, setQuery] = useState('');
+  const options = Object.entries(Status).map(([key, value]) => (
+    <option value={value}>{key}</option>
+  ));
+
+  const handleStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selecteed = event.target.value as Status;
+
+    setStatus(selecteed);
+    onStatus(selecteed);
+  };
+
+  const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+
+    setQuery(input);
+    onQuery(input);
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,16 +32,19 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            value={status}
+            onChange={handleStatus}
+            data-cy="statusSelect"
+          >
+            {options}
           </select>
         </span>
       </p>
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
+          value={query}
           data-cy="searchInput"
           type="text"
           className="input"
