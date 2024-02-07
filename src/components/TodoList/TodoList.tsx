@@ -26,7 +26,7 @@ export const TodoList: React.FC<Props> = ({
     </thead>
 
     <tbody>
-      {todos.length > 0 && todos.map(todo => (
+      {!!todos.length && todos.map(todo => (
         <TodoItem
           todo={todo}
           key={todo.id}

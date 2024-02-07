@@ -12,7 +12,6 @@ import { getTodos } from './api';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { actions as todosActions } from './features/todos';
-// import { actions as filterActions } from './features/filter';
 import { Status } from './types/Status';
 
 export const App: React.FC = () => {
@@ -25,15 +24,14 @@ export const App: React.FC = () => {
 
   const filteredTodosByStatus = useMemo(() => {
     return todos.filter(todo => {
-      if (status === Status.active) {
-        return !todo.completed;
+      switch (status) {
+        case Status.active:
+          return !todo.completed;
+        case Status.completed:
+          return todo.completed;
+        default:
+          return true;
       }
-
-      if (status === Status.completed) {
-        return todo.completed;
-      }
-
-      return true;
     }).filter(todo => todo.title.toLowerCase().trim().includes(query.toLowerCase()));
   }, [todos, status, query]);
 

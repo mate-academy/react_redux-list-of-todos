@@ -1,6 +1,3 @@
-// import { Todo } from '../types/Todo';
-// import { StatusType } from '../types/Status';
-
 const defaultPayload = {
   query: '',
   status: 'all',
