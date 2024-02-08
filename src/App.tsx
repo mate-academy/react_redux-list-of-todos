@@ -5,19 +5,22 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-// import { TodoModal } from './components/TodoModal';
+import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { actions as todosActions } from './features/todos';
 import { actions as statusActions } from './features/filter';
+import { actions as currentTodoActions } from './features/currentTodo';
 import { getFilteredTodos } from './helpers/getFilteredTodos';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { Status } from './enum/Status';
+import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
@@ -43,9 +46,19 @@ export const App: React.FC = () => {
     dispatch(statusActions.changeQuery(enteredQuery));
   };
 
+  const handleSetTodo = (todo: Todo) => {
+    dispatch(currentTodoActions.setTodo(todo));
+  };
+
+  const handleRemoveTodo = (todo: Todo) => {
+    dispatch(currentTodoActions.removeTodo(todo));
+  };
+
   const filteredTodos = useMemo(() => {
     return getFilteredTodos(todos, { query, status });
   }, [query, status, todos]);
+
+  const isShowTodos = isLoading && !isError && !!todos.length;
 
   return (
     <>
@@ -64,14 +77,17 @@ export const App: React.FC = () => {
             <div className="block">
               {isLoading && <Loader />}
               {isError && <p className="notification is-warning">Somerthing went wrong</p>}
-              <TodoList todos={filteredTodos} />
+              <TodoList
+                onSetTodo={handleSetTodo}
+                currentTodo={currentTodo}
+                todos={filteredTodos}
+              />
             </div>
           </div>
         </div>
 
       </div>
-
-      {/* <TodoModal /> */}
+      {isShowTodos && <TodoModal />}
     </>
   );
 };

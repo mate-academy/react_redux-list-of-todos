@@ -3,14 +3,20 @@ import React from 'react';
 import cn from 'classnames';
 
 export const TodoList: React.FC = ({
+  onSetTodo,
+  currentTodo,
   todos,
 }) => {
-  return (
-    <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
 
+  let isTodoSelected //  check if currentTodo id and todo id equals
+
+  const handleCurrentTodo = (todo) => {
+    onSetTodo(todo); // function that dispatch todo
+    isTodoSelected = currentTodo.id === todo.id;
+  };
+
+  return (
+    todos.length ? (
       <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
@@ -48,9 +54,15 @@ export const TodoList: React.FC = ({
               </td>
 
               <td className="has-text-right is-vcentered">
-                <button data-cy="selectButton" className="button" type="button">
+                <button onClick={() => handleCurrentTodo(todo)}
+                  data-cy="selectButton"
+                  className="button"
+                  type="button">
                   <span className="icon">
-                    <i className="far fa-eye" />
+                    <i className={cn('far',
+                      { 'fa-eye': !isTodoSelected },
+                      { 'fa-eye-slash': isTodoSelected })}
+                    />
                   </span>
                 </button>
               </td>
@@ -58,6 +70,10 @@ export const TodoList: React.FC = ({
           ))}
         </tbody>
       </table>
-    </>
+    ) : (
+      <p className="notification is-warning">
+        There are no todos matching current filter criteria
+      </p>
+    )
   );
 };

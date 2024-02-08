@@ -25,6 +25,11 @@ export const TodoFilter: React.FC = ({
     onQuery(input);
   };
 
+  const handleDelete = () => {
+    setQuery('');
+    onQuery('');
+  };
+
   return (
     <form
       className="field has-addons"
@@ -45,6 +50,7 @@ export const TodoFilter: React.FC = ({
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
           value={query}
+          onChange={handleQuery}
           data-cy="searchInput"
           type="text"
           className="input"
@@ -57,6 +63,7 @@ export const TodoFilter: React.FC = ({
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
           <button
+            onClick={handleDelete}
             data-cy="clearSearchButton"
             type="button"
             className="delete"

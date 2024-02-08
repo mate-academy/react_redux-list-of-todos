@@ -7,7 +7,7 @@ export const getFilteredTodos = (todos: Todo[], { query, status }) => {
   if (query) {
     const filteredQuery = query.trim().toLowerCase();
 
-    filteredTodos.filter((todo) => {
+    filteredTodos = filteredTodos.filter((todo) => {
       return todo.title.toLowerCase().includes(filteredQuery);
     });
   }
