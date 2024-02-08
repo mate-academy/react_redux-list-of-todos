@@ -1,10 +1,12 @@
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
@@ -17,13 +19,13 @@ export const TodoList: React.FC = () => {
   if (status) {
     visibleTodos = visibleTodos.filter((todo) => {
       switch (status) {
-        case 'completed':
+        case Status.completed:
           return todo.completed;
 
-        case 'active':
+        case Status.active:
           return !todo.completed;
 
-        case 'all':
+        case Status.all:
         default:
           return visibleTodos;
       }
@@ -42,7 +44,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {visibleTodos.length === 0 ? (
+      {!visibleTodos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>

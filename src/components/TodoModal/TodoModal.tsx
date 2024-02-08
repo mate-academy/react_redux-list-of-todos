@@ -11,6 +11,8 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
+  const { name, email } = user || {};
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -60,8 +62,8 @@ export const TodoModal: React.FC = () => {
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={`mailto:${user?.email}`}>
-                {user?.name}
+              <a href={`mailto:${email}`}>
+                {name}
               </a>
             </p>
           </div>

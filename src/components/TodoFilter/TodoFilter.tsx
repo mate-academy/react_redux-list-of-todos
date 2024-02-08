@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const { query, status } = useAppSelector(state => state.filter);
@@ -8,15 +9,15 @@ export const TodoFilter: React.FC = () => {
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     switch (event.target.value) {
-      case 'all':
+      case Status.all:
         dispatch(filterActions.filterAll());
         break;
 
-      case 'active':
+      case Status.active:
         dispatch(filterActions.filterActive());
         break;
 
-      case 'completed':
+      case Status.completed:
         dispatch(filterActions.filterCompleted());
         break;
 
