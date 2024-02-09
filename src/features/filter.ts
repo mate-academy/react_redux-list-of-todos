@@ -23,8 +23,8 @@ const changeQuery = (query: string): QueryAction => {
   return {
     type: 'filter/query',
     payload: query,
-  }
-}
+  };
+};
 
 export const actions = { changeStatus, changeQuery };
 

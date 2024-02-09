@@ -2,7 +2,7 @@ import { Todo } from '../types/Todo';
 
 type LoadAction = { type: 'todo/load', payload: Todo[] };
 
-const loadTodo = (todos: Todo[]) => ({
+const loadTodo = (todos: Todo[]) : LoadAction => ({
   type: 'todo/load',
   payload: todos,
 });

@@ -1,18 +1,23 @@
 /* eslint-disable max-len */
 import React from 'react';
 import cn from 'classnames';
+import { Todo } from '../../types/Todo';
 
-export const TodoList: React.FC = ({
+type State = Todo | null;
+
+interface Props {
+  onSetTodo: (todo: Todo) => void;
+  currentTodo: State;
+  todos: Todo[]
+}
+
+export const TodoList: React.FC<Props> = ({
   onSetTodo,
   currentTodo,
   todos,
 }) => {
-
-  let isTodoSelected //  check if currentTodo id and todo id equals
-
-  const handleCurrentTodo = (todo) => {
-    onSetTodo(todo); // function that dispatch todo
-    isTodoSelected = currentTodo.id === todo.id;
+  const handleCurrentTodo = (todo: Todo) => {
+    onSetTodo(todo); // function that dispatch todo;
   };
 
   return (
@@ -22,22 +27,22 @@ export const TodoList: React.FC = ({
           <tr>
             <th>#</th>
 
-            <th>
+            <th aria-label="th">
               <span className="icon">
                 <i className="fas fa-check" />
               </span>
             </th>
 
             <th>Title</th>
-            <th> </th>
+            <th aria-label="empty-head"> </th>
           </tr>
         </thead>
 
         <tbody>
-          {todos.map((todo) => (
+          {todos.map((todo: Todo) => (
             <tr data-cy="todo">
               <td className="is-vcentered">{todo.id}</td>
-              <td className="is-vcentered">
+              <td aria-label="empty-head" className="is-vcentered">
                 <span className="icon" data-cy="iconCompleted">
                   <i className={cn({ 'fas fa-check': todo.completed })} />
                 </span>
@@ -54,14 +59,17 @@ export const TodoList: React.FC = ({
               </td>
 
               <td className="has-text-right is-vcentered">
-                <button onClick={() => handleCurrentTodo(todo)}
+                <button
+                  aria-label="button"
+                  onClick={() => handleCurrentTodo(todo)}
                   data-cy="selectButton"
                   className="button"
-                  type="button">
+                  type="button"
+                >
                   <span className="icon">
                     <i className={cn('far',
-                      { 'fa-eye': !isTodoSelected },
-                      { 'fa-eye-slash': isTodoSelected })}
+                      { 'fa-eye': currentTodo === null || currentTodo.id !== todo.id },
+                      { 'fa-eye-slash': currentTodo && currentTodo.id === todo.id })}
                     />
                   </span>
                 </button>

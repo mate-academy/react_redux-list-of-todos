@@ -1,7 +1,13 @@
 import { Todo } from '../types/Todo';
 import { Status } from '../enum/Status';
 
-export const getFilteredTodos = (todos: Todo[], { query, status }) => {
+interface FilteredOptions {
+  query: string;
+  status: Status;
+}
+
+export const getFilteredTodos = (todos: Todo[],
+  { query, status }: FilteredOptions) => {
   let filteredTodos = [...todos];
 
   if (query) {

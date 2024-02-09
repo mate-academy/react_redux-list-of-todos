@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Status } from '../../enum/Status';
 
-export const TodoFilter: React.FC = ({
+interface Props {
+  onStatus: (selectedStatus: Status) => void;
+  onQuery: (enteredQuery: string) => void;
+}
+
+export const TodoFilter: React.FC<Props> = ({
   onStatus,
   onQuery,
 }) => {

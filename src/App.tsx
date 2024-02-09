@@ -50,15 +50,13 @@ export const App: React.FC = () => {
     dispatch(currentTodoActions.setTodo(todo));
   };
 
-  const handleRemoveTodo = (todo: Todo) => {
-    dispatch(currentTodoActions.removeTodo(todo));
+  const handleRemoveTodo = () => {
+    dispatch(currentTodoActions.removeTodo());
   };
 
   const filteredTodos = useMemo(() => {
     return getFilteredTodos(todos, { query, status });
   }, [query, status, todos]);
-
-  const isShowTodos = isLoading && !isError && !!todos.length;
 
   return (
     <>
@@ -87,7 +85,13 @@ export const App: React.FC = () => {
         </div>
 
       </div>
-      {isShowTodos && <TodoModal />}
+      {currentTodo
+        && (
+          <TodoModal
+            currentTodo={currentTodo}
+            onRemoveTodo={handleRemoveTodo}
+          />
+        )}
     </>
   );
 };
