@@ -40,7 +40,7 @@ export const TodoList: React.FC<Props> = ({
 
         <tbody>
           {todos.map((todo: Todo) => (
-            <tr data-cy="todo">
+            <tr key={todo.id} data-cy="todo">
               <td className="is-vcentered">{todo.id}</td>
               <td aria-label="empty-head" className="is-vcentered">
                 <span className="icon" data-cy="iconCompleted">
