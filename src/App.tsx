@@ -36,9 +36,16 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {todos.length
-                ? <TodoList todos={filteredTodos} />
-                : <Loader />}
+              {!!todos.length && (
+                filteredTodos.length
+                  ? <TodoList todos={filteredTodos} />
+                  : (
+                    <p className="notification is-warning">
+                      There are no todos matching current filter criteria
+                    </p>
+                  )
+              )}
+              {!todos.length && <Loader />}
             </div>
           </div>
         </div>
