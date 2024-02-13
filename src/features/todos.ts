@@ -1,9 +1,25 @@
 import { Todo } from '../types/Todo';
 
-export const actions = {};
+type SetTodosAction = { type: 'todos/SET', payload: Todo[] };
 
-const todosReducer = (): Todo[] => {
-  return [];
+const setTodos = (todos: Todo[]): SetTodosAction => (
+  { type: 'todos/SET', payload: todos }
+);
+
+type Action = SetTodosAction;
+
+export const actions = { setTodos };
+
+const todosReducer = (
+  todos: Todo[] = [],
+  action: Action,
+): Todo[] => {
+  switch (action.type) {
+    case 'todos/SET':
+      return action.payload;
+    default:
+      return todos;
+  }
 };
 
 export default todosReducer;

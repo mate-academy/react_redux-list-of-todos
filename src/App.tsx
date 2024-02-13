@@ -1,14 +1,29 @@
-/* eslint-disable max-len */
-import React from 'react';
-import 'bulma/css/bulma.css';
-import '@fortawesome/fontawesome-free/css/all.css';
-
-import { TodoList } from './components/TodoList';
+import { useEffect, useMemo } from 'react';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { TodoFilter } from './components/TodoFilter';
+import { filterTodos } from './utils/filterTodos';
+import { TodoList } from './components/TodoList';
+import { Loader } from './components/Loader/Loader';
 import { TodoModal } from './components/TodoModal';
-import { Loader } from './components/Loader';
+import { getTodos } from './api';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+  const { status, query } = useAppSelector(state => state.filter);
+
+  useEffect(() => {
+    getTodos()
+      .then(serverTodos => dispatch(todosActions.setTodos(serverTodos)));
+  });
+
+  const filteredTodos = useMemo(
+    () => filterTodos(todos, { query, status }),
+    [todos, query, status],
+  );
+
   return (
     <>
       <div className="section">
@@ -21,14 +36,15 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {todos.length
+                ? <TodoList todos={filteredTodos} />
+                : <Loader />}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {!!currentTodo && (<TodoModal currentTodo={currentTodo} />)}
     </>
   );
 };
