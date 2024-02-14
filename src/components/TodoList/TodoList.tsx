@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getFilteredTodos } from '../../services/getFilteredTodos';
 import { actions as currentTodoActions } from '../../features/currentTodo';
@@ -7,6 +8,7 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
+  const seletctedTodo = useAppSelector(state => state.currentTodo);
 
   const filteredTodos = getFilteredTodos(todos, query, status);
 
@@ -53,9 +55,10 @@ export const TodoList: React.FC = () => {
                 </td>
 
                 <td className="is-vcentered is-expanded">
-                  <p className={
-                    todo.completed ? ('has-text-success') : ('has-text-danger')
-                  }
+                  <p className={classNames({
+                    'has-text-danger': !todo.completed,
+                    'has-text-success': todo.completed,
+                  })}
                   >
                     {todo.title}
                   </p>
@@ -70,7 +73,14 @@ export const TodoList: React.FC = () => {
                     onClick={() => dispatch(currentTodoActions.setTodo(todo))}
                   >
                     <span className="icon">
-                      <i className="far fa-eye" />
+                      <i className={classNames(
+                        'far',
+                        {
+                          'fa-eye': !seletctedTodo,
+                          'fa-eye-slash': seletctedTodo,
+                        },
+                      )}
+                      />
                     </span>
                   </button>
                 </td>
