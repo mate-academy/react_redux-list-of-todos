@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -10,21 +10,19 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
-import { Todo } from './types/Todo';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const todos = useAppSelector<Todo[]>(state => state.todos);
+  const [isLoading, setIsLoading] = useState(false);
   const hasSelectedTodo = useAppSelector(state => state.currentTodo !== null);
 
   useEffect(() => {
+    setIsLoading(true);
     getTodos()
       .then(todosFromServer => dispatch(
         todosActions.setTodos(todosFromServer),
       ))
-      .catch(error => {
-        throw new Error(error);
-      });
+      .finally(() => setIsLoading(false));
   }, [dispatch]);
 
   return (
@@ -39,7 +37,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!todos.length ? <Loader /> : <TodoList />}
+              {isLoading ? <Loader /> : <TodoList />}
             </div>
           </div>
         </div>
