@@ -9,27 +9,31 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
-import { useAppSelector } from './app/hooks';
+import { useAppSelector, useDebounce } from './app/hooks';
 import { actions as todoActions } from './features/todos';
+import { getActiveTodos } from './services/activeTodos';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const isTodos = useAppSelector(state => state.todos.length > 0);
+  const isTodos = useAppSelector(state => state.todos);
   const isSelectedTodos = useAppSelector(state => state.currentTodo !== null);
+  const { query, status } = useAppSelector(state => state.filter);
+  const debauncedQuery = useDebounce(query);
+  const filteredTodos = getActiveTodos(isTodos, status, debauncedQuery);
 
   useEffect(() => {
     getTodos()
       .then(todos => dispatch(
         todoActions.setTodos(todos),
       ));
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
       <div className="section">
         <div className="container">
           <div className="box">
-            {!isTodos ? (
+            {!isTodos.length ? (
               <Loader />
             ) : (
               <>
@@ -40,7 +44,7 @@ export const App: React.FC = () => {
                 </div>
 
                 <div className="block">
-                  <TodoList />
+                  <TodoList todos={filteredTodos} />
                 </div>
 
               </>

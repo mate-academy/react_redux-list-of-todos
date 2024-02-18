@@ -4,9 +4,12 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as todoActions } from '../../features/currentTodo';
-import { Filter } from '../../types/Filter';
 
-export const TodoList: React.FC = () => {
+type Props = {
+  todos: Todo[],
+};
+
+export const TodoList: React.FC<Props> = ({ todos }) => {
   const dispatch = useDispatch();
   const currentTodos = useAppSelector(state => state.currentTodo);
 
@@ -16,21 +19,7 @@ export const TodoList: React.FC = () => {
 
   const isSelected = (todo: Todo) => currentTodos?.id === todo.id;
 
-  const activeTodos = useAppSelector(({ filter, todos }) => {
-    if (filter.status === Filter.all && !filter.query) {
-      return todos;
-    }
-
-    const lowQuery = filter.query.toLocaleLowerCase();
-    const filterStatus = todos.filter(todo => (
-      filter.status !== Filter.active || !todo.completed)
-      && (filter.status !== Filter.completed || todo.completed)
-      && todo.title.toLowerCase().includes(lowQuery));
-
-    return filterStatus;
-  });
-
-  if (!activeTodos.length) {
+  if (!todos.length) {
     return (
       <p className="notification is-warning">
         There are no todos matching current filter criteria
@@ -59,7 +48,7 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-        {activeTodos.map(todo => (
+        {todos.map(todo => (
           <tr
             key={todo.id}
             data-cy="todo"
