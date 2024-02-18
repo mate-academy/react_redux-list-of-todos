@@ -10,6 +10,10 @@ export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const currentTodos = useAppSelector(state => state.currentTodo);
 
+  const handleClick = (todo: Todo) => dispatch(
+    todoActions.setTodo(todo),
+  );
+
   const isSelected = (todo: Todo) => currentTodos?.id === todo.id;
 
   const activeTodos = useAppSelector(({ filter, todos }) => {
@@ -18,21 +22,15 @@ export const TodoList: React.FC = () => {
     }
 
     const lowQuery = filter.query.toLocaleLowerCase();
+    const filterStatus = todos.filter(todo => (
+      filter.status !== Filter.active || !todo.completed)
+      && (filter.status !== Filter.completed || todo.completed)
+      && todo.title.toLowerCase().includes(lowQuery));
 
-    return todos.filter(todo => {
-      if (filter.status === Filter.active && todo.completed) {
-        return false;
-      }
-
-      if (filter.status === Filter.completed && !todo.completed) {
-        return false;
-      }
-
-      return todo.title.toLocaleLowerCase().includes(lowQuery);
-    });
+    return filterStatus;
   });
 
-  if (activeTodos.length === 0) {
+  if (!activeTodos.length) {
     return (
       <p className="notification is-warning">
         There are no todos matching current filter criteria
@@ -87,10 +85,6 @@ export const TodoList: React.FC = () => {
             )}
 
             <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">delectus aut autem</p>
-            </td>
-
-            <td className="is-vcentered is-expanded">
               <p
                 className={classNames({
                   'has-text-danger': !todo.completed,
@@ -108,9 +102,7 @@ export const TodoList: React.FC = () => {
                 className="button"
                 aria-label="Mute volume"
                 type="button"
-                onClick={() => dispatch(
-                  todoActions.setTodo(todo),
-                )}
+                onClick={() => handleClick(todo)}
               >
                 <span className="icon">
                   <i className={classNames('far', {

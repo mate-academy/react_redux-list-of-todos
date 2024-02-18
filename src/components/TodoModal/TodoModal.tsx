@@ -7,30 +7,26 @@ import { actions as currentTodoActions } from '../../features/currentTodo';
 import { useAppSelector } from '../../app/hooks';
 
 export const TodoModal: React.FC = () => {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [user, setUser] = useState<User | null>(null);
 
   const dispatch = useDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const onClose = () => dispatch(currentTodoActions.removeTodo());
 
+  if (!currentTodo) {
+    throw new Error('not exist');
+  }
+
   useEffect(() => {
-    setLoading(true);
-    if (currentTodo) {
-      getUser(currentTodo.userId)
-        .then(setSelectedUser)
-        .catch(() => setErrorMessage('Cannot find a user'))
-        .finally(() => setLoading(false));
-    }
+    getUser(currentTodo.userId).then(setUser);
   }, [currentTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {loading ? (
+      {!user ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -51,32 +47,22 @@ export const TodoModal: React.FC = () => {
             />
           </header>
 
-          {errorMessage ? (
-            <div className="modal-card-body">
-              <p className="block" data-cy="modal-title">
-                {errorMessage}
-              </p>
-            </div>
-          ) : (
-            <div className="modal-card-body">
-              <p className="block" data-cy="modal-title">
-                {currentTodo?.title}
-              </p>
-              <p className="block" data-cy="modal-user">
-                {/* <strong className="has-text-success">Done</strong> */}
+          <div className="modal-card-body">
+            <p className="block" data-cy="modal-title">
+              {currentTodo.title}
+            </p>
+            <p className="block" data-cy="modal-user">
+              {currentTodo.completed
+                ? (<strong className="has-text-success">Done</strong>)
+                : (<strong className="has-text-danger">Planned</strong>)}
 
-                {currentTodo?.completed
-                  ? (<strong className="has-text-success">Done</strong>)
-                  : (<strong className="has-text-danger">Planned</strong>)}
+              {' by '}
 
-                {' by '}
-
-                <a href={`mailto:${selectedUser?.email}`}>
-                  {selectedUser?.name}
-                </a>
-              </p>
-            </div>
-          )}
+              <a href={`mailto:${user.email}`}>
+                {user.name}
+              </a>
+            </p>
+          </div>
         </div>
       )}
     </div>
