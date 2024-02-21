@@ -1,6 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { actionsFilter } from '../../features/filter';
+import { useAppDispatch } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const [filterState, setFilterState] = useState('');
+
+  const handleFilterChange = (filterValue: string) => {
+    setFilterState(filterValue);
+    switch (filterValue) {
+      case 'all':
+        dispatch(actionsFilter.filterAll());
+        break;
+      case 'active':
+        dispatch(actionsFilter.filterActive());
+        break;
+      case 'completed':
+        dispatch(actionsFilter.filterCompleted());
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleQueryChange = (queryValue: string) => {
+    handleFilterChange(filterState);
+    dispatch(actionsFilter.filterQuery(queryValue));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +35,10 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            onChange={e => handleFilterChange(e.target.value)}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +52,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={e => handleQueryChange(e.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
