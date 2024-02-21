@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
-import { actionsFilter } from '../../features/filter';
+import { actionsFilter } from '../../features/filterTodos';
 import { useAppDispatch } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [filterState, setFilterState] = useState('');
+  const [query, setQuery] = useState('');
+  const [filterState, setFilterState] = useState('all');
 
-  const handleFilterChange = (filterValue: string) => {
+  const handleFilterChange = (filterValue: string, queryArg: string) => {
     setFilterState(filterValue);
     switch (filterValue) {
       case 'all':
-        dispatch(actionsFilter.filterAll());
+        dispatch(actionsFilter.filterAll(queryArg));
         break;
       case 'active':
-        dispatch(actionsFilter.filterActive());
+        dispatch(actionsFilter.filterActive(queryArg));
         break;
       case 'completed':
-        dispatch(actionsFilter.filterCompleted());
+        dispatch(actionsFilter.filterCompleted(queryArg));
         break;
       default:
         break;
     }
   };
 
-  const handleQueryChange = (queryValue: string) => {
-    handleFilterChange(filterState);
-    dispatch(actionsFilter.filterQuery(queryValue));
+  const handleQuery = (queryValue: string) => {
+    setQuery(queryValue);
+    handleFilterChange(filterState, queryValue);
   };
 
   return (
@@ -37,7 +38,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={e => handleFilterChange(e.target.value)}
+            onChange={e => handleFilterChange(e.target.value, query)}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -52,18 +53,18 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          onChange={e => handleQueryChange(e.target.value)}
+          onChange={e => handleQuery(e.target.value.toLowerCase())}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
           <button
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            aria-label="delete"
           />
         </span>
       </p>
