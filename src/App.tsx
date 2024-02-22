@@ -1,14 +1,31 @@
 /* eslint-disable max-len */
-import React from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
+import { effect, signal } from '@preact/signals-react';
+import { useSignals } from '@preact/signals-react/runtime';
+import { StrictMode } from 'react';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { getTodos } from './api';
+import { TodoModal } from './components/TodoModal';
+import { selectedTodo, todos } from './signals';
+
+const loading = signal<boolean>(true);
+
+effect(() => {
+  getTodos()
+    .then(t => {
+      todos.value = t;
+    })
+    .then(() => {
+      loading.value = false;
+    });
+});
 
 export const App: React.FC = () => {
+  useSignals();
+
   return (
     <>
       <div className="section">
@@ -21,14 +38,12 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {loading.value ? <Loader /> : <TodoList />}
             </div>
           </div>
         </div>
       </div>
-
-      <TodoModal />
+      <StrictMode>{!!selectedTodo.value && <TodoModal />}</StrictMode>
     </>
   );
 };
