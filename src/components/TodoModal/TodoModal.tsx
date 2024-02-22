@@ -23,6 +23,10 @@ export const TodoModal: React.FC = () => {
     return setIsLoaded(false);
   }, [currentTodo]);
 
+  if (!currentTodo) {
+    return null;
+  }
+
   return (
     <div
       className={cn('modal', {
