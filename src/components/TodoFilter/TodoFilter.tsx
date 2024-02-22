@@ -1,20 +1,21 @@
-import { useSignals } from '@preact/signals-react/runtime';
-import { FilterValues, FilterValuesType, KeyboardKeys } from '../../types';
-import { filterValue, searchQuery } from '../../signals';
+import { Filters, KeyboardKeys } from '../../types';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
-  useSignals();
+  const dispatch = useAppDispatch();
+  const filter = useAppSelector(state => state.filter);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    searchQuery.value = e.target.value;
+    dispatch(actions.setQuery(e.target.value));
   };
 
   const handleFilterValue = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    filterValue.value = e.target.value as FilterValuesType;
+    dispatch(actions.setStatus(e.target.value as Filters));
   };
 
   const handleResetQuery = () => {
-    searchQuery.value = '';
+    dispatch(actions.resetQuery());
   };
 
   return (
@@ -22,9 +23,9 @@ export const TodoFilter: React.FC = () => {
       <p className="control">
         <span className="select">
           <select data-cy="statusSelect" onChange={handleFilterValue}>
-            <option value={FilterValues.all}>All</option>
-            <option value={FilterValues.active}>Active</option>
-            <option value={FilterValues.completed}>Complete</option>
+            <option value={Filters.ALL}>All</option>
+            <option value={Filters.ACTIVE}>Active</option>
+            <option value={Filters.COMPLETED}>Complete</option>
           </select>
         </span>
       </p>
@@ -35,7 +36,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={searchQuery.value}
+          value={filter.query}
           onChange={handleInput}
           onKeyDown={e => e.key === KeyboardKeys.Enter && e.preventDefault()}
         />
@@ -43,13 +44,13 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {!!searchQuery.value.length && (
+        {!!filter.query.length && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
+              aria-label="clear search"
               onClick={handleResetQuery}
             />
           </span>

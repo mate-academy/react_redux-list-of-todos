@@ -1,30 +1,33 @@
 /* eslint-disable max-len */
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { effect, signal } from '@preact/signals-react';
-import { useSignals } from '@preact/signals-react/runtime';
-import { StrictMode } from 'react';
+import { useEffect, useState } from 'react';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { TodoModal } from './components/TodoModal';
-import { selectedTodo, todos } from './signals';
-
-const loading = signal<boolean>(true);
-
-effect(() => {
-  getTodos()
-    .then(t => {
-      todos.value = t;
-    })
-    .then(() => {
-      loading.value = false;
-    });
-});
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions } from './features/todos';
 
 export const App: React.FC = () => {
-  useSignals();
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    getTodos()
+      .then(t => {
+        dispatch(actions.setTodos(t));
+      })
+      .catch(() => {
+        throw new Error('Failed to fetch todos');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [dispatch]);
 
   return (
     <>
@@ -37,13 +40,11 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">
-              {loading.value ? <Loader /> : <TodoList />}
-            </div>
+            <div className="block">{loading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
-      <StrictMode>{!!selectedTodo.value && <TodoModal />}</StrictMode>
+      {currentTodo && <TodoModal />}
     </>
   );
 };

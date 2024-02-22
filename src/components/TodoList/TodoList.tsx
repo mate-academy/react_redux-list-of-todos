@@ -1,29 +1,36 @@
-import { useSignals } from '@preact/signals-react/runtime';
-import { computed } from '@preact/signals-react';
 import classNames from 'classnames';
-import { filterValue, searchQuery, selectedTodo, todos } from '../../signals';
-import { FilterValues } from '../../types';
-
-const filteredTodos = computed(() => {
-  return todos.value
-    .filter(todo => {
-      switch (filterValue.value) {
-        default:
-        case FilterValues.all:
-          return todo;
-        case FilterValues.completed:
-          return todo.completed;
-        case FilterValues.active:
-          return !todo.completed;
-      }
-    })
-    .filter(todo =>
-      todo.title.toLowerCase().includes(searchQuery.value.toLowerCase()),
-    );
-});
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/currentTodo';
+import { Filters, Todo } from '../../types';
 
 export const TodoList: React.FC = () => {
-  useSignals();
+  const todos = useAppSelector(state => state.todos) || [];
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const filter = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
+
+  const filterByStatus = (): Todo[] => {
+    switch (filter.status) {
+      case Filters.ALL:
+        return todos;
+      case Filters.ACTIVE:
+        return todos.filter(todo => !todo.completed);
+      case Filters.COMPLETED:
+        return todos.filter(todo => todo.completed);
+      default:
+        return todos;
+    }
+  };
+
+  const filterByQuery = (filtered: Todo[]): Todo[] => {
+    const query = filter.query.toLowerCase().trim();
+
+    return query
+      ? filtered.filter(todo => todo.title.toLowerCase().includes(query))
+      : filtered;
+  };
+
+  const filteredTodos = filterByQuery(filterByStatus());
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -41,11 +48,11 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-        {filteredTodos.value.map(todo => (
+        {filteredTodos.map(todo => (
           <tr
             data-cy="todo"
             className={classNames({
-              'has-background-info-light': selectedTodo.value,
+              'has-background-info-light': todo.id === currentTodo?.id,
             })}
             key={todo.id}
           >
@@ -73,14 +80,14 @@ export const TodoList: React.FC = () => {
                 type="button"
                 aria-label="Select todo"
                 onClick={() => {
-                  selectedTodo.value = todo;
+                  dispatch(actions.setTodo(todo));
                 }}
               >
                 <span className="icon">
                   <i
                     className={classNames(
                       'far',
-                      `fa-eye${todo.id === selectedTodo.value?.id ? '-slash' : ''}`,
+                      `fa-eye${todo.id === currentTodo?.id ? '-slash' : ''}`,
                     )}
                   />
                 </span>

@@ -1,7 +1,7 @@
-export enum FilterValues {
-  all = 'all',
-  completed = 'completed',
-  active = 'active',
+export enum Filters {
+  ALL = 'all',
+  ACTIVE = 'active',
+  COMPLETED = 'completed',
 }
 
-export type FilterValuesType = keyof typeof FilterValues;
+// export type FilterValuesType = keyof typeof Filters;

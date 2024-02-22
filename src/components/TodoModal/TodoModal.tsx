@@ -1,37 +1,40 @@
-import { useSignals } from '@preact/signals-react/runtime';
-import { effect, signal } from '@preact/signals-react';
+import { useEffect, useState } from 'react';
 import { getUser } from '../../api';
 import { Loader } from '../Loader';
-import { selectedTodo, user } from '../../signals';
-
-const modalLoading = signal<boolean>(true);
-
-effect(() => {
-  if (selectedTodo.value) {
-    getUser(selectedTodo.value.userId)
-      .then(t => {
-        user.value = t;
-      })
-      .then(() => {
-        modalLoading.value = false;
-      });
-  }
-});
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/currentTodo';
+import { User } from '../../types';
 
 export const TodoModal: React.FC = () => {
-  useSignals();
+  const [modalLoading, setModalLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<User | null>(null);
+
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (currentTodo) {
+      getUser(currentTodo.userId)
+        .then(data => {
+          setUser(data);
+        })
+        .then(() => {
+          setModalLoading(false);
+        });
+    }
+  }, [currentTodo]);
 
   const handleCloseModal = () => {
-    selectedTodo.value = null;
-    user.value = null;
-    modalLoading.value = true;
+    dispatch(actions.removeTodo());
+    setUser(null);
+    setModalLoading(true);
   };
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {modalLoading.value ? (
+      {modalLoading ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -40,25 +43,25 @@ export const TodoModal: React.FC = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${selectedTodo.value?.id}`}
+              {`Todo #${currentTodo?.id}`}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"
               data-cy="modal-close"
+              aria-label="close"
               onClick={handleCloseModal}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {selectedTodo.value?.title}
+              {currentTodo?.title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {selectedTodo.value?.completed ? (
+              {currentTodo?.completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>
@@ -66,7 +69,7 @@ export const TodoModal: React.FC = () => {
 
               {' by '}
 
-              <a href={`mailto:${user.value?.email}`}>{user.value?.name}</a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>
