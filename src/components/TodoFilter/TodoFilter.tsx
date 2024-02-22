@@ -22,7 +22,11 @@ export const TodoFilter: React.FC = () => {
     <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect" onChange={handleFilterValue}>
+          <select
+            data-cy="statusSelect"
+            id="filter select"
+            onChange={handleFilterValue}
+          >
             <option value={Filters.ALL}>All</option>
             <option value={Filters.ACTIVE}>Active</option>
             <option value={Filters.COMPLETED}>Complete</option>
@@ -34,6 +38,7 @@ export const TodoFilter: React.FC = () => {
         <input
           data-cy="searchInput"
           type="text"
+          id="search input"
           className="input"
           placeholder="Search..."
           value={filter.query}
