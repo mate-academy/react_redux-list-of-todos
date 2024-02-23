@@ -1,13 +1,10 @@
-import classNames from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions } from '../../features/currentTodo';
+import { useAppSelector } from '../../app/hooks';
 import { Filters, Todo } from '../../types';
+import { TodoItem } from '../TodoItem/TodoItem';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos) || [];
-  const currentTodo = useAppSelector(state => state.currentTodo);
   const filter = useAppSelector(state => state.filter);
-  const dispatch = useAppDispatch();
 
   const filterByStatus = (): Todo[] => {
     switch (filter.status) {
@@ -49,51 +46,7 @@ export const TodoList: React.FC = () => {
 
       <tbody>
         {filteredTodos.map(todo => (
-          <tr
-            data-cy="todo"
-            className={classNames({
-              'has-background-info-light': todo.id === currentTodo?.id,
-            })}
-            key={todo.id}
-          >
-            <td className="is-vcentered">{todo.id}</td>
-            <td className="is-vcentered">
-              {todo.completed && (
-                <span className="icon" data-cy="iconCompleted">
-                  <i className="fas fa-check" />
-                </span>
-              )}
-            </td>
-            <td className="is-vcentered is-expanded">
-              <p
-                className={classNames(
-                  `has-text-${todo.completed ? 'success' : 'danger'}`,
-                )}
-              >
-                {todo.title}
-              </p>
-            </td>
-            <td className="has-text-right is-vcentered">
-              <button
-                data-cy="selectButton"
-                className="button"
-                type="button"
-                aria-label="Select todo"
-                onClick={() => {
-                  dispatch(actions.setTodo(todo));
-                }}
-              >
-                <span className="icon">
-                  <i
-                    className={classNames(
-                      'far',
-                      `fa-eye${todo.id === currentTodo?.id ? '-slash' : ''}`,
-                    )}
-                  />
-                </span>
-              </button>
-            </td>
-          </tr>
+          <TodoItem key={todo.id} todo={todo} />
         ))}
       </tbody>
     </table>
