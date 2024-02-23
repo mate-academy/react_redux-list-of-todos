@@ -15,6 +15,7 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     setLoading(true);
@@ -23,7 +24,7 @@ export const App: React.FC = () => {
         dispatch(actions.setTodos(t));
       })
       .catch(() => {
-        throw new Error('Failed to fetch todos');
+        setIsError(true);
       })
       .finally(() => {
         setLoading(false);
@@ -40,8 +41,13 @@ export const App: React.FC = () => {
             <div className="block">
               <TodoFilter />
             </div>
-
-            <div className="block">{loading ? <Loader /> : <TodoList />}</div>
+            {isError && (
+              <strong className="has-text-danger">Failed to fetch todos</strong>
+            )}
+            <div className="block">
+              {loading && <Loader />}
+              {!loading && !isError && <TodoList />}
+            </div>
           </div>
         </div>
       </div>
