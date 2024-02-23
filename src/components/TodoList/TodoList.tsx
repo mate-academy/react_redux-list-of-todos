@@ -1,12 +1,15 @@
 /* eslint-disable */
 import React from 'react';
 import cn from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useAppDispatch } from '../../app/hooks';
 import { actions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
 
-export const TodoList: React.FC = () => {
-  const filteredTodos = useAppSelector(state => state.filterR);
+type Props = {
+  todos: Todo[]
+}
+
+export const TodoList: React.FC<Props> = ({ todos }) => {
   const dispatch = useAppDispatch();
 
   const handleCurrentTodo = (todo: Todo) => {
@@ -19,7 +22,8 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {filteredTodos.length === 0 ? (
+      {todos && true}
+      {todos.length === 0 ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -41,7 +45,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {filteredTodos.map(todo => (
+          {todos.map(todo => (
             <tr data-cy="todo" key={todo.id}>
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">

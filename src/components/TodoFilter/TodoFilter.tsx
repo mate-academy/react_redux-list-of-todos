@@ -1,32 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { actionsFilter } from '../../features/filterTodos';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { filterQuery } from '../../features/queryTodos';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [query, setQuery] = useState('');
-  const [filterState, setFilterState] = useState('all');
+  const query = useAppSelector(state => state.queryR);
 
-  const handleFilterChange = (filterValue: string, queryArg: string) => {
-    setFilterState(filterValue);
+  const handleFilterChange = (filterValue: string) => {
     switch (filterValue) {
       case 'all':
-        dispatch(actionsFilter.filterAll(queryArg));
+        dispatch(actionsFilter.filterAll());
         break;
       case 'active':
-        dispatch(actionsFilter.filterActive(queryArg));
+        dispatch(actionsFilter.filterActive());
         break;
       case 'completed':
-        dispatch(actionsFilter.filterCompleted(queryArg));
+        dispatch(actionsFilter.filterCompleted());
         break;
       default:
         break;
     }
-  };
-
-  const handleQuery = (queryValue: string) => {
-    setQuery(queryValue);
-    handleFilterChange(filterState, queryValue);
   };
 
   return (
@@ -38,7 +32,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={e => handleFilterChange(e.target.value, query)}
+            onChange={e => handleFilterChange(e.target.value)}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -53,7 +47,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          onChange={e => handleQuery(e.target.value.toLowerCase())}
+          onChange={e => dispatch(filterQuery(e.target.value))}
+          value={query}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -65,6 +60,8 @@ export const TodoFilter: React.FC = () => {
             type="button"
             className="delete"
             aria-label="delete"
+            style={{ visibility: query ? 'visible' : 'hidden' }}
+            onClick={() => dispatch(filterQuery(''))}
           />
         </span>
       </p>

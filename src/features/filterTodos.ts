@@ -1,24 +1,14 @@
-import { Todo } from '../types/Todo';
-import todos from '../json/todos.json';
+import { Status } from '../types/Status';
 
-type FilterActionAll = { type: 'filter/ALL'; payload: string };
-type FilterActionActive = { type: 'filter/ACTIVE'; payload: string };
-type FilterActionCompleted = { type: 'filter/COMPLETED'; payload: string };
+type ActionAll = { type: 'filter/ALL' };
+type ActionActive = { type: 'filter/ACTIVE' };
+type ActionCompleted = { type: 'filter/COMPLETED' };
 
-type Action = FilterActionAll | FilterActionActive | FilterActionCompleted;
+type Action = ActionAll | ActionActive | ActionCompleted;
 
-const filterAll = (payload: string): FilterActionAll => ({
-  type: 'filter/ALL',
-  payload,
-});
-const filterActive = (payload: string): FilterActionActive => ({
-  type: 'filter/ACTIVE',
-  payload,
-});
-const filterCompleted = (payload: string): FilterActionCompleted => ({
-  type: 'filter/COMPLETED',
-  payload,
-});
+const filterAll = (): ActionAll => ({ type: 'filter/ALL' });
+const filterActive = (): ActionActive => ({ type: 'filter/ACTIVE' });
+const filterCompleted = (): ActionCompleted => ({ type: 'filter/COMPLETED' });
 
 export const actionsFilter = {
   filterAll,
@@ -26,18 +16,14 @@ export const actionsFilter = {
   filterCompleted,
 };
 
-const filterReducer = (state: Todo[] | [] = todos, action: Action) => {
+const filterReducer = (state: Status = 'all', action: Action) => {
   switch (action.type) {
     case 'filter/ALL':
-      return todos.filter(todo => todo.title.includes(action.payload));
+      return 'all';
     case 'filter/ACTIVE':
-      return todos.filter(todo => {
-        return todo.completed && todo.title.includes(action.payload);
-      });
+      return 'active';
     case 'filter/COMPLETED':
-      return todos.filter(todo => {
-        return !todo.completed && todo.title.includes(action.payload);
-      });
+      return 'completed';
     default:
       return state;
   }
