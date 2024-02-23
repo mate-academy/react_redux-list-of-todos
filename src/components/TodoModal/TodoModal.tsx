@@ -6,19 +6,20 @@ import { actions } from '../../features/currentTodo';
 import { User } from '../../types';
 
 export const TodoModal: React.FC = () => {
-  const [modalLoading, setModalLoading] = useState<boolean>(true);
+  const [modalLoading, setModalLoading] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
 
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    setModalLoading(true);
     if (currentTodo) {
       getUser(currentTodo.userId)
         .then(data => {
           setUser(data);
         })
-        .then(() => {
+        .finally(() => {
           setModalLoading(false);
         });
     }
