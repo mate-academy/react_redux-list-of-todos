@@ -30,14 +30,14 @@ export const App: React.FC = () => {
   const filteredTodos = useMemo(() => {
     switch (filterState) {
       case 'all':
-        return todos.filter(todo => todo.title.includes(query));
+        return todos.filter(todo => todo.title.includes(query.toLowerCase()));
       case 'active':
         return todos.filter(todo => {
-          return !todo.completed && todo.title.includes(query);
+          return !todo.completed && todo.title.includes(query.toLowerCase());
         });
       case 'completed':
         return todos.filter(todo => {
-          return todo.completed && todo.title.includes(query);
+          return todo.completed && todo.title.includes(query.toLowerCase());
         });
       default:
         return todos;
