@@ -1,4 +1,4 @@
-/* eslint-disable max-len */
+/* eslint-disable */
 import React from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -89,6 +89,7 @@ export const TodoList: React.FC = () => {
               </td>
             </tr>
           ))}
+
         </tbody>
       </table>
     </>

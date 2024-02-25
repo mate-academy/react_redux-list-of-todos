@@ -59,6 +59,7 @@ export const TodoModal: React.FC = () => {
               {selectTodo?.title}
             </p>
 
+
             <p className="block" data-cy="modal-user">
               {selectTodo?.completed
                 ? (
@@ -73,6 +74,7 @@ export const TodoModal: React.FC = () => {
               </a>
             </p>
           </div>
+
         </div>
       )}
 
