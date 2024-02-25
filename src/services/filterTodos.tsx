@@ -13,17 +13,17 @@ export const filterTodos = (
 ) => {
   return todos.filter((todo) => {
     const prevQuery = query.toLowerCase().trim();
-    const serchQuery = todo.title.toLowerCase().includes(prevQuery);
+    const searchQuery = todo.title.toLowerCase().includes(prevQuery);
 
     switch (status) {
       case SortBy.Active:
-        return serchQuery && !todo.completed;
+        return searchQuery && !todo.completed;
 
       case SortBy.Completed:
-        return serchQuery && todo.completed;
+        return searchQuery && todo.completed;
 
       default:
-        return serchQuery;
+        return searchQuery;
     }
   });
 };

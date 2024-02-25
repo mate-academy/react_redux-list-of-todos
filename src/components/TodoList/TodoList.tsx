@@ -12,9 +12,9 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query, status } = useAppSelector(state => state.filter);
   const editedTodos = filterTodos(query, status as Status, todos);
-  const selectTodo = useAppSelector(state => state.currentTodo);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
 
-  const choseTodo = (todo: Todo) => {
+  const chooseTodo = (todo: Todo) => {
     dispatch(actions.setTodo(todo));
   };
 
@@ -74,13 +74,13 @@ export const TodoList: React.FC = () => {
               >
                 <button
                   aria-label="button chose"
-                  onClick={() => choseTodo(todo)}
+                  onClick={() => chooseTodo(todo)}
                   data-cy="selectButton"
                   className="button"
                   type="button"
                 >
                   <span className="icon">
-                    <i className={`far ${selectTodo?.id === todo.id
+                    <i className={`far ${selectedTodo?.id === todo.id
                       ? 'fa-eye-slash'
                       : 'fa-eye'}`}
                     />
