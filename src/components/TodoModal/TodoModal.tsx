@@ -68,8 +68,8 @@ export const TodoModal: React.FC = () => {
                   <strong className="has-text-danger">Planned</strong>
                 )}
               {' by '}
-              <a href={`mailto:${user?.email}`}>
-                {user?.name}
+              <a href={`mailto:${user.email}`}>
+                {user.name}
               </a>
             </p>
           </div>

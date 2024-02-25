@@ -37,12 +37,10 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoader && (
-                <Loader />
-              )}
-              {!isLoader && (
-                <TodoList />
-              )}
+              {isLoader
+                ? <Loader />
+                : <TodoList />
+              }
             </div>
           </div>
         </div>

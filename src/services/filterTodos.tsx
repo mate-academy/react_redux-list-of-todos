@@ -1,6 +1,11 @@
 import { Status } from '../types/Status';
 import { Todo } from '../types/Todo';
 
+enum SortBy {
+  Active = 'active',
+  Completed = 'completed',
+}
+
 export const filterTodos = (
   query: string,
   status: Status,
@@ -11,13 +16,10 @@ export const filterTodos = (
     const serchQuery = todo.title.toLowerCase().includes(prevQuery);
 
     switch (status) {
-      case 'all':
-        return serchQuery;
-
-      case 'active':
+      case SortBy.Active:
         return serchQuery && !todo.completed;
 
-      case 'completed':
+      case SortBy.Completed:
         return serchQuery && todo.completed;
 
       default:
