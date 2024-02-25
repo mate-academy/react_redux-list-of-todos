@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
 import React from 'react';
+import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { filterTodos } from '../../services/filterTodos';
 import { Status } from '../../types/Status';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
-import classNames from 'classnames';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -61,8 +61,9 @@ export const TodoList: React.FC = () => {
                 <p
                   className={classNames({
                     'has-text-success': todo.completed,
-                    'has-text-danger': !todo.completed
-                  })}>
+                    'has-text-danger': !todo.completed,
+                  })}
+                >
                   {todo.title}
                 </p>
               </td>
