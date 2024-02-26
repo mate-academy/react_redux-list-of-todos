@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -7,8 +7,24 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { Notification } from './components/Notification';
+
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { getTodos } from './api';
 
 export const App: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos);
+
+  useEffect(() => {
+    getTodos()
+      .then(res => dispatch({ type: 'todos/SET', payload: res }))
+      .catch(() => setError('Ooops! Somethig went wrong...'))
+      .finally(() => setLoading(false));
+  }, [dispatch]);
+
   return (
     <>
       <div className="section">
@@ -21,14 +37,23 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {loading ? (
+                <Loader />
+              ) : (
+                <>
+                  {error ? (
+                    <Notification message={error} />
+                  ) : (
+                    <TodoList todos={todos} />
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {false && <TodoModal />}
     </>
   );
 };
