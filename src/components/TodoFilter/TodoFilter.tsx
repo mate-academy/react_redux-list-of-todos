@@ -10,7 +10,7 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedQuery = useCallback(debounce(dispatch, 1000), []);
+  const debouncedQuery = useCallback(debounce(dispatch, 500), []);
 
   function handleQueryChange(event: React.ChangeEvent<HTMLInputElement>) {
     setQuery(event.target.value);
