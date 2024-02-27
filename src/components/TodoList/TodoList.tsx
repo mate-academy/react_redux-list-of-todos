@@ -3,7 +3,8 @@ import React from 'react';
 
 import { Todo } from '../../types/Todo';
 import { Status } from '../../types/Status';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as currentTodoAtions } from '../../features/currentTodo';
 
 
 type Filters = { status: Status, query: string }
@@ -31,13 +32,13 @@ function getFilteredTodos(todos: Todo[], filters: Filters): Todo[] {
 }
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
-  const { status, query } = useAppSelector(state => state.filter)
-
+  const dispatch = useAppDispatch();
+  const { status, query } = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo)
   const filteredTodos = getFilteredTodos(todos, { status, query });
 
   return (
     <>
-
       {filteredTodos.length ? (
         <table className="table is-narrow is-fullwidth">
           <thead>
@@ -79,9 +80,14 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                   </td>
 
                   <td className="has-text-right is-vcentered">
-                    <button data-cy="selectButton" className="button" type="button">
+                    <button
+                      data-cy="selectButton"
+                      className="button"
+                      type="button"
+                      onClick={() => dispatch(currentTodoAtions.setTodo(todo))}
+                    >
                       <span className="icon">
-                        <i className="far fa-eye" />
+                        <i className={currentTodo ? "far fa-eye-slash" : "far fa-eye"} />
                       </span>
                     </button>
                   </td>
@@ -95,9 +101,6 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
           There are no todos matching current filter criteria
         </p>
       )}
-
-
-
     </>
   );
 };

@@ -17,6 +17,7 @@ export const App: React.FC = () => {
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     getTodos()
@@ -35,25 +36,20 @@ export const App: React.FC = () => {
             <div className="block">
               <TodoFilter />
             </div>
-
             <div className="block">
-              {loading ? (
-                <Loader />
+              {loading && <Loader />}
+
+              {!loading && error ? (
+                <Notification message={error} />
               ) : (
-                <>
-                  {error ? (
-                    <Notification message={error} />
-                  ) : (
-                    <TodoList todos={todos} />
-                  )}
-                </>
+                <TodoList todos={todos} />
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {false && <TodoModal />}
+      {currentTodo && <TodoModal />}
     </>
   );
 };
