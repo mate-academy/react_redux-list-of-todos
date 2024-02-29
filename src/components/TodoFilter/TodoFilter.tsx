@@ -1,7 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { TodoFilterStatus } from '../../types/Enum';
+import styles from './TodoFilter.module.scss';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -48,13 +50,19 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         {query && (
-          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+          <span
+            className={classNames(
+              'icon',
+              'is-right',
+              styles['clear-search-bar'],
+            )}
+          >
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
               onClick={handleQueryClear}
+              aria-label="clear Search Button"
             />
           </span>
         )}

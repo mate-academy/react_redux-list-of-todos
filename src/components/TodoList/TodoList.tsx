@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { TodoInfo } from '../Todo/Todo';
@@ -11,37 +10,38 @@ export const TodoList: React.FC = () => {
   const query = useAppSelector(state => state.filter.query);
   const selectedTodos = filterTodos(todos, filterStatus);
   const hasNoMatches = filterByQuery(query, selectedTodos).length === 0;
-
+  const filteredTodos = filterByQuery(query, selectedTodos);
 
   return (
     <>
-      {hasNoMatches
-        ? (
+      {hasNoMatches ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
-        )
-        : (<table className="table is-narrow is-fullwidth">
-        <thead>
-          <tr>
-            <th>#</th>
+      ) : (
+        <table className="table is-narrow is-fullwidth">
+          <thead>
+            <tr>
+              <th>#</th>
 
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
+              <th aria-label="icon">
+                <span className="icon">
+                  <i className="fas fa-check" />
+                </span>
+              </th>
 
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
+              <th>Title</th>
+              <th aria-label="icon"> </th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {filterByQuery(query, selectedTodos).map(todo => {
-            return <TodoInfo key={todo.id} todo={todo}/>})}
-        </tbody>
-      </table>)}
+          <tbody>
+            {filteredTodos.map(todo => {
+              return <TodoInfo key={todo.id} todo={todo} />;
+            })}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
