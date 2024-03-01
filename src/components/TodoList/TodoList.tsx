@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import cn from 'classnames';
 
@@ -28,14 +27,14 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
             <tr>
               <th>#</th>
 
-              <th>
+              <th aria-label="th">
                 <span className="icon">
                   <i className="fas fa-check" />
                 </span>
               </th>
 
               <th>Title</th>
-              <th> </th>
+              <th aria-label="th" />
             </tr>
           </thead>
 
@@ -43,10 +42,12 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
             {todos.map(todo => (
               <tr data-cy="todo" key={crypto.randomUUID()}>
                 <td className="is-vcentered">{todo.id}</td>
-                {!todo.completed && <td className="is-vcentered"> </td>}
+                {!todo.completed && (
+                  <td className="is-vcentered" aria-label="td" />
+                )}
 
                 {todo.completed && (
-                  <td className="is-vcentered">
+                  <td className="is-vcentered" aria-label="td">
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
@@ -66,6 +67,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
 
                 <td className="has-text-right is-vcentered">
                   <button
+                    aria-label="btn"
                     data-cy="selectButton"
                     className="button"
                     type="button"
@@ -85,24 +87,6 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                 </td>
               </tr>
             ))}
-
-            {/* {
-        <tr data-cy="todo" className="has-background-info-light">
-          <td className="is-vcentered">3</td>
-          <td className="is-vcentered"> </td>
-
-          <td className="is-vcentered is-expanded">
-            <p className="has-text-danger">fugiat veniam minus</p>
-          </td>
-
-          <td className="has-text-right is-vcentered">
-            <button data-cy="selectButton" className="button" type="button">
-              <span className="icon">
-                <i className="far fa-eye-slash" />
-              </span>
-            </button>
-          </td>
-        </tr>} */}
           </tbody>
         </table>
       )}
