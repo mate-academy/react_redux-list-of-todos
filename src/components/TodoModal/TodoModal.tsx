@@ -38,6 +38,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
+              aria-label="modal-close"
               onClick={() => dispatch(todoActions.removeTodo())}
             />
           </header>
