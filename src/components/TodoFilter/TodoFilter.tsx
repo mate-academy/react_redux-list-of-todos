@@ -1,6 +1,26 @@
 import React from 'react';
 
-export const TodoFilter: React.FC = () => {
+interface Props {
+  onStatusSelect: (str: string) => void;
+  onQueryChange: (str: string) => void;
+  currentStatus: string;
+  currentQuery: string;
+}
+
+export const TodoFilter: React.FC<Props> = ({
+  onStatusSelect,
+  onQueryChange,
+  currentStatus,
+  currentQuery,
+}) => {
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    onStatusSelect(event.target.value);
+  };
+
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onQueryChange(event.target.value);
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +28,14 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={currentStatus}
+            onChange={handleSelectChange}
+          >
+            <option value="All">All</option>
+            <option value="Active">Active</option>
+            <option value="Completed">Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +46,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={currentQuery}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
