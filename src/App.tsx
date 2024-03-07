@@ -10,9 +10,8 @@ import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  const currentTodo = useAppSelector(state => state.currentTodo);
-  const todos = useAppSelector(state => state.todos);
-  const { status, query } = useAppSelector(state => state.filter);
+  const { currentTodo, todos, filter } = useAppSelector(state => state);
+  const { status, query } = filter;
 
   useEffect(() => {
     getTodos()
