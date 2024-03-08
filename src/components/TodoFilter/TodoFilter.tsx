@@ -21,6 +21,10 @@ export const TodoFilter: React.FC<Props> = ({
     onQueryChange(event.target.value);
   };
 
+  const handleQueryReset = () => {
+    onQueryChange('');
+  };
+
   return (
     <form
       className="field has-addons"
@@ -33,9 +37,9 @@ export const TodoFilter: React.FC<Props> = ({
             value={currentStatus}
             onChange={handleSelectChange}
           >
-            <option value="All">All</option>
-            <option value="Active">Active</option>
-            <option value="Completed">Completed</option>
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
           </select>
         </span>
       </p>
@@ -54,12 +58,15 @@ export const TodoFilter: React.FC<Props> = ({
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {currentQuery !== '' && (
+            <button
+              aria-label="CLEAR"
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleQueryReset}
+            />
+          )}
         </span>
       </p>
     </form>

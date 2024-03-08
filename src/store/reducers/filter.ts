@@ -29,7 +29,7 @@ type Action = SetQueryAction | SetFilterAction;
 
 const initialState = {
   query: '',
-  status: 'All',
+  status: 'all',
 };
 
 const filterReducer = (state: State = initialState, action: Action) => {

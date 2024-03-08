@@ -25,6 +25,7 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const query = useAppSelector(state => state.filter.query);
   const status = useAppSelector(state => state.filter.status);
+  const currentTodoId = currentTodo?.id || 0;
 
   const onAddCurrentTodo = (todo: Todo) => {
     dispatch(currentTodoActions.setTodo(todo));
@@ -38,11 +39,11 @@ export const App: React.FC = () => {
     const titleMatch = todo.title.toLowerCase().includes(query.toLowerCase());
 
     switch (status) {
-      case 'All':
+      case 'all':
         return titleMatch;
-      case 'Completed':
+      case 'completed':
         return todo.completed && titleMatch;
-      case 'Active':
+      case 'active':
         return !todo.completed && titleMatch;
       default:
         return false;
@@ -80,6 +81,7 @@ export const App: React.FC = () => {
                 <TodoList
                   todos={filteredTodos}
                   onAddCurrentTodo={onAddCurrentTodo}
+                  currentTodoId={currentTodoId}
                 />
               )}
             </div>

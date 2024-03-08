@@ -6,11 +6,13 @@ import cn from 'classnames';
 interface Props {
   todos: Todo[];
   onAddCurrentTodo: (todo: Todo) => void;
+  currentTodoId: number;
 }
 
 export const TodoList: React.FC<Props> = ({
   todos,
   onAddCurrentTodo,
+  currentTodoId,
 }) => {
 
   if (todos.length === 0) {
@@ -66,7 +68,7 @@ export const TodoList: React.FC<Props> = ({
                   onClick={()=>onAddCurrentTodo(todo)}
                 >
                   <span className="icon">
-                    <i className="far fa-eye" />
+                    <i className={`far ${currentTodoId === todo.id ? 'fa-eye-slash' : 'fa-eye'}`} />
                   </span>
                 </button>
               </td>

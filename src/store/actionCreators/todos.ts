@@ -13,7 +13,7 @@ type FetchTodosRequestyAction = {
 };
 
 type FetchTodosSuccessAction = {
-  type: 'SET_FILTER';
+  type: 'FETCH_TODOS_SUCCESS';
   payload: Todo[];
 };
 
@@ -25,16 +25,16 @@ type FetchTodosFailureAction = {
 /* eslint-disable-next-line */
 type Action = FetchTodosRequestyAction | FetchTodosSuccessAction | FetchTodosFailureAction;
 
-export const fetchTodosRequest = () => ({
+export const fetchTodosRequest = (): FetchTodosRequestyAction => ({
   type: FETCH_TODOS_REQUEST,
 });
 
-export const fetchTodosSuccess = (todos: Todo[]) => ({
+export const fetchTodosSuccess = (todos: Todo[]): FetchTodosSuccessAction => ({
   type: FETCH_TODOS_SUCCESS,
   payload: todos,
 });
 
-export const fetchTodosFailure = (error: string) => ({
+export const fetchTodosFailure = (error: string): FetchTodosFailureAction => ({
   type: FETCH_TODOS_FAILURE,
   payload: error,
 });
