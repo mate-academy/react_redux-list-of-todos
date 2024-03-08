@@ -6,7 +6,7 @@ type Props = {
   changeParams: (event: React.ChangeEvent<HTMLSelectElement>) => void,
   query: string,
   queryChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  deletequerry: () => void,
+  handleDeleteQuery: () => void,
 };
 
 export const TodoFilter: React.FC<Props> = ({
@@ -14,7 +14,7 @@ export const TodoFilter: React.FC<Props> = ({
   changeParams = () => {},
   query = '',
   queryChange = () => {},
-  deletequerry = () => {},
+  handleDeleteQuery = () => {},
 }) => {
   return (
     <form className="field has-addons">
@@ -51,7 +51,7 @@ export const TodoFilter: React.FC<Props> = ({
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={deletequerry}
+              onClick={handleDeleteQuery}
             />
           </span>
         )}

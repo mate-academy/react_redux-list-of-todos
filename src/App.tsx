@@ -92,7 +92,7 @@ export const App: React.FC = () => {
                 changeParams={handlefilterParChange}
                 query={filterBy.query}
                 queryChange={handleQuerryChange}
-                deletequerry={clearQuerryFild}
+                handleDeleteQuery={clearQuerryFild}
               />
             </div>
 
