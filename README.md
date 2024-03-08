@@ -14,5 +14,7 @@ using the Redux. It should look and work identically, so use the same markup.
 components (no need to write them in the store file)
 
 ## Instructions
-- Replace `<your_account>` with your Github username in the [DEMO LINK](https://oksanatytanychgit.github.io/react_redux-list-of-todos/)
+- Replace `<your_account>` with your Github username in the [DEMO LINK](https://github.com/oksanatytanych/react_redux-list-of-todos.git)
+
+https://github.com/oksanatytanych/react_redux-list-of-todos.git
 - Follow the [React task guideline](https://github.com/mate-academy/react_task-guideline#react-tasks-guideline)
