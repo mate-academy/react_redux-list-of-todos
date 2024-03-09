@@ -41,6 +41,7 @@ export const TodoList: React.FC<Props> = ({
       <tbody>
         {todos.map(todo => (
           <TodoListItem
+            key={todo.title}
             todo={todo}
             selectedTodo={selectedTodo}
             setCurrentTodo={setCurrentTodo}

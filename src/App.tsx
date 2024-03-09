@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions } from './features/todos';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
+import { Filter } from './types/Filter';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -47,18 +48,18 @@ export const App: React.FC = () => {
 
   const filterTodos = useCallback(
     (todos: Todo[]) => {
-      if (status === 'all' && !query) {
+      if (status === Filter.All && !query) {
         return todos;
       }
 
       const lowerQuery = query.toLocaleLowerCase();
 
       return todos.filter((todo: Todo) => {
-        if (status === 'active' && todo.completed) {
+        if (status === Filter.Active && todo.completed) {
           return false;
         }
 
-        if (status === 'completed' && !todo.completed) {
+        if (status === Filter.Completed && !todo.completed) {
           return false;
         }
 

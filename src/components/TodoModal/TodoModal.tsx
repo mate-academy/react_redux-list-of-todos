@@ -14,9 +14,12 @@ export const TodoModal: React.FC = () => {
     throw new Error('missing todo');
   }
 
+  const { id, title, completed, userId } = todo;
+  const { email, name } = user || {};
+
   useEffect(() => {
-    getUser(todo.userId).then(setUser);
-  }, [todo]);
+    getUser(userId).then(setUser);
+  }, [userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -31,7 +34,7 @@ export const TodoModal: React.FC = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${todo.id}`}
+              {`Todo #${id}`}
             </div>
 
             <button
@@ -45,18 +48,18 @@ export const TodoModal: React.FC = () => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {todo.title}
+              {title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {todo.completed ? (
+              {completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>
               )}
 
               {' by '}
-              <a href={`mailto:${user.email}`}>{user.name}</a>
+              <a href={`mailto:${email}`}>{name}</a>
             </p>
           </div>
         </div>
