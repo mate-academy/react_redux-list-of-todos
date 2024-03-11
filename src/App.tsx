@@ -13,12 +13,16 @@ import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
   const [isTodoLoading, setIsTodoLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const dispatch = useDispatch();
   const curentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     getTodos()
       .then(data => dispatch(actions.setTodos(data)))
+      .catch(() => {
+        setHasError(true);
+      })
       .finally(() => setIsTodoLoading(false));
   }, [dispatch]);
 
@@ -31,9 +35,10 @@ export const App: React.FC = () => {
             <div className="block">
               <TodoFilter />
             </div>
-            {isTodoLoading ? (
-              <Loader />
-            ) : (
+            {hasError && !isTodoLoading && <p>Oops, something went wrong</p>}
+            {!hasError && isTodoLoading && <Loader />}
+
+            {!hasError && !isTodoLoading && (
               <div className="block">
                 <TodoList />
               </div>

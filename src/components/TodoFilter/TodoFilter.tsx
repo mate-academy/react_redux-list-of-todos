@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-// import { Status } from '../../types/Status';
 import { actions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
@@ -49,7 +48,7 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         {query && (
-          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+          <span className="icon is-right is-events">
             <button
               aria-labelledby="clear button"
               data-cy="clearSearchButton"
