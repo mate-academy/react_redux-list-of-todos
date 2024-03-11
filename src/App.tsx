@@ -22,6 +22,9 @@ export const App: React.FC = () => {
       .then(todos => {
         dispatch(actions.setTodos(todos));
       })
+      .catch(() => {
+        return <p>Something went wrong!</p>;
+      })
       .finally(() => setIsLoading(true));
   }, [dispatch]);
 

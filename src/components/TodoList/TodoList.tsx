@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
 import React, { useEffect, useState } from 'react';
 
 import { Todo } from '../../types/Todo';
@@ -23,18 +22,26 @@ export const TodoList: React.FC = () => {
     setFilteredTodos(filterTodos(todos, query, status));
   }, [query, status, todos]);
 
+  if (!filteredTodos.length) {
+    return (
+      <p className="notification is-warning">
+        There are no todos matching current filter criteria
+      </p>
+    );
+  }
+
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
         <tr>
           <th>#</th>
-          <th>
+          <th aria-label="header-table">
             <span className="icon">
               <i className="fas fa-check" />
             </span>
           </th>
           <th>Title</th>
-          <th> </th>
+          <th aria-label="header-division"> </th>
         </tr>
       </thead>
 
@@ -58,11 +65,12 @@ export const TodoList: React.FC = () => {
                 {todo.title}
               </p>
             </td>
-            <td className="has-text-right is-vcentered">
+            <td className="has-text-right is-vcentered" aria-label="todo-row">
               <button
                 data-cy="selectButton"
                 className="button"
                 type="button"
+                aria-label="todo-row"
                 onClick={() => onSelectTodo(todo)}
               >
                 <span className="icon">
