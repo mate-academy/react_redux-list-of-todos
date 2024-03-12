@@ -28,7 +28,7 @@ export const TodoList: React.FC = () => {
       }
     });
 
-    return copiedTodos.filter(todo => todo.title.includes(query));
+    return copiedTodos.filter(todo => todo.title.toLowerCase().includes(query.trim().toLowerCase()));
   };
 
   const todosToRender = useMemo(() => filteredTodos(), [filteredTodos]);
