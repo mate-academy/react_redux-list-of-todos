@@ -7,7 +7,7 @@ import { getUser } from '../../api';
 import { User } from '../../types/User';
 
 export const TodoModal: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export const TodoModal: React.FC = () => {
     if (currentTodo) {
       getUser(currentTodo.userId)
         .then(setUser)
-        .finally(() => setIsLoading(false));
+        .finally(() => setIsLoading(true));
     }
   }, [currentTodo]);
 
@@ -29,7 +29,7 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading ? (
+      {!isLoading ? (
         <Loader />
       ) : (
         <div className="modal-card">
