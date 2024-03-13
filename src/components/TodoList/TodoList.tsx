@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useMemo } from 'react';
- import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as currentTodoAction } from '../../features/currentTodo';
@@ -12,25 +12,27 @@ export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
 
   const filteredTodos = () => {
-    let copiedTodos = [...todos].filter(todo => {
-      switch (status) {
-        case 'all':
-          return todos;
-        case 'active':
-          return !todo.completed;
-        case 'completed':
-          return todo.completed;
-        default:
-          return todo;
-      }
-    });
+    const visibleTodos = [...todos];
 
-    return copiedTodos.filter(todo =>
-      todo.title.toLowerCase().includes(query.trim().toLowerCase()),
-    );
+    return visibleTodos
+      .filter(todo =>
+        todo.title.toLowerCase().includes(query.trim().toLowerCase()),
+      )
+      .filter(todo => {
+        switch (status) {
+          case 'active':
+            return !todo.completed;
+
+          case 'completed':
+            return todo.completed;
+
+          default:
+            return todos;
+        }
+      });
   };
 
-  const todosToRender = useMemo(() => filteredTodos(), [filteredTodos]);
+  const todosToRender = useMemo(() => filteredTodos(), [query, status]);
 
   const handleSelect = ({ title, id, completed, userId }: Todo) => {
     dispatch(currentTodoAction.setTodo({ title, id, completed, userId }));
@@ -72,7 +74,13 @@ export const TodoList: React.FC = () => {
                 </td>
 
                 <td className="is-vcentered is-expanded">
-                  <p className={todo.completed ? "has-text-danger" : "has-text-success"}>{todo.title}</p>
+                  <p
+                    className={
+                      !todo.completed ? 'has-text-danger' : 'has-text-success'
+                    }
+                  >
+                    {todo.title}
+                  </p>
                 </td>
 
                 <td className="has-text-right is-vcentered">
@@ -83,7 +91,11 @@ export const TodoList: React.FC = () => {
                     onClick={() => handleSelect(todo)}
                   >
                     <span className="icon">
-                      {currentTodo ? (<i className="far fa-eye-slash" />) : (<i className="far fa-eye" />)}
+                      {currentTodo?.id === todo.id ? (
+                        <i className="far fa-eye-slash" />
+                      ) : (
+                        <i className="far fa-eye" />
+                      )}
                     </span>
                   </button>
                 </td>
