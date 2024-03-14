@@ -11,30 +11,34 @@ export const TodoList: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(state => state.todos);
 
-  let filteredTodos = todos;
+  function prepareList() {
+    let filteredTodos = todos;
 
-  if (query.trim()) {
-    filteredTodos = filteredTodos.filter(todo =>
-      todo.title.toLowerCase().includes(query.trim().toLowerCase()),
-    );
+    if (query.trim()) {
+      filteredTodos = filteredTodos.filter(todo =>
+        todo.title.toLowerCase().includes(query.trim().toLowerCase()),
+      );
+    }
+
+    if (status !== 'all') {
+      filteredTodos = filteredTodos.filter(todo => {
+        switch (status) {
+          case 'active':
+            return !todo.completed;
+
+          case 'completed':
+            return todo.completed;
+
+          default:
+            return true;
+        }
+      });
+    }
+
+    return filteredTodos;
   }
 
-  if (status !== 'all') {
-    filteredTodos = filteredTodos.filter(todo => {
-      switch (status) {
-        case 'active':
-          return !todo.completed;
-
-        case 'completed':
-          return todo.completed;
-
-        default:
-          return true;
-      }
-    });
-  }
-  
-  const todosToRender = useMemo(() => filteredTodos, [query, status]);
+  const todosToRender = useMemo(() => prepareList(), [query, status]);
 
   const handleSelect = ({ title, id, completed, userId }: Todo) => {
     dispatch(currentTodoAction.setTodo({ title, id, completed, userId }));

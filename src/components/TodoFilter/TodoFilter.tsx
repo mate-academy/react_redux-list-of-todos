@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
@@ -8,11 +8,11 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
   const { query, status } = useAppSelector(state => state.filter);
 
-  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
     dispatch(actions.setQuery(event.target.value));
   };
 
-  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(actions.setStatus(event.target.value as Status));
   };
 
@@ -29,7 +29,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={e => handleStatusChange(e)}
+            onChange={handleStatusChange}
             value={status}
           >
             <option value="all">All</option>
@@ -46,7 +46,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={e => handleQueryChange(e)}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
