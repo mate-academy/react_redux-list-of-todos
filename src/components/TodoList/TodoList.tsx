@@ -40,7 +40,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
 
           <tbody>
             {todos.map(todo => (
-              <tr data-cy="todo" key={crypto.randomUUID()}>
+              <tr data-cy="todo" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
                 {!todo.completed && (
                   <td className="is-vcentered" aria-label="td" />
