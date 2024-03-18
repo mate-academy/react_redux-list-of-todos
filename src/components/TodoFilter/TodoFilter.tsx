@@ -1,6 +1,31 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+
+import { FilterStatus } from '../../types/FilterStatus';
+import { actions } from '../../features/filter';
+import { useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
+
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+
+    dispatch(actions.set({ query, status: value as FilterStatus }));
+  };
+
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+
+    dispatch(actions.set({ query: value, status }));
+  };
+
+  const resetQuery = () => {
+    dispatch(actions.set({ query: '', status }));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +33,14 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleStatusChange}
+          >
+            <option value={FilterStatus.All}>All</option>
+            <option value={FilterStatus.Active}>Active</option>
+            <option value={FilterStatus.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +51,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -33,6 +64,8 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            style={{ visibility: query ? 'visible' : 'hidden' }}
+            onClick={resetQuery}
           />
         </span>
       </p>
