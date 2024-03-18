@@ -64,8 +64,8 @@ export const Todo: React.FC<Props> = ({
               className={cn(
                 "far",
                 {
-                  "fa-eye": todo.id !== id,
-                  "fa-eye-slash": todo.id === id,
+                  "fa-eye": currentTodoId !== id,
+                  "fa-eye-slash": currentTodoId === id,
                 }
               )}
             />
