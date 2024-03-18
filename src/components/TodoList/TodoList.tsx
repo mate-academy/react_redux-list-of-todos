@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React from 'react';
-import { v4 as getId } from 'uuid'
 import { useDispatch } from 'react-redux';
 
 import { useAppSelector } from '../../app/hooks';
@@ -56,7 +55,7 @@ export const TodoList: React.FC = () => {
             <tbody>
               {filteredTodos.map(todo => (
                 <Todo
-                  key={getId()}
+                  key={todo.id}
                   todo={todo}
                   currentTodoId={id}
                   setCurrentTodo={setCurrentTodo}
