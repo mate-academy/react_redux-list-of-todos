@@ -20,7 +20,6 @@ export const Todo: React.FC<Props> = ({
 
   return (
     <tr
-      key={getId()}
       data-cy="todo"
       className={cn({
         'has-background-info-light': id === currentTodoId,
