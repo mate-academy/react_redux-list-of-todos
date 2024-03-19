@@ -1,15 +1,16 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as userActions } from '../../features/currentTodo';
 import cn from 'classnames';
 
 export const TodoList: React.FC = () => {
+  const selectTodo = useAppSelector(state => state.currentTodo);
   const todos: Todo[] = useAppSelector(state => state.todos);
   const status = useAppSelector(state => state.filter.status);
   const query = useAppSelector(state => state.filter.query);
-
+  const dispatch = useAppDispatch();
 
   const handleClickSetTodo = (id: number, title: string, completed: boolean, userId: number) => {
     const elem: Todo = {
@@ -19,7 +20,8 @@ export const TodoList: React.FC = () => {
       userId: userId,
 
     }
-    userActions.setTodo(elem);
+    dispatch(userActions.setTodo(elem))
+    // userActions.setTodo(elem);
   };
   
   const [filteredTodo, setFilteredTodo] = useState<Todo[]>(todos);
@@ -68,7 +70,10 @@ export const TodoList: React.FC = () => {
 
         <tbody>
           {filteredTodo.map(todo => (
-            <tr data-cy="todo" key={todo.id}>
+            <tr data-cy="todo" key={todo.id} className={cn(
+              {"has-background-info-light": todo.id === selectTodo?.id},
+            )}
+            >
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">
                 {todo.completed && 
@@ -95,7 +100,11 @@ export const TodoList: React.FC = () => {
                   type="button"
                   onClick={() => handleClickSetTodo(todo.id, todo.title, todo.completed, todo.userId)}>
                   <span className="icon">
-                    <i className="far fa-eye" />
+                    <i className={cn(
+                      {"far fa-eye": !selectTodo},
+                      {"far fa-eye-slash": todo.id === selectTodo?.id},
+                    )}
+                    />
                   </span>
                 </button>
               </td>

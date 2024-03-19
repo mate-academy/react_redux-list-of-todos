@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
+import { actions as userActions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  // const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const todo = useAppSelector(state => state.currentTodo);
-
+  const dispatch = useAppDispatch();
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -20,43 +20,55 @@ export const TodoModal: React.FC = () => {
     setIsLoading(false);
   }, [todo]);
 
-  // console.log(user);
+  const handleClickClose = () => {
+    dispatch(userActions.removeTodo());
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading && !user && <Loader />}
+      {isLoading && <Loader />}
 
-      <div className="modal-card">
-        <header className="modal-card-head">
-          <div
-            className="modal-card-title has-text-weight-medium"
-            data-cy="modal-header"
-          >
-            Todo #3
+      {user && todo && (
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <div
+              className="modal-card-title has-text-weight-medium"
+              data-cy="modal-header"
+            >
+              Todo #{todo.id}
+            </div>
+
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              type="button"
+              className="delete"
+              data-cy="modal-close"
+              onClick={handleClickClose}
+            />
+          </header>
+
+          <div className="modal-card-body">
+            <p className="block" data-cy="modal-title">
+              {todo.title}
+            </p>
+
+            <p className="block" data-cy="modal-user">
+              {!todo.completed && (
+                <strong className="has-text-danger">Planned</strong>
+              )}
+
+              {todo.completed && (
+                <strong className="has-text-success">Done</strong>
+              )}
+
+              {' by '}
+              <a href={user.email}>Leanne Graham</a>
+            </p>
           </div>
-
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
-        </header>
-
-        <div className="modal-card-body">
-          <p className="block" data-cy="modal-title">
-            fugiat veniam minus
-          </p>
-
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
-
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
-            {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-          </p>
         </div>
-      </div>
+      )}
     </div>
   );
 };
