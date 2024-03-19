@@ -1,21 +1,54 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
-
+import { actions as userActions } from '../../features/currentTodo';
+import cn from 'classnames';
 
 export const TodoList: React.FC = () => {
   const todos: Todo[] = useAppSelector(state => state.todos);
-  console.log(todos)
+  const status = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
 
-  useEffect(() => { 
+
+  const handleClickSetTodo = (id: number, title: string, completed: boolean, userId: number) => {
+    const elem: Todo = {
+      id: id,
+      title: title,
+      completed: completed,
+      userId: userId,
+
+    }
+    userActions.setTodo(elem);
+  };
   
-  }, [todos]);
+  const [filteredTodo, setFilteredTodo] = useState<Todo[]>(todos);
+  useEffect(() => {
+    let filteredTodos = todos;
+
+    if (status === 'active') {
+      filteredTodos = filteredTodos.filter(item => !item.completed);
+
+    } else if (status === 'completed') {
+      filteredTodos = filteredTodos.filter(item => item.completed);
+    }
+
+    if (query) {
+      filteredTodos = filteredTodos.filter(item => item.title.includes(query));
+    }
+
+    setFilteredTodo(filteredTodos);
+    
+  }, [todos, status, query]);
+
+
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+      {todos === undefined && (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      )}
 
       <table className="table is-narrow is-fullwidth">
         <thead>
@@ -34,17 +67,33 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {todos.map(todo => (
+          {filteredTodo.map(todo => (
             <tr data-cy="todo" key={todo.id}>
               <td className="is-vcentered">{todo.id}</td>
-              <td className="is-vcentered">{todo.completed}</td>
+              <td className="is-vcentered">
+                {todo.completed && 
+                <span className="icon" data-cy="iconCompleted">
+                  <i className="fas fa-check" />
+                </span>}
+              </td>
 
               <td className="is-vcentered is-expanded">
-                <p className="has-text-danger">{todo.title}</p>
+                <p 
+                  className={cn(
+                    {"has-text-danger": !todo.completed},
+                    {"has-text-success": todo.completed}
+                  )}
+                >
+                  {todo.title}
+                </p>
               </td>
 
               <td className="has-text-right is-vcentered">
-                <button data-cy="selectButton" className="button" type="button">
+                <button
+                  data-cy="selectButton"
+                  className="button"
+                  type="button"
+                  onClick={() => handleClickSetTodo(todo.id, todo.title, todo.completed, todo.userId)}>
                   <span className="icon">
                     <i className="far fa-eye" />
                   </span>

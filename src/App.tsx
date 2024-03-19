@@ -7,27 +7,28 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 // import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { useAppDispatch,
-  // useAppSelector 
+import {
+  useAppDispatch,
+  // useAppSelector
 } from './app/hooks';
 import { getTodos } from './api';
 import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
-  // const todos = useAppSelector(state => state.todos);
-  const [ isLoading, setIsLoading ] = useState(false);
-  
-  useEffect(() => { 
+  // const todo = useAppSelector(state => state.currentTodo);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // console.log(todo?.completed);
+  useEffect(() => {
     setIsLoading(true);
     getTodos()
       .then(result => {
-        // console.log(result); 
         dispatch(todosActions.setTodos(result));
       })
       .finally(() => setIsLoading(false));
-  }, []);
-    
+  }, [dispatch]);
+
   return (
     <>
       <div className="section">

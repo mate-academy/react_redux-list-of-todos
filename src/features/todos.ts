@@ -22,7 +22,7 @@ const todosReducer = (
 ) => {
   switch (action.type) {
     case 'todos/GET':
-      return [...todos, action.payload];
+      return [...todos, ...action.payload];
     default:
       return todos;
   }

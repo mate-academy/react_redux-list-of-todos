@@ -1,30 +1,40 @@
-// import { Status } from "../types/Status";
+import { Status } from '../types/Status';
+// import { Todo } from "../types/Todo";
 // import { Todo } from "../types/Todo";
 
-// type TodosFilter = {
-//   type: Status;
-//   payload: Todo[];
-// }
+type TodosFilter = {
+  query: string;
+  status: Status;
+};
+type SetFilter = {
+  type: 'filter/SET';
+  payload: TodosFilter;
+};
 
-// const all = (status: Status): TodosFilter {
-//   type: 
-//   payload: ,
-// };
+type State = TodosFilter;
+type Action = SetFilter;
 
-// const completed = {};
-// const active = {};
-
-// export const actions: Status = {
-
-// };
-
-
-
-const filterReducer = () => {
+const setFilter = (filter: TodosFilter): SetFilter => {
   return {
-    query: '',
-    status: 'all',
+    type: 'filter/SET',
+    payload: filter,
   };
+};
+
+export const actions = { setFilter };
+
+const initialState: State = {
+  query: '',
+  status: 'all',
+};
+
+const filterReducer = (state: State = initialState, action: Action): State => {
+  switch (action.type) {
+    case 'filter/SET':
+      return { query: action.payload.query, status: action.payload.status };
+    default:
+      return state;
+  }
 };
 
 export default filterReducer;
