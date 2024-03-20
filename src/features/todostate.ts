@@ -1,19 +1,19 @@
 type SetError = {
-  type: 'infostate/error/SET';
+  type: 'todostate/error/SET';
   payload: boolean;
 };
 
 type SetLoading = {
-  type: 'infostate/loading/SET';
+  type: 'todostate/loading/SET';
   payload: boolean;
 };
 
 const setError = (value: boolean): SetError => ({
-  type: 'infostate/error/SET',
+  type: 'todostate/error/SET',
   payload: value,
 });
 const setLoading = (value: boolean): SetLoading => ({
-  type: 'infostate/loading/SET',
+  type: 'todostate/loading/SET',
   payload: value,
 });
 
@@ -32,15 +32,15 @@ type Action = SetError | SetLoading;
 export const actions = { setError, setLoading };
 
 /* eslint-disable */
-const infostateReducer = (state = initialState, action: Action) => {
+const todostateReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case 'infostate/error/SET':
+    case 'todostate/error/SET':
       return { ...state, error: action.payload };
-    case 'infostate/loading/SET':
+    case 'todostate/loading/SET':
       return { ...state, loading: action.payload };
     default:
       return state;
   }
 };
 
-export default infostateReducer;
+export default todostateReducer;

@@ -10,7 +10,7 @@ import { Loader } from './components/Loader';
 import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
-  const loading = useAppSelector(state => state.infostate.loading);
+  const loading = useAppSelector(state => state.todostate.loading);
 
   return (
     <>

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as infoStateActions } from '../../features/infostate';
+import { actions as todoStateActions } from '../../features/todostate';
 import { Todo } from '../../types/Todo';
 import { actions as todosActions } from '../../features/todos';
 import { getTodos } from '../../api';
@@ -10,7 +10,7 @@ import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { todos, filter, currentTodo, infostate } = useAppSelector(
+  const { todos, filter, currentTodo, todostate } = useAppSelector(
     state => state,
   );
 
@@ -23,11 +23,11 @@ export const TodoList: React.FC = () => {
   };
 
   const setLoading = (value: boolean) => {
-    dispatch(infoStateActions.setLoading(value));
+    dispatch(todoStateActions.setLoading(value));
   };
 
   const setError = (value: boolean) => {
-    dispatch(infoStateActions.setError(value));
+    dispatch(todoStateActions.setError(value));
   };
 
   useEffect(() => {
@@ -55,7 +55,7 @@ export const TodoList: React.FC = () => {
   }, [todos, filter]);
 
   const isFilterWarningShown =
-    !filtered.length && !infostate.loading && !infostate.error;
+    !filtered.length && !todostate.loading && !todostate.error;
 
   return (
     <>
@@ -65,14 +65,14 @@ export const TodoList: React.FC = () => {
         </p>
       )}
 
-      {!!infostate.error && (
+      {!!todostate.error && (
         <div className="notification is-danger is-light">
           <button className="delete" onClick={() => setError(false)} />
           Todos couldn&apos;t be loaded, check your connection
         </div>
       )}
 
-      {!infostate.loading && !!filtered.length && (
+      {!todostate.loading && !!filtered.length && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
