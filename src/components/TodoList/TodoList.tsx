@@ -41,28 +41,29 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {!todos.length && (
+      {!filteredTodo.length && todos.length > 0 && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
-
+  
       <table className="table is-narrow is-fullwidth">
-        <thead>
-          <tr>
-            <th>#</th>
+        {filteredTodo.length > 0 && (
+          <thead>
+            <tr>
+              <th>#</th>
 
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
+              <th>
+                <span className="icon">
+                  <i className="fas fa-check" />
+                </span>
+              </th>
 
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
-
+              <th>Title</th>
+              <th> </th>
+            </tr>
+          </thead>
+        )}
         <tbody>
           {filteredTodo.map(todo => (
             <tr data-cy="todo" key={todo.id} className={cn(
