@@ -1,17 +1,14 @@
-// import React, { useState } from 'react';
-// import { useDispatch } from 'react-redux';
-// import { useEffect } from 'react';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
 import { Status } from '../../types/Status';
-// import { queue } from 'cypress/types/jquery';
-const { setFilter } = actions;
 
 export const TodoFilter: React.FC = () => {
+  const { setFilter } = actions;
   const dispatch = useAppDispatch();
   const status = useAppSelector(state => state.filter.status);
   const FilterQuery = useAppSelector(state => state.filter.query);
+
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedStatus = event.target.value as Status;
 
@@ -24,7 +21,6 @@ export const TodoFilter: React.FC = () => {
   };
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // const selectedStatus = event.target.value as Status;
     const query = event.target.value;
 
     dispatch(

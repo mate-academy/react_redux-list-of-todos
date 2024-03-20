@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, {useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as userActions } from '../../features/currentTodo';
@@ -21,32 +21,27 @@ export const TodoList: React.FC = () => {
 
     }
     dispatch(userActions.setTodo(elem))
-    // userActions.setTodo(elem);
   };
   
-  const [filteredTodo, setFilteredTodo] = useState<Todo[]>(todos);
-  useEffect(() => {
+  const filteredTodo = useMemo(() => {
     let filteredTodos = todos;
-
+  
     if (status === 'active') {
       filteredTodos = filteredTodos.filter(item => !item.completed);
-
     } else if (status === 'completed') {
       filteredTodos = filteredTodos.filter(item => item.completed);
     }
-
+  
     if (query) {
       filteredTodos = filteredTodos.filter(item => item.title.includes(query));
     }
-
-    setFilteredTodo(filteredTodos);
-    
+  
+    return filteredTodos;
   }, [todos, status, query]);
-
 
   return (
     <>
-      {todos === undefined && (
+      {!todos.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>

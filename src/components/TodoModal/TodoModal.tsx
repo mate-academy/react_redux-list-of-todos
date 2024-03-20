@@ -6,18 +6,18 @@ import { User } from '../../types/User';
 import { actions as userActions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const todo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    setIsLoading(true);
+    // setIsLoading(true);
     if (todo) {
       getUser(todo.userId).then(setUser);
     }
 
-    setIsLoading(false);
+    // setIsLoading(false);
   }, [todo]);
 
   const handleClickClose = () => {
@@ -28,7 +28,7 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading && <Loader />}
+      {!user && <Loader />}
 
       {user && todo && (
         <div className="modal-card">
