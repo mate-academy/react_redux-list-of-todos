@@ -6,18 +6,14 @@ import { User } from '../../types/User';
 import { actions as userActions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  // const [isLoading, setIsLoading] = useState(false);
   const todo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // setIsLoading(true);
     if (todo) {
       getUser(todo.userId).then(setUser);
     }
-
-    // setIsLoading(false);
   }, [todo]);
 
   const handleClickClose = () => {
