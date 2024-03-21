@@ -28,7 +28,7 @@ export const App: React.FC = () => {
         .catch(() => setErrorMessage('There are no todos'))
         .finally(() => setLoading(false));
     }, 1000);
-  }, [dispatch]);
+  }, []);
 
   return (
     <>

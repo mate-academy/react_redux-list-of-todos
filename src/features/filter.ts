@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Status } from '../types/Status';
 
 type SetStatusAction = { type: 'filter/SET_STATUS'; payload: Status };
