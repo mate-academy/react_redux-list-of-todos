@@ -11,7 +11,7 @@ export const TodoFilter = () => {
     dispatch(
       setFilter({
         query,
-        status: event.target.value.toLocaleLowerCase() as Status,
+        status: event.target.value as Status,
       }),
     );
   };
@@ -32,9 +32,9 @@ export const TodoFilter = () => {
       <p className="control">
         <span className="select">
           <select value={status} data-cy="statusSelect" onChange={handleSelect}>
-            {['All', 'Active', 'Completed'].map(option => (
-              <option key={option} value={option.toLowerCase()}>
-                {option}
+            {Object.entries(Status).map(([key, value]) => (
+              <option key={key} value={value}>
+                {key}
               </option>
             ))}
           </select>

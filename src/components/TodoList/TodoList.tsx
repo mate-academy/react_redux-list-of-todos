@@ -10,15 +10,18 @@ export const TodoList = () => {
   const filteredTodos = todos.filter(todo => {
     const lowerCaseQuery = filter.query.toLowerCase();
     const lowerCaseTitle = todo.title.toLowerCase();
+    const isQueryMatch = lowerCaseTitle.includes(lowerCaseQuery);
+    const isInActive = !todo.completed && isQueryMatch;
+    const isInCompleted = todo.completed && isQueryMatch;
 
     switch (filter.status) {
       case 'active':
-        return !todo.completed && lowerCaseTitle.includes(lowerCaseQuery);
+        return isInActive;
       case 'completed':
-        return todo.completed && lowerCaseTitle.includes(lowerCaseQuery);
+        return isInCompleted;
       case 'all':
       default:
-        return lowerCaseTitle.includes(lowerCaseQuery);
+        return isQueryMatch;
     }
   });
 

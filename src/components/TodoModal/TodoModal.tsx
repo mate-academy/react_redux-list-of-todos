@@ -40,7 +40,7 @@ export const TodoModal: React.FC<Props> = ({ updateErrorMessage }) => {
           setIsLoading(false);
         });
     }
-  }, [currentTodo]);
+  }, [currentTodo, updateErrorMessage]);
 
   return (
     <div className="modal is-active" data-cy="modal">

@@ -13,7 +13,7 @@ export const actions = { setFilter };
 
 const initialState: Filter = {
   query: '',
-  status: 'all',
+  status: Status.All,
 };
 
 export const filterReducer = (

@@ -31,7 +31,7 @@ export const App: React.FC = () => {
         clearTimeout(timeoutId);
         setIsLoading(false);
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
