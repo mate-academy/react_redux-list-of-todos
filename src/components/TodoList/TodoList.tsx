@@ -6,6 +6,7 @@ import { Todo } from '../../types/Todo';
 import { filterTodos } from '../../app/filterHelper';
 import { Status } from '../../types/Status';
 import { actions } from '../../features/currentTodo';
+import cn from 'classnames';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector((state: RootState) => state.todos);
@@ -35,27 +36,18 @@ export const TodoList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredTodos.map((todo: Todo) => (
-            <tr
-              data-cy="todo"
-              key={todo.id}
-            >
+          {filteredTodos.map((todo) => (
+            <tr data-cy="todo" key={todo.id}>
               <td className="is-vcentered">{todo.id}</td>
-              {todo.completed ? (
-              <td className="is-vcentered">
-                <span className="icon">
-                  <i className="fas fa-check" />
-                </span>
-              </td>
-              ) : (
-                <td className="is-vcentered"/>
-              )}
-              <td className="is-vcentered is-expanded">
-                {todo.completed ? (
-                  <p className="has-text-success">{todo.title}</p>
-                ) : (
-                  <p className="has-text-danger">{todo.title}</p>
+              <td className={cn('is-vcentered', { 'has-text-success': todo.completed, 'has-text-danger': !todo.completed })}>
+              {todo.completed && (
+                  <span className="icon">
+                    <i className="fas fa-check" />
+                  </span>
                 )}
+              </td>
+              <td className="is-vcentered is-expanded">
+                <p className={cn({ 'has-text-success': todo.completed, 'has-text-danger': !todo.completed })}>{todo.title}</p>
               </td>
               <td className="has-text-right is-vcentered">
                 <button
