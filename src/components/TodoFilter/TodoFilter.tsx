@@ -1,17 +1,49 @@
-import React from 'react';
+import { useCallback, useState } from 'react';
+import debounce from 'lodash.debounce';
+import { Status as SortType } from '../../types/Status';
+import { Todo } from '../../types/Todo';
+import { actions as filterActions } from '../../features/filter';
+import { useAppDispatch } from '../../app/hooks';
 
-export const TodoFilter: React.FC = () => {
+interface Props {
+  todos: Todo[];
+  loading: boolean;
+}
+
+export const TodoFilter: React.FC<Props> = () => {
+  const [query, setQuery] = useState('');
+  const dispatch = useAppDispatch();
+
+  const debouncedChangeHandler = useCallback(
+    debounce((value: string) => dispatch(filterActions.setQuery(value)), 400),
+    [],
+  );
+
+  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+
+    setQuery(value);
+    debouncedChangeHandler(value);
+  };
+
+  const handleClearQuery = () => {
+    setQuery('');
+    dispatch(filterActions.setQuery(''));
+  };
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            onChange={event =>
+              dispatch(filterActions.setFilter(event.target.value as SortType))
+            }
+          >
+            <option value={SortType.All}>All</option>
+            <option value={SortType.Active}>Active</option>
+            <option value={SortType.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,19 +54,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={handleChangeQuery}
+          value={query}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => handleClearQuery()}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
