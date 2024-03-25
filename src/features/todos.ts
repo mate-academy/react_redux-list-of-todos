@@ -1,9 +1,24 @@
+/* eslint-disable @typescript-eslint/default-param-last */
 import { Todo } from '../types/Todo';
 
-export const actions = {};
+type AddTodosAction = { type: 'add'; payload: Todo[] };
 
-const todosReducer = (): Todo[] => {
-  return [];
+const addTodos = (todos: Todo[]): AddTodosAction => ({
+  type: 'add',
+  payload: todos,
+});
+
+type Action = AddTodosAction;
+
+const todosReducer = (todos: Todo[] = [], action: Action): Todo[] => {
+  switch (action.type) {
+    case 'add':
+      return [...todos, ...action.payload];
+    default:
+      return todos;
+  }
 };
 
-export default todosReducer;
+const actions = { addTodos };
+
+export { todosReducer, actions };
