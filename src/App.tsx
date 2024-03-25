@@ -6,13 +6,11 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-// import { TodoModal } from './components/TodoModal';
+import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { Todo } from './types/Todo';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { TodoModal } from './components/TodoModal';
 
 export const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);

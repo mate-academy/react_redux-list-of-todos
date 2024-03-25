@@ -7,19 +7,6 @@ type Action = {
 };
 type Filter = { status: Status; query: string };
 
-const filterActive = (query: string): Action => ({
-  type: 'active',
-  payload: query,
-});
-const filterCompleted = (query: string): Action => ({
-  type: 'completed',
-  payload: query,
-});
-const filterAll = (query: string): Action => ({
-  type: 'all',
-  payload: query,
-});
-
 const applyFilter = (status: Status, query: string): Action => ({
   type: status,
   payload: query,
@@ -41,6 +28,6 @@ const filterReducer = (filter: Filter = initialFilter, action: Action) => {
   }
 };
 
-const actions = { filterActive, filterCompleted, filterAll, applyFilter };
+const actions = { applyFilter };
 
 export { filterReducer, actions };
