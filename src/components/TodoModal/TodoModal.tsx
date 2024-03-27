@@ -1,12 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { User } from '../../types/User';
+import { getUsers } from '../../services/users';
+import { actions as actionsCurrentTodo } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
+  const [isLoadingUser, setIsLoadingUser] = useState(false);
+  const dispatch = useAppDispatch();
+  const [user, setUser] = useState<User | null>(null);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  const handleCloseModal = () => {
+    dispatch(actionsCurrentTodo.removeTodo());
+  };
+
+  const getDataUser = async () => {
+    try {
+      setIsLoadingUser(true);
+
+      if (currentTodo) {
+        const userFromServer = await getUsers(currentTodo?.userId);
+
+        setUser(userFromServer);
+      }
+    } catch (error) {
+    } finally {
+      setIsLoadingUser(false);
+    }
+  };
+
+  useEffect(() => {
+    getDataUser();
+  }, [currentTodo]);
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      <Loader />
+      {isLoadingUser && <Loader />}
 
       <div className="modal-card">
         <header className="modal-card-head">
@@ -18,22 +50,27 @@ export const TodoModal: React.FC = () => {
           </div>
 
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
+          <button
+            type="button"
+            className="delete"
+            data-cy="modal-close"
+            onClick={handleCloseModal}
+          />
         </header>
 
         <div className="modal-card-body">
           <p className="block" data-cy="modal-title">
-            fugiat veniam minus
+            {currentTodo?.title}
           </p>
 
           <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
-
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
+            {currentTodo?.completed ? (
+              <strong className="has-text-success">Done</strong>
+            ) : (
+              <strong className="has-text-danger">Planned</strong>
+            )}
             {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
+            <a href="mailto:Sincere@april.biz">{user?.name}</a>
           </p>
         </div>
       </div>
