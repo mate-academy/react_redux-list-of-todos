@@ -12,6 +12,7 @@ import { useAppSelector } from './app/hooks';
 export const App: React.FC = () => {
   const [isLoadindTodos, setIsLoadindTodos] = useState(false);
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const [isLoadingUser, setIsLoadingUser] = useState(false);
 
   return (
     <>
@@ -35,7 +36,12 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {currentTodo && <TodoModal />}
+      {currentTodo && (
+        <TodoModal
+          setIsLoadingUser={setIsLoadingUser}
+          isLoadingUser={isLoadingUser}
+        />
+      )}
     </>
   );
 };
