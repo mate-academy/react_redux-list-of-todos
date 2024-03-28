@@ -18,13 +18,9 @@ export const App: React.FC = () => {
   const currentTodos = useAppSelector((state: RootState) => state.currentTodo);
 
   useEffect(() => {
+    setLoader(true);
     getTodos()
       .then(data => dispatch(actions.setTodos(data)))
-      .catch(() => (
-        <p className="notification is-warning">
-          There are no todos matching current filter criteria
-        </p>
-      ))
       .finally(() => setLoader(false));
   }, [dispatch]);
 
@@ -41,7 +37,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               {loader && <Loader />}
-              <TodoList />
+              {!loader && <TodoList />}
             </div>
           </div>
         </div>
