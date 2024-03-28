@@ -5,24 +5,28 @@ export const getPreparedTodos = (
   query: string,
   filter: Status,
   todos: Todo[],
-) => {
-  const visibleTodos = [...todos];
+): Todo[] => {
+  const normalizedQuery = query.toLowerCase();
 
-  return visibleTodos
-    .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()))
-    .filter(todo => {
-      switch (filter) {
-        case 'all':
-          return true;
+  return todos.filter(todo => {
+    const title = todo.title.toLowerCase();
 
-        case 'active':
-          return !todo.completed;
+    if (!title.includes(normalizedQuery)) {
+      return false;
+    }
 
-        case 'completed':
-          return todo.completed;
+    switch (filter) {
+      case 'all':
+        return true;
 
-        default:
-          return visibleTodos;
-      }
-    });
+      case 'active':
+        return !todo.completed;
+
+      case 'completed':
+        return todo.completed;
+
+      default:
+        return false;
+    }
+  });
 };

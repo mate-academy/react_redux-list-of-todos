@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { User } from '../../types/User';
@@ -22,7 +22,7 @@ export const TodoModal: React.FC<Props> = ({
     dispatch(actionsCurrentTodo.removeTodo());
   };
 
-  const getDataUser = async () => {
+  const getDataUser = useCallback(async () => {
     try {
       setIsLoadingUser(true);
 
@@ -35,11 +35,11 @@ export const TodoModal: React.FC<Props> = ({
     } finally {
       setIsLoadingUser(false);
     }
-  };
+  }, [currentTodo]);
 
   useEffect(() => {
     getDataUser();
-  }, [currentTodo]);
+  }, [currentTodo, getDataUser]);
 
   return (
     <div className="modal is-active" data-cy="modal">
