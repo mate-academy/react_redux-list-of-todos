@@ -42,6 +42,7 @@ export const TodoList: React.FC<TodoListProps> = ({
 
   useEffect(() => {
     getDataTodos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSetTodo = (todo: Todo) => {
