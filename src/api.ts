@@ -17,6 +17,9 @@ function get<T>(url: string): Promise<T> {
 
   return wait(300)
     .then(() => fetch(fullURL))
+    .catch(err => {
+      throw new Error(err.status);
+    })
     .then(res => res.json());
 }
 
