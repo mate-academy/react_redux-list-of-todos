@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/default-param-last */
+
 type StatusTodos = {
   type: 'filter/STATUS';
   payload: string;

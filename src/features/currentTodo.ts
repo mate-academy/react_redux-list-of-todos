@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/default-param-last */
 import { Todo } from '../types/Todo';
 
 // we use string literal as a type to avoid mistype in future

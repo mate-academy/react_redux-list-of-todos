@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/default-param-last */
+
 import { Todo } from '../types/Todo';
 
 type Todos = {
