@@ -1,18 +1,20 @@
 /* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-// import { TodoModal } from './components/TodoModal';
+import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { actions } from './features/todos';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
-  const dispatch = useDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -54,7 +56,9 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {/* <TodoModal /> */}
+      {currentTodo && (
+        <TodoModal userId={currentTodo.userId} todo={currentTodo} />
+      )}
     </>
   );
 };
