@@ -22,5 +22,5 @@ const todosReducer = (todos: Todo[] = [], action: Action) => {
   }
 };
 
-export const todosActions = { addTodos };
+export const actions = { addTodos };
 export default todosReducer;

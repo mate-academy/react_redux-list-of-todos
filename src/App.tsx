@@ -10,7 +10,7 @@ import { Loader } from './components/Loader';
 import { useAppSelector } from './app/hooks';
 import { useDispatch } from 'react-redux';
 import { getTodos } from './api';
-import { todosActions } from './features/todos';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();

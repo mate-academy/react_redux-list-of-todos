@@ -44,5 +44,5 @@ const filterReducer = (state = initialState, action: Action) => {
   }
 };
 
-export const filterActions = { onQueryChange, onFilterStatusChange };
+export const actions = { onQueryChange, onFilterStatusChange };
 export default filterReducer;

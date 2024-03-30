@@ -4,7 +4,7 @@ import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { useDispatch } from 'react-redux';
-import { currentTodoActions } from '../../features/currentTodo';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
 interface Props {
   currentTodo: Todo;

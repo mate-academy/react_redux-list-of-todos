@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { Todo } from '../../types/Todo';
-import { currentTodoActions } from '../../features/currentTodo';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 import classNames from 'classnames';
 import { useAppSelector } from '../../app/hooks';
 
