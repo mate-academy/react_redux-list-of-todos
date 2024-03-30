@@ -1,12 +1,12 @@
 import { createStore, combineReducers } from 'redux';
 
 // import currentTodoReducer from '../features/currentTodo';
-// import filterReducer from '../features/filter';
+import filterReducer from '../features/filter';
 import todosReducer from '../features/todos';
 
 const rootReducer = combineReducers({
   // currentTodo: currentTodoReducer,
-  // filter: filterReducer,
+  filter: filterReducer,
   todos: todosReducer,
 });
 

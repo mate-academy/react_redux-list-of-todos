@@ -1,14 +1,17 @@
 /* eslint-disable */
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
+import { useAppSelector } from '../../app/hooks';
+import { useFilter } from '../../app/hooks/useFilter';
 
 export const TodoList: React.FC = () => {
-  const todos = useSelector((state: RootState) => state.todos)
+  const todos = useAppSelector((state) => state.todos)
+
+
+  const filteredTodos = useFilter(todos);
 
   return (
     <>
-    {todos && !todos.length ? (
+    {filteredTodos && !filteredTodos.length ? (
       <p className="notification is-warning" onClick={() => console.log(todos)}>
         There are no todos matching current filter criteria
       </p>
@@ -30,7 +33,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {todos.map(todo => (
+          {filteredTodos.map(todo => (
               <tr data-cy="todo" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
@@ -58,9 +61,6 @@ export const TodoList: React.FC = () => {
       </table>
 
     )}
-
-
-
     </>
   );
 };
