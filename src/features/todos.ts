@@ -1,9 +1,30 @@
 import { Todo } from '../types/Todo';
 
-export const actions = {};
+const FETCH = 'todos/fetch';
 
-const todosReducer = (): Todo[] => {
-  return [];
+type UpdateAction = {
+  type: typeof FETCH;
+  payload: {
+    todos: Todo[];
+  };
+};
+
+const updateTodos = (todos: Todo[]): UpdateAction => ({
+  type: FETCH,
+  payload: {
+    todos,
+  },
+});
+
+export const actions = { updateTodos };
+
+const todosReducer = (todos: Todo[] = [], action: UpdateAction): Todo[] => {
+  switch (action.type) {
+    case FETCH:
+      return action.payload.todos;
+    default:
+      return todos;
+  }
 };
 
 export default todosReducer;
