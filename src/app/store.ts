@@ -7,9 +7,9 @@ import filterReducer from '../features/filter';
 import todosReducer from '../features/todos';
 
 const rootReducer = combineReducers({
+  todos: todosReducer,
   currentTodo: currentTodoReducer,
   filter: filterReducer,
-  todos: todosReducer,
 });
 
 // The `store` is passed to the Provider in `/src/index.tsx`
