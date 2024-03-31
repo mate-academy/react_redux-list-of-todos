@@ -2,14 +2,17 @@ import React from 'react';
 import { Todo } from '../../types/Todo';
 import classNames from 'classnames';
 import { actions } from '../../features/currentTodo';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 interface Props {
   todo: Todo;
 }
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
+  const curTodo = useSelector((state: RootState) => state.currentTodo.CurTodo);
   const isTodoActive = todo.completed;
+  const isCurTodo = todo.id === curTodo?.id;
   const dispatch = useDispatch();
 
   const handleClick = () => {
@@ -48,7 +51,13 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           onClick={handleClick}
         >
           <span className="icon">
-            <i className="far fa-eye" />
+            <i
+              className={classNames(
+                'far',
+                { 'fa-eye-slash': isCurTodo },
+                { 'fa-eye': !isCurTodo },
+              )}
+            />
           </span>
         </button>
       </td>

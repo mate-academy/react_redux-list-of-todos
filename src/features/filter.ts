@@ -1,10 +1,10 @@
-export const ActiveTodos = 'activeTodos';
-export const CompletedTodos = 'completedTodos';
-export const AllTodos = 'allTodos';
+export const ActiveTodos = 'active';
+export const CompletedTodos = 'completed';
+export const AllTodos = 'all';
 export const changeQuery = 'changeQuery';
 
-export const Filter = (type: string, payload: string) => ({type , payload });
-export const Query = (payload: string) => ({type: changeQuery ,  payload });
+export const Filter = (type: string, payload: string) => ({ type, payload });
+export const Query = (payload: string) => ({ type: changeQuery, payload });
 
 interface Action {
   type: string;
@@ -20,8 +20,8 @@ const defaultValue: DefaultValue = {
   status: AllTodos,
   query: '',
 };
-
-const filterReducer = ( action: Action , state :DefaultValue = defaultValue ): DefaultValue => {
+// eslint-disable-next-line
+const filterReducer = (state = defaultValue, action: Action): DefaultValue => {
   switch (action.type) {
     case ActiveTodos:
       return { ...state, status: action.payload };

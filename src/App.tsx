@@ -12,24 +12,24 @@ import { RootState } from './app/store';
 import { getTodos } from './api';
 import { setTodos } from './features/todos';
 import { ActiveTodos, CompletedTodos } from './features/filter';
+import { TodoModal } from './components/TodoModal';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  // const curTodo = useSelector((state: RootState) => state.currentTodo);
+  const curTodo = useSelector((state: RootState) => state.currentTodo.CurTodo);
   const todos = useSelector((state: RootState) => state.todos.todos);
-  const query = useSelector((state: RootState) => state.filter);
-  const filterStatus = useSelector((state: RootState) => state.filter);
+  const query = useSelector((state: RootState) => state.filter.query);
+  const filterStatus = useSelector((state: RootState) => state.filter.status);
   const [isLoading, setIsLoading] = useState(true);
-  // const isCurTodo = curTodo !== null;
-  console.log(filterStatus)
+  const isCurTodo = curTodo !== null;
 
   useEffect(() => {
     setIsLoading(true);
     getTodos().then(data => {
       dispatch(setTodos(data));
+      setIsLoading(false);
     });
-    setIsLoading(false);
-  });
+  }, [dispatch]);
 
   const filteredTodos = () => {
     let result = todos;
@@ -46,8 +46,10 @@ export const App: React.FC = () => {
         break;
     }
 
-    if (query !== null) {
-      result = result.filter(elem => elem.title.includes(query));
+    if (query !== '') {
+      result = result.filter(elem =>
+        elem.title.toLowerCase().includes(query.toLowerCase()),
+      );
     }
 
     return result;
@@ -71,7 +73,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {/* {isCurTodo ? <TodoModal curentTodo={curTodo} /> : <Loader />} */}
+      {isCurTodo && <TodoModal curentTodo={curTodo} />}
     </>
   );
 };

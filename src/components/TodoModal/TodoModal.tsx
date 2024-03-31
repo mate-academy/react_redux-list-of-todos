@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const TodoModal: React.FC<Props> = ({ curentTodo }) => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const dispath = useDispatch();
   const [user, setUser] = useState<User | null>(null);
 
@@ -25,7 +25,7 @@ export const TodoModal: React.FC<Props> = ({ curentTodo }) => {
       setUser(userFromServer);
       setLoading(false);
     });
-  });
+  }, []);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -40,7 +40,7 @@ export const TodoModal: React.FC<Props> = ({ curentTodo }) => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo {curentTodo.id}
+              Todo #{curentTodo.id}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -63,6 +63,7 @@ export const TodoModal: React.FC<Props> = ({ curentTodo }) => {
               ) : (
                 <strong className="has-text-danger">Planned</strong>
               )}
+              {' by '}
               <a href={`mailto:${(user as User).email}`}>
                 {(user as User).name}
               </a>

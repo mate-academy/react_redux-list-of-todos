@@ -14,7 +14,7 @@ type DefaultValue = {
 const deaultValue: DefaultValue = {
   todos: [],
 };
-
+// eslint-disable-next-line
 const todosReducer = (state = deaultValue, action: Action): DefaultValue => {
   switch (action.type) {
     case 'AddTodos':

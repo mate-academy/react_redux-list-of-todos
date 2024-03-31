@@ -1,15 +1,12 @@
 import { Todo } from '../types/Todo';
 
-// we use string literal as a type to avoid mistype in future
 type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
 
-// payload is a typical name for an action data
 type SetTodoAction = {
   type: 'currentTodo/SET';
   payload: Todo;
 };
 
-// Action creator return type protect us from a mistype
 const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
 
 const setTodo = (todo: Todo): SetTodoAction => ({
@@ -17,11 +14,8 @@ const setTodo = (todo: Todo): SetTodoAction => ({
   payload: todo,
 });
 
-// These actions will be used in the application
 export const actions = { setTodo, removeTodo };
 
-type State = DefaultValue;
-// type Action = SetTodoAction | RemoveTodoAction;
 type Action = {
   type: string;
   payload: Todo;
@@ -37,8 +31,11 @@ const RemoveTodo = 'currentTodo/REMOVE';
 const defaultValue: DefaultValue = {
   CurTodo: null,
 };
-
-const currentTodoReducer = (state: State = defaultValue, action: Action) => {
+/* eslint-disable */
+const currentTodoReducer = (
+  state: DefaultValue = defaultValue,
+  action: Action,
+): DefaultValue => {
   switch (action.type) {
     case AddTodo:
       return { ...state, CurTodo: action.payload };
@@ -48,5 +45,6 @@ const currentTodoReducer = (state: State = defaultValue, action: Action) => {
       return state;
   }
 };
+/* eslint-enable */
 
 export default currentTodoReducer;

@@ -12,9 +12,16 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
   const [inputQuery, setInputQuery] = useState('');
 
+  const isQuery = inputQuery !== '';
+
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setInputQuery(e.target.value);
     dispatch(Query(inputQuery));
+  };
+
+  const deleteQuery = () => {
+    setInputQuery('');
+    dispatch(Query(''));
   };
 
   const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -23,7 +30,7 @@ export const TodoFilter: React.FC = () => {
 
   useEffect(() => {
     dispatch(Filter(AllTodos, AllTodos));
-  });
+  }, [dispatch]);
 
   return (
     <form
@@ -59,11 +66,14 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {isQuery && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => deleteQuery()}
+            />
+          )}
         </span>
       </p>
     </form>
