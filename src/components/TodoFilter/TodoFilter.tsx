@@ -1,6 +1,30 @@
-import React from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import {
+  ActiveTodos,
+  AllTodos,
+  CompletedTodos,
+  Filter,
+  Query,
+} from '../../features/filter';
+import { useDispatch } from 'react-redux';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const [inputQuery, setInputQuery] = useState('');
+
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setInputQuery(e.target.value);
+    dispatch(Query(inputQuery));
+  };
+
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(Filter(e.target.value, e.target.value));
+  };
+
+  useEffect(() => {
+    dispatch(Filter(AllTodos, AllTodos));
+  });
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +32,14 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            onChange={handleSelect}
+            defaultValue={AllTodos}
+          >
+            <option value={AllTodos}>All</option>
+            <option value={ActiveTodos}>Active</option>
+            <option value={CompletedTodos}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +50,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={inputQuery}
+          onChange={handleInput}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

@@ -20,13 +20,30 @@ const setTodo = (todo: Todo): SetTodoAction => ({
 // These actions will be used in the application
 export const actions = { setTodo, removeTodo };
 
-type State = Todo | null;
-type Action = SetTodoAction | RemoveTodoAction;
+type State = DefaultValue;
+// type Action = SetTodoAction | RemoveTodoAction;
+type Action = {
+  type: string;
+  payload: Todo;
+};
 
-const currentTodoReducer = (state: State = null, action: Action): State => {
+type DefaultValue = {
+  CurTodo: Todo | null;
+};
+
+const AddTodo = 'currentTodo/SET';
+const RemoveTodo = 'currentTodo/REMOVE';
+
+const defaultValue: DefaultValue = {
+  CurTodo: null,
+};
+
+const currentTodoReducer = (state: State = defaultValue, action: Action) => {
   switch (action.type) {
-    // Implement all actions here
-
+    case AddTodo:
+      return { ...state, CurTodo: action.payload };
+    case RemoveTodo:
+      return { ...state, CurTodo: null };
     default:
       return state;
   }
