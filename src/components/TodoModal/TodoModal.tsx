@@ -64,9 +64,7 @@ export const TodoModal: React.FC<Props> = ({ curentTodo }) => {
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={`mailto:${user?.email}`}>
-                {user?.name}
-              </a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>
