@@ -13,11 +13,13 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useDispatch();
 
+  const isIdEqualToCurrentTodo = id === currentTodo?.id;
+
   return (
     <tr
       data-cy="todo"
       className={classNames({
-        'has-background-info-light': id === currentTodo?.id,
+        'has-background-info-light': isIdEqualToCurrentTodo,
       })}
     >
       <td className="is-vcentered">{id}</td>
@@ -45,8 +47,8 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           <span className="icon">
             <i
               className={classNames('far', {
-                'fa-eye': id !== currentTodo?.id,
-                'fa-eye-slash': id === currentTodo?.id,
+                'fa-eye': !isIdEqualToCurrentTodo,
+                'fa-eye-slash': isIdEqualToCurrentTodo,
               })}
             />
           </span>
