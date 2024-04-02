@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -7,8 +8,23 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { getTodos } from './api';
+import { useAppSelector } from './app/hooks';
+import { actions } from './features/todos';
 
 export const App: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setLoading(true);
+
+    getTodos()
+      .then(todos => dispatch(actions.setTodos(todos)))
+      .finally(() => setLoading(false));
+  }, [dispatch]);
+
   return (
     <>
       <div className="section">
@@ -21,14 +37,15 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {loading && <Loader />}
+
+              {!loading && <TodoList />}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {currentTodo && <TodoModal />}
     </>
   );
 };
