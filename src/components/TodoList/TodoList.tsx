@@ -7,6 +7,12 @@ import { getTodos } from '../../api';
 import { actions as todosActions } from '../../features/todos';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
+enum Statuses {
+  ALL = 'all',
+  COMPLETED = 'completed',
+  ACTIVE = 'active'
+}
+
 export const TodoList: React.FC = () => {
   const todos: Todo[] = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
@@ -15,9 +21,9 @@ export const TodoList: React.FC = () => {
 
   const filteredTodos = todos.filter(todo => {
     switch (status) {
-      case 'active':
+      case Statuses.ACTIVE:
         return !todo.completed;
-      case 'completed':
+      case Statuses.COMPLETED:
         return todo.completed;
       default:
         return true;
@@ -57,7 +63,7 @@ export const TodoList: React.FC = () => {
 
           <tbody>
             {filteredTodos.map(todo => (
-              <tr data-cy="todo" className={cn('', { 'has-background-info-light': todo.id === currentTodo?.id })}>
+              <tr key={todo.id} data-cy="todo" className={cn({ 'has-background-info-light': todo.id === currentTodo?.id })}>
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {todo.completed && (
