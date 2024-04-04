@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -9,6 +9,9 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
+  const [loader, setLoader] = useState(true);
+  const [modal, setModal] = useState<boolean>(false);
+
   return (
     <>
       <div className="section">
@@ -21,14 +24,18 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {loader && <Loader />}
+              <TodoList
+                loader={loader}
+                setLoader={setLoader}
+                setModal={setModal}
+              />
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {modal && <TodoModal setModal={setModal} />}
     </>
   );
 };

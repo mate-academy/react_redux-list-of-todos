@@ -1,6 +1,24 @@
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Status } from '../../types/Status';
+import { actions } from '../../features/filter';
+import { RootState } from '../../app/store';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const text = useSelector<RootState, string>(state => state.filter.text);
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(actions.filterSelect(event.target.value as Status));
+  };
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(actions.filterText(event.target.value as string));
+  };
+
+  const handleDelete = () => {
+    dispatch(actions.filterText(''));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +26,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" onChange={handleSelectChange}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +40,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={handleInput}
+          value={text}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -33,6 +53,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={handleDelete}
           />
         </span>
       </p>
