@@ -33,11 +33,21 @@ export const App: React.FC = () => {
       <div className="section">
         <div className="container">
           <div className="box">
-            <h1 className="title">Todos:</h1>
+            {loading ? (
+              <Loader />
+            ) : (
+              <>
+                <h1 className="title">Todos:</h1>
 
-            <div className="block">{!loading && <TodoFilter />}</div>
+                <div className="block">
+                  <TodoFilter />
+                </div>
 
-            <div className="block">{loading ? <Loader /> : <TodoList />}</div>
+                <div className="block">
+                  <TodoList />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
