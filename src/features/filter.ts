@@ -12,7 +12,7 @@ type Action = SetFilterSelect | SetFilterText;
 type State = {
   status: Status;
   text: string;
-} | null;
+};
 
 export const filterSelect = (select: Status) => ({
   type: 'todos/FILTER_SELECT',
