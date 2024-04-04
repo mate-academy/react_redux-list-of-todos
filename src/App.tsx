@@ -26,7 +26,7 @@ export const App: React.FC = () => {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
