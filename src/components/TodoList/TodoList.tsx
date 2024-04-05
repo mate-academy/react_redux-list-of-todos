@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
@@ -8,43 +8,17 @@ import { Todo } from '../../types/Todo';
 import { actions } from '../../features/todos';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { getTodos } from '../../api';
-type Props = {
-  loader: boolean;
-  setLoader: (loader: boolean) => void;
-  setModal: React.Dispatch<React.SetStateAction<boolean>>;
-};
 
-export const TodoList: React.FC<Props> = ({ loader, setLoader, setModal }) => {
-  const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
+export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const todos: Todo[] = useSelector((state: RootState) => state.todos);
-  const add = (value: Todo) => dispatch(actions.addTodo(value));
 
   const status = useSelector<RootState>(state => state.filter.status);
   const text = useSelector<RootState, string>(state => state.filter.text);
   const { id: currentId } =
     useSelector((state: RootState) => state.currentTodo) || {};
 
-  const handliClick = (todo: Todo) => {
-    dispatch(currentTodoActions.setTodo(todo));
-    setModal(true);
-  };
-
-  useEffect(() => {
-    if (visibleTodos) {
-      setLoader(false);
-    }
-  }, [visibleTodos]);
-
-  useEffect(() => {
-    getTodos().then((todos: Todo[]) => {
-      console.log(todos);
-
-      todos.forEach(todo => add(todo));
-    });
-  }, []);
-
-  useEffect(() => {
+  const visibleTodos = useMemo(() => {
     let newTodos = [...todos];
 
     if (status === 'all') {
@@ -63,32 +37,48 @@ export const TodoList: React.FC<Props> = ({ loader, setLoader, setModal }) => {
       newTodos = newTodos.filter(todo => todo.title.includes(text));
     }
 
-    setVisibleTodos(newTodos);
+    return newTodos;
   }, [status, text, todos]);
+
+  const handliClick = (todo: Todo) => {
+    dispatch(currentTodoActions.setTodo(todo));
+  };
+
+  useEffect(() => {
+    if (visibleTodos) {
+      // setLoader(false);
+    }
+  }, [visibleTodos]);
+
+  useEffect(() => {
+    getTodos().then((data: Todo[]) => dispatch(actions.setTodo(data)));
+  }, []);
 
   return (
     <>
-      {!visibleTodos.length && loader && (
+      {!visibleTodos.length && !!todos.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
       <table className="table is-narrow is-fullwidth">
-        <thead>
-          <tr>
-            <th>#</th>
+        {!visibleTodos.length && !!todos.length && (
+          <thead>
+            <tr>
+              <th>#</th>
 
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
+              <th>
+                <span className="icon">
+                  <i className="fas fa-check" />
+                </span>
+              </th>
 
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
+              <th>Title</th>
+              <th> </th>
+            </tr>
+          </thead>
+        )}
 
         <tbody>
           {visibleTodos.map(todo => {

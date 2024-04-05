@@ -24,10 +24,7 @@ export const filterText = (text: string) => ({
   payload: text,
 });
 
-const initialState: {
-  status: Status;
-  text: string;
-} = {
+const initialState: State = {
   status: 'all',
   text: '',
 };

@@ -7,12 +7,9 @@ import { actions } from '../../features/currentTodo';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 
-type Props = {
-  setModal: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export const TodoModal: React.FC<Props> = ({ setModal }) => {
+export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User>();
+  const [isVisible, setIsVisible] = useState(false);
   const dispatch = useDispatch();
   const todo: Todo | null = useSelector(
     (state: RootState) => state.currentTodo,
@@ -20,16 +17,25 @@ export const TodoModal: React.FC<Props> = ({ setModal }) => {
 
   const handleDeleteTodo = () => {
     dispatch(actions.removeTodo());
-    setModal(false);
+    setIsVisible(false);
   };
 
   useEffect(() => {
-    if (!todo) {
-      return;
+    if (todo) {
+      setIsVisible(true);
+      getUser(todo?.userId).then(data => setUser(data));
+    } else {
+      setIsVisible(false);
     }
-
-    getUser(todo?.userId).then(data => setUser(data));
   }, [todo]);
+
+  if (!isVisible) {
+    return null;
+  }
+
+  if (!user) {
+    return <Loader />;
+  }
 
   return (
     <div className="modal is-active" data-cy="modal">

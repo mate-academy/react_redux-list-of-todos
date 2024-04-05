@@ -1,16 +1,16 @@
 /* eslint-disable max-len */
-import React, { useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+import { useSelector } from 'react-redux';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { RootState } from './app/store';
 
 export const App: React.FC = () => {
-  const [loader, setLoader] = useState(true);
-  const [modal, setModal] = useState<boolean>(false);
+  const todos = useSelector((state: RootState) => state.todos);
 
   return (
     <>
@@ -24,18 +24,13 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loader && <Loader />}
-              <TodoList
-                loader={loader}
-                setLoader={setLoader}
-                setModal={setModal}
-              />
+              {!todos.length && <Loader />}
+              <TodoList />
             </div>
           </div>
         </div>
       </div>
-
-      {modal && <TodoModal setModal={setModal} />}
+      <TodoModal />
     </>
   );
 };

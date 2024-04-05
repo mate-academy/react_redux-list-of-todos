@@ -1,13 +1,13 @@
 import { Todo } from '../types/Todo';
 
 type SetAddTodo = {
-  type: 'ADD_TODO';
-  payload: Todo;
+  type: 'SET_TODOS';
+  payload: Todo[];
 };
 
-export const addTodo = (todo: Todo): SetAddTodo => ({
-  type: 'ADD_TODO',
-  payload: todo,
+export const setTodo = (todos: Todo[]): SetAddTodo => ({
+  type: 'SET_TODOS',
+  payload: todos,
 });
 
 type Action = SetAddTodo;
@@ -16,8 +16,8 @@ const initialState: Todo[] = [];
 
 const todoReducer = (state = initialState, action: Action): Todo[] => {
   switch (action.type) {
-    case 'ADD_TODO': {
-      return [...state, action.payload];
+    case 'SET_TODOS': {
+      return action.payload;
     }
 
     default:
@@ -25,5 +25,5 @@ const todoReducer = (state = initialState, action: Action): Todo[] => {
   }
 };
 
-export const actions = { addTodo };
+export const actions = { setTodo };
 export default todoReducer;
