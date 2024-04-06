@@ -8,6 +8,7 @@ import { Todo } from '../../types/Todo';
 import { actions } from '../../features/todos';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { getTodos } from '../../api';
+import { StatusFilter } from '../TodoFilter';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,15 +22,15 @@ export const TodoList: React.FC = () => {
   const visibleTodos = useMemo(() => {
     let newTodos = [...todos];
 
-    if (status === 'all') {
+    if (status === StatusFilter.ALL) {
       newTodos = todos;
     }
 
-    if (status === 'active') {
+    if (status === StatusFilter.ACTIVE) {
       newTodos = todos.filter(todo => !todo.completed);
     }
 
-    if (status === 'completed') {
+    if (status === StatusFilter.COMPLETED) {
       newTodos = todos.filter(todo => todo.completed);
     }
 
@@ -43,12 +44,6 @@ export const TodoList: React.FC = () => {
   const handliClick = (todo: Todo) => {
     dispatch(currentTodoActions.setTodo(todo));
   };
-
-  useEffect(() => {
-    if (visibleTodos) {
-      // setLoader(false);
-    }
-  }, [visibleTodos]);
 
   useEffect(() => {
     getTodos().then((data: Todo[]) => dispatch(actions.setTodo(data)));

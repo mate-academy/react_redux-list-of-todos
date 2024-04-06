@@ -3,6 +3,12 @@ import { Status } from '../../types/Status';
 import { actions } from '../../features/filter';
 import { RootState } from '../../app/store';
 
+export enum StatusFilter {
+  ALL = 'All',
+  ACTIVE = 'Active',
+  COMPLETED = 'Completed',
+}
+
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
   const text = useSelector<RootState, string>(state => state.filter.text);
@@ -27,9 +33,11 @@ export const TodoFilter: React.FC = () => {
       <p className="control">
         <span className="select">
           <select data-cy="statusSelect" onChange={handleSelectChange}>
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={StatusFilter.ALL}>{StatusFilter.ALL}</option>
+            <option value={StatusFilter.ACTIVE}>{StatusFilter.ACTIVE}</option>
+            <option value={StatusFilter.COMPLETED}>
+              {StatusFilter.COMPLETED}
+            </option>
           </select>
         </span>
       </p>
