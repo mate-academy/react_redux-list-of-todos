@@ -1,4 +1,4 @@
-import { Status } from '../types/Status';
+import { Filter, Status } from '../types/Status';
 
 type Action = { type: Status; payload: string };
 
@@ -11,27 +11,27 @@ export const actions = {
 
 const initialState = {
   query: '',
-  status: 'all',
+  status: Filter.ALL,
 };
 
 // eslint-disable-next-line @typescript-eslint/default-param-last
 const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case 'all':
+    case Filter.ALL:
       return {
         ...state,
         query: action.payload,
         status: action.type,
       };
 
-    case 'active':
+    case Filter.ACTIVE:
       return {
         ...state,
         query: action.payload,
         status: action.type,
       };
 
-    case 'completed':
+    case Filter.COMPLETED:
       return {
         ...state,
         query: action.payload,

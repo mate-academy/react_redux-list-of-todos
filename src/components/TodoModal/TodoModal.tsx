@@ -26,10 +26,6 @@ export const TodoModal: React.FC = () => {
     }
   }, [currentTodo]);
 
-  const handleClose = () => {
-    removeTodo();
-  };
-
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
@@ -51,7 +47,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={handleClose}
+              onClick={removeTodo}
             />
           </header>
 

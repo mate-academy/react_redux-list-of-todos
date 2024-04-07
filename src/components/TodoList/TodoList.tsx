@@ -15,15 +15,15 @@ export const TodoList: React.FC = () => {
   const setTodo = (todo: Todo) => dispatch(currentTodoActions.setTodo(todo));
 
   const filteringTodos = useMemo(() => {
-    let filterTodos = [...todos];
+    let filteredTodos = todos;
 
     if (filter.query) {
-      filterTodos = filterTodos.filter(todo => {
+      filteredTodos = filteredTodos.filter(todo => {
         return todo.title.toLowerCase().includes(filter.query.toLowerCase());
       });
     }
 
-    return filterTodos.filter(todo => {
+    return filteredTodos.filter(todo => {
       if (filter.status === 'all') {
         return true;
       }
@@ -35,10 +35,6 @@ export const TodoList: React.FC = () => {
       return todo.completed;
     });
   }, [filter, todos]);
-
-  const handleSelect = (todo: Todo) => {
-    setTodo(todo);
-  };
 
   return (
     <>
@@ -95,7 +91,7 @@ export const TodoList: React.FC = () => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => handleSelect(todo)}
+                    onClick={() => setTodo(todo)}
                   >
                     <span className="icon">
                       <i

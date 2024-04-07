@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useAppDispatch } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
-import { Status } from '../../types/Status';
+import { Filter, Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [filterForm, setFilterFrom] = useState<Status>('all');
+  const [filterForm, setFilterFrom] = useState<Status>(Filter.ALL);
 
   const dispatch = useAppDispatch();
 
@@ -42,9 +42,9 @@ export const TodoFilter: React.FC = () => {
             value={filterForm}
             onChange={handleFilterChange}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Filter.ALL}>All</option>
+            <option value={Filter.ACTIVE}>Active</option>
+            <option value={Filter.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>

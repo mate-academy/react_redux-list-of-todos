@@ -19,8 +19,8 @@ export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
-  const addTodo = useCallback(
-    (todoToAdd: Todo) => dispatch(todosActions.addTodos(todoToAdd)),
+  const addTodos = useCallback(
+    (todosToAdd: Todo[]) => dispatch(todosActions.addTodos(todosToAdd)),
     [dispatch],
   );
 
@@ -28,15 +28,11 @@ export const App: React.FC = () => {
     setLoading(true);
 
     getTodos()
-      .then(todosFromServer => {
-        todosFromServer.forEach(todo => {
-          addTodo(todo);
-        });
-      })
+      .then(addTodos)
       .finally(() => {
         setLoading(false);
       });
-  }, [addTodo]);
+  }, [addTodos]);
 
   return (
     <>
