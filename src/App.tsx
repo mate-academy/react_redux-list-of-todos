@@ -11,11 +11,15 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
 import { Status } from './types/Status';
-import { useAppSelector } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [todos, setTodos] = useState<Todo[]>([]);
+  // const [todos, setTodos] = useState<Todo[]>([]);
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos);
+  // console.log(todos);
   const [filterStatus, setFilterStatus] = useState<Status>(Status.All);
   const [isLoading, setIsLoading] = useState(false);
   // const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
@@ -24,7 +28,9 @@ export const App: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
     getTodos()
-      .then(setTodos)
+      .then(todosFromServer => {
+        dispatch(todosActions.setTodos(todosFromServer))
+      })
       .catch(() => {
         throw new Error('Error. Please try again later');
       })

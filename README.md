@@ -17,3 +17,16 @@ components (no need to write them in the store file)
 - Install Prettier Extention and use this [VSCode settings](https://mate-academy.github.io/fe-program/tools/vscode/settings.json) to enable format on save.
 - Replace `<your_account>` with your Github username in the [DEMO LINK](https://yurii-shkrobut-m.github.io/react_redux-list-of-todos/)
 - Follow the [React task guideline](https://github.com/mate-academy/react_task-guideline#react-tasks-guideline)
+
+
+// {
+//   "arrowParens": "avoid",
+//   "singleQuote": true,
+//   "tabWidth": 2,
+//   "trailingComma": "all",
+//   "jsxSingleQuote": false,
+//   "printWidth": 80,
+//   "semi": true,
+//   "bracketSpacing": true,
+//   "bracketSameLine": false
+// }
