@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-// import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
-// interface Props {
-//   selectedTodo: Todo;
-//   setSelectedTodo: (todo: Todo | null) => void;
-// }
-
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const dispatch = useAppDispatch();
+
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (currentTodo) {
@@ -46,7 +41,6 @@ export const TodoModal: React.FC = () => {
               {`Todo #${currentTodo.id}`}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"

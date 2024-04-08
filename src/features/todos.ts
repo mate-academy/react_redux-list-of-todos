@@ -1,16 +1,14 @@
+/* eslint-disable @typescript-eslint/default-param-last */
 import { Todo } from '../types/Todo';
 
-type SetAction = {
-  type: 'todos/SET',
-  payload: Todo[]
-}
+type SetAction = { type: 'todos/SET'; payload: Todo[] };
 
 type Action = SetAction;
 
 const setTodos = (todos: Todo[]): SetAction => ({
   type: 'todos/SET',
   payload: todos,
-})
+});
 
 const todosReducer = (state: Todo[] = [], action: Action): Todo[] => {
   switch (action.type) {
@@ -22,6 +20,6 @@ const todosReducer = (state: Todo[] = [], action: Action): Todo[] => {
   }
 };
 
-export const actions = {setTodos};
+export const actions = { setTodos };
 
 export default todosReducer;

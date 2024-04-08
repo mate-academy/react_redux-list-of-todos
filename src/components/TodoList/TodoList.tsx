@@ -1,15 +1,45 @@
-import React from 'react';
-import { Todo } from '../../types/Todo';
+import React, { useMemo } from 'react';
+// import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
+import { Todo } from '../../types/Todo';
 
-interface Props {
-  todos: Todo[];
-}
-
-export const TodoList: React.FC<Props> = ({ todos }) => {
-  const dispatch = useAppDispatch();
+export const TodoList: React.FC = () => {
+  const { query, status } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+
+  const dispatch = useAppDispatch();
+
+  const filteredTodos: Todo[] = useMemo(() => {
+    let copyTodos = [...todos];
+
+    if (query) {
+      copyTodos = copyTodos.filter(todo =>
+        todo.title.toLowerCase().includes(query.trim().toLowerCase()),
+      );
+    }
+
+    switch (status) {
+      case Status.Active:
+        return copyTodos.filter(todo => !todo.completed);
+
+      case Status.Completed:
+        return copyTodos.filter(todo => todo.completed);
+
+      default:
+        return copyTodos;
+    }
+  }, [query, status, todos]);
+
+  if (!filteredTodos.length) {
+    return (
+      <p className="notification is-warning">
+        There are no todos matching current filter criteria
+      </p>
+    );
+  }
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -27,7 +57,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
       </thead>
 
       <tbody>
-        {todos.map(todo => {
+        {filteredTodos.map(todo => {
           const isSelectedTodo = currentTodo?.id === todo.id;
 
           return (

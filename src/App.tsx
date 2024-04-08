@@ -1,5 +1,4 @@
-/* eslint-disable max-len */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import './App.scss';
@@ -9,54 +8,31 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
-import { Todo } from './types/Todo';
-import { Status } from './types/Status';
+// import { Todo } from './types/Todo';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
+// import { Status } from './types/Status';
 
 export const App: React.FC = () => {
-  const [query, setQuery] = useState('');
-  // const [todos, setTodos] = useState<Todo[]>([]);
-  const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
-  // console.log(todos);
-  const [filterStatus, setFilterStatus] = useState<Status>(Status.All);
-  const [isLoading, setIsLoading] = useState(false);
-  // const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // const { query, status } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
+  // const todos = useAppSelector(state => state.todos);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoading(true);
     getTodos()
       .then(todosFromServer => {
-        dispatch(todosActions.setTodos(todosFromServer))
+        dispatch(todosActions.setTodos(todosFromServer));
       })
       .catch(() => {
         throw new Error('Error. Please try again later');
       })
       .finally(() => setIsLoading(false));
-  }, []);
-
-  const filteredTodos: Todo[] = useMemo(() => {
-    let copyTodos = [...todos];
-
-    if (query) {
-      copyTodos = copyTodos.filter(todo =>
-        todo.title.toLowerCase().includes(query.toLowerCase()),
-      );
-    }
-
-    switch (filterStatus) {
-      case Status.Active:
-        return copyTodos.filter(todo => !todo.completed);
-
-      case Status.Completed:
-        return copyTodos.filter(todo => todo.completed);
-
-      default:
-        return copyTodos;
-    }
-  }, [query, filterStatus, todos]);
+  }, [dispatch]);
 
   return (
     <>
@@ -66,22 +42,23 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                query={query}
-                setQuery={setQuery}
-                setFilterStatus={setFilterStatus}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
-              {isLoading && <Loader />}
+              {isLoading ? <Loader /> : <TodoList />}
 
-              <TodoList todos={filteredTodos} />
+              {/* {!!filteredTodos.length && <TodoList todos={filteredTodos} />} */}
+
+              {/* {!filteredTodos.length && !isLoading && (
+                <p className="notification is-warning">
+                  There are no todos matching current filter criteria
+                </p>
+              )} */}
             </div>
           </div>
         </div>
       </div>
-
       {currentTodo && <TodoModal />}
     </>
   );
