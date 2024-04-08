@@ -8,17 +8,12 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
-// import { Todo } from './types/Todo';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as todosActions } from './features/todos';
-// import { Status } from './types/Status';
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-
-  // const { query, status } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  // const todos = useAppSelector(state => state.todos);
 
   const dispatch = useAppDispatch();
 
@@ -45,17 +40,7 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">
-              {isLoading ? <Loader /> : <TodoList />}
-
-              {/* {!!filteredTodos.length && <TodoList todos={filteredTodos} />} */}
-
-              {/* {!filteredTodos.length && !isLoading && (
-                <p className="notification is-warning">
-                  There are no todos matching current filter criteria
-                </p>
-              )} */}
-            </div>
+            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
