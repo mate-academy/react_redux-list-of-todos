@@ -18,7 +18,6 @@ export const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
     getTodos()
       .then(todosFromServer => {
         dispatch(todosActions.setTodos(todosFromServer));

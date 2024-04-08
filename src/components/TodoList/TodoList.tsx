@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-// import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Status } from '../../types/Status';

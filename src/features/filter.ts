@@ -35,7 +35,7 @@ const filterReducer = (state: State = initState, action: Action): State => {
       return { ...state, status: action.payload };
 
     default:
-      return initState;
+      return state;
   }
 };
 
