@@ -1,17 +1,13 @@
 /* eslint-disable */
 type SetSearchQuery = { type: 'filter/SET_QUERY'; payload: string };
 
-// type RemoveSearchQuery = { type: 'filter/REMOVE_QUERY' };
-
 type ChangeStatus = { type: 'filter/CHANGE_STATUS'; payload: string };
 
 const setSearchQuery = (data: string): SetSearchQuery => ({
   type: 'filter/SET_QUERY',
   payload: data,
 });
-// const RemoveSearchQuery = (data: string): SetSearchQuery => ({
-//   type: 'filter/SET_QUERY', payload: data
-// })
+
 const changeFilterStatus = (data: string): ChangeStatus => ({
   type: 'filter/CHANGE_STATUS',
   payload: data,
@@ -28,8 +24,7 @@ export const actions = {
 type State = {
   query: string,
   status: string,
-}
-  ;
+};
 
 const defaultFilter = {
   query: '',
@@ -49,15 +44,9 @@ const filterReducer = (state: State = defaultFilter, action: Action): State => {
         status: action.payload,
       };
     default:
-      return {
-        query: '',
-        status: 'all',
-      };
+      return state;
   }
-  // return {
-  //   query: '',
-  //   status: 'all',
-  // };
+
 };
 
 export default filterReducer;

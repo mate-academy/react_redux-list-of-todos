@@ -1,11 +1,4 @@
-/* eslint-disable */
-import React, {
-  // useCallback,
-  useEffect,
-  useMemo,
-  // useMemo,
-  useState
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -18,75 +11,57 @@ import { actions } from './features/todos';
 import { Todo } from './types/Todo';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-// import { isArray } from 'cypress/types/lodash';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const {todos}  = useAppSelector(state => state.todos);
-  const setTodos = (list: Todo[]) => dispatch(actions.setTodos(list));
+  const { todos } = useAppSelector(state => state.todos);
   const [showLoader, setShowLoader] = useState(false);
-  // console.log(todos);
   const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const filter: {
-    query: string,
-    status: string,
+    query: string;
+    status: string;
   } = useAppSelector(state => state.filter);
-  const state = useAppSelector(state => state)
-  console.log(state, 'whole state');
-  
+
   useEffect(() => {
     setShowLoader(true);
     getTodos()
       .then(response => {
-        setTodos(response);
+        dispatch(actions.setTodos(response));
       })
       .finally(() => setShowLoader(false));
-  }, []);
+  }, [dispatch]);
 
   useMemo(() => {
     if (todos) {
       setVisibleTodos(todos);
     }
-  }, [todos])
-  
-  if (todos) {
-    // console.log( Object.values(todos), 'todos');
-  }
+  }, [todos]);
+
   useMemo(() => {
-    // console.log(todos, 'todos in memo');
-    
     if (todos) {
-      let copy: Todo[] = [...Object.values(todos) as Todo[]];
-      // console.log(copy, 'tds');
+      let copy: Todo[] = [...todos];
 
-      // copy = [...Object.values(todos) as Todo[]];
-    
       if (filter.query.length > 0) {
-        copy = visibleTodos.filter(
-          elem => elem.title.toLocaleLowerCase().includes(
-            filter.query.toLocaleLowerCase(),
-          ))
-        // console.log(copy, 'copy in if');
-      
+        copy = copy.filter(elem =>
+          elem.title
+            .toLocaleLowerCase()
+            .includes(filter.query.toLocaleLowerCase()),
+        );
       }
+
       if (filter.status === 'completed') {
-        copy = visibleTodos.filter(
-          elem => elem.completed === false
-        )
+        copy = copy.filter(elem => elem.completed === true);
       }
+
       if (filter.status === 'active') {
-        copy = visibleTodos.filter(
-          elem => elem.completed === true
-        )
+        copy = copy.filter(elem => elem.completed === false);
       }
+
       setVisibleTodos(copy);
-
     }
+  }, [filter.status, filter.query, todos]);
 
-  }, [filter.status, filter.query]);
-  // console.log(visibleTodos,filter.query,todos, 'visibletodos');
-  
   return (
     <>
       <div className="section">
@@ -106,8 +81,6 @@ export const App: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* <TodoModal /> */}
     </>
   );
 };

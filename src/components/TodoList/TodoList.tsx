@@ -1,30 +1,29 @@
-/* eslint-disable */
 import React from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { Todo } from '../../types/Todo';
 import { actions } from '../../features/currentTodo';
-
+import { useAppSelector } from '../../app/hooks';
 
 type Props = {
   todoList: Todo[];
-}
+};
 
 export const TodoList: React.FC<Props> = ({ todoList }) => {
-
   const dispatch = useDispatch();
 
   const setCurrentTodo = (todo: Todo) => dispatch(actions.setTodo(todo));
 
-  
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
   return (
     <>
       {todoList.length === 0 && (
         <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+          There are no todos matching current filter criteria
+        </p>
       )}
-      
+
       <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
@@ -47,13 +46,19 @@ export const TodoList: React.FC<Props> = ({ todoList }) => {
               return (
                 <tr data-cy="todo" key={todo.id}>
                   <td className="is-vcentered">{todo.id}</td>
-                  <td className="is-vcentered"> </td>
+                  <td className="is-vcentered">
+                    {todo.completed && (
+                      <span className="icon" data-cy="iconCompleted">
+                        <i className="fas fa-check" />
+                      </span>
+                    )}
+                  </td>
 
                   <td className="is-vcentered is-expanded">
                     <p
                       className={classNames({
                         'has-text-danger': !todo.completed,
-                        'has-text-success': todo.completed
+                        'has-text-success': todo.completed,
                       })}
                     >
                       {todo.title}
@@ -66,8 +71,15 @@ export const TodoList: React.FC<Props> = ({ todoList }) => {
                       className="button"
                       type="button"
                     >
-                      <span className="icon" onClick={() => setCurrentTodo(todo)}>
-                        <i className="far fa-eye" />
+                      <span
+                        className="icon"
+                        onClick={() => setCurrentTodo(todo)}
+                      >
+                        {currentTodo?.id === todo.id ? (
+                          <i className="far fa-eye-slash" />
+                        ) : (
+                          <i className="far fa-eye" />
+                        )}
                       </span>
                     </button>
                   </td>

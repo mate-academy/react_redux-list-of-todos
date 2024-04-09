@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
@@ -15,24 +14,20 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
   const [showLoader, setShowLoader] = useState(false);
   const [user, setUser] = useState<User>();
   const dispatch = useDispatch();
- 
+
   useEffect(() => {
     setShowLoader(true);
     getUser(todo.userId)
       .then(response => {
         setUser(response);
-        console.log(response);
-        
       })
       .finally(() => setShowLoader(false));
-  }, []);
+  }, [todo.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
       {showLoader && <Loader />}
       <div className="modal-background" />
-
-      
 
       <div className="modal-card">
         <header className="modal-card-head">
@@ -44,9 +39,9 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
           </div>
 
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button 
-            type="button" 
-            className="delete" 
+          <button
+            type="button"
+            className="delete"
             data-cy="modal-close"
             onClick={() => dispatch(actions.removeTodo())}
           />
@@ -60,7 +55,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
           <p className="block" data-cy="modal-user">
             {todo.completed ? (
               <strong className="has-text-success">Done</strong>
-            ): (
+            ) : (
               <strong className="has-text-danger">Planned</strong>
             )}
             {' by '}
