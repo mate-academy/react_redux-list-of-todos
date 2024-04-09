@@ -18,6 +18,8 @@ export const App: React.FC = () => {
   const [showLoader, setShowLoader] = useState(false);
   const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const { query } = useAppSelector(state => state.filter);
+
   const filter: {
     query: string;
     status: string;
@@ -76,7 +78,12 @@ export const App: React.FC = () => {
             <div className="block">
               {currentTodo && <TodoModal todo={currentTodo} />}
               {showLoader && <Loader />}
-              <TodoList todoList={visibleTodos} />
+              {visibleTodos.length === 0 && query.length > 0 && (
+                <p className="notification is-warning">
+                  There are no todos matching current filter criteria
+                </p>
+              )}
+              {visibleTodos.length > 0 && <TodoList todoList={visibleTodos} />}
             </div>
           </div>
         </div>
