@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { getTodos } from './api';
@@ -15,20 +14,21 @@ import { Loader } from './components/Loader';
 export const App: React.FC = () => {
   const dispatch = useDispatch();
   const { todos } = useAppSelector(state => state.todos);
-  const [showLoader, setShowLoader] = useState(false);
+  const [isShowLoader, setIsShowLoader] = useState(false);
   const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const { query } = useAppSelector(state => state.filter);
+  const showNotification = visibleTodos.length === 0 && query.length > 0;
 
   const filter = useAppSelector(state => state.filter);
 
   useEffect(() => {
-    setShowLoader(true);
+    setIsShowLoader(true);
     getTodos()
       .then(response => {
         dispatch(actions.setTodos(response));
       })
-      .finally(() => setShowLoader(false));
+      .finally(() => setIsShowLoader(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const App: React.FC = () => {
   }, [todos]);
 
   useEffect(() => {
-    if (todos) {
+    if (!todos) return;
       let copy: Todo[] = [...todos];
 
       if (filter.query.length > 0) {
@@ -58,7 +58,7 @@ export const App: React.FC = () => {
       }
 
       setVisibleTodos(copy);
-    }
+
   }, [filter, todos]);
 
   return (
@@ -73,14 +73,21 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
+
               {currentTodo && <TodoModal todo={currentTodo} />}
-              {showLoader && <Loader />}
-              {visibleTodos.length === 0 && query.length > 0 && (
+
+              {isShowLoader && <Loader />}
+
+              {showNotification && (
+
                 <p className="notification is-warning">
                   There are no todos matching current filter criteria
                 </p>
+
               )}
+
               {visibleTodos.length > 0 && <TodoList todoList={visibleTodos} />}
+
             </div>
           </div>
         </div>
