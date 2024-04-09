@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -31,13 +31,13 @@ export const App: React.FC = () => {
       .finally(() => setShowLoader(false));
   }, [dispatch]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (todos) {
       setVisibleTodos(todos);
     }
   }, [todos]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (todos) {
       let copy: Todo[] = [...todos];
 
