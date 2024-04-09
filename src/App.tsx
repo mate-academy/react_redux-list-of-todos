@@ -20,10 +20,7 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const { query } = useAppSelector(state => state.filter);
 
-  const filter: {
-    query: string;
-    status: string;
-  } = useAppSelector(state => state.filter);
+  const filter = useAppSelector(state => state.filter);
 
   useEffect(() => {
     setShowLoader(true);
@@ -62,7 +59,7 @@ export const App: React.FC = () => {
 
       setVisibleTodos(copy);
     }
-  }, [filter.status, filter.query, todos]);
+  }, [filter, todos]);
 
   return (
     <>
