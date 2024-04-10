@@ -29,22 +29,20 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
 
   return (
     <>
-      {!filteredTodos && <p className="notification is-warning">
+    {!filteredTodos.length ? (
+      <p className="notification is-warning">
         There are no todos matching current filter criteria
-      </p>}
-
-
+      </p>
+    ) : (
       <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
             <th>#</th>
-
             <th>
               <span className="icon">
                 <i className="fas fa-check" />
               </span>
             </th>
-
             <th>Title</th>
             <th> </th>
           </tr>
@@ -73,12 +71,19 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
               </td>
 
               <td className="has-text-right is-vcentered">
-                <button data-cy="selectButton" className="button" type="button" onClick={() => selectTodoHandler(todo)}>
+                <button
+                  data-cy="selectButton"
+                  className="button"
+                  type="button"
+                  onClick={() => selectTodoHandler(todo)}
+                >
                   <span className="icon">
-                    <i className={classNames('far', {
+                    <i
+                      className={classNames('far', {
                         'fa-eye-slash': todo.id === currentTodo?.id,
                         'fa-eye': todo.id !== currentTodo?.id,
-                      })} />
+                      })}
+                    />
                   </span>
                 </button>
               </td>
@@ -86,7 +91,8 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
           ))}
         </tbody>
       </table>
-    </>
+    )}
+  </>
   );
 };
 
