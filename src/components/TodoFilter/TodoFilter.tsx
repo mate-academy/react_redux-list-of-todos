@@ -2,6 +2,7 @@ import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { actions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,16 @@ export const TodoFilter: React.FC = () => {
     dispatch(actions.setQuery(searchText));
   };
 
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedStatus = event.target.value as Status;
+
+    dispatch(actions.setStatus(selectedStatus));
+  };
+
+  const handleReset = () => {
+    dispatch(actions.setQuery(''));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -20,7 +31,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" onChange={handleStatusChange}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -35,20 +46,22 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           onChange={handleTitleChange}
-          value={queryFilter}
+          value={queryFilter.query}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
-
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {queryFilter.query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleReset}
+            />
+          </span>
+        )}
       </p>
     </form>
   );

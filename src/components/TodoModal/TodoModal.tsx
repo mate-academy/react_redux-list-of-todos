@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { actions } from '../../features/currentTodo';
 
 type Props = {
-  todoUser: User;
+  todoUser?: User;
 };
 
 export const TodoModal: React.FC<Props> = ({ todoUser }) => {

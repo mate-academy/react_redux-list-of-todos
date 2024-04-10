@@ -54,7 +54,7 @@ export const App: React.FC = () => {
           </div>
         </div>
       </div>
-      {currentTodo && todoUser && <TodoModal todoUser={todoUser} />}
+      {currentTodo && <TodoModal todoUser={todoUser} />}
     </>
   );
 };

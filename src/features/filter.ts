@@ -1,5 +1,4 @@
 import { Status } from '../types/Status';
-import { Todo } from '../types/Todo';
 
 export const setQuery = (query: string) => ({
   type: 'query' as const,
@@ -11,11 +10,17 @@ export const setStatus = (status: Status) => ({
   payload: status,
 });
 
+const initialState = {
+  query: '',
+  status: 'all' as Status,
+};
+
 type Action = ReturnType<typeof setQuery> | ReturnType<typeof setStatus>;
 
 export const actions = { setQuery, setStatus };
 
-const filterReducer = (state: Todo[], action: Action) => {
+// eslint-disable-next-line @typescript-eslint/default-param-last
+const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'query':
       return { ...state, query: action.payload };
