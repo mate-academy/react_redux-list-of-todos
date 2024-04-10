@@ -1,6 +1,18 @@
 import React from 'react';
+import { useAppSelector } from '../../app/hooks';
+import { useDispatch } from 'react-redux';
+import { actions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const queryFilter = useAppSelector(state => state.filter);
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const searchText = event.target.value.toLowerCase();
+
+    dispatch(actions.setQuery(searchText));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -22,6 +34,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={handleTitleChange}
+          value={queryFilter}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
