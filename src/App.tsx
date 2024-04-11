@@ -12,7 +12,8 @@ import { getTodos } from './api';
 import { actions as todoAction } from './features/todos';
 
 export const App: React.FC = () => {
-  const [loader, setLoader] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
@@ -21,16 +22,16 @@ export const App: React.FC = () => {
       const loadedTodos = await getTodos();
 
       dispatch(todoAction.setTodos(loadedTodos));
-      setLoader(false);
-    } catch {
-      // handleErrorSet(ErrMessage.loadTodo);
+      setIsLoading(true);
+    } catch (error) {
+      setErrorMsg(`Error loading todos:, ${error}`);
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    setLoader(true);
+    setIsLoading(false);
     loadTodos();
-  }, []);
+  }, [loadTodos]);
 
   return (
     <>
@@ -42,7 +43,10 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">{loader ? <Loader /> : <TodoList />}</div>
+            <div className="block">
+              {!isLoading ? <Loader /> : <TodoList />}
+              {errorMsg && <div className="error">{errorMsg}</div>}
+            </div>
           </div>
         </div>
       </div>

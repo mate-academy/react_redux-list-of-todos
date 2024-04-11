@@ -6,6 +6,7 @@ import { User } from '../../types/User';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loader, setLoader] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const currentTodo = useAppSelector(state => state.currentTodo);
@@ -23,9 +24,9 @@ export const TodoModal: React.FC = () => {
 
       setLoader(false);
     } catch (error) {
-      // console.log(error);
+      setErrorMsg(`Error fetching user:, ${error}`);
     }
-  }, []);
+  }, [currentTodo]);
 
   useEffect(() => {
     loadUser();
@@ -34,7 +35,7 @@ export const TodoModal: React.FC = () => {
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
-
+      {errorMsg && <div className="error">{errorMsg}</div>}
       {loader ? (
         <Loader />
       ) : (
@@ -69,7 +70,7 @@ export const TodoModal: React.FC = () => {
               )}
 
               {' by '}
-              <a href={user?.email}>{user?.name}</a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>

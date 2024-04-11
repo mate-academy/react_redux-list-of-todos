@@ -11,14 +11,14 @@ export const TodoFilter: React.FC = () => {
     const status = event.target.value;
 
     switch (status) {
-      case 'all':
+      case Status.All:
         return dispatch(filterActions.setStatus(Status.All));
-      case 'active':
+      case Status.Active:
         return dispatch(filterActions.setStatus(Status.Active));
-      case 'completed':
+      case Status.Completed:
         return dispatch(filterActions.setStatus(Status.Completed));
       default:
-        return 'error';
+        return dispatch(filterActions.setStatus(Status.All));
     }
   };
 

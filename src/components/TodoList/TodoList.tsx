@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import cn from 'classnames';
 import { actions as currentTodoAction } from '../../features/currentTodo'
 import { Todo } from '../../types/Todo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -13,14 +14,14 @@ export const TodoList: React.FC = () => {
 
   const filtered = () => {
     switch (filter.status) {
-      case 'all':
+      case Status.All:
         return todos.filter((todo) => todo.title.toLowerCase().includes(filter.query));
-      case 'active':
+      case Status.Active:
         return todos.filter((todo) => (
           !todo.completed
             && todo.title.toLowerCase().includes(filter.query)
         ));
-      case 'completed':
+      case Status.Completed:
         return todos.filter((todo) => (
           todo.completed
             && todo.title.toLowerCase().includes(filter.query)
@@ -30,13 +31,15 @@ export const TodoList: React.FC = () => {
     }
   };
 
+  const filteredTodos = filtered();
+
   const handleTodoSet = (todo: Todo) => {
     dispatch(currentTodoAction.setTodo(todo))
   }
 
   return (
     <>
-      {!filtered() ? (
+      {!filteredTodos ? (
       <p className="notification is-warning">
         There are no todos matching current filter criteria
       </p>
