@@ -7,7 +7,7 @@ import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [loader, setLoader] = useState(true);
+  const [loader, setLoader] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
@@ -16,6 +16,7 @@ export const TodoModal: React.FC = () => {
 
   const loadUser = useCallback(async () => {
     try {
+      setLoader(true);
       if (currentTodo) {
         const fetchUser = await getUser(currentTodo.userId);
 
@@ -25,6 +26,8 @@ export const TodoModal: React.FC = () => {
       setLoader(false);
     } catch (error) {
       setErrorMsg(`Error fetching user:, ${error}`);
+    } finally {
+      setLoader(false);
     }
   }, [currentTodo]);
 

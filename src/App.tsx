@@ -19,12 +19,14 @@ export const App: React.FC = () => {
 
   const loadTodos = useCallback(async () => {
     try {
+      setIsLoading(true);
       const loadedTodos = await getTodos();
 
       dispatch(todoAction.setTodos(loadedTodos));
-      setIsLoading(true);
     } catch (error) {
       setErrorMsg(`Error loading todos:, ${error}`);
+    } finally {
+      setIsLoading(false);
     }
   }, [dispatch]);
 
@@ -44,7 +46,8 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!isLoading ? <Loader /> : <TodoList />}
+              {isLoading && <Loader />}
+              {!errorMsg && <TodoList />}
               {errorMsg && <div className="error">{errorMsg}</div>}
             </div>
           </div>
