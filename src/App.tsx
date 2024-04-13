@@ -26,7 +26,8 @@ export const App: React.FC = () => {
         const response = await getTodos();
 
         dispatch(todosActions.addTodos(response));
-      } catch {
+      } catch (error) {
+        throw error;
       } finally {
         setIsLoading(false);
       }

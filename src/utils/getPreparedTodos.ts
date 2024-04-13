@@ -1,9 +1,10 @@
+import { Status } from '../types/Status';
 import { Todo } from '../types/Todo';
 
 export const getPreparedTodos = (
   todos: Todo[],
   query: string,
-  status: string,
+  status: Status,
 ) => {
   let todosCopy = [...todos];
 
@@ -16,9 +17,9 @@ export const getPreparedTodos = (
   if (status) {
     todosCopy = todosCopy.filter(todo => {
       switch (status) {
-        case 'active':
+        case Status.Active:
           return !todo.completed;
-        case 'completed':
+        case Status.Completed:
           return todo.completed;
         default:
           return todos;

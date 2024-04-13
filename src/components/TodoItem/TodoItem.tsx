@@ -20,17 +20,20 @@ const TodoItem: React.FC<Props> = ({ todo }) => {
     <tr data-cy="todo">
       <td className="is-vcentered">{todo.id}</td>
       <td className="is-vcentered">
-        {todo.completed ? (
+        {todo.completed && (
           <span className="icon" data-cy="iconCompleted">
             <i className="fas fa-check" />
           </span>
-        ) : (
-          ''
         )}
       </td>
 
       <td className="is-vcentered is-expanded">
-        <p className={todo.completed ? 'has-text-success' : 'has-text-danger'}>
+        <p
+          className={cn({
+            'has-text-success': todo.completed,
+            'has-text-danger': !todo.completed,
+          })}
+        >
           {todo.title}
         </p>
       </td>

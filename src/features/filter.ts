@@ -1,9 +1,11 @@
+import { Status } from '../types/Status';
+
 type ChangeStatusAction = {
   type: 'filter/CHANGE_STATUS';
-  payload: string;
+  payload: Status;
 };
 
-const changeStatus = (status: string): ChangeStatusAction => ({
+const changeStatus = (status: Status): ChangeStatusAction => ({
   type: 'filter/CHANGE_STATUS',
   payload: status,
 });
@@ -25,14 +27,14 @@ export const actions = {
 
 interface State {
   query: string;
-  status: string;
+  status: Status;
 }
 
 type Action = ChangeStatusAction | ChangeQueryAction;
 
 const initialState = {
   query: '',
-  status: 'all',
+  status: Status.All,
 };
 
 // eslint-disable-next-line @typescript-eslint/default-param-last
