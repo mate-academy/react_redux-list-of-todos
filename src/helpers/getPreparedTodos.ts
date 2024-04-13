@@ -12,9 +12,11 @@ export function getPreparedTodos(
     case 'active':
       preparedTodos = todos.filter(todo => !todo.completed);
       break;
+      
     case 'completed':
       preparedTodos = todos.filter(todo => todo.completed);
       break;
+      
     default:
       preparedTodos = todos;
   }
