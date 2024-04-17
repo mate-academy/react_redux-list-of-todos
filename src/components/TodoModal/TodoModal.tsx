@@ -13,7 +13,13 @@ export const TodoModal: React.FC = () => {
   useEffect(() => {
     dispatch(actionsCurrentTodo.setLoadig(true));
 
-    getUser(currentTodo?.userId as number)
+    const userId = currentTodo?.userId;
+
+    if (!userId) {
+      throw new Error('userId is undefined');
+    }
+
+    getUser(userId)
       .then(setUser)
       .catch(e => dispatch(actionsCurrentTodo.setLoadig(e)))
       .finally(() => dispatch(actionsCurrentTodo.setLoadig(false)));
