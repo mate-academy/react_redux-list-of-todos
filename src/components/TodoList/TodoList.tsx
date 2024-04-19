@@ -9,8 +9,7 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const { todos } = useAppSelector(state => state.todos);
   const { currentTodo } = useAppSelector(state => state.currentTodo);
-  const { status } = useAppSelector(state => state.filter);
-  const { query } = useAppSelector(state => state.filter);
+  const { status, query } = useAppSelector(state => state.filter);
 
   const filteredTodos = getFilteredTodos(todos, status, query);
 
@@ -39,7 +38,7 @@ export const TodoList: React.FC = () => {
 
           <tbody>
             {filteredTodos.map(todo => (
-              <tr data-cy="todo" className="" key={todo.id}>
+              <tr data-cy="todo" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
 
                 <td className="is-vcentered">

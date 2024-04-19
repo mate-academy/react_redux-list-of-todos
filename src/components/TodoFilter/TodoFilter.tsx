@@ -5,8 +5,7 @@ import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { query } = useAppSelector(state => state.filter);
-  const { status } = useAppSelector(state => state.filter);
+  const { query, status } = useAppSelector(state => state.filter);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filterActions.setQuery(event.target.value));
