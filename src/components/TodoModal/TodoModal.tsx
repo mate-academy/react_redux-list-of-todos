@@ -57,7 +57,7 @@ export const TodoModal: React.FC = () => {
                   currentTodo.completed ? 'has-text-success' : 'has-text-danger'
                 }
               >
-                {currentTodo.completed ? 'Planned' : 'Done'}
+                {currentTodo.completed ? 'Done' : 'Planned'}
               </strong>
 
               {' by '}
