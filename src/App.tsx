@@ -13,13 +13,11 @@ import { actions as loadingTodosActions } from './features/todos';
 // import { Loader } from './components/Loader';
 
 export const App: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
-
     getTodos()
       .then(res => {
         return dispatch(loadingTodosActions.loadingTodos(res));
