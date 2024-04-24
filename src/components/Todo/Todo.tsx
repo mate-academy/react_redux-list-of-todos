@@ -13,7 +13,7 @@ export const Todo: React.FC<Props> = ({ todo }) => {
   const { currentTodo } = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
-  const handleAddTodo = () => {
+  const handleTodoSelect = () => {
     dispatch(currentTodoActions.setTodo(todo));
   };
 
@@ -48,7 +48,7 @@ export const Todo: React.FC<Props> = ({ todo }) => {
 
       <td className="has-text-right is-vcentered">
         <button
-          onClick={handleAddTodo}
+          onClick={handleTodoSelect}
           data-cy="selectButton"
           className="button"
           type="button"

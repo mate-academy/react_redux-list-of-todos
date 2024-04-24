@@ -11,18 +11,18 @@ import { Status } from '../../features/filter';
 export const TodoList: React.FC = () => {
   const { todos } = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isLoaded) {
-      getTodos().then((response: TodoType[]) => {
-        console.log(response);
-
+    setIsLoading(true);
+    getTodos()
+      .then((response: TodoType[]) => {
         dispatch(todosActions.loadTodos(response));
-        setIsLoaded(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    }
   }, []);
 
   const filteredTodos = useMemo(() => {
@@ -43,14 +43,14 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {isLoaded && <Loader />}
-      {filteredTodos.length === 0 && !isLoaded && (
+      {isLoading && <Loader />}
+      {!filteredTodos.length && !isLoading && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
-      {filteredTodos.length > 0 && (
+      {!!filteredTodos.length && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>

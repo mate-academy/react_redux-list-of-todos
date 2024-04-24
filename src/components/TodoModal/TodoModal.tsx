@@ -20,10 +20,13 @@ export const TodoModal: React.FC = () => {
     if (currentTodo) {
       setIsModal(true);
       setIsLoading(true);
-      getUser(currentTodo.userId).then(user => {
-        setUserInModal(user);
-        setIsLoading(false);
-      });
+      getUser(currentTodo.userId)
+        .then(user => {
+          setUserInModal(user);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   }, [currentTodo]);
 
