@@ -44,7 +44,7 @@ export const TodoList: React.FC = () => {
   return (
     <>
       {isLoaded && <Loader />}
-      {filteredTodos.length === 0 && (
+      {filteredTodos.length === 0 && !isLoaded && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
