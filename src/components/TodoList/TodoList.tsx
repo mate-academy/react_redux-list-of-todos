@@ -88,8 +88,8 @@ export const TodoList: React.FC = () => {
                       <span className="icon">
                         <i
                           className={classNames('far', {
-                            'fa-eye': !selectTodo,
-                            'fa-eye-slash': selectTodo,
+                            'fa-eye': selectTodo?.id !== todo.id,
+                            'fa-eye-slash': selectTodo?.id === todo.id,
                           })}
                         />
                       </span>

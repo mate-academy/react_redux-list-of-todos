@@ -18,6 +18,7 @@ const initialState = {
   status: 'all',
 };
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'SET_QUERY':
