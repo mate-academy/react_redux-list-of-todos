@@ -14,9 +14,9 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchUser = async (id: number) => {
       try {
-        setIsLoading(true);
         const data = await getUser(id);
 
         if (!data) {
@@ -42,50 +42,52 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading && <Loader />}
+      {isLoading
+        ? (<Loader />)
+        : (
+          <div className="modal-card">
+            <header className="modal-card-head">
+              <div
+                className="modal-card-title has-text-weight-medium"
+                data-cy="modal-header"
+              >
+                Todo {currentTodo.id}
+              </div>
 
-      <div className="modal-card">
-        <header className="modal-card-head">
-          <div
-            className="modal-card-title has-text-weight-medium"
-            data-cy="modal-header"
-          >
-            Todo {currentTodo.id}
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+              <button
+                type="button"
+                className="delete"
+                data-cy="modal-close"
+                onClick={() => dispatch(currTodosActions.removeTodo())}
+              />
+            </header>
+
+            <div className="modal-card-body">
+              <p className="block" data-cy="modal-title">
+                {currentTodo.title}
+              </p>
+
+              <p className="block" data-cy="modal-user">
+                {/* For not completed */}
+                <strong
+                  className={cn({
+                    'has-text-succes': currentTodo,
+                    'has-text-danger': !currentTodo,
+                  })}
+                >
+                  {currentTodo.completed ? 'Done' : 'Planned'}
+                </strong>
+                {currentTodo.completed && (
+                  <>
+                    {' by '}
+                    <a href={`mailto:${user?.email}`}>{user?.name}</a>
+                  </>
+                )}
+              </p>
+            </div>
           </div>
-
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            type="button"
-            className="delete"
-            data-cy="modal-close"
-            onClick={() => dispatch(currTodosActions.removeTodo())}
-          />
-        </header>
-
-        <div className="modal-card-body">
-          <p className="block" data-cy="modal-title">
-            {currentTodo.title}
-          </p>
-
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong
-              className={cn({
-                'has-text-succes': currentTodo,
-                'has-text-danger': !currentTodo,
-              })}
-            >
-              {currentTodo.completed ? 'Done' : 'Planned'}
-            </strong>
-            {currentTodo.completed && (
-              <>
-                {' by '}
-                <a href={`mailto:${user?.email}`}>{user?.name}</a>
-              </>
-            )}
-          </p>
-        </div>
-      </div>
+        )}
     </div>
   );
 };
