@@ -1,37 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Loader } from '../Loader';
 import { User } from '../../types/User';
-import { useAppSelector } from '../../app/hooks';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getUser } from '../../api';
 import { actions as currTodosActions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  const [user, setUser] = useState<User | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const dispatch = useDispatch();
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    const fetchUser = async (id: number) => {
-      try {
-        setIsLoading(true);
-        const data = await getUser(id);
-
-        if (!data) {
-          return;
-        }
-
-        setUser(data);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     if (currentTodo) {
-      fetchUser(currentTodo.userId);
+      setIsLoading(true);
+      getUser(currentTodo.userId)
+        .then(setUser)
+        .finally(() => setIsLoading(false));
     }
   }, [currentTodo]);
+
+  const removeTodo = () => {
+    dispatch(currTodosActions.removeTodo());
+  };
 
   if (!currentTodo) {
     return null;
@@ -58,7 +49,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(currTodosActions.removeTodo())}
+              onClick={removeTodo}
             />
           </header>
 
@@ -69,7 +60,7 @@ export const TodoModal: React.FC = () => {
 
             <p className="block" data-cy="modal-user">
               {/* For not completed */}
-              {!currentTodo.completed ? (
+              {currentTodo.completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>

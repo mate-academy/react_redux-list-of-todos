@@ -1,14 +1,13 @@
 /* eslint-disable */
 import React from 'react';
-import { useAppSelector } from '../../app/hooks';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as currTodosActions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
-  const filter = useAppSelector(state => state.currentFilter);
+  const currentFilter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const handleChooseTodo = (todo: Todo) => {
@@ -17,19 +16,17 @@ export const TodoList: React.FC = () => {
 
   const visibleTodos = todos.filter(todo => {
     const matchesQuery = todo.title
-      .toLocaleLowerCase()
-      .includes(filter.query.toLocaleLowerCase());
+      .toLowerCase()
+      .includes(currentFilter.query.toLowerCase());
 
-    switch (filter.status) {
-      case 'all':
-        return todo && matchesQuery;
-      case 'active':
-        return todo.completed && matchesQuery;
-      case 'completed':
-        return !todo.completed && matchesQuery;
-      default:
-        return matchesQuery;
-    }
+      switch (currentFilter.status) {
+        case 'completed':
+          return todo.completed && matchesQuery;
+        case 'active':
+          return !todo.completed && matchesQuery;
+        default:
+          return matchesQuery;
+      }
   });
 
   return (

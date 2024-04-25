@@ -8,7 +8,7 @@ import todosReducer from '../features/todos';
 
 const rootReducer = combineReducers({
   currentTodo,
-  currentFilter: filterReducer,
+  filter: filterReducer,
   todos: todosReducer,
 });
 

@@ -12,7 +12,9 @@ const setTodos = (todos: Todo[]): SetTodosAction => {
   };
 };
 
-const todosReducer = (todos: Todo[] = [], action: SetTodosAction): Todo[] => {
+type Action = SetTodosAction;
+
+const todosReducer = (todos: Todo[] = [], action: Action): Todo[] => {
   switch (action.type) {
     case 'todos/SET':
       return action.payload;
