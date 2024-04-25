@@ -4,7 +4,6 @@ import { useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { Todo } from '../../types/Todo';
 import { actions as currTodosActions } from '../../features/currentTodo';
-import cn from 'classnames';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -62,25 +61,32 @@ export const TodoList: React.FC = () => {
             <tr
               key={todo.id}
               data-cy="todo"
-              className={cn({
-                'has-background-info-light': todo === currentTodo,
-              })}
+              className={
+                todo === currentTodo
+                  ? ('has-background-info-light'
+                  ) : (
+                    ''
+                  )
+              }
             >
               <td className="is-vcentered">{todo.id}</td>
-              <td className="is-vcentered">
-                {todo.completed && (
+              {todo.completed ? (
+                <td className="is-vcentered">
                   <span className="icon" data-cy="iconCompleted">
                     <i className="fas fa-check" />
                   </span>
-                )}
-              </td>
-
+                </td>
+              ) : (
+                <td className="is-vcentered" />
+              )}
               <td className="is-vcentered is-expanded">
-                <p
-                  className={cn({
-                    'has-text-danger': !todo.completed,
-                    'has-text-success': todo.completed,
-                  })}
+                <p className={
+                  todo.completed ? (
+                    'has-text-success'
+                  ) : (
+                    'has-text-danger'
+                  )
+                 }
                 >
                   {todo.title}
                 </p>
@@ -94,11 +100,13 @@ export const TodoList: React.FC = () => {
                   onClick={() => handleChooseTodo(todo)}
                 >
                   <span className="icon">
-                    <i
-                      className={cn({
-                        'far fa-eye': !currentTodo || todo !== currentTodo,
-                        'far fa-eye-slash': todo === currentTodo,
-                      })}
+                    <i className={
+                      todo === currentTodo ? (
+                        'far fa-eye-slash'
+                      ) : (
+                        'far fa-eye'
+                      )
+                    }
                     />
                   </span>
                 </button>
