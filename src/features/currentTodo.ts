@@ -1,31 +1,51 @@
 import { Todo } from '../types/Todo';
 
-// we use string literal as a type to avoid mistype in future
+// Actions type
 type RemoveTodoAction = { type: 'currentTodo/REMOVE' };
 
-// payload is a typical name for an action data
 type SetTodoAction = {
   type: 'currentTodo/SET';
-  payload: Todo;
+  payload: Todo | null;
 };
 
-// Action creator return type protect us from a mistype
+// dispatch Functions
 const removeTodo = (): RemoveTodoAction => ({ type: 'currentTodo/REMOVE' });
 
-const setTodo = (todo: Todo): SetTodoAction => ({
+const setTodo = (currentTodo: Todo): SetTodoAction => ({
   type: 'currentTodo/SET',
-  payload: todo,
+  payload: currentTodo,
 });
 
 // These actions will be used in the application
 export const actions = { setTodo, removeTodo };
 
-type State = Todo | null;
+// Type for initial State
+type State = {
+  currentTodo: Todo | null;
+};
+
 type Action = SetTodoAction | RemoveTodoAction;
 
-const currentTodoReducer = (state: State = null, action: Action): State => {
+const initialState: State = {
+  currentTodo: null,
+};
+
+const currentTodoReducer = (
+  // eslint-disable-next-line @typescript-eslint/default-param-last
+  state: State = initialState,
+  action: Action,
+): State => {
   switch (action.type) {
-    // Implement all actions here
+    case 'currentTodo/SET':
+      return {
+        ...state,
+        currentTodo: action.payload,
+      };
+    case 'currentTodo/REMOVE':
+      return {
+        ...state,
+        currentTodo: null,
+      };
 
     default:
       return state;
