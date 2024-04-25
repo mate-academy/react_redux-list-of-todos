@@ -19,14 +19,14 @@ export const TodoList: React.FC = () => {
       .toLowerCase()
       .includes(currentFilter.query.toLowerCase());
 
-      switch (currentFilter.status) {
-        case 'completed':
-          return todo.completed && matchesQuery;
-        case 'active':
-          return !todo.completed && matchesQuery;
-        default:
-          return matchesQuery;
-      }
+    switch (currentFilter.status) {
+      case 'completed':
+        return todo.completed && matchesQuery;
+      case 'active':
+        return !todo.completed && matchesQuery;
+      default:
+        return matchesQuery;
+    }
   });
 
   return (
@@ -59,11 +59,7 @@ export const TodoList: React.FC = () => {
               key={todo.id}
               data-cy="todo"
               className={
-                todo === currentTodo
-                  ? ('has-background-info-light'
-                  ) : (
-                    ''
-                  )
+                todo === currentTodo ? 'has-background-info-light' : ''
               }
             >
               <td className="is-vcentered">{todo.id}</td>
@@ -77,13 +73,10 @@ export const TodoList: React.FC = () => {
                 <td className="is-vcentered" />
               )}
               <td className="is-vcentered is-expanded">
-                <p className={
-                  todo.completed ? (
-                    'has-text-success'
-                  ) : (
-                    'has-text-danger'
-                  )
-                 }
+                <p
+                  className={
+                    todo.completed ? 'has-text-success' : 'has-text-danger'
+                  }
                 >
                   {todo.title}
                 </p>
@@ -97,13 +90,10 @@ export const TodoList: React.FC = () => {
                   onClick={() => handleChooseTodo(todo)}
                 >
                   <span className="icon">
-                    <i className={
-                      todo === currentTodo ? (
-                        'far fa-eye-slash'
-                      ) : (
-                        'far fa-eye'
-                      )
-                    }
+                    <i
+                      className={
+                        todo === currentTodo ? 'far fa-eye-slash' : 'far fa-eye'
+                      }
                     />
                   </span>
                 </button>

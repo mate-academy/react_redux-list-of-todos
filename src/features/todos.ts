@@ -14,6 +14,7 @@ const setTodos = (todos: Todo[]): SetTodosAction => {
 
 type Action = SetTodosAction;
 
+// eslint-disable-next-line @typescript-eslint/default-param-last
 const todosReducer = (todos: Todo[] = [], action: Action): Todo[] => {
   switch (action.type) {
     case 'todos/SET':

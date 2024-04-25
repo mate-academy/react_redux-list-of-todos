@@ -40,7 +40,11 @@ const initialState: FilterState = {
 
 type Action = SetStatusAction | SetQueryAction | ClearQueryActions;
 
-const filterReducer = (status: FilterState = initialState, action: Action): FilterState => {
+const filterReducer = (
+  // eslint-disable-next-line @typescript-eslint/default-param-last
+  status: FilterState = initialState,
+  action: Action,
+): FilterState => {
   switch (action.type) {
     case 'filter/SET_STATUS':
       return {
@@ -61,7 +65,7 @@ const filterReducer = (status: FilterState = initialState, action: Action): Filt
       };
     default:
       return status;
-  };
+  }
 };
 
 export const actions = { setStatus, setQuery, clearQuery };
