@@ -20,9 +20,7 @@ export const TodoList: React.FC = () => {
       .then((response: TodoType[]) => {
         dispatch(todosActions.loadTodos(response));
       })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      .finally(() => setIsLoading(false));
   }, []);
 
   const filteredTodos = useMemo(() => {
