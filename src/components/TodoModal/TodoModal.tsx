@@ -5,7 +5,6 @@ import { useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../api';
 import { actions as currTodosActions } from '../../features/currentTodo';
-import cn from 'classnames';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | undefined>(undefined);
@@ -70,20 +69,16 @@ export const TodoModal: React.FC = () => {
 
             <p className="block" data-cy="modal-user">
               {/* For not completed */}
-              <strong
-                className={cn({
-                  'has-text-succes': currentTodo,
-                  'has-text-danger': !currentTodo,
-                })}
-              >
-                {currentTodo.completed ? 'Done' : 'Planned'}
-              </strong>
-              {currentTodo.completed && (
-                <>
-                  {' by '}
-                  <a href={`mailto:${user?.email}`}>{user?.name}</a>
-                </>
+              {currentTodo.completed ? (
+                <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>
               )}
+              {' by '}
+
+              <a href={`mailto:${user?.email}`}>
+                {user?.name}
+              </a>
             </p>
           </div>
         </div>
