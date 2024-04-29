@@ -1,7 +1,18 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { getTodos } from '../../api';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/todos';
 
 export const TodoList: React.FC = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getTodos().then(response => {
+      dispatch(actions.addTodos(response));
+    });
+  }, []);
+  const todos = useAppSelector(state => state.todos);
   return (
     <>
       <p className="notification is-warning">
@@ -25,7 +36,37 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          <tr data-cy="todo">
+          {todos.map(todo => (
+            <tr key={todo.id} data-cy="todo">
+              <td className="is-vcentered">{todo.id}</td>
+              <td className="is-vcentered">
+                {todo.completed && (
+                  <span className="icon" data-cy="iconCompleted">
+                    <i className="fas fa-check" />
+                  </span>
+                )}
+              </td>
+
+              <td className="is-vcentered is-expanded">
+                <p
+                  className={
+                    todo.completed ? 'has-text-success' : 'has-text-danger'
+                  }
+                >
+                  {todo.title}
+                </p>
+              </td>
+
+              <td className="has-text-right is-vcentered">
+                <button data-cy="selectButton" className="button" type="button">
+                  <span className="icon">
+                    <i className="far fa-eye" />
+                  </span>
+                </button>
+              </td>
+            </tr>
+          ))}
+          {/* <tr data-cy="todo">
             <td className="is-vcentered">1</td>
             <td className="is-vcentered"> </td>
 
@@ -216,7 +257,7 @@ export const TodoList: React.FC = () => {
                 </span>
               </button>
             </td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </>
