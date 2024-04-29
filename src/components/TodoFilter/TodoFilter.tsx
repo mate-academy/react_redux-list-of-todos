@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { actions } from '../../features/filter';
 import { useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,11 @@ export const TodoFilter: React.FC = () => {
     dispatch(actions.queryChange(e.target.value));
   };
 
-  const resetQuery = dispatch(actions.queryChange(''));
+  const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(actions.statusChange(e.target.value as Status));
+  };
+
+  const status = useAppSelector(state => state.filter.status);
 
   return (
     <form
@@ -21,7 +26,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            value={status}
+            onChange={handleStatusChange}
+            data-cy="statusSelect"
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -49,7 +58,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => resetQuery}
+              onClick={() => dispatch(actions.queryChange(''))}
             />
           </span>
         )}
