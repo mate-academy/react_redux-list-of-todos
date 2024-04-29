@@ -9,7 +9,7 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const [user, setUser] = useState<User>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
