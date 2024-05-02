@@ -5,10 +5,29 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
+import * as todosServices from './api';
+import { actions as todoActions } from './features/todos';
+import { actions as loadingActions } from './features/loading';
+
 export const App: React.FC = () => {
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const isLoading = useAppSelector(state => state.loading.todos);
+
+  const dispatch = useAppDispatch();
+
+  React.useEffect(() => {
+    dispatch(loadingActions.setTodosAction(true));
+
+    todosServices.getTodos().then(todos => {
+      dispatch(todoActions.setTodos(todos));
+      dispatch(loadingActions.setTodosAction(false));
+    });
+  }, [dispatch]);
+
   return (
     <>
       <div className="section">
@@ -20,15 +39,12 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">
-              <Loader />
-              <TodoList />
-            </div>
+            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {currentTodo && <TodoModal />}
     </>
   );
 };
