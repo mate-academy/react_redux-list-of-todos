@@ -1,6 +1,26 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as filterActions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const { status } = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
+
+  const handleStatusChange = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      dispatch(filterActions.setFilter(event.target.value as Status));
+    },
+    [dispatch],
+  );
+
+  const hangleQueryChange = useCallback(
+    (query: string) => {
+      dispatch(filterActions.setQuery(query));
+    },
+    [dispatch],
+  );
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +28,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleStatusChange}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +46,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={e => hangleQueryChange(e.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
