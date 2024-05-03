@@ -1,13 +1,18 @@
 import React from 'react';
 import { Loader } from '../Loader';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  return (
-    <div className="modal is-active" data-cy="modal">
-      <div className="modal-background" />
+  const dispatch = useAppDispatch();
+  const { currentTodo, loading } = useAppSelector(state => state.currentTodo);
 
-      <Loader />
+  let content = <></>;
 
+  if (loading && !currentTodo) {
+    content = <Loader />;
+  } else if (!loading && currentTodo) {
+    content = (
       <div className="modal-card">
         <header className="modal-card-head">
           <div
@@ -17,26 +22,43 @@ export const TodoModal: React.FC = () => {
             Todo #3
           </div>
 
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
+          <button
+            type="button"
+            className="delete"
+            aria-label="Close"
+            data-cy="modal-close"
+            onClick={() => dispatch(actions.removeTodo())}
+          />
         </header>
 
         <div className="modal-card-body">
           <p className="block" data-cy="modal-title">
-            fugiat veniam minus
+            {currentTodo?.title}
           </p>
 
           <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
+            {currentTodo?.completed ? (
+              <strong className="has-text-success">Done</strong>
+            ) : (
+              <strong className="has-text-danger">Planned</strong>
+            )}
 
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
             {' by '}
             <a href="mailto:Sincere@april.biz">Leanne Graham</a>
           </p>
         </div>
       </div>
-    </div>
+    );
+  }
+
+  return (
+    <>
+      {(loading || currentTodo) && (
+        <div className="modal is-active" data-cy="modal">
+          <div className="modal-background" />
+          {content}
+        </div>
+      )}
+    </>
   );
 };
