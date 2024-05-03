@@ -7,31 +7,27 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from './app/store';
-import { Todo } from './types/Todo';
 import { actions as todosActions } from './features/todos';
 import { getTodos } from './api';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const todos = useSelector<RootState, Todo[]>(state => state.todos);
-  const currentTodo = useSelector<RootState>(state => state.currentTodo);
-  const dispatch = useDispatch();
-
-  const add = (items: Todo[]) => dispatch(todosActions.add(items));
+  const todos = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoading(true);
 
     getTodos()
       .then(response => {
-        add(response);
+        dispatch(todosActions.load(response));
       })
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

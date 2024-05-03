@@ -1,25 +1,24 @@
 import { Todo } from '../types/Todo';
 
-type AddAction = {
-  type: 'todos/ADD';
+type LoadingTodos = {
+  type: 'todos/setTodos';
   payload: Todo[];
 };
 
-const add = (todos: Todo[]): AddAction => ({
-  type: 'todos/ADD',
+const load = (todos: Todo[]): LoadingTodos => ({
+  type: 'todos/setTodos',
   payload: todos,
 });
 
-export const actions = { add };
+export const actions = { load };
 
-type Action = AddAction;
-
-const todosReducer = (action: Action, todos = []) => {
+// eslint-disable-next-line
+const todosReducer = (state: Todo[] = [], action: LoadingTodos): Todo[] => {
   switch (action.type) {
-    case 'todos/ADD':
+    case 'todos/setTodos':
       return action.payload;
     default:
-      return todos;
+      return state;
   }
 };
 
