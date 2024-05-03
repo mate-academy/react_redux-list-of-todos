@@ -1,11 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const { status } = useAppSelector(state => state.filter);
+  const { status, query } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
+
+  const [currentQuery, setCurrentQuery] = useState(query);
 
   const handleStatusChange = useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -14,12 +16,18 @@ export const TodoFilter: React.FC = () => {
     [dispatch],
   );
 
-  const hangleQueryChange = useCallback(
-    (query: string) => {
-      dispatch(filterActions.setQuery(query));
+  const handleQueryChange = useCallback(
+    (newQuery: string) => {
+      setCurrentQuery(newQuery);
+      dispatch(filterActions.setQuery(newQuery));
     },
     [dispatch],
   );
+
+  const handleClearQuery = useCallback(() => {
+    setCurrentQuery(''); // Clear the currentQuery state
+    dispatch(filterActions.clearQuery()); // Clear the query in Redux store
+  }, [dispatch]);
 
   return (
     <form
@@ -46,7 +54,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          onChange={e => hangleQueryChange(e.target.value)}
+          onChange={e => handleQueryChange(e.target.value)}
+          value={currentQuery} // Set input value to currentQuery state
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -54,11 +63,14 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {currentQuery.length > 0 && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleClearQuery}
+            />
+          )}
         </span>
       </p>
     </form>

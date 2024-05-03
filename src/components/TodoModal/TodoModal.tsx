@@ -27,9 +27,9 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading && <Loader />}
-
-      {!isLoading && (
+      {isLoading ? (
+        <Loader />
+      ) : (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
@@ -54,13 +54,13 @@ export const TodoModal: React.FC = () => {
             </p>
 
             <p className="block" data-cy="modal-user">
-              {/* For not completed */}
-              <strong className="has-text-danger">Planned</strong>
-
-              {/* For completed */}
-              <strong className="has-text-success">Done</strong>
+              {currentTodo?.completed ? (
+                <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>
+              )}
               {' by '}
-              <a href={`mailto:${user?.email}`}>{user?.email}</a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>
