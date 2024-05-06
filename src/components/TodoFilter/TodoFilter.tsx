@@ -27,7 +27,7 @@ export const TodoFilter: React.FC = () => {
           <select
             value={selectedFilter}
             data-cy="statusSelect"
-            onChange={e => handleFilterChange(e)}
+            onChange={handleFilterChange}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -43,7 +43,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={e => handleQuery(e)}
+          onChange={handleQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
