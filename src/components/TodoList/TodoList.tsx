@@ -12,7 +12,7 @@ type Props = {
 
 export const TodoList: React.FC<Props> = ({ filteredTodos }) => {
   const dispatch = useDispatch();
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo)
 
   const handleClickTodo = (todo: Todo) => {
     dispatch(currentTodoAction.setTodo(todo));
