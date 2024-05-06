@@ -17,12 +17,13 @@
     "react-scripts": "^5.0.1",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "types": "^0.1.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@mate-academy/eslint-config-react-typescript": "latest",
-    "@mate-academy/scripts": "^1.7.9",
+    "@mate-academy/scripts": "^1.8.1",
     "@mate-academy/students-ts-config": "latest",
     "@mate-academy/stylelint-config": "latest",
     "@types/node": "^16.18.80",
