@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/default-param-last */
 import { Todo } from '../types/Todo';
 
 // we use string literal as a type to avoid mistype in future
@@ -25,7 +26,11 @@ type Action = SetTodoAction | RemoveTodoAction;
 
 const currentTodoReducer = (state: State = null, action: Action): State => {
   switch (action.type) {
-    // Implement all actions here
+    case 'currentTodo/SET':
+      return action.payload;
+
+    case 'currentTodo/REMOVE':
+      return null;
 
     default:
       return state;
