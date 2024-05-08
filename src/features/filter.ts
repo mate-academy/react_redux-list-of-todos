@@ -32,6 +32,7 @@ const initialState = {
 
 type Action = SetFilter | SetQuery;
 
+/* eslint-disable-next-line */
 const filterReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case 'filter/setQuery':

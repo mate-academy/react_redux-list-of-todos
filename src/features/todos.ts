@@ -15,6 +15,7 @@ export const actions = { setTodos };
 type Action = SetTodo;
 type State = Todo[];
 
+/* eslint-disable-next-line */
 const todosReducer = (todos: State = [], action: Action) => {
   switch (action.type) {
     case 'todos/SET':
