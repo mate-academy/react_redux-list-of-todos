@@ -22,6 +22,7 @@ export const App: React.FC = () => {
         dispatch({ type: 'todos/ADDALL', payload: response });
       })
       .finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
