@@ -1,16 +1,21 @@
 import { Status } from '../types/Status';
 
-type ChangeFiltersAction = { type: 'filters/CHANGE'; payload: Status };
+export enum FilterActionTypes {
+  change = 'filters/CHANGE',
+  querry = 'filters/QUERY',
+}
 
-type QueryFilterAction = { type: 'filters/QUERY'; payload: string };
+type ChangeFiltersAction = { type: FilterActionTypes.change; payload: Status };
+
+type QueryFilterAction = { type: FilterActionTypes.querry; payload: string };
 
 const changeFilters = (status: Status): ChangeFiltersAction => ({
-  type: 'filters/CHANGE',
+  type: FilterActionTypes.change,
   payload: status,
 });
 
 const queryFilter = (query: string): QueryFilterAction => ({
-  type: 'filters/QUERY',
+  type: FilterActionTypes.querry,
   payload: query,
 });
 
@@ -34,14 +39,14 @@ type Action = ChangeFiltersAction | QueryFilterAction;
 // eslint-disable-next-line @typescript-eslint/default-param-last
 const filterReducer = (state: State = initialState, action: Action) => {
   switch (action.type) {
-    case 'filters/CHANGE': {
+    case FilterActionTypes.change: {
       return {
         ...state,
         status: action.payload,
       };
     }
 
-    case 'filters/QUERY': {
+    case FilterActionTypes.querry: {
       return {
         ...state,
         query: action.payload,

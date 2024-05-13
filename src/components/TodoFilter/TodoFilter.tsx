@@ -1,10 +1,22 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
+import { FilterActionTypes } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query } = useAppSelector(state => state.filter);
+
+  const handleQuerryInput = (querry: string) => {
+    dispatch({ type: FilterActionTypes.querry, payload: querry });
+  };
+
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch({
+      type: FilterActionTypes.change,
+      payload: event.target.value as Status,
+    });
+  };
 
   return (
     <form
@@ -13,15 +25,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select
-            data-cy="statusSelect"
-            onChange={event =>
-              dispatch({
-                type: 'filters/CHANGE',
-                payload: event.target.value as Status,
-              })
-            }
-          >
+          <select data-cy="statusSelect" onChange={handleFilterChange}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -36,9 +40,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           value={query}
           placeholder="Search..."
-          onChange={event =>
-            dispatch({ type: 'filters/QUERY', payload: event.target.value })
-          }
+          onChange={event => handleQuerryInput(event.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -51,7 +53,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch({ type: 'filters/QUERY', payload: '' })}
+              onClick={() => handleQuerryInput('')}
             />
           </span>
         )}

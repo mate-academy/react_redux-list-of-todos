@@ -2,6 +2,8 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getSortedTodos } from '../../helpers/getSortedTodos';
+import { Todo } from '../../types/Todo';
+import { TodoActionTypes } from '../../types/Actions';
 
 type TodoListProps = {
   loading: boolean;
@@ -14,10 +16,15 @@ export const TodoList: React.FC<TodoListProps> = ({ loading }) => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const filteredTodos = getSortedTodos(todos, { status, query });
+  const thereIsNothingToShow = !loading && !todos.length;
+
+  const handleSetNewTodo = (todo: Todo) => {
+    dispatch({ type: TodoActionTypes.set, payload: todo });
+  };
 
   return (
     <>
-      {!loading && !todos.length && (
+      {thereIsNothingToShow && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -72,9 +79,7 @@ export const TodoList: React.FC<TodoListProps> = ({ loading }) => {
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() =>
-                    dispatch({ type: 'currentTodo/SET', payload: todo })
-                  }
+                  onClick={() => handleSetNewTodo(todo)}
                 >
                   <span className="icon">
                     <i
@@ -85,39 +90,6 @@ export const TodoList: React.FC<TodoListProps> = ({ loading }) => {
               </td>
             </tr>
           ))}
-          {/*           <tr data-cy="todo">
-            <td className="is-vcentered">1</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">delectus aut autem</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo" className="has-background-info-light">
-            <td className="is-vcentered">3</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">fugiat veniam minus</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye-slash" />
-                </span>
-              </button>
-            </td>
-          </tr> */}
         </tbody>
       </table>
     </>

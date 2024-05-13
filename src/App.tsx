@@ -9,17 +9,23 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { useAppDispatch } from './app/hooks';
+import { Todo } from './types/Todo';
+import { TodoActionTypes } from './types/Actions';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
 
+  const savaAllTodo = (data: Todo[]) => {
+    dispatch({ type: TodoActionTypes.addAll, payload: data });
+  };
+
   useEffect(() => {
     setLoading(true);
     getTodos()
       .then(response => {
-        dispatch({ type: 'todos/ADDALL', payload: response });
+        savaAllTodo(response);
       })
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
