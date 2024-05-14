@@ -10,7 +10,7 @@ import { Loader } from './components/Loader';
 import { getTodos } from './api';
 import { useAppDispatch } from './app/hooks';
 import { Todo } from './types/Todo';
-import { TodoActionTypes } from './types/Actions';
+import { actions as todosActions } from './features/todos';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +18,7 @@ export const App: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const savaAllTodo = (data: Todo[]) => {
-    dispatch({ type: TodoActionTypes.addAll, payload: data });
+    dispatch(todosActions.addTodos(data));
   };
 
   useEffect(() => {

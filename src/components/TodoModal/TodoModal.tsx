@@ -3,7 +3,7 @@ import { Loader } from '../Loader';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
-import { TodoActionTypes } from '../../types/Actions';
+import { actions as currentTodoAction } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -21,7 +21,7 @@ export const TodoModal: React.FC = () => {
   }, [currentTodo]);
 
   const handleCloseModal = () => {
-    dispatch({ type: TodoActionTypes.remove });
+    dispatch(currentTodoAction.removeTodo());
   };
 
   return (

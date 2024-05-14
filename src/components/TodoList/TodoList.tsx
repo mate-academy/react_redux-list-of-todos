@@ -3,7 +3,7 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getSortedTodos } from '../../helpers/getSortedTodos';
 import { Todo } from '../../types/Todo';
-import { TodoActionTypes } from '../../types/Actions';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
 type TodoListProps = {
   loading: boolean;
@@ -19,7 +19,7 @@ export const TodoList: React.FC<TodoListProps> = ({ loading }) => {
   const thereIsNothingToShow = !loading && !todos.length;
 
   const handleSetNewTodo = (todo: Todo) => {
-    dispatch({ type: TodoActionTypes.set, payload: todo });
+    dispatch(currentTodoActions.setTodo(todo));
   };
 
   return (

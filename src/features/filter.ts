@@ -1,9 +1,5 @@
+import { FilterActionTypes } from '../types/Actions';
 import { Status } from '../types/Status';
-
-export enum FilterActionTypes {
-  change = 'filters/CHANGE',
-  querry = 'filters/QUERY',
-}
 
 type ChangeFiltersAction = { type: FilterActionTypes.change; payload: Status };
 

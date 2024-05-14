@@ -1,21 +1,18 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
-import { FilterActionTypes } from '../../features/filter';
+import { actions as filtersActions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query } = useAppSelector(state => state.filter);
 
   const handleQuerryInput = (querry: string) => {
-    dispatch({ type: FilterActionTypes.querry, payload: querry });
+    dispatch(filtersActions.queryFilter(querry));
   };
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch({
-      type: FilterActionTypes.change,
-      payload: event.target.value as Status,
-    });
+    dispatch(filtersActions.changeFilters(event.target.value as Status));
   };
 
   return (
