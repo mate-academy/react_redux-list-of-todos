@@ -5,14 +5,13 @@ import React from 'react';
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const filter = useAppSelector(state => state.filter);
-  const { query } = useAppSelector(state => state.filter);
 
   const onSelectChange = (status: string) =>
     dispatch(actions.setFilter({ ...filter, status }));
 
   // eslint-disable-next-line @typescript-eslint/no-shadow
-  const onQueryChange = (query: string) =>
-    dispatch(actions.setFilter({ ...filter, query }));
+  const onQueryChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    dispatch(actions.setFilter({ ...filter, query: event.target.value }));
 
   return (
     <form className="field has-addons">
@@ -38,15 +37,13 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={filter.query}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            onQueryChange(event.target.value);
-          }}
+          onChange={onQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {query.length > 0 && (
+        {filter.query.length > 0 && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
