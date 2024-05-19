@@ -28,7 +28,7 @@ export const TodoModal: React.FC = () => {
 
       {isLoading && <Loader />}
 
-      {!isLoading && (
+      {!isLoading && user && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
