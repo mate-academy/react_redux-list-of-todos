@@ -14,7 +14,7 @@ export const TodoModal: React.FC = () => {
 
   useEffect(() => {
     getUser(currentTodo.userId).then(user => setCurrentUser(user));
-  }, []);
+  }, [currentTodo.userId]);
 
   const handleCloseTodo = () => {
     dispatch(currentTodoActions.removeTodo());

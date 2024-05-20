@@ -46,7 +46,7 @@ const filterReducer = (
       };
 
     default:
-      return initialState;
+      return state;
   }
 };
 

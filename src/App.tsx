@@ -5,12 +5,12 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
-import { TodoModal } from './components/TodoModal';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { getTodos } from './api';
 import { actions as todosActions } from './features/todos';
 import { Loader } from './components/Loader';
 import { Todo } from './types/Todo';
+import { TodoModal } from './components/TodoModal';
 
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -50,6 +50,7 @@ export const App: React.FC = () => {
           </div>
         </div>
       </div>
+
       {currentTodo && <TodoModal />}
     </>
   );

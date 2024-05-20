@@ -12,13 +12,9 @@ export const TodoList: React.FC = () => {
   const query = useAppSelector(state => state.filter.query);
   const dispatch = useAppDispatch();
 
-  const removeCurrentTodo = () => dispatch(currentTodoActions.removeTodo());
-  const setCurrentTodo = (todoToSet: Todo) =>
-    dispatch(currentTodoActions.setTodo(todoToSet));
-
   const handleOpenModal = (todoToOpen: Todo) => {
-    removeCurrentTodo();
-    setCurrentTodo(todoToOpen);
+    dispatch(currentTodoActions.setTodo(todoToOpen));
+    console.log(status);
   };
 
   const todosVisible = () => {
