@@ -26,8 +26,12 @@ const initialState: FilterState = {
   query: '',
   status: 'all',
 };
-/* eslint-disable-next-line*/
-const filterReducer = (state: FilterState = initialState, action: Action): FilterState => {
+
+const filterReducer = (
+  /* eslint-disable-next-line*/
+  state: FilterState = initialState,
+  action: Action,
+): FilterState => {
   switch (action.type) {
     case 'filter/SET_STATUS':
       return {

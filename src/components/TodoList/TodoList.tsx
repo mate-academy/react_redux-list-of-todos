@@ -21,10 +21,11 @@ export const TodoList: React.FC = () => {
     setCurrentTodo(todoToOpen);
   };
 
-
   const todosVisible = () => {
     return todos.filter(todo => {
-      const matchesQuery = todo.title.toLowerCase().includes(query.toLowerCase());
+      const matchesQuery = todo.title
+        .toLowerCase()
+        .includes(query.toLowerCase());
 
       const matchesStatus = (() => {
         switch (status) {
@@ -44,7 +45,7 @@ export const TodoList: React.FC = () => {
 
       return matchesQuery && matchesStatus;
     });
-  }
+  };
 
   const visibleTodos = todosVisible();
 
@@ -58,63 +59,63 @@ export const TodoList: React.FC = () => {
 
       {visibleTodos.length > 0 && (
         <table className="table is-narrow is-fullwidth">
-        <thead>
-          <tr>
-            <th>#</th>
+          <thead>
+            <tr>
+              <th>#</th>
 
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
+              <th>
+                <span className="icon">
+                  <i className="fas fa-check" />
+                </span>
+              </th>
 
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {visibleTodos.map(todo => (
-            <tr data-cy="todo" key={todo.id}>
-              <td className="is-vcentered">{todo.id}</td>
-              <td className="is-vcentered">
-                {todo.completed && (
-                  <span className="icon" data-cy="iconCompleted">
-                    <i className="fas fa-check" />
-                  </span>
-                )}
-              </td>
-
-              <td className="is-vcentered is-expanded">
-                <p
-                  className={cn(
-                    todo.completed ? 'has-text-success' : 'has-text-danger',
-                  )}
-                >
-                  {todo.title}
-                </p>
-              </td>
-
-              <td className="has-text-right is-vcentered">
-                <button
-                  data-cy="selectButton"
-                  className="button"
-                  type="button"
-                  onClick={() => handleOpenModal(todo)}
-                >
-                  <span className="icon">
-                    {currentTodo === todo ? (
-                      <i className="far fa-eye-slash" />
-                    ) : (
-                      <i className="far fa-eye" />
-                    )}
-                  </span>
-                </button>
-              </td>
+              <th>Title</th>
+              <th> </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {visibleTodos.map(todo => (
+              <tr data-cy="todo" key={todo.id}>
+                <td className="is-vcentered">{todo.id}</td>
+                <td className="is-vcentered">
+                  {todo.completed && (
+                    <span className="icon" data-cy="iconCompleted">
+                      <i className="fas fa-check" />
+                    </span>
+                  )}
+                </td>
+
+                <td className="is-vcentered is-expanded">
+                  <p
+                    className={cn(
+                      todo.completed ? 'has-text-success' : 'has-text-danger',
+                    )}
+                  >
+                    {todo.title}
+                  </p>
+                </td>
+
+                <td className="has-text-right is-vcentered">
+                  <button
+                    data-cy="selectButton"
+                    className="button"
+                    type="button"
+                    onClick={() => handleOpenModal(todo)}
+                  >
+                    <span className="icon">
+                      {currentTodo === todo ? (
+                        <i className="far fa-eye-slash" />
+                      ) : (
+                        <i className="far fa-eye" />
+                      )}
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </>
   );
