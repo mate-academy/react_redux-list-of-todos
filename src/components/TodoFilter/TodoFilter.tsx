@@ -1,6 +1,18 @@
 import React from 'react';
+import { actions } from './../../features/filter';
+import { useDispatch } from 'react-redux';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const filterSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(actions.statusFilter(event.target.value));
+  };
+
+  const filterInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(actions.queryFilter(event.target.value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +20,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select onChange={filterSelect} data-cy="statusSelect">
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -18,6 +30,7 @@ export const TodoFilter: React.FC = () => {
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
+          onChange={filterInputValue}
           data-cy="searchInput"
           type="text"
           className="input"
