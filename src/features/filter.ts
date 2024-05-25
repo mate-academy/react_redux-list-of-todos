@@ -35,7 +35,7 @@ const statusFilter = (value: string): StatusAction => ({
 });
 
 type Action = QueryAction | StatusAction;
-
+// eslint-disable-next-line
 const filterReducer = (state = initialState, action: Action): StateType => {
   switch (action.type) {
     case 'filterTodo/STATUS':

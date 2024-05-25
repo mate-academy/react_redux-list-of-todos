@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -18,8 +18,7 @@ interface FiltersType {
 }
 
 export const App: React.FC = () => {
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
-
+  const selected = useAppSelector<Todo | null>(state => state.selected);
   const todos = useAppSelector<Todo[]>(state => state.todos);
   const filters = useAppSelector<FiltersType>(state => state.filter);
 
@@ -64,19 +63,13 @@ export const App: React.FC = () => {
             <div className="block">
               {todos.length === 0 && <Loader />}
 
-              <TodoList
-                todos={filteredTodos()}
-                chousenTodo={selectedTodo}
-                chooseTodo={setSelectedTodo}
-              />
+              <TodoList todos={filteredTodos()} />
             </div>
           </div>
         </div>
       </div>
 
-      {selectedTodo && (
-        <TodoModal chousenTodo={selectedTodo} chooseTodo={setSelectedTodo} />
-      )}
+      {selected && <TodoModal />}
     </>
   );
 };

@@ -1,16 +1,16 @@
 import { Todo } from '../types/Todo';
 
-type FetchTodosAction = {
+type SetTodosAction = {
   type: 'set';
   payload: Todo[];
 };
 
-const setTodos = (value: Todo[]): FetchTodosAction => ({
+const setTodos = (value: Todo[]): SetTodosAction => ({
   type: 'set',
   payload: value,
 });
-
-const todosReducer = (todos = [], action: FetchTodosAction): Todo[] => {
+// eslint-disable-next-line
+const todosReducer = (todos = [], action: SetTodosAction): Todo[] => {
   switch (action.type) {
     case 'set':
       return action.payload;

@@ -1,18 +1,22 @@
 /* eslint-disable */
 import React from 'react';
 import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { action } from '../../features/selectedTodo';
 
 interface ListTodosType {
   todos: Todo[];
-  chousenTodo: Todo | null;
-  chooseTodo(selectedTodo: Todo | null): void;
 }
 
-export const TodoList: React.FC<ListTodosType> = ({
-  todos,
-  chousenTodo,
-  chooseTodo,
-}) => {
+export const TodoList: React.FC<ListTodosType> = ({ todos }) => {
+  const selected = useAppSelector<Todo | null>(state => state.selected);
+
+  const dispatch = useAppDispatch();
+
+  const handleModalOpen = (currentTodo: Todo) => {
+    dispatch(action.setSelected(currentTodo));
+  };
+
   return (
     <>
       {todos.length === 0 && (
@@ -62,7 +66,7 @@ export const TodoList: React.FC<ListTodosType> = ({
 
                 <td className="has-text-right is-vcentered">
                   <button
-                    onClick={() => chooseTodo(todo)}
+                    onClick={() => handleModalOpen(todo)}
                     data-cy="selectButton"
                     className="button"
                     type="button"
@@ -70,7 +74,7 @@ export const TodoList: React.FC<ListTodosType> = ({
                     <span className="icon">
                       <i
                         className={
-                          todo.id === chousenTodo?.id
+                          todo.id === selected?.id
                             ? 'far fa-eye-slash'
                             : 'far fa-eye'
                         }

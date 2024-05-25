@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 
-import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Todo } from '../../types/Todo';
+import { action } from '../../features/selectedTodo';
 
-interface PropsTodo {
-  chousenTodo: Todo | null;
-  chooseTodo(selectedTodo: Todo | null): void;
-}
-
-export const TodoModal: React.FC<PropsTodo> = ({ chousenTodo, chooseTodo }) => {
+export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User>();
   const [isClicked, setIsClicked] = useState(false);
+
+  const selected = useAppSelector<Todo | null>(state => state.selected);
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setTimeout(() => {
@@ -21,7 +22,7 @@ export const TodoModal: React.FC<PropsTodo> = ({ chousenTodo, chooseTodo }) => {
   }, [setIsClicked]);
 
   const handleModaleClose = () => {
-    chooseTodo(null);
+    dispatch(action.setSelected(null));
     setIsClicked(false);
   };
 
@@ -30,10 +31,10 @@ export const TodoModal: React.FC<PropsTodo> = ({ chousenTodo, chooseTodo }) => {
   };
 
   useEffect(() => {
-    if (chousenTodo) {
-      getUser(chousenTodo.userId).then(setUser);
+    if (selected) {
+      getUser(selected?.userId).then(setUser);
     }
-  }, [chousenTodo]);
+  }, [selected]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -48,7 +49,7 @@ export const TodoModal: React.FC<PropsTodo> = ({ chousenTodo, chooseTodo }) => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${chousenTodo?.id}`}
+              {`Todo #${selected?.id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -62,19 +63,17 @@ export const TodoModal: React.FC<PropsTodo> = ({ chousenTodo, chooseTodo }) => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {`${chousenTodo?.title}`}
+              {`${selected?.title}`}
             </p>
 
             <p className="block" data-cy="modal-user">
               {/* <strong className="has-text-success">Done</strong> */}
               <strong
                 className={
-                  chousenTodo?.completed
-                    ? 'has-text-success'
-                    : 'has-text-danger'
+                  selected?.completed ? 'has-text-success' : 'has-text-danger'
                 }
               >
-                {chousenTodo?.completed ? 'Done' : 'Planned'}
+                {selected?.completed ? 'Done' : 'Planned'}
               </strong>
 
               {' by '}
