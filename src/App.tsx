@@ -63,7 +63,7 @@ export const App: React.FC = () => {
             <div className="block">
               {todos.length === 0 && <Loader />}
 
-              <TodoList todos={filteredTodos()} />
+              <TodoList filteredTodos={filteredTodos()} />
             </div>
           </div>
         </div>

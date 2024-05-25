@@ -5,11 +5,12 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { action } from '../../features/selectedTodo';
 
 interface ListTodosType {
-  todos: Todo[];
+  filteredTodos: Todo[];
 }
 
-export const TodoList: React.FC<ListTodosType> = ({ todos }) => {
+export const TodoList: React.FC<ListTodosType> = ({ filteredTodos }) => {
   const selected = useAppSelector<Todo | null>(state => state.selected);
+  const todos = useAppSelector<Todo[]>(state => state.todos);
 
   const dispatch = useAppDispatch();
 
@@ -19,13 +20,13 @@ export const TodoList: React.FC<ListTodosType> = ({ todos }) => {
 
   return (
     <>
-      {todos.length === 0 && (
+      {filteredTodos.length === 0 && todos.length !== 0 && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
-      {todos.length > 0 && (
+      {filteredTodos.length > 0 && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -43,7 +44,7 @@ export const TodoList: React.FC<ListTodosType> = ({ todos }) => {
           </thead>
 
           <tbody>
-            {todos.map(todo => (
+            {filteredTodos.map(todo => (
               <tr key={todo.id} data-cy="todo">
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">

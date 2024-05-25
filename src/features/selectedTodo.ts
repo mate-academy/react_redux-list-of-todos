@@ -1,12 +1,12 @@
 import { Todo } from '../types/Todo';
 
 type SetSelectedTodo = {
-  type: 'set';
+  type: 'setSelected';
   payload: Todo | null;
 };
 
 const setSelected = (value: Todo | null): SetSelectedTodo => ({
-  type: 'set',
+  type: 'setSelected',
   payload: value,
 });
 
@@ -16,7 +16,7 @@ const setSelectedReducer = (
   action: SetSelectedTodo,
 ): Todo | null => {
   switch (action.type) {
-    case 'set':
+    case 'setSelected':
       return action.payload;
     default:
       return todo;
