@@ -7,11 +7,10 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from './app/store';
 import { Todo } from './types/Todo';
 import { actions } from './features/todos';
 import { getTodos } from './api';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 interface FiltersType {
   query: string;
@@ -21,17 +20,34 @@ interface FiltersType {
 export const App: React.FC = () => {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
-  const todos = useSelector<RootState, Todo[]>(state => state.todos);
-  const filters = useSelector<RootState, FiltersType>(state => state.filter);
+  const todos = useAppSelector<Todo[]>(state => state.todos);
+  const filters = useAppSelector<FiltersType>(state => state.filter);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     getTodos().then(elem => dispatch(actions.setTodos(elem)));
   }, []);
 
+  const inputQuery = filters.query.toLowerCase().trim();
+
   function filteredTodos() {
-    return todos.filter(todo => todo.title.includes(filters.query));
+    switch (filters.status) {
+      case 'active':
+        return todos.filter(
+          todo =>
+            todo.title.toLowerCase().includes(inputQuery) && !todo.completed,
+        );
+      case 'completed':
+        return todos.filter(
+          todo =>
+            todo.title.toLowerCase().includes(inputQuery) && todo.completed,
+        );
+      default:
+        return todos.filter(todo =>
+          todo.title.toLowerCase().includes(inputQuery),
+        );
+    }
   }
 
   return (
@@ -46,7 +62,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {false && <Loader />}
+              {todos.length === 0 && <Loader />}
 
               <TodoList
                 todos={filteredTodos()}
@@ -58,7 +74,9 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {false && <TodoModal />}
+      {selectedTodo && (
+        <TodoModal chousenTodo={selectedTodo} chooseTodo={setSelectedTodo} />
+      )}
     </>
   );
 };

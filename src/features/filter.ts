@@ -49,7 +49,10 @@ const filterReducer = (state = initialState, action: Action): StateType => {
         query: action.payload,
       };
     default:
-      return state;
+      return {
+        query: '',
+        status: 'all',
+      };
   }
 };
 
