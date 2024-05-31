@@ -9,8 +9,6 @@ const setTodos = (todos: Todo[]): SetTodoAction => ({
   payload: todos,
 });
 
-export const actions = { setTodos };
-
 const initialState: Todo[] = [];
 
 /* eslint-disable @typescript-eslint/default-param-last */
@@ -23,5 +21,7 @@ const todosReducer = (state = initialState, action: Action): Todo[] => {
       return state;
   }
 };
+
+export const actions = { setTodos };
 
 export default todosReducer;

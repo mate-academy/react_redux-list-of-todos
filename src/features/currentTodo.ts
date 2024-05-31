@@ -17,9 +17,6 @@ const setTodo = (todo: Todo): SetTodoAction => ({
   payload: todo,
 });
 
-// These actions will be used in the application
-export const actions = { setTodo, removeTodo };
-
 type State = Todo | null;
 type Action = SetTodoAction | RemoveTodoAction;
 
@@ -36,5 +33,7 @@ const currentTodoReducer = (state: State = null, action: Action): State => {
       return state;
   }
 };
+
+export const actions = { setTodo, removeTodo };
 
 export default currentTodoReducer;

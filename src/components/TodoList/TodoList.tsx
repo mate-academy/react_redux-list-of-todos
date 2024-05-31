@@ -5,9 +5,23 @@ import classNames from 'classnames';
 import { actions as todoActions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const todos = useAppSelector((state) => state.todos);
+  const todos = useAppSelector(state => state.todos);
+  const filter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
+
+  const visibleTodos = todos.filter(todo => {
+    const matchesQuery = todo.title
+      .toLocaleLowerCase()
+      .includes(filter.query.trim().toLocaleLowerCase());
+
+    const matchesStatus =
+      filter.status === 'all' ||
+      (filter.status === 'completed' && todo.completed) ||
+      (filter.status === 'active' && !todo.completed);
+
+    return matchesStatus && matchesQuery;
+  });
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -25,17 +39,14 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-
-        {todos.map(todo => {
+        {visibleTodos.map(todo => {
           const { id, title, completed } = todo;
           const selected = currentTodo?.id === id;
 
           return (
             <tr
               data-cy="todo"
-              className={classNames(
-                { 'has-background-info-light': selected },
-              )}
+              className={classNames({ 'has-background-info-light': selected })}
               key={id}
             >
               <td className="is-vcentered">{id}</td>
@@ -62,10 +73,12 @@ export const TodoList: React.FC = () => {
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={( ) => dispatch(todoActions.setTodo(todo))}
+                  onClick={() => dispatch(todoActions.setTodo(todo))}
                 >
                   <span className="icon">
-                    <i className={`far ${selected ? 'fa-eye-slash' : 'fa-eye'}`} />
+                    <i
+                      className={`far ${selected ? 'fa-eye-slash' : 'fa-eye'}`}
+                    />
                   </span>
                 </button>
               </td>
