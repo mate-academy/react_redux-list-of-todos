@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions } from '../../features/filter';
+import { actions as filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
@@ -8,11 +8,11 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(actions.setStatus(e.target.value as Status));
+    dispatch(filterActions.setStatus(e.target.value as Status));
   };
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(actions.setQuery(e.target.value));
+    dispatch(filterActions.setQuery(e.target.value));
   };
 
   return (
@@ -49,7 +49,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(actions.setQuery(''))}
+              onClick={() => dispatch(filterActions.setQuery(''))}
             />
           </span>
         )}
