@@ -21,7 +21,7 @@ export const App: React.FC = () => {
     dispatch(todoActions.setTodos(setNewTodo));
 
   useEffect(() => {
-    getTodos().then(todosFromServer => setTodos(todosFromServer));
+    getTodos().then(setTodos);
   });
 
   return (

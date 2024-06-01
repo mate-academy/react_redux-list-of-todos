@@ -23,6 +23,8 @@ export const TodoFilter: React.FC = () => {
     setQuery('');
   };
 
+  const statuses = [StatusType.All, StatusType.Active, StatusType.Completed];
+
   return (
     <form
       className="field has-addons"
@@ -35,9 +37,11 @@ export const TodoFilter: React.FC = () => {
             onChange={handleSelect}
             value={filter.status}
           >
-            <option value={StatusType.All}>{StatusType.All}</option>
-            <option value={StatusType.Active}>{StatusType.Active}</option>
-            <option value={StatusType.Completed}>{StatusType.Completed}</option>
+            {statuses.map(statusToSet => (
+              <option key={statusToSet} value={statusToSet}>
+                {statusToSet}
+              </option>
+            ))}
           </select>
         </span>
       </p>
