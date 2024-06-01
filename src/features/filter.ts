@@ -1,4 +1,5 @@
 import { Status } from '../types/Status';
+import { Status as StatusBy } from '../types/StatusEnum';
 
 type SetQueryActions = { type: 'filter/SET_QUERY'; payload: string };
 type SetStatusAction = { type: 'filter/SET_STATUS'; payload: Status };
@@ -24,7 +25,7 @@ type State = {
 
 const initialState: State = {
   query: '',
-  status: 'all',
+  status: StatusBy.All,
 };
 
 // eslint-disable-next-line @typescript-eslint/default-param-last

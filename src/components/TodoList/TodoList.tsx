@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { actions as currentTodoActions} from '../../features/currentTodo';
+import { Status } from '../../types/StatusEnum';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -20,11 +21,14 @@ export const TodoList: React.FC = () => {
     }
 
     switch (filter.status) {
-      case 'active':
+      case Status.Active :
         return !todo.completed;
 
-      case 'completed':
+      case Status.Completed:
         return todo.completed;
+
+      case Status.All:
+        return todo;
 
       default:
         return true;
@@ -63,7 +67,13 @@ export const TodoList: React.FC = () => {
               const isCurrentTodo = currentTodo?.id === todo.id;
 
               return (
-                <tr data-cy="todo" key={todo.id} className={classNames(isCurrentTodo ? 'has-background-info-light' : '')}>
+                <tr
+                  data-cy="todo"
+                  key={todo.id}
+                  className={classNames({
+                    'has-background-info-light': isCurrentTodo
+                  })}
+                >
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {todo.completed && (
