@@ -7,8 +7,12 @@ import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
+  const { todo } = useAppSelector(state => state.currentTodo);
+  const { todos } = useAppSelector(state => state.todos);
+
   return (
     <>
       <div className="section">
@@ -20,15 +24,12 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">
-              <Loader />
-              <TodoList />
-            </div>
+            <div className="block">{!todos ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {todo && <TodoModal />}
     </>
   );
 };
