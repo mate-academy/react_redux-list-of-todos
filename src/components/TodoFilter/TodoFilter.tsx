@@ -1,14 +1,19 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as actionsFilter } from '../../features/filter';
+import { StatusEnum } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query } = useAppSelector(state => state.filter);
 
-  const handleStatusSelect = (s: string) => {
-    if (s === 'all' || s === 'completed' || s === 'active') {
-      dispatch(actionsFilter.status(s));
+  const handleStatusSelect = (event: string) => {
+    if (
+      event === StatusEnum.all ||
+      event === StatusEnum.active ||
+      event === StatusEnum.completed
+    ) {
+      dispatch(actionsFilter.status(event));
     }
   };
 
