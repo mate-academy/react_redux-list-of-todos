@@ -3,15 +3,17 @@ import { Loader } from '../Loader';
 // import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as actionsCurrentTodo } from '../../features/currentTodo';
+import { User } from '../../types/User';
+import { getUser } from '../../api';
 
 export const TodoModal: React.FC = () => {
   const { todo } = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     setTimeout(() => {
-      setLoading(false);
+      getUser(todo!.userId).then(u => setUser(u));
     }, 300);
   }, []);
 
@@ -19,7 +21,7 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {loading ? (
+      {!user ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -31,7 +33,6 @@ export const TodoModal: React.FC = () => {
               Todo #{todo?.id}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               onClick={() => dispatch(actionsCurrentTodo.removeTodo())}
               type="button"
@@ -54,7 +55,7 @@ export const TodoModal: React.FC = () => {
 
               {' by '}
 
-              <a href={`mailto:${1}`}>{2}</a>
+              <a href={`mailto:${user.email}`}>{user.name}</a>
             </p>
           </div>
         </div>

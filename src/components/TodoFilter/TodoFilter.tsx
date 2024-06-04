@@ -48,7 +48,7 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {query.length ? (
+        {query && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             <button
               onClick={handleClearButton}
@@ -57,8 +57,6 @@ export const TodoFilter: React.FC = () => {
               className="delete"
             />
           </span>
-        ) : (
-          ''
         )}
       </p>
     </form>
