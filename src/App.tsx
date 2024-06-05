@@ -12,6 +12,7 @@ import { Loader } from './components/Loader';
 
 import { useAppSelector } from './app/hooks';
 import { setTodos } from './features/todos';
+import { ByFilter } from './types/ByFilter';
 
 export const App: FC = () => {
   const [errorMessage, setErrorMessage] = useState(false);
@@ -27,18 +28,18 @@ export const App: FC = () => {
   }, [dispatch]);
 
   const filteredTodos = useAppSelector(({ filter, todos }) => {
-    if (filter.status === 'all' && !filter.query) {
+    if (filter.status === ByFilter.ALL && !filter.query) {
       return todos;
     }
 
     const lowerQuery = filter.query.toLocaleLowerCase();
 
     return todos.filter(todo => {
-      if (filter.status === 'active' && todo.completed) {
+      if (filter.status === ByFilter.ACTIVE && todo.completed) {
         return false;
       }
 
-      if (filter.status === 'completed' && !todo.completed) {
+      if (filter.status === ByFilter.COMPLETED && !todo.completed) {
         return false;
       }
 

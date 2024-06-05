@@ -1,8 +1,10 @@
 import { FC } from 'react';
-import { useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
+
+import { useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
 import { Status } from '../../types/Status';
+import { ByFilter } from '../../types/ByFilter';
 
 export const TodoFilter: FC = () => {
   const dispatch = useDispatch();
@@ -23,9 +25,9 @@ export const TodoFilter: FC = () => {
               dispatch(actions.setStatus(e.target.value as Status))
             }
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={ByFilter.ALL}>All</option>
+            <option value={ByFilter.ACTIVE}>Active</option>
+            <option value={ByFilter.COMPLETED}>Completed</option>
           </select>
         </span>
       </p>

@@ -16,13 +16,13 @@ export const TodoList: FC<TPros> = ({ filteredTodos }) => {
 
   return (
     <>
-      {filteredTodos.length === 0 && (
+      {!filteredTodos.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
-      {filteredTodos.length > 0 && (
+      {!!filteredTodos.length && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -44,9 +44,9 @@ export const TodoList: FC<TPros> = ({ filteredTodos }) => {
               <tr
                 key={todo.id}
                 data-cy="todo"
-                className={cn(
-                  isSelected(todo) ? 'has-background-info-light' : '',
-                )}
+                className={cn({
+                  'has-background-info-light': isSelected(todo),
+                })}
               >
                 <td className="is-vcentered">{index + 1}</td>
                 <td className="is-vcentered">
@@ -59,9 +59,10 @@ export const TodoList: FC<TPros> = ({ filteredTodos }) => {
 
                 <td className="is-vcentered is-expanded">
                   <p
-                    className={cn(
-                      todo.completed ? 'has-text-success' : 'has-text-danger',
-                    )}
+                    className={cn({
+                      'has-text-success': todo.completed,
+                      'has-text-danger': !todo.completed,
+                    })}
                   >
                     {todo.title}
                   </p>
