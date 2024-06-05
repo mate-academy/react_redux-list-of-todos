@@ -2,13 +2,15 @@ import { FC } from 'react';
 import cn from 'classnames';
 import { useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
+import { useDispatch } from 'react-redux';
+import { actions } from '../../features/currentTodo';
 
 type TPros = {
-  currentTodo: (todo: Todo) => void;
   filteredTodos: Todo[];
 };
 
-export const TodoList: FC<TPros> = ({ currentTodo, filteredTodos }) => {
+export const TodoList: FC<TPros> = ({ filteredTodos }) => {
+  const dispatch = useDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const isSelected = (todo: Todo) => selectedTodo?.id === todo.id;
 
@@ -70,7 +72,7 @@ export const TodoList: FC<TPros> = ({ currentTodo, filteredTodos }) => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => currentTodo(todo)}
+                    onClick={() => dispatch(actions.setTodo(todo))}
                   >
                     <span className="icon">
                       <i

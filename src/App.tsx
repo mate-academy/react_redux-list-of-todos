@@ -4,54 +4,27 @@ import { useDispatch } from 'react-redux';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import { getTodos, getUser } from './api';
+import { getTodos } from './api';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 
-import { Todo } from './types/Todo';
 import { useAppSelector } from './app/hooks';
-import { User } from './types/User';
 import { setTodos } from './features/todos';
-import { actions } from './features/currentTodo';
 
 export const App: FC = () => {
-  const [userId, setUserId] = useState<number | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [loadingModal, setLoadingModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
 
   const dispatch = useDispatch();
+  const hasTodos = useAppSelector(state => state.todos.length > 0);
   const activeTodo = useAppSelector(state => state.currentTodo !== null);
 
   useEffect(() => {
-    setLoading(true);
-
     getTodos()
       .then(todos => dispatch(setTodos(todos)))
-      .catch(() => setErrorMessage(true))
-      .finally(() => setLoading(false));
+      .catch(() => setErrorMessage(true));
   }, [dispatch]);
-
-  useEffect(() => {
-    setLoadingModal(true);
-
-    if (userId === null) {
-      return;
-    }
-
-    getUser(userId)
-      .then(setUser)
-      .catch(() => setErrorMessage(true))
-      .finally(() => setLoadingModal(false));
-  }, [dispatch, userId]);
-
-  const currentTodo = (todo: Todo) => {
-    dispatch(actions.setTodo(todo));
-    setUserId(todo.id);
-  };
 
   const filteredTodos = useAppSelector(({ filter, todos }) => {
     if (filter.status === 'all' && !filter.query) {
@@ -78,29 +51,22 @@ export const App: FC = () => {
       <div className="section">
         <div className="container">
           <div className="box">
-            <h1 className="title">Todos:</h1>
-
             <div className="block">
-              <TodoFilter />
-            </div>
+              {!hasTodos && !errorMessage && <Loader />}
+              {!hasTodos && errorMessage && <p>There is something wrong!</p>}
 
-            <div className="block">
-              {loading && !errorMessage && <Loader />}
-              {errorMessage && <p>There is something wrong!</p>}
-
-              {!loading && !errorMessage && (
-                <TodoList
-                  currentTodo={currentTodo}
-                  filteredTodos={filteredTodos}
-                />
+              {hasTodos && (
+                <>
+                  <h1 className="title">Todos:</h1>
+                  <TodoFilter />
+                  <TodoList filteredTodos={filteredTodos} />
+                </>
               )}
             </div>
           </div>
         </div>
       </div>
-      {activeTodo && !errorMessage && user && (
-        <TodoModal loadingModal={loadingModal} user={user} />
-      )}
+      {activeTodo && <TodoModal />}
     </>
   );
 };

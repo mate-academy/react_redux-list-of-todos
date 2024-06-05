@@ -1,27 +1,36 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { User } from '../../types/User';
+import { actions } from '../../features/currentTodo';
+import { getUser } from '../../api';
 
-type TPros = {
-  loadingModal: boolean;
-  user: User;
-};
+export const TodoModal: FC = () => {
+  const [user, setUser] = useState<User | null>(null);
 
-export const TodoModal: FC<TPros> = ({ loadingModal, user }) => {
   const todo = useAppSelector(state => state.currentTodo);
+
   const dispatch = useDispatch();
 
-  const { email, name } = user;
-  const emailUser = `mailto:${email}`;
+  useEffect(() => {
+    if (!todo?.userId) {
+      return;
+    }
+
+    getUser(todo.userId)
+      .then(setUser)
+      .catch(() => {});
+  }, [todo?.userId, dispatch]);
+
+  const emailUser = `mailto:${user?.email}`;
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
-      {loadingModal && <Loader />}
+      {!user && <Loader />}
 
-      {!loadingModal && (
+      {user && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
@@ -35,7 +44,7 @@ export const TodoModal: FC<TPros> = ({ loadingModal, user }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch({ type: 'currentTodo/REMOVE' })}
+              onClick={() => dispatch(actions.removeTodo())}
             />
           </header>
 
@@ -51,7 +60,7 @@ export const TodoModal: FC<TPros> = ({ loadingModal, user }) => {
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={emailUser}>{name}</a>
+              <a href={emailUser}>{user.name}</a>
             </p>
           </div>
         </div>
