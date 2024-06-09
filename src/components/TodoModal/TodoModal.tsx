@@ -3,14 +3,12 @@ import { useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
 import { useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
-import { getTodos, getUser } from '../../api';
+import { getUser } from '../../api';
 import { User } from '../../types/User';
-import { Todo } from '../../types/Todo';
 
 export const TodoModal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [author, setAuthor] = useState<User | null>(null);
-  const [currentTodoObject, setCurrentTodoObject] = useState<Todo | null>(null);
 
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useDispatch();
@@ -20,12 +18,6 @@ export const TodoModal: React.FC = () => {
       getUser(currentTodo.userId)
         .then((user: User) => setAuthor(user))
         .finally(() => setIsLoading(false));
-
-      getTodos().then(todos =>
-        setCurrentTodoObject(
-          todos.find(todo => todo.id === currentTodo.id) ?? null,
-        ),
-      );
     }
   }, [currentTodo]);
 
@@ -58,11 +50,11 @@ export const TodoModal: React.FC = () => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {currentTodoObject?.title}
+              {currentTodo?.title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {currentTodoObject?.completed ? (
+              {currentTodo?.completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>
