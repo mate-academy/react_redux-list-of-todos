@@ -16,7 +16,8 @@ import { Todo } from './types/Todo';
 import { Filter } from './types/Filter';
 
 export const App: React.FC = () => {
-  const filter = useAppSelector(state => state.filter);
+  const { query, filter } = useAppSelector(state => state.filter);
+
   const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(state => state.todos);
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     let todosCopy = [...todos];
 
-    switch (filter.filter) {
+    switch (filter) {
       case Filter.All:
         break;
       case Filter.Active:
@@ -48,11 +49,11 @@ export const App: React.FC = () => {
     }
 
     todosCopy = todosCopy.filter((todo: Todo) =>
-      todo.title.toLocaleLowerCase().includes(filter.query.toLocaleLowerCase()),
+      todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
     );
 
     setDisplayedTodos(todosCopy);
-  }, [filter.filter, filter.query, todos]);
+  }, [filter, query, todos]);
 
   return (
     <>
