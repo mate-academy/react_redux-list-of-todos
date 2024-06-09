@@ -1,17 +1,58 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
+import { actions as todosActions } from '../../features/todos';
 import { Todo } from '../../types/Todo';
+import { Filter } from '../../types/Filter';
+import { getTodos } from '../../api';
+import { Loader } from '../Loader';
 
-type State = {
-  todos: Todo[];
-};
-
-export const TodoList: React.FC<State> = ({ todos }) => {
+export const TodoList: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+  const { query, filter } = useAppSelector(state => state.filter);
+
   const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getTodos()
+      .then((todosFromApi: Todo[]) =>
+        dispatch(todosActions.setTodos(todosFromApi)),
+      )
+      .catch(() => {
+        alert("Couldn't fetch the todos");
+      })
+      .finally(() => setIsLoading(false));
+  }, [dispatch]);
+
+  const displayedTodos = useMemo(() => {
+    let todosCopy = [...todos];
+
+    switch (filter) {
+      case Filter.All:
+        break;
+      case Filter.Active:
+        todosCopy = todosCopy.filter((todo: Todo) => todo.completed === false);
+        break;
+      case Filter.Completed:
+        todosCopy = todosCopy.filter((todo: Todo) => todo.completed === true);
+        break;
+    }
+
+    todosCopy = todosCopy.filter((todo: Todo) =>
+      todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+    );
+
+    return todosCopy;
+  }, [filter, query, todos]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   if (!todos.length) {
     return (
@@ -43,7 +84,7 @@ export const TodoList: React.FC<State> = ({ todos }) => {
         </thead>
 
         <tbody>
-          {todos.map((todo: Todo) => (
+          {displayedTodos.map((todo: Todo) => (
             <tr key={todo.id} data-cy="todo">
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">
