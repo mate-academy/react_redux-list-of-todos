@@ -6,10 +6,13 @@ export const TodoFilter = () => {
   const dispatch = useAppDispatch();
   const { status, query } = useAppSelector(state => state.filter);
 
-  const setStatus = (newStatus: Status) =>
+  const setStatus = (newStatus: Status) => {
     dispatch(actionsFilter.setStatus(newStatus));
-  const setQuery = (newQuery: string) =>
+  };
+
+  const setQuery = (newQuery: string) => {
     dispatch(actionsFilter.setQuery(newQuery));
+  };
 
   const onChangeSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedFilter = e.target.value as Status;

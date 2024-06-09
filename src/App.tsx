@@ -10,6 +10,7 @@ import { TodoList } from './components/TodoList';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { actions as actionsTodos } from './features/todos';
 import { TodoModal } from './components/TodoModal';
+import { Filters } from './types/Filters';
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,17 +32,17 @@ export const App: React.FC = () => {
   const preparedTodos = useMemo(() => {
     return todos.filter(todo => {
       switch (status) {
-        case 'active':
+        case Filters.Active:
           return (
             !todo.completed &&
             todo.title.toLowerCase().includes(query.toLowerCase())
           );
-        case 'completed':
+        case Filters.Completed:
           return (
             todo.completed &&
             todo.title.toLowerCase().includes(query.toLowerCase())
           );
-        case 'all':
+        case Filters.All:
         default:
           return todo.title.toLowerCase().includes(query.toLowerCase());
       }
