@@ -13,6 +13,7 @@ import { useAppSelector } from './app/hooks';
 
 import { actions as todosActions } from './features/todos';
 import { Todo } from './types/Todo';
+import { Filter } from './types/Filter';
 
 export const App: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
@@ -36,12 +37,12 @@ export const App: React.FC = () => {
     let todosCopy = [...todos];
 
     switch (filter.filter) {
-      case 'all':
+      case Filter.All:
         break;
-      case 'active':
+      case Filter.Active:
         todosCopy = todosCopy.filter((todo: Todo) => todo.completed === false);
         break;
-      case 'completed':
+      case Filter.Completed:
         todosCopy = todosCopy.filter((todo: Todo) => todo.completed === true);
         break;
     }
