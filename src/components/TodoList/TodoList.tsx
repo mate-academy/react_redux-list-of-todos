@@ -41,6 +41,8 @@ export const TodoList: React.FC = () => {
       case Filter.Completed:
         todosCopy = todosCopy.filter((todo: Todo) => todo.completed === true);
         break;
+      default:
+        break;
     }
 
     todosCopy = todosCopy.filter((todo: Todo) =>
