@@ -23,9 +23,13 @@ export const App: React.FC = () => {
   const [displayedTodos, setDisplayedTodos] = useState<Todo[]>([...todos]);
 
   useEffect(() => {
-    getTodos().then((todosFromApi: Todo[]) =>
-      dispatch(todosActions.setTodos(todosFromApi)),
-    );
+    getTodos()
+      .then((todosFromApi: Todo[]) =>
+        dispatch(todosActions.setTodos(todosFromApi)),
+      )
+      .catch(() => {
+        alert("Couldn't fetch the todos");
+      });
   }, [dispatch]);
 
   useEffect(() => {
