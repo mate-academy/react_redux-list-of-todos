@@ -56,7 +56,7 @@ export const TodoList: React.FC = () => {
     return <Loader />;
   }
 
-  if (!todos.length) {
+  if (!displayedTodos.length) {
     return (
       <p className="notification is-warning">
         There are no todos matching current filter criteria

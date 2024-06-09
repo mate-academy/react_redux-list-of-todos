@@ -22,7 +22,9 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">{<TodoList />}</div>
+            <div className="block">
+              <TodoList />
+            </div>
           </div>
         </div>
       </div>
