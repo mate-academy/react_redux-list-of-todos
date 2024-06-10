@@ -1,20 +1,20 @@
 import React from 'react';
 import { Todo } from '../../types/Todo';
-import classNames from 'classnames';
+import { TodoItem } from '../TodoItem/TodoItem';
 
 type Props = {
   todos: Todo[];
   selectedTodo: Todo | null;
-  setSelectedTodo: React.Dispatch<React.SetStateAction<Todo | null>>;
+  onTodoSelect: (todo: Todo) => void;
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
   selectedTodo,
-  setSelectedTodo,
+  onTodoSelect,
 }) => {
   const handleSelectTodo = (todo: Todo) => {
-    setSelectedTodo(todo);
+    onTodoSelect(todo);
   };
 
   return (
@@ -34,48 +34,12 @@ export const TodoList: React.FC<Props> = ({
 
       <tbody>
         {todos.map(todo => (
-          <tr
-            data-cy="todo"
+          <TodoItem
+            todo={todo}
             key={todo.id}
-            className={classNames({
-              'has-background-info-light': selectedTodo?.id === todo.id,
-            })}
-          >
-            <td className="is-vcentered">{todo.id}</td>
-            <td className="is-vcentered">
-              {todo.completed && (
-                <span className="icon" data-cy="iconCompleted">
-                  <i className="fas fa-check" />
-                </span>
-              )}
-            </td>
-            <td className="is-vcentered is-expanded">
-              <p
-                className={classNames({
-                  'has-text-danger': !todo.completed,
-                  'has-text-success': todo.completed,
-                })}
-              >
-                {todo.title}
-              </p>
-            </td>
-            <td className="has-text-right is-vcentered">
-              <button
-                data-cy="selectButton"
-                className="button"
-                type="button"
-                onClick={() => handleSelectTodo(todo)}
-              >
-                <span className="icon">
-                  {selectedTodo?.id === todo.id ? (
-                    <i className="far fa-eye-slash" />
-                  ) : (
-                    <i className="far fa-eye" />
-                  )}
-                </span>
-              </button>
-            </td>
-          </tr>
+            selectedTodo={selectedTodo}
+            handleSelectTodo={handleSelectTodo}
+          />
         ))}
       </tbody>
     </table>

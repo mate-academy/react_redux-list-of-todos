@@ -70,6 +70,14 @@ export const App: React.FC = () => {
     dispatch(filterActions.setStatus(newFilter));
   };
 
+  const handleTodoSelection = (todo: Todo) => {
+    setSelectedTodo(todo);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTodo(null);
+  };
+
   return (
     <>
       <div className="section">
@@ -86,17 +94,22 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {isLoading && <Loader />}
-              {!isLoading && filteredTodos.length > 0 ? (
-                <TodoList
-                  todos={filteredTodos}
-                  selectedTodo={selectedTodo}
-                  setSelectedTodo={setSelectedTodo}
-                />
+              {isLoading ? (
+                <Loader />
               ) : (
-                <p className="notification is-warning">
-                  There are no todos matching current filter criteria
-                </p>
+                <>
+                  {filteredTodos.length > 0 ? (
+                    <TodoList
+                      todos={filteredTodos}
+                      selectedTodo={selectedTodo}
+                      onTodoSelect={handleTodoSelection}
+                    />
+                  ) : (
+                    <p className="notification is-warning">
+                      There are no todos matching current filter criteria
+                    </p>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -104,10 +117,7 @@ export const App: React.FC = () => {
       </div>
 
       {selectedTodo && (
-        <TodoModal
-          selectedTodo={selectedTodo}
-          setSelectedTodo={setSelectedTodo}
-        />
+        <TodoModal selectedTodo={selectedTodo} onClose={handleCloseModal} />
       )}
     </>
   );

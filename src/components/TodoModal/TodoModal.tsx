@@ -6,12 +6,12 @@ import { getUser } from '../../api';
 
 type Props = {
   selectedTodo: Todo;
-  setSelectedTodo: React.Dispatch<React.SetStateAction<Todo | null>>;
+  onClose: () => void;
 };
 
 export const TodoModal: React.FC<Props> = ({
   selectedTodo,
-  setSelectedTodo,
+  onClose,
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +23,7 @@ export const TodoModal: React.FC<Props> = ({
   }, [selectedTodo]);
 
   const handleCloseTodo = () => {
-    setSelectedTodo(null);
+    onClose();
     setUser(null);
   };
 
