@@ -1,7 +1,7 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { todosSlice } from './features/todos';
@@ -23,26 +23,26 @@ export const App = () => {
       .finally(() => setIsLoading(false));
   }, [dispatch]);
 
-  const preparedTodos = () => {
-    let sortTodos = [];
+  const preparedTodos = useMemo(() => {
+    let sortedTodos = [];
 
     switch (filter) {
       case 'active':
-        sortTodos = todos.filter(todo => !todo.completed);
+        sortedTodos = todos.filter(todo => !todo.completed);
         break;
 
       case 'completed':
-        sortTodos = todos.filter(todo => todo.completed);
+        sortedTodos = todos.filter(todo => todo.completed);
         break;
 
       default:
-        sortTodos = todos;
+        sortedTodos = todos;
     }
 
-    return sortTodos.filter(todo =>
+    return sortedTodos.filter(todo =>
       todo.title.toLowerCase().includes(query.toLowerCase().trim()),
     );
-  };
+  }, [filter, query, todos]);
 
   return (
     <>
@@ -57,7 +57,7 @@ export const App = () => {
 
             <div className="block">
               {isLoading && <Loader />}
-              <TodoList todos={preparedTodos()} />
+              <TodoList todos={preparedTodos} />
             </div>
           </div>
         </div>

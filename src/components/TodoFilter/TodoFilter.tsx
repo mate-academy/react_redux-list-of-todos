@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Status } from '../../types/Status';
 import { useAppDispatch } from '../../app/hooks';
 import { filterSlice } from '../../features/filter';
-import debounce from 'lodash.debounce';
+import debounce from 'lodash/debounce';
 
 type Props = {
   setQuery: (value: string) => void;
