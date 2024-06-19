@@ -14,13 +14,13 @@ export const App = () => (
           </div>
 
           <div className="block">
-            <Loader />
+            {false && <Loader />}
             <TodoList />
           </div>
         </div>
       </div>
     </div>
 
-    <TodoModal />
+    {false && <TodoModal />}
   </>
 );
