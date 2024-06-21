@@ -1,8 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getTodos } from './../../api';
-import { actions as todosActions } from '../../features/todos';
 import { FilterTypes } from '../../features/filter';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
@@ -12,12 +10,6 @@ export const TodoList: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    getTodos().then(result => {
-      dispatch(todosActions.addTodos(result));
-    });
-  }, [dispatch]);
 
   const handleSetSelectedTodo = (todo: Todo) => {
     dispatch(currentTodoActions.setCurrentTodo(todo));
