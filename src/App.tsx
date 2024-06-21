@@ -8,7 +8,7 @@ import { Todo } from './types/Todo';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 
 export const App = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [query, setQuery] = useState('');
 
   const dispatch = useAppDispatch();

@@ -6,7 +6,7 @@ import { User } from '../../types/User';
 import { currentTodoSlice } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
