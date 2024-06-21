@@ -1,13 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import classNames from 'classnames';
-import { useAppSelector } from '../../hooks';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getTodos } from './../../api';
+import { actions as todosActions } from '../../features/todos';
+import { FilterTypes } from '../../features/filter';
+import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
-  const dispatch = useDispatch();
+  const filter = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
 
-  useEffect(() => dispatch(), []);
+  useEffect(() => {
+    getTodos().then(result => {
+      dispatch(todosActions.addTodos(result));
+    });
+  }, [dispatch]);
+
+  const handleSetSelectedTodo = (todo: Todo) => {
+    dispatch(currentTodoActions.setCurrentTodo(todo));
+  };
+
+  const visibleTodos = useMemo(() => {
+    let currentTodos = [...todos];
+
+    switch (filter.status) {
+      case FilterTypes.Active:
+        currentTodos = currentTodos.filter(todo => !todo.completed);
+        break;
+
+      case FilterTypes.Completed:
+        currentTodos = currentTodos.filter(todo => todo.completed);
+        break;
+
+      default:
+        break;
+    }
+
+    if (filter.query.trim()) {
+      currentTodos = currentTodos.filter(todo =>
+        todo.title.includes(filter.query),
+      );
+    }
+
+    return currentTodos;
+  }, [todos, filter]);
 
   return (
     <>
@@ -34,7 +73,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {todos.map(todo => (
+          {visibleTodos.map(todo => (
             <tr key={todo.id} data-cy="todo">
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">
@@ -58,12 +97,23 @@ export const TodoList: React.FC = () => {
 
               <td className="has-text-right is-vcentered">
                 <button data-cy="selectButton" className="button" type="button">
-                  <span className="icon">
+                  <span
+                    onClick={() => handleSetSelectedTodo(todo)}
+                    className="icon"
+                  >
                     <i
                       className={classNames(
                         'far',
-                        { 'fa-eye-slash': false },
-                        { 'fa-eye': true },
+                        {
+                          'fa-eye-slash':
+                            (currentTodo.todo ? currentTodo.todo.id : -1) ===
+                            todo.id,
+                        },
+                        {
+                          'fa-eye':
+                            (currentTodo.todo ? currentTodo.todo.id : -1) !==
+                            todo.id,
+                        },
                       )}
                     />
                   </span>

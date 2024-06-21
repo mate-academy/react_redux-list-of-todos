@@ -1,21 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
-import { getTodos as getTodosFromServer } from '../api';
 
-type GetAction = { type: 'todos/GET'; payload: Todo[] };
-
-const getTodos = () => {
-  const result: GetAction = { type: 'todos/GET', payload: [] };
-
-  getTodosFromServer().then(items => (result.payload = items));
-
-  return result;
-};
-
-export const todosSlice = createSlice({
+export const { reducer, actions } = createSlice({
   name: 'todos',
   initialState: [] as Todo[],
   reducers: {
-    getTodos: () => getTodos(),
+    addTodos(state, action: PayloadAction<Todo[]>) {
+      state.push(...action.payload);
+    },
   },
 });
