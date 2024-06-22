@@ -6,13 +6,13 @@ import classNames from 'classnames';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const todos =  useAppSelector(state => state.todos);
+  const todos = useAppSelector(state => state.todos);
   const filteres = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const filteredTodo = useCallback(() => {
     let filteredTodos = todos;
-    switch(filteres.status){
+    switch (filteres.status) {
       case 'completed':
         filteredTodos = filteredTodos.filter(todo => todo.completed);
         break;
@@ -23,7 +23,7 @@ export const TodoList: React.FC = () => {
         filteredTodos = todos;
     }
 
-    if (filteres.query){
+    if (filteres.query) {
       filteredTodos = filteredTodos.filter(todo => {
         const reg = new RegExp(filteres.query, 'i');
         return reg.test(todo.title);
@@ -33,14 +33,13 @@ export const TodoList: React.FC = () => {
     return filteredTodos;
   }, [filteres]);
 
-
   return (
     <>
-    {todos.length > 0 && !filteredTodo().length && (
-      <p className="notification is-warning">
-      There are no todos matching current filter criteria
-    </p>
-    )}
+      {todos.length > 0 && !filteredTodo().length && (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      )}
       <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
@@ -59,50 +58,57 @@ export const TodoList: React.FC = () => {
 
         <tbody>
           {filteredTodo().map(todo => {
-            const { id, title, completed} = todo;
+            const { id, title, completed } = todo;
 
-            return(
+            return (
               <tr
                 key={id}
                 data-cy="todo"
                 className={classNames({
-                'has-background-info-light' : currentTodo?.id === id
-              })}>
-              <td className="is-vcentered">{id}</td>
-              <td className="is-vcentered">
-                {completed && (
-                  <span className="icon" data-cy="iconCompleted">
-                  <i className="fas fa-check" />
-                </span>
-                )}
-              </td>
+                  'has-background-info-light': currentTodo?.id === id,
+                })}
+              >
+                <td className="is-vcentered">{id}</td>
+                <td className="is-vcentered">
+                  {completed && (
+                    <span className="icon" data-cy="iconCompleted">
+                      <i className="fas fa-check" />
+                    </span>
+                  )}
+                </td>
 
-              <td className="is-vcentered is-expanded">
-                <p className={classNames({
-                  'has-text-success' : completed,
-                  'has-text-danger' : !completed,
-                })}>{title}</p>
-              </td>
+                <td className="is-vcentered is-expanded">
+                  <p
+                    className={classNames({
+                      'has-text-success': completed,
+                      'has-text-danger': !completed,
+                    })}
+                  >
+                    {title}
+                  </p>
+                </td>
 
-              <td className="has-text-right is-vcentered">
-                <button
-                  data-cy="selectButton"
-                  className="button"
-                  type="button"
-                  onClick={() => dispatch(currentTodoSlice.actions.addTodo(todo))}
-                >
-                  <span className="icon" >
-                    {currentTodo?.id === id ? (
-                      <i className="far fa-eye-slash" />
-                    ) : (
-                      <i className="far fa-eye" />
-                    )}
-                  </span>
-                </button>
-              </td>
-            </tr>
-            )
-          } ) }
+                <td className="has-text-right is-vcentered">
+                  <button
+                    data-cy="selectButton"
+                    className="button"
+                    type="button"
+                    onClick={() =>
+                      dispatch(currentTodoSlice.actions.addTodo(todo))
+                    }
+                  >
+                    <span className="icon">
+                      {currentTodo?.id === id ? (
+                        <i className="far fa-eye-slash" />
+                      ) : (
+                        <i className="far fa-eye" />
+                      )}
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </>
