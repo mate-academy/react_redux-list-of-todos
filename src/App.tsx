@@ -3,23 +3,22 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
 import { getTodos } from './api';
-import { todosSlice } from './features/todos';
 import { useAppDispatch, useAppSelector } from './app/hook';
+import { todosSlice } from './features/todos';
 
 export const App = () => {
-  const dispatch = useAppDispatch();
   const todo = useAppSelector(state => state.currentTodo);
+  /* const [todos, setTodos] = useState<Todo[] | []>([]); */
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
-    setTimeout(() => {
-      getTodos()
-        .then(result => {
-          dispatch(todosSlice.actions.addTodos(result));
-        })
-        .finally(() => setIsLoading(false));
-    }, 3000);
+    getTodos()
+      .then(result => {
+        dispatch(todosSlice.actions.addTodos(result));
+      })
+      .finally(() => setIsLoading(false));
   }, [dispatch]);
 
   return (

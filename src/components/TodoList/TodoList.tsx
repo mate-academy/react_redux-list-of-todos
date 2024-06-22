@@ -1,9 +1,8 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { currentTodoSlice } from '../../features/currentTodo';
 import classNames from 'classnames';
-
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -11,7 +10,7 @@ export const TodoList: React.FC = () => {
   const filteres = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
-  const filteredTodo = () => {
+  const filteredTodo = useCallback(() => {
     let filteredTodos = todos;
     switch(filteres.status){
       case 'completed':
@@ -32,7 +31,7 @@ export const TodoList: React.FC = () => {
     }
 
     return filteredTodos;
-  };
+  }, [filteres]);
 
 
   return (
@@ -63,7 +62,10 @@ export const TodoList: React.FC = () => {
             const { id, title, completed} = todo;
 
             return(
-              <tr data-cy="todo" className={classNames({
+              <tr
+                key={id}
+                data-cy="todo"
+                className={classNames({
                 'has-background-info-light' : currentTodo?.id === id
               })}>
               <td className="is-vcentered">{id}</td>

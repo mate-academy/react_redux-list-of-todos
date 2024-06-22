@@ -18,20 +18,24 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
 
   useEffect(() => {
     setIsLoading(true);
-
     setTimeout(() => {
       getUser(userId)
         .then(setUser)
         .finally(() => setIsLoading(false));
-    }, 3000);
+    }, 1000);
   }, [userId]);
+
+  const handleClick = () => {
+    dispatch(currentTodoSlice.actions.addTodo(null));
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading && <Loader />}
-      {user && (
+      {isLoading ? (
+        <Loader />
+      ) : (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
@@ -46,7 +50,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(currentTodoSlice.actions.addTodo(null))}
+              onClick={() => handleClick()}
             />
           </header>
 
