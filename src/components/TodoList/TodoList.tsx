@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { currentTodoSlice } from '../../features/currentTodo';
 import classNames from 'classnames';
@@ -7,40 +7,16 @@ import classNames from 'classnames';
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
-  const filteres = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
-
-  const filteredTodo = useCallback(() => {
-    let filteredTodos = todos;
-    switch (filteres.status) {
-      case 'completed':
-        filteredTodos = filteredTodos.filter(todo => todo.completed);
-        break;
-      case 'active':
-        filteredTodos = filteredTodos.filter(todo => !todo.completed);
-        break;
-      default:
-        filteredTodos = todos;
-    }
-
-    if (filteres.query) {
-      filteredTodos = filteredTodos.filter(todo => {
-        const reg = new RegExp(filteres.query, 'i');
-        return reg.test(todo.title);
-      });
-    }
-
-    return filteredTodos;
-  }, [filteres]);
 
   return (
     <>
-      {todos.length > 0 && !filteredTodo().length && (
+      {!todos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
-      )}
-      <table className="table is-narrow is-fullwidth">
+      ) : (
+        <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
             <th>#</th>
@@ -57,7 +33,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {filteredTodo().map(todo => {
+          {todos.map(todo => {
             const { id, title, completed } = todo;
 
             return (
@@ -111,6 +87,8 @@ export const TodoList: React.FC = () => {
           })}
         </tbody>
       </table>
+      )}
+
     </>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { filterSlice } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -19,9 +20,9 @@ export const TodoFilter: React.FC = () => {
               dispatch(filterSlice.actions.status(event.target.value));
             }}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Status.all}>All</option>
+            <option value={Status.active}>Active</option>
+            <option value={Status.completed}>Completed</option>
           </select>
         </span>
       </p>

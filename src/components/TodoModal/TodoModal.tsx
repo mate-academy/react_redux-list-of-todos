@@ -50,7 +50,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => handleClick()}
+              onClick={handleClick}
             />
           </header>
 
