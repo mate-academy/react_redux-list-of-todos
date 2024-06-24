@@ -1,22 +1,49 @@
 /* eslint-disable */
 import React from 'react';
-import { Todo } from '../../types/Todo';
+import { useAppSelector } from '../../app/hooks';
 import classNames from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useDispatch } from 'react-redux';
+import { Todo } from '../../types/Todo';
 import { currentTodoSlice } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
-type Props = {
-  todos: Todo[];
-};
-
-export const TodoList: React.FC<Props> = ({ todos }) => {
-  const dispatch = useAppDispatch();
+export const TodoList: React.FC = () => {
+  const todosForFilter = useAppSelector(state => state.todos);
+  const filter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const currentTodoId = currentTodo ? currentTodo.id : 0;
+  const dispatch = useDispatch();
 
-  const add = (todo: Todo) => {
-    dispatch(currentTodoSlice.actions.setCurrentTodo(todo));
+  const handleSelectedTodo = (todo: Todo) => {
+    dispatch(currentTodoSlice.actions.selectTodo(todo));
   };
+
+  function getFilteredTodos(allTodos: Todo[]) {
+    let filteredTodos = [...allTodos];
+    const adaptedQuery = filter.query.trim().toLowerCase();
+
+    switch (filter.status) {
+      case Status.Active:
+        filteredTodos = allTodos.filter(todo => !todo.completed);
+        break;
+
+      case Status.Completed:
+        filteredTodos = allTodos.filter(todo => todo.completed);
+        break;
+
+      default:
+        break;
+    }
+
+    if (adaptedQuery) {
+      return filteredTodos.filter(todo =>
+        todo.title.toLowerCase().includes(adaptedQuery),
+      );
+    }
+
+    return filteredTodos;
+  }
+
+  const todos = getFilteredTodos(todosForFilter);
 
   return (
     <>
@@ -43,7 +70,13 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
 
           <tbody>
             {todos.map(todo => (
-              <tr data-cy="todo" className="" key={todo.id}>
+              <tr
+                data-cy="todo"
+                key={todo.id}
+                className={classNames({
+                  'has-background-info-light': currentTodo?.id === todo.id,
+                })}
+              >
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {todo.completed && (
@@ -52,6 +85,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                     </span>
                   )}
                 </td>
+
                 <td className="is-vcentered is-expanded">
                   <p
                     className={classNames({
@@ -62,20 +96,20 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                     {todo.title}
                   </p>
                 </td>
+
                 <td className="has-text-right is-vcentered">
                   <button
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => add(todo)}
+                    onClick={() => handleSelectedTodo(todo)}
                   >
                     <span className="icon">
-                      <i
-                        className={classNames('far', {
-                          'fa-eye': currentTodoId !== todo.id,
-                          'fa-eye-slash': currentTodoId === todo.id,
-                        })}
-                      />
+                      {currentTodo?.id === todo.id ? (
+                        <i className="far fa-eye-slash" />
+                      ) : (
+                        <i className="far fa-eye" />
+                      )}
                     </span>
                   </button>
                 </td>

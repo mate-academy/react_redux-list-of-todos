@@ -1,31 +1,20 @@
-import React, { useMemo, useState } from 'react';
-import { Status } from '../../types/Status';
-import { useAppDispatch } from '../../app/hooks';
+import React from 'react';
+import { useAppSelector } from '../../app/hooks';
+import { useDispatch } from 'react-redux';
 import { filterSlice } from '../../features/filter';
-import debounce from 'lodash.debounce';
+import { Status } from '../../types/Status';
 
-type Props = {
-  setQuery: (value: string) => void;
-};
+export const TodoFilter: React.FC = () => {
+  const filter = useAppSelector(state => state.filter);
+  const query = filter.query;
+  const dispatch = useDispatch();
 
-export const TodoFilter: React.FC<Props> = ({ setQuery }) => {
-  const [title, setTitle] = useState('');
-  const dispatch = useAppDispatch();
-
-  const applyTittle = useMemo(() => debounce(setQuery, 1000), [setQuery]);
-
-  const setFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(filterSlice.actions.setFilter(event.target.value as Status));
+  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterSlice.actions.setStatus(event.target.value));
   };
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
-    applyTittle(event.target.value);
-  };
-
-  const handleOnClick = () => {
-    setQuery('');
-    setTitle('');
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterSlice.actions.setQuery(event.target.value));
   };
 
   return (
@@ -35,35 +24,39 @@ export const TodoFilter: React.FC<Props> = ({ setQuery }) => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect" onChange={setFilter}>
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={filter.status}
+            onChange={handleSelect}
+          >
+            <option value={Status.All}>All</option>
+            <option value={Status.Active}>Active</option>
+            <option value={Status.Completed}>Completed</option>
           </select>
         </span>
       </p>
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
-          value={title}
+          value={query}
           data-cy="searchInput"
           type="text"
           className="input"
           placeholder="Search..."
-          onChange={handleOnChange}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {!!title.length && (
+        {!!query.length && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={handleOnClick}
+              onClick={() => dispatch(filterSlice.actions.setQuery(''))}
             />
           </span>
         )}

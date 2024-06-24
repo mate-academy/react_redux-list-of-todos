@@ -1,48 +1,25 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useEffect, useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { getTodos } from './api';
-import { useAppDispatch, useAppSelector } from './app/hooks';
-import { todosSlice } from './features/todos';
 import { Todo } from './types/Todo';
+import { todosSlice } from './features/todos';
+import { useAppSelector } from './app/hooks';
 
 export const App = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useState('');
-
-  const todos = useAppSelector(state => state.todos);
+  const [loading, setLoading] = useState(false);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const filter = useAppSelector(state => state.filter);
-  const dispatch = useAppDispatch();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
+    setLoading(true);
     getTodos()
       .then((data: Todo[]) => dispatch(todosSlice.actions.setTodos(data)))
-      .finally(() => setIsLoading(false));
+      .finally(() => setLoading(false));
   }, [dispatch]);
-
-  const preparedTodos = useMemo(() => {
-    let sortedTodos = [];
-
-    switch (filter) {
-      case 'active':
-        sortedTodos = todos.filter(todo => !todo.completed);
-        break;
-
-      case 'completed':
-        sortedTodos = todos.filter(todo => todo.completed);
-        break;
-
-      default:
-        sortedTodos = todos;
-    }
-
-    return sortedTodos.filter(todo =>
-      todo.title.toLowerCase().includes(query.toLowerCase().trim()),
-    );
-  }, [filter, query, todos]);
 
   return (
     <>
@@ -52,16 +29,17 @@ export const App = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter setQuery={setQuery} />
+              <TodoFilter />
             </div>
 
             <div className="block">
-              {isLoading && <Loader />}
-              <TodoList todos={preparedTodos} />
+              {loading && <Loader />}
+              {!loading && <TodoList />}
             </div>
           </div>
         </div>
       </div>
+
       {currentTodo && <TodoModal />}
     </>
   );

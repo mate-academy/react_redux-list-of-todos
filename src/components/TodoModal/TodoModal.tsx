@@ -1,35 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { getUser } from '../../api';
 import { User } from '../../types/User';
+import { useAppSelector } from '../../app/hooks';
+import { getUser } from '../../api';
 import { currentTodoSlice } from '../../features/currentTodo';
+import { useDispatch } from 'react-redux';
 
-export const TodoModal: React.FC = ({}) => {
-  const currentTodo = useAppSelector(state => state.currentTodo);
-  const dispatch = useAppDispatch();
-  const { userId, id, title, completed } = currentTodo;
-  const [isLoading, setIsLoading] = useState(false);
+export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-
-  const close = () => {
-    dispatch(currentTodoSlice.actions.removeCurrentTodo(''));
-  };
+  const [loading, setLoading] = useState(true);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsLoading(true);
-    getUser(userId)
-      .then(response => setUser(response))
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [userId]);
+    getUser(currentTodo?.userId)
+      .then(setUser)
+      .finally(() => setLoading(false));
+  }, [currentTodo]);
+
+  const handleCloseTodo = () => {
+    dispatch(currentTodoSlice.actions.closeTodo(''));
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {isLoading ? (
+      {loading ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -38,31 +35,30 @@ export const TodoModal: React.FC = ({}) => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo #{id}
+              {`Todo #${currentTodo.id}`}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={close}
+              onClick={handleCloseTodo}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {title}
+              {currentTodo.title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {completed ? (
+              {currentTodo.completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={user?.email}>{user?.name}</a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>
