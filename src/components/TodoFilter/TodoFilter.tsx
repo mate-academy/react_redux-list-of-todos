@@ -1,17 +1,18 @@
 import React from 'react';
 import { filterSlice } from '../../features/filter';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
   const { setQuery, setStatus } = filterSlice.actions;
   const dispatch = useDispatch();
-  const { query } = useSelector((state: any) => state.filterReducer);
+  const { query } = useAppSelector(state => state.filterReducer);
 
-  const setFilterStatus = (event: any) => {
+  const setFilterStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setStatus(event.target.value));
   };
 
-  const setFilterQuery = (event: any) => {
+  const setFilterQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setQuery(event.target.value));
   };
 

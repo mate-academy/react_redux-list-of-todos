@@ -6,10 +6,11 @@ import { TodoFilter } from './components/TodoFilter/TodoFilter';
 import { TodoList } from './components/TodoList/TodoList';
 import { TodoModal } from './components/TodoModal/TodoModal';
 import { Loader } from './components/Loader/Loader';
+import { useAppSelector } from './app/hooks';
 
 export const App = () => {
   const currentTodo = useSelector((state: Todo) => state.currentTodoReducer);
-  const todos = useSelector((state: any) => state.todosReducer);
+  const todos = useAppSelector(state => state.todosReducer);
 
   return (
     <>
