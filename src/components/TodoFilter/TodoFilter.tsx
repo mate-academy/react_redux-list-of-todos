@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 export const TodoFilter: React.FC = () => {
   const { setQuery, setStatus } = filterSlice.actions;
   const dispatch = useDispatch();
-  const { query } = useSelector(state => state.filterReducer);
+  const { query } = useSelector((state: any) => state.filterReducer);
 
-  const setFilterStatus = event => {
+  const setFilterStatus = (event: any) => {
     dispatch(setStatus(event.target.value));
   };
 
-  const setFilterQuery = event => {
+  const setFilterQuery = (event: any) => {
     dispatch(setQuery(event.target.value));
   };
 

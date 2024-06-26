@@ -11,7 +11,7 @@ export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
   const [user, setUser] = React.useState<User | null>(null);
   const { id, title, completed, userId }: Todo = useSelector(
-    state => state.currentTodoReducer,
+    (state: Todo) => state.currentTodoReducer,
   );
 
   getUser(userId).then((resp: User) => {
