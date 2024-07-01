@@ -15,14 +15,11 @@ export const TodoModal: React.FC = () => {
   useEffect(() => {
     setLoading(true);
     getUser(currentTodo.userId)
-      .then(data => {
-        setUser(data);
-      })
-      .catch(() => {})
+      .then(setUser)
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [currentTodo.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -45,7 +42,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => closeTodo()}
+              onClick={closeTodo}
             />
           </header>
 

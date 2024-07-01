@@ -29,7 +29,7 @@ export const App = () => {
 
   return (
     <>
-      <div className="section">
+      <section className="section">
         <div className="container">
           <div className="box">
             <h1 className="title">Todos:</h1>
@@ -43,7 +43,7 @@ export const App = () => {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {currentTodo && <TodoModal />}
     </>

@@ -3,6 +3,12 @@ import React, { useMemo } from 'react';
 import { currentTodoSlice } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import classNames from 'classnames';
+
+enum Status {
+  completed = 'completed',
+  active = 'active',
+}
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -16,12 +22,10 @@ export const TodoList: React.FC = () => {
     let todosProcessed = [...todos];
 
     switch (status) {
-      case 'all':
-        break;
-      case 'completed':
+      case Status.completed:
         todosProcessed = todosProcessed.filter(todo => !todo.completed);
         break;
-      case 'active':
+      case Status.active:
         todosProcessed = todosProcessed.filter(todo => todo.completed);
         break;
       default:
@@ -67,7 +71,9 @@ export const TodoList: React.FC = () => {
           <tr
             data-cy="todo"
             key={todo.id}
-            className={`${todo.id === currentTodo?.id ? 'has-background-info-light' : ''}`}
+            className={classNames({
+              'has-background-info-light': todo.id === currentTodo?.id,
+            })}
           >
             <td className="is-vcentered">{todo.id}</td>
             <td className="is-vcentered">
@@ -80,9 +86,10 @@ export const TodoList: React.FC = () => {
 
             <td className="is-vcentered is-expanded">
               <p
-                className={
-                  todo.completed ? 'has-text-danger' : 'has-text-success'
-                }
+                className={classNames(
+                  { 'has-text-danger': todo.completed },
+                  { 'has-text-success': !todo.completed },
+                )}
               >
                 {todo.title}
               </p>
@@ -92,10 +99,12 @@ export const TodoList: React.FC = () => {
               <button data-cy="selectButton" className="button" type="button">
                 <span className="icon">
                   <i
-                    className={`far ${todo.id === currentTodo?.id ? 'fa-eye-slash' : 'fa-eye'}`}
-                    onClick={() => {
-                      setTodo(todo);
-                    }}
+                    className={classNames(
+                      'far',
+                      { 'fa-eye-slash': todo.id === currentTodo?.id },
+                      { 'fa-eye': todo.id !== currentTodo?.id },
+                    )}
+                    onClick={() => setTodo(todo)}
                   />
                 </span>
               </button>
