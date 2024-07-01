@@ -11,8 +11,8 @@ export const TableRow: React.FC<Props> = ({ todo }) => {
   const { id, completed, userId, title } = todo;
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
-  const setTodo = (currentTodo: Todo) =>
-    dispatch(currentTodoSlice.actions.setTodo(currentTodo));
+  const setTodo = (newCurrentTodo: Todo) =>
+    dispatch(currentTodoSlice.actions.setTodo(newCurrentTodo));
 
   return (
     <tr
