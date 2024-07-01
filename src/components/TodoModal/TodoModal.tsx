@@ -6,26 +6,28 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 
 export const TodoModal: React.FC = () => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const { title, completed, userId, id } = useAppSelector(
+    state => state.currentTodo,
+  );
   const closeTodo = () => dispatch(currentTodoSlice.actions.clearTodo(null));
 
   useEffect(() => {
-    setLoading(true);
-    getUser(currentTodo.userId)
+    setIsLoading(true);
+    getUser(userId)
       .then(setUser)
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
-  }, [currentTodo.userId]);
+  }, [userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -34,7 +36,7 @@ export const TodoModal: React.FC = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${currentTodo.id}`}
+              {`Todo #${id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -48,11 +50,11 @@ export const TodoModal: React.FC = () => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {currentTodo.title}
+              {title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {currentTodo.completed ? (
+              {completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>

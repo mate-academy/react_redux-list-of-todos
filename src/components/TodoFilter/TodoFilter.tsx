@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { filterSlice } from '../../features/filter';
+
+enum Status {
+  All = 'all',
+  Completed = 'completed',
+  Active = 'active',
+}
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -11,6 +17,14 @@ export const TodoFilter: React.FC = () => {
   const clearQuery = () => dispatch(filterSlice.actions.clearQuery(null));
   const { query } = useAppSelector(state => state.filter);
 
+  const handleStatusChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setStatus(event.target.value);
+  };
+
+  const handleQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event?.target.value);
+  };
+
   return (
     <form
       className="field has-addons"
@@ -18,15 +32,12 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select
-            data-cy="statusSelect"
-            onChange={event => {
-              setStatus(event.target.value);
-            }}
-          >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select data-cy="statusSelect" onChange={handleStatusChange}>
+            {Object.entries(Status).map(([status, value]) => (
+              <option value={value} key={status}>
+                {status}
+              </option>
+            ))}
           </select>
         </span>
       </p>
@@ -38,9 +49,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={event => {
-            setQuery(event.target.value);
-          }}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

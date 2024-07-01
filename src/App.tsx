@@ -8,7 +8,7 @@ import { todosSlice } from './features/todos';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App = () => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ export const App = () => {
     dispatch(todosSlice.actions.setTodos(todos));
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     getTodos()
       .then(data => {
         setTodos(data);
@@ -24,7 +24,7 @@ export const App = () => {
       .catch(() => {
         setError('Something went wrong');
       })
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -39,7 +39,7 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {loading && !error ? <Loader /> : <TodoList />}
+              {isLoading && !error ? <Loader /> : <TodoList />}
             </div>
           </div>
         </div>
