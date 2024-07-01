@@ -1,7 +1,14 @@
 /* eslint-disable */
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../app/store';
+import { currentTodoSlice } from '../../features/currentTodo';
+import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const setTodo = (todo: Todo) =>
+    dispatch(currentTodoSlice.actions.setTodo(todo));
   return (
     <>
       <p className="notification is-warning">
@@ -36,7 +43,18 @@ export const TodoList: React.FC = () => {
             <td className="has-text-right is-vcentered">
               <button data-cy="selectButton" className="button" type="button">
                 <span className="icon">
-                  <i className="far fa-eye" />
+                  <i
+                    className="far fa-eye"
+                    onClick={() => {
+                      console.log('erferf');
+                      setTodo({
+                        id: 1,
+                        title: 'jgj',
+                        completed: false,
+                        userId: 5,
+                      });
+                    }}
+                  />
                 </span>
               </button>
             </td>
