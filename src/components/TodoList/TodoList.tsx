@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
 import { fetchTodosFailure, fetchTodosStart, fetchTodosSuccess } from '../../features/todos';
@@ -18,6 +18,7 @@ export const TodoList: React.FC = () => {
   const { todos, loading, error } = useSelector((state: RootState) => state.todos)
   const { query, status } = useSelector((state: RootState) => state.filter);
   const { currentTodo } = useSelector((state: RootState) => state.currentTodo)
+  const [openModal, setOpenModal] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +54,7 @@ export const TodoList: React.FC = () => {
   })
 
   const openCurrentTodo = async (todo: Todo) => {
+    setOpenModal(true)
     dispatch(fetchCurrentStart());
     try {
       const user = await getUser(todo.userId);
@@ -62,6 +64,10 @@ export const TodoList: React.FC = () => {
       console.error('Failed to fetch user', error);
     }
   };
+
+  const closeModal = () => {
+    setOpenModal(false)
+  }
 
   return (
     <div>
@@ -113,8 +119,9 @@ export const TodoList: React.FC = () => {
           ))}
         </tbody>
       </table>
-      {currentTodo && (
-        <TodoModal />
+
+      {openModal && (
+        <TodoModal onClose ={closeModal} />
       )}
 
     </div>

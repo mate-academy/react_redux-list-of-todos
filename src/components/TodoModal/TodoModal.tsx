@@ -4,17 +4,26 @@ import { AppDispatch, RootState } from '../../app/store';
 import { Loader } from '../Loader';
 import { clearCurrent } from '../../features/currentTodo';
 
-export const TodoModal: React.FC = () => {
+type Props = {
+  onClose: () => void;
+};
+
+export const TodoModal: React.FC<Props> = ({ onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { currentTodo, user, loading } = useSelector(
+  const { currentTodo, user, curentLoading } = useSelector(
     (state: RootState) => state.currentTodo,
   );
+
+  const closeModal = () => {
+    onClose();
+    dispatch(clearCurrent());
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {loading ? (
+      {curentLoading ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -30,7 +39,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(clearCurrent())}
+              onClick={() => closeModal()}
             />
           </header>
 

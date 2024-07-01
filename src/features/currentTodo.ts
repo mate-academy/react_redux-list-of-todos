@@ -5,13 +5,13 @@ import { User } from '../types/User';
 export interface CurrentTodo {
   currentTodo: Todo | null;
   user: User | null;
-  loading: boolean;
+  curentLoading: boolean;
 }
 
 const initialState: CurrentTodo = {
   currentTodo: null,
   user: null,
-  loading: false,
+  curentLoading: false,
 };
 
 const currentTodoSlice = createSlice({
@@ -21,7 +21,7 @@ const currentTodoSlice = createSlice({
     fetchCurrentStart(state) {
       const theState = state;
 
-      theState.loading = true;
+      theState.curentLoading = true;
       theState.currentTodo = null;
       theState.user = null;
     },
@@ -31,14 +31,14 @@ const currentTodoSlice = createSlice({
     ) {
       const theState = state;
 
-      theState.loading = false;
+      theState.curentLoading = false;
       theState.currentTodo = action.payload.todo;
       theState.user = action.payload.user;
     },
     fetchCurrentFailure(state) {
       const theState = state;
 
-      theState.loading = false;
+      theState.curentLoading = false;
     },
     clearCurrent(state) {
       const theState = state;
