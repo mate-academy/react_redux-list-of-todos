@@ -4,15 +4,14 @@ import { useEffect, useState } from 'react';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { Todo } from './types/Todo';
 import { getTodos } from './api';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from './app/store';
 import { todosSlice } from './features/todos';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const currentTodo = useSelector<RootState>(state => state.currentTodo);
-  const dispatch = useDispatch<AppDispatch>();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
   const setTodos = (todos: Todo[]) =>
     dispatch(todosSlice.actions.setTodos(todos));
 
@@ -39,7 +38,9 @@ export const App = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">{loading && !error ? <Loader /> : <TodoList />}</div>
+            <div className="block">
+              {loading && !error ? <Loader /> : <TodoList />}
+            </div>
           </div>
         </div>
       </div>
