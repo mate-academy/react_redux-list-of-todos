@@ -29,7 +29,7 @@ export const TodoList: React.FC = () => {
 
     if (query) {
       todosProcessed = todosProcessed.filter(todo =>
-        todo.title.toLocaleLowerCase().includes(query.toLocaleUpperCase()),
+        todo.title.toLowerCase().includes(query.toLowerCase()),
       );
     }
 
