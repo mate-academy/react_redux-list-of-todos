@@ -24,7 +24,7 @@ export const TableRow: React.FC<Props> = ({ todo }) => {
     >
       <td className="is-vcentered">{id}</td>
       <td className="is-vcentered">
-        {completed || (
+        {completed && (
           <span className="icon" data-cy="iconCompleted">
             <i className="fas fa-check" />
           </span>
@@ -34,8 +34,8 @@ export const TableRow: React.FC<Props> = ({ todo }) => {
       <td className="is-vcentered is-expanded">
         <p
           className={classNames(
-            { 'has-text-danger': completed },
-            { 'has-text-success': !completed },
+            { 'has-text-danger': !completed },
+            { 'has-text-success': completed },
           )}
         >
           {title}

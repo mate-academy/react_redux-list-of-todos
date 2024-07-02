@@ -17,7 +17,7 @@ export const TableBody: React.FC<Props> = ({ visibleTodos }) => {
   return (
     <tbody>
       {visibleTodos.map(todo => (
-        <TableRow todo={todo} key={todo.id} />
+        <TableRow todo={todo} key={todo.userId} />
       ))}
     </tbody>
   );

@@ -13,6 +13,8 @@ export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const { status, query } = useAppSelector(state => state.filter);
 
+  console.log(todos);
+
   const visibleTodos = useMemo(() => {
     let todosProcessed = [...todos];
 
