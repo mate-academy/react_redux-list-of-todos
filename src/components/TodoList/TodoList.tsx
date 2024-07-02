@@ -17,13 +17,12 @@ export const TodoList: React.FC = () => {
 
   const visibleTodos = useMemo(() => {
     let todosProcessed = [...todos];
-
     switch (status) {
       case Status.completed:
-        todosProcessed = todosProcessed.filter(todo => !todo.completed);
+        todosProcessed = todosProcessed.filter(todo => todo.completed);
         break;
       case Status.active:
-        todosProcessed = todosProcessed.filter(todo => todo.completed);
+        todosProcessed = todosProcessed.filter(todo => !todo.completed);
         break;
       default:
         break;

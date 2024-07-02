@@ -14,6 +14,8 @@ export const TableRow: React.FC<Props> = ({ todo }) => {
   const setTodo = (newCurrentTodo: Todo) =>
     dispatch(currentTodoSlice.actions.setTodo(newCurrentTodo));
 
+  const isTodoOpen = id === currentTodo?.id;
+
   return (
     <tr
       data-cy="todo"
@@ -48,8 +50,8 @@ export const TableRow: React.FC<Props> = ({ todo }) => {
             <i
               className={classNames(
                 'far',
-                { 'fa-eye-slash': id === currentTodo?.id },
-                { 'fa-eye': id !== currentTodo?.id },
+                { 'fa-eye-slash': isTodoOpen },
+                { 'fa-eye': isTodoOpen },
               )}
               onClick={() => setTodo({ id, title, completed, userId })}
             />

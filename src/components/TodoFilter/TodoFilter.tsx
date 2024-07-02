@@ -1,12 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { filterSlice } from '../../features/filter';
-
-enum Status {
-  All = 'all',
-  Completed = 'completed',
-  Active = 'active',
-}
+import { Status, filterSlice } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
