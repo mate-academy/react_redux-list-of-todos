@@ -51,7 +51,7 @@ export const TableRow: React.FC<Props> = ({ todo }) => {
               className={classNames(
                 'far',
                 { 'fa-eye-slash': isTodoOpen },
-                { 'fa-eye': isTodoOpen },
+                { 'fa-eye': !isTodoOpen },
               )}
               onClick={() => setTodo({ id, title, completed, userId })}
             />
