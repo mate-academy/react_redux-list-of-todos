@@ -1,9 +1,9 @@
+import { FilterState } from '../features/filter';
 import { Todo } from '../types/Todo';
 
 export const filterTodos = (
   todos: Todo[],
-  query: string,
-  chosenStatus: string,
+  { query, status }: FilterState,
 ): Todo[] => {
   return todos.filter(todo => {
     const preparedQuery = query
@@ -14,7 +14,7 @@ export const filterTodos = (
 
     const isQueryInTitle = todo.title.toLowerCase().includes(preparedQuery);
 
-    switch (chosenStatus) {
+    switch (status) {
       case 'completed':
         return todo.completed && isQueryInTitle;
 

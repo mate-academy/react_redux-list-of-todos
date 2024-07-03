@@ -1,7 +1,7 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, Slice, createSlice } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
-export const todosSlice = createSlice({
+export const todosSlice: Slice<Todo[]> = createSlice({
   name: 'todos',
   initialState: [] as Todo[],
   reducers: {
@@ -12,5 +12,4 @@ export const todosSlice = createSlice({
 });
 
 export const { addTodos } = todosSlice.actions;
-
 export default todosSlice.reducer;

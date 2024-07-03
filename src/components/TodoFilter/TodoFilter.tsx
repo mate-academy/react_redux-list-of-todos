@@ -1,4 +1,4 @@
-import { FC, memo } from 'react';
+import { FC } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import {
   changeQuery,
@@ -7,13 +7,13 @@ import {
   resetStatus,
 } from '../../features/filter';
 
-const TodoFilter: FC = memo(() => {
+const TodoFilter: FC = () => {
   const dispatch = useAppDispatch();
   const filter = useAppSelector(state => state.filter);
 
   const clearFilter = () => {
-    dispatch(resetQuery());
-    dispatch(resetStatus());
+    dispatch(resetQuery(''));
+    dispatch(resetStatus('all'));
   };
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,7 +68,7 @@ const TodoFilter: FC = memo(() => {
       </p>
     </form>
   );
-});
+};
 
 TodoFilter.displayName = 'TodoFilter';
 

@@ -1,24 +1,28 @@
 import classNames from 'classnames';
-import { FC, memo } from 'react';
+import { FC, useMemo } from 'react';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { setTodo } from '../../features/currentTodo';
+import { changeTodo } from '../../features/currentTodo';
+import { filterTodos } from '../../helpers/helpers';
 
-type TodoListProps = {
-  todos: Todo[];
-};
-
-const TodoList: FC<TodoListProps> = memo(({ todos }) => {
+const TodoList: FC = () => {
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
+  const filter = useAppSelector(state => state.filter);
+  const allTodos = useAppSelector(state => state.todos);
+
+  const filteredTodos = useMemo(
+    () => filterTodos(allTodos, filter),
+    [allTodos, filter],
+  );
 
   const selectTodo = (todo: Todo) => {
-    dispatch(setTodo(todo));
+    dispatch(changeTodo(todo));
   };
 
   return (
     <>
-      {!todos.length ? (
+      {!filteredTodos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -40,7 +44,7 @@ const TodoList: FC<TodoListProps> = memo(({ todos }) => {
           </thead>
 
           <tbody>
-            {todos.map(todo => (
+            {filteredTodos.map(todo => (
               <tr data-cy="todo" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
@@ -86,7 +90,7 @@ const TodoList: FC<TodoListProps> = memo(({ todos }) => {
       )}
     </>
   );
-});
+};
 
 TodoList.displayName = 'TodoList';
 

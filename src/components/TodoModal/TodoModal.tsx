@@ -3,7 +3,7 @@ import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { Loader } from '../Loader';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { setTodo } from '../../features/currentTodo';
+import { resetTodo } from '../../features/currentTodo';
 
 const TodoModal: FC = memo(() => {
   const [user, setUser] = useState<User | null>(null);
@@ -15,14 +15,14 @@ const TodoModal: FC = memo(() => {
   useEffect(() => {
     setIsLoading(true);
 
-    getUser(selectedTodo?.userId as number)
+    getUser(selectedTodo?.userId)
       .then(data => setUser(data))
       .catch(() => setUser(null))
       .finally(() => setIsLoading(false));
   }, [selectedTodo?.userId]);
 
   const closeModal = () => {
-    dispatch(setTodo(null));
+    dispatch(resetTodo(null));
   };
 
   return (
