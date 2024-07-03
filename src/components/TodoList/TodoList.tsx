@@ -1,15 +1,22 @@
 import classNames from 'classnames';
 import { FC, memo } from 'react';
 import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setTodo } from '../../features/currentTodo';
 
 type TodoListProps = {
   todos: Todo[];
-  selectedTodoId: number;
-  onSelect: (selectedTodoId: number) => void;
 };
 
-const TodoList: FC<TodoListProps> = memo(
-  ({ todos, selectedTodoId, onSelect }) => (
+const TodoList: FC<TodoListProps> = memo(({ todos }) => {
+  const dispatch = useAppDispatch();
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+
+  const selectTodo = (todo: Todo) => {
+    dispatch(setTodo(todo));
+  };
+
+  return (
     <>
       {!todos.length ? (
         <p className="notification is-warning">
@@ -60,13 +67,13 @@ const TodoList: FC<TodoListProps> = memo(
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => onSelect(todo.id)}
+                    onClick={() => selectTodo(todo)}
                   >
                     <span className="icon">
                       <i
                         className={classNames('far', {
-                          'fa-eye': selectedTodoId !== todo.id,
-                          'fa-eye-slash': selectedTodoId === todo.id,
+                          'fa-eye': selectedTodo?.id !== todo.id,
+                          'fa-eye-slash': selectedTodo?.id === todo.id,
                         })}
                       />
                     </span>
@@ -78,8 +85,8 @@ const TodoList: FC<TodoListProps> = memo(
         </table>
       )}
     </>
-  ),
-);
+  );
+});
 
 TodoList.displayName = 'TodoList';
 
