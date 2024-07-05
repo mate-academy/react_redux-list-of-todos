@@ -18,12 +18,15 @@ export const todosSlice: Slice<TodosState> = createSlice({
   initialState,
   reducers: {
     setTodos: (state, action: PayloadAction<Todo[]>) => {
+      /* eslint-disable-next-line no-param-reassign */
       state.todos = action.payload;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
+      /* eslint-disable-next-line no-param-reassign */
       state.loading = action.payload;
     },
     setError: (state, action: PayloadAction<string>) => {
+      /* eslint-disable-next-line no-param-reassign */
       state.error = action.payload;
     },
   },

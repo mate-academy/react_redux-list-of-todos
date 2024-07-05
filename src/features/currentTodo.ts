@@ -14,9 +14,11 @@ export const currentTodoSlice: Slice<CurrentTodoState> = createSlice({
   initialState,
   reducers: {
     setCurrentTodo: (state, action: PayloadAction<Todo>) => {
+      /* eslint-disable-next-line no-param-reassign */
       state.currentTodo = action.payload;
     },
     clearCurrentTodo: state => {
+      /* eslint-disable-next-line no-param-reassign */
       state.currentTodo = null;
     },
   },
