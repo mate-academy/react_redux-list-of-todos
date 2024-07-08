@@ -11,38 +11,38 @@ import { Todo } from './types/Todo';
 export const App = () => {
   const dispatch = useDispatch();
   const { todos, loading, error } = useAppSelector(state => state.todos);
-  const { currentTodo } = useAppSelector(state => state.currentTodo)
-  const { status, query } = useAppSelector(state => state.filter)
+  const { currentTodo } = useAppSelector(state => state.currentTodo);
+  const { status, query } = useAppSelector(state => state.filter);
 
   useEffect(() => {
-    dispatch(setLoading(true))
+    dispatch(setLoading(true));
 
     getTodos()
       .then(todosFromApi => dispatch(setTodos(todosFromApi)))
       .catch(() => dispatch(setError('Error fetch data')))
-      .finally(() => dispatch(setLoading(false)))
-  }, [])
+      .finally(() => dispatch(setLoading(false)));
+  }, [dispatch]);
 
   const filteredTodos = useMemo(() => {
-    let sorted: Todo[] = []
+    let sorted: Todo[] = [];
 
     switch (status) {
       case 'active':
-        sorted = todos.filter(todo => !todo.completed)
+        sorted = todos.filter(todo => !todo.completed);
         break;
 
       case 'completed':
-        sorted = todos.filter(todo => todo.completed)
+        sorted = todos.filter(todo => todo.completed);
         break;
 
       default:
-        sorted = todos
+        sorted = todos;
     }
 
-    return sorted.filter(todo => 
-      todo.title.toLowerCase().includes(query.toLowerCase().trim())
-    )
-  }, [todos, status, query])
+    return sorted.filter(todo =>
+      todo.title.toLowerCase().includes(query.toLowerCase().trim()),
+    );
+  }, [todos, status, query]);
 
   return (
     <>
@@ -66,5 +66,5 @@ export const App = () => {
 
       {currentTodo && <TodoModal />}
     </>
-  )
-}
+  );
+};

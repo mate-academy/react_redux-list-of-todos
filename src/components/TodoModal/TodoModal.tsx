@@ -7,29 +7,29 @@ import { getUser } from '../../api';
 import { clearCurrentTodo } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null)
-  const [load, setLoad] = useState(false)
+  const [user, setUser] = useState<User | null>(null);
+  const [load, setLoad] = useState(false);
 
-  const dispatch = useDispatch()
-  const { currentTodo } = useAppSelector(state => state.currentTodo)
+  const dispatch = useDispatch();
+  const { currentTodo } = useAppSelector(state => state.currentTodo);
   const { id, title, completed, userId } = currentTodo ?? {
     id: 0,
     userId: 0,
     title: '',
-    completed: false
-  }
+    completed: false,
+  };
 
   const closeModal = () => {
-    dispatch(clearCurrentTodo(null))
-  }
+    dispatch(clearCurrentTodo(null));
+  };
 
   useEffect(() => {
-    setLoad(true)
+    setLoad(true);
 
     getUser(userId)
       .then(setUser)
-      .finally(() => setLoad(false))
-  }, [])
+      .finally(() => setLoad(false));
+  }, [userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -48,7 +48,12 @@ export const TodoModal: React.FC = () => {
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-            <button type="button" className="delete" data-cy="modal-close" onClick={closeModal} />
+            <button
+              type="button"
+              className="delete"
+              data-cy="modal-close"
+              onClick={closeModal}
+            />
           </header>
 
           <div className="modal-card-body">
@@ -58,7 +63,9 @@ export const TodoModal: React.FC = () => {
 
             <p className="block" data-cy="modal-user">
               {/* For not completed */}
-              {!completed && <strong className="has-text-danger">Planned</strong>}
+              {!completed && (
+                <strong className="has-text-danger">Planned</strong>
+              )}
 
               {/* For completed */}
               {completed && <strong className="has-text-success">Done</strong>}

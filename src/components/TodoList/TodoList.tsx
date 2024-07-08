@@ -11,12 +11,12 @@ interface Props {
 }
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
-  const dispatch = useDispatch()
-  const { currentTodo } = useAppSelector(state => state.currentTodo)
+  const dispatch = useDispatch();
+  const { currentTodo } = useAppSelector(state => state.currentTodo);
 
   const addCuurentTodo = (todo: Todo) => {
-    dispatch(setCurrentTodo(todo))
-  }
+    dispatch(setCurrentTodo(todo));
+  };
 
   return (
     <>
@@ -54,15 +54,24 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                 </td>
 
                 <td className="is-vcentered is-expanded">
-                  <p className={classNames({
-                    "has-text-success": todo.completed,
-                    "has-text-danger": !todo.completed
-                  })}>{todo.title}</p>
+                  <p
+                    className={classNames({
+                      'has-text-success': todo.completed,
+                      'has-text-danger': !todo.completed,
+                    })}
+                  >
+                    {todo.title}
+                  </p>
                 </td>
 
                 <td className="has-text-right is-vcentered">
-                  <button data-cy="selectButton" className="button" type="button" onClick={() => addCuurentTodo(todo)}>
-                  <span className="icon">
+                  <button
+                    data-cy="selectButton"
+                    className="button"
+                    type="button"
+                    onClick={() => addCuurentTodo(todo)}
+                  >
+                    <span className="icon">
                       <i
                         className={classNames('far', {
                           'fa-eye': currentTodo?.id !== todo.id,
@@ -76,8 +85,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
             ))}
           </tbody>
         </table>
-      )
-      }
+      )}
     </>
   );
 };

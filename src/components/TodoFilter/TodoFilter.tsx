@@ -5,22 +5,22 @@ import { setQuery, setStatus } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const dispatch = useDispatch()
-  const { query, status } = useAppSelector(state => state.filter)
+  const dispatch = useDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
 
-  const memoStatus = useMemo(() => status, [status])
-  const memoQuery = useMemo(() => query, [query])
+  const memoStatus = useMemo(() => status, [status]);
+  const memoQuery = useMemo(() => query, [query]);
 
   const setFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setStatus(event.target.value as Status))
+    dispatch(setStatus(event.target.value as Status));
   };
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setQuery(event.target.value))
+    dispatch(setQuery(event.target.value));
   };
 
   const clearQuery = () => {
-    dispatch(setQuery(''))
+    dispatch(setQuery(''));
   };
 
   return (
@@ -30,7 +30,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect" onChange={setFilter} value={memoStatus}>
+          <select
+            data-cy="statusSelect"
+            onChange={setFilter}
+            value={memoStatus}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
