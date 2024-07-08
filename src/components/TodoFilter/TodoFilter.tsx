@@ -1,6 +1,28 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
+import { setQuery, setStatus } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch()
+  const { query, status } = useAppSelector(state => state.filter)
+
+  const memoStatus = useMemo(() => status, [status])
+  const memoQuery = useMemo(() => query, [query])
+
+  const setFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setStatus(event.target.value as Status))
+  };
+
+  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setQuery(event.target.value))
+  };
+
+  const clearQuery = () => {
+    dispatch(setQuery(''))
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +30,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" onChange={setFilter} value={memoStatus}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +44,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={memoQuery}
+          onChange={handleChangeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -29,11 +53,14 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {query.length > 0 && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={clearQuery}
+            />
+          )}
         </span>
       </p>
     </form>
