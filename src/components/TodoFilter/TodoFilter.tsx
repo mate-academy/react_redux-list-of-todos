@@ -16,12 +16,18 @@ export const TodoFilter: React.FC = () => {
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
 
-    if (value === 'all') {
-      dispatch(statusAll());
-    } else if (value === 'active') {
-      dispatch(statusActive());
-    } else if (value === 'completed') {
-      dispatch(statusCompleted());
+    switch (value) {
+      case 'all':
+        dispatch(statusAll());
+        break;
+      case 'active':
+        dispatch(statusActive());
+        break;
+      case 'completed':
+        dispatch(statusCompleted());
+        break;
+      default:
+        break;
     }
   };
 

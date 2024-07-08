@@ -101,19 +101,19 @@ export const TodoList: React.FC = () => {
                 </p>
               </td>
               <td className="has-text-right is-vcentered">
-                  <button
-                    data-cy="selectButton"
-                    className="button"
-                    type="button"
-                    onClick={() => openCurrentTodo(todo)}
-                  >
-                    <span className="icon">
-                    <i className={classNames('far', {
-                      'fa-eye': !(currentTodo === todo),
-                      'fa-eye-slash': currentTodo === todo,
-                    })} />
-                    </span>
-                  </button>
+                <button
+                  data-cy="selectButton"
+                  className="button"
+                  type="button"
+                  onClick={() => openCurrentTodo(todo)}
+                >
+                  <span className="icon">
+                  <i className={classNames('far', {
+                    'fa-eye': !(currentTodo === todo),
+                    'fa-eye-slash': currentTodo === todo,
+                  })} />
+                  </span>
+                </button>
               </td>
             </tr>
           ))}
