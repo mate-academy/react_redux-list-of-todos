@@ -1,43 +1,49 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useAppDispatch, useAppSelector } from './app/hooks';
 import { useEffect, useMemo, useState } from 'react';
-import { todosSlice } from './features/todos';
 import { getTodos } from './api';
-import { Status } from './types/Status';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { todosSlice } from './features/todos';
+import { Todo } from './types/Todo';
 import React from 'react';
 
 export const App = () => {
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [query, setQuery] = useState('');
+
   const todos = useAppSelector(state => state.todos);
-  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const filter = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     getTodos()
-      .then(data => dispatch(todosSlice.actions.setTodos(data)))
-      .finally(() => setLoading(false));
+      .then((data: Todo[]) => dispatch(todosSlice.actions.setTodos(data)))
+      .finally(() => setIsLoading(false));
   }, [dispatch]);
 
-  const filteredTodos = useMemo(() => {
-    return todos
-      .filter(todo => {
-        switch (filter.status) {
-          case Status.Active:
-            return !todo.completed;
-          case Status.Completed:
-            return todo.completed;
-          default:
-            return true;
-        }
-      })
-      .filter(todo =>
-        todo.title.toLowerCase().includes(filter.query.toLowerCase()),
-      );
-  }, [todos, filter]);
+  const preparedTodos = useMemo(() => {
+    let sortedTodos = [];
+
+    switch (filter) {
+      case 'active':
+        sortedTodos = todos.filter(todo => !todo.completed);
+        break;
+
+      case 'completed':
+        sortedTodos = todos.filter(todo => todo.completed);
+        break;
+
+      default:
+        sortedTodos = todos;
+    }
+
+    return sortedTodos.filter(todo =>
+      todo.title.toLowerCase().includes(query.toLowerCase().trim()),
+    );
+  }, [filter, query, todos]);
 
   return (
     <>
@@ -47,18 +53,17 @@ export const App = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter />
+              <TodoFilter setQuery={setQuery} />
             </div>
 
             <div className="block">
-              {loading && <Loader />}
-              {!loading && <TodoList todos={filteredTodos} />}
+              {isLoading && <Loader />}
+              <TodoList todos={preparedTodos} />
             </div>
           </div>
         </div>
       </div>
-
-      {selectedTodo && <TodoModal />}
+      {currentTodo && <TodoModal />}
     </>
   );
 };
