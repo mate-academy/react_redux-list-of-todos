@@ -6,6 +6,7 @@ import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { todosSlice } from './features/todos';
 import { Todo } from './types/Todo';
+import React from 'react';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
