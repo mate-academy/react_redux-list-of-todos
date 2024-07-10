@@ -6,7 +6,7 @@ import { User } from './types/User';
 import { Todo } from './types/Todo';
 import { useDispatch } from 'react-redux';
 import { getTodos } from './api';
-import { actions } from './features/todos';
+import { todosSlice } from './features/todos';
 import { useAppSelector } from './app/hooks';
 
 export const App = () => {
@@ -24,57 +24,35 @@ export const App = () => {
   useEffect(() => {
     getTodos()
       .then(newTodos => {
-        dispatch(actions.loadTodos(newTodos));
+        dispatch(todosSlice.actions.loadTodos(newTodos));
       })
       .finally(() => setIsloading(false));
   }, [dispatch]);
 
-  // const filterTodos = useMemo(() => {
-  //   (currentTodos: Todo[]) => {
-  //     if (query) {
-  //       return currentTodos
-  //         .filter(todo => {
-  //           switch (status) {
-  //             case 'all':
-  //               return currentTodos;
+  const filterTodos = useMemo(() => {
+    return (currentTodos: Todo[]) => {
+      if (query) {
+        return currentTodos
+          .filter(todo => {
+            switch (status) {
+              case 'all':
+                return currentTodos;
 
-  //             case 'active':
-  //               return !todo.completed;
+              case 'active':
+                return !todo.completed;
 
-  //             case 'completed':
-  //               return todo.completed;
+              case 'completed':
+                return todo.completed;
 
-  //             default:
-  //               return;
-  //           }
-  //         })
-  //         .filter(todo =>
-  //           todo.title.toLowerCase().includes(query.toLowerCase()),
-  //         );
-  //     } else {
-  //       return currentTodos.filter(todo => {
-  //         switch (status) {
-  //           case 'all':
-  //             return currentTodos;
-
-  //           case 'active':
-  //             return !todo.completed;
-
-  //           case 'completed':
-  //             return todo.completed;
-
-  //           default:
-  //             return;
-  //         }
-  //       });
-  //     }
-  //   };
-  // }, [query, status]);
-
-  const filterTodos = (currentTodos: Todo[]) => {
-    if (query) {
-      return currentTodos
-        .filter(todo => {
+              default:
+                return;
+            }
+          })
+          .filter(todo =>
+            todo.title.toLowerCase().includes(query.toLowerCase()),
+          );
+      } else {
+        return currentTodos.filter(todo => {
           switch (status) {
             case 'all':
               return currentTodos;
@@ -88,26 +66,10 @@ export const App = () => {
             default:
               return;
           }
-        })
-        .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
-    } else {
-      return currentTodos.filter(todo => {
-        switch (status) {
-          case 'all':
-            return currentTodos;
-
-          case 'active':
-            return !todo.completed;
-
-          case 'completed':
-            return todo.completed;
-
-          default:
-            return;
-        }
-      });
-    }
-  };
+        });
+      }
+    };
+  }, [query, status]);
 
   const filteredTodos = useMemo(
     () => filterTodos(todosFromServer),

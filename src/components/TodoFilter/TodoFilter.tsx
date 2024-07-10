@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { actions } from '../../features/filter';
+import { filterSlice } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
@@ -10,10 +10,10 @@ export const TodoFilter: React.FC = () => {
   const query = useAppSelector(state => state.filter.query);
 
   const statusChange = (newStatus: Status) =>
-    dispatch(actions.setStatus(newStatus));
+    dispatch(filterSlice.actions.setStatus(newStatus));
 
   const queryChange = (newQuery: string) =>
-    dispatch(actions.setQuery(newQuery));
+    dispatch(filterSlice.actions.setQuery(newQuery));
 
   return (
     <form

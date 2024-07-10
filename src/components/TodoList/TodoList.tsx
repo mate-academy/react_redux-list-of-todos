@@ -5,7 +5,6 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { Todo } from '../../types/Todo';
 
-
 type Props = {
   setIsTodoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -23,7 +22,6 @@ export const TodoList: React.FC<Props> = ({
   setIsUserloaded,
   todos,
 }) => {
-
   return (
     <>
       {todos.length === 0 ? (
