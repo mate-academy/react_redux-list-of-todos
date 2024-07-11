@@ -50,7 +50,7 @@ export const TodoList: React.FC<Props> = ({ setSelectedUserId }) => {
 
   return (
     <>
-      {filteredTodos.length === 0 ? (
+      {!filteredTodos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -72,11 +72,11 @@ export const TodoList: React.FC<Props> = ({ setSelectedUserId }) => {
           </thead>
 
           <tbody>
-            {filteredTodos.map(todo => (
-              <tr data-cy="todo" key={todo.id}>
-                <td className="is-vcentered">{todo.id}</td>
+            {filteredTodos.map(({ id, title, completed, userId }) => (
+              <tr data-cy="todo" key={id}>
+                <td className="is-vcentered">{id}</td>
                 <td className="is-vcentered">
-                  {todo.completed && (
+                  {completed && (
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
@@ -86,11 +86,11 @@ export const TodoList: React.FC<Props> = ({ setSelectedUserId }) => {
                 <td className="is-vcentered is-expanded">
                   <p
                     className={cn({
-                      'has-text-danger': !todo.completed,
-                      'has-text-success': todo.completed,
+                      'has-text-danger': !completed,
+                      'has-text-success': completed,
                     })}
                   >
-                    {todo.title}
+                    {title}
                   </p>
                 </td>
 
@@ -100,15 +100,15 @@ export const TodoList: React.FC<Props> = ({ setSelectedUserId }) => {
                     className="button"
                     type="button"
                     onClick={() => {
-                      setSelectedUserId(todo.userId);
-                      handleSelectTodo(todo);
+                      setSelectedUserId(userId);
+                      handleSelectTodo({ id, title, completed, userId });
                     }}
                   >
                     <span className="icon">
                       <i
                         className={cn('far', {
-                          'fa-eye': todo.id !== selectedTodo?.id,
-                          'fa-eye-slash': todo.id === selectedTodo?.id,
+                          'fa-eye': id !== selectedTodo?.id,
+                          'fa-eye-slash': id === selectedTodo?.id,
                         })}
                       />
                     </span>
