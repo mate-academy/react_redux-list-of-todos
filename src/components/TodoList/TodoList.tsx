@@ -1,30 +1,56 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useMemo } from 'react';
 import cn from 'classnames';
-import { User } from '../../types/User';
-import { getUser } from '../../api';
 import { Todo } from '../../types/Todo';
+import { useAppSelector } from '../../app/hooks';
+import { useDispatch } from 'react-redux';
+import { currentTodoSlice } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 type Props = {
-  setIsTodoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
-  setSelectedTodo: React.Dispatch<React.SetStateAction<Todo | null>>;
-  selectedTodo: Todo | null;
-  setIsUserloaded: React.Dispatch<React.SetStateAction<boolean>>;
-  todos: Todo[];
+  setSelectedUserId: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-export const TodoList: React.FC<Props> = ({
-  setIsTodoModalOpen,
-  setSelectedUser,
-  setSelectedTodo,
-  selectedTodo,
-  setIsUserloaded,
-  todos,
-}) => {
+export const TodoList: React.FC<Props> = ({ setSelectedUserId }) => {
+  const dispatch = useDispatch();
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const status = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
+  const todosFromServer = useAppSelector(state => state.todos);
+
+  const filterTodos = useMemo(() => {
+    return (currentTodos: Todo[]) => {
+      return currentTodos
+        .filter(todo => {
+          switch (status) {
+            case Status.all:
+              return currentTodos;
+
+            case Status.active:
+              return !todo.completed;
+
+            case Status.completed:
+              return todo.completed;
+
+            default:
+              return;
+          }
+        })
+        .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
+    };
+  }, [query, status]);
+
+  const filteredTodos = useMemo(
+    () => filterTodos(todosFromServer),
+    [filterTodos, todosFromServer],
+  );
+
+  const handleSelectTodo = (newTodo: Todo | null) =>
+    dispatch(currentTodoSlice.actions.setCurrentTodo(newTodo));
+
   return (
     <>
-      {todos.length === 0 ? (
+      {filteredTodos.length === 0 ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -46,7 +72,7 @@ export const TodoList: React.FC<Props> = ({
           </thead>
 
           <tbody>
-            {todos.map(todo => (
+            {filteredTodos.map(todo => (
               <tr data-cy="todo" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
@@ -74,11 +100,8 @@ export const TodoList: React.FC<Props> = ({
                     className="button"
                     type="button"
                     onClick={() => {
-                      getUser(todo.userId)
-                        .then(setSelectedUser)
-                        .finally(() => setIsUserloaded(true));
-                      setSelectedTodo(todo);
-                      setIsTodoModalOpen(true);
+                      setSelectedUserId(todo.userId);
+                      handleSelectTodo(todo);
                     }}
                   >
                     <span className="icon">

@@ -1,32 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
-import { User } from '../../types/User';
+import { getUser } from '../../api';
+import { useAppSelector } from '../../app/hooks';
+import { useDispatch } from 'react-redux';
+import { currentTodoSlice } from '../../features/currentTodo';
+import { currentUserSlice } from '../../features/currentUser';
 
 type Props = {
-  setIsTodoModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
-  setSelectedTodo: React.Dispatch<React.SetStateAction<Todo | null>>;
-  selectedTodo: Todo | null;
-  selectedUser: User | null;
-  setIsUserloaded: React.Dispatch<React.SetStateAction<boolean>>;
-  isUserLoaded: boolean;
+  selectedUserId: number | null;
 };
 
-export const TodoModal: React.FC<Props> = ({
-  setIsTodoModalOpen,
-  setSelectedUser,
-  setSelectedTodo,
-  selectedTodo,
-  selectedUser,
-  setIsUserloaded,
-  isUserLoaded,
-}) => {
+export const TodoModal: React.FC<Props> = ({ selectedUserId }) => {
+  const dispatch = useDispatch();
+
+  const handleSelectTodo = (currentTodo: Todo | null) =>
+    dispatch(currentTodoSlice.actions.setCurrentTodo(currentTodo));
+
+  const handleSelectUser = (currentUser: Todo | null) =>
+    dispatch(currentUserSlice.actions.setCurrentUser(currentUser));
+
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+
+  const selectedUser = useAppSelector(state => state.currentUser);
+
+  useEffect(() => {
+    if (selectedUserId) {
+      getUser(selectedUserId).then(currentUser => {
+        dispatch(currentUserSlice.actions.setCurrentUser(currentUser));
+      });
+    }
+  }, [dispatch, selectedUserId]);
+
+  const handleModalClose = () => {
+    handleSelectUser(null);
+    handleSelectTodo(null);
+  };
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {!isUserLoaded ? (
+      {!selectedUser ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -43,12 +58,7 @@ export const TodoModal: React.FC<Props> = ({
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => {
-                setIsTodoModalOpen(false);
-                setSelectedUser(null);
-                setSelectedTodo(null);
-                setIsUserloaded(false);
-              }}
+              onClick={handleModalClose}
             />
           </header>
 
@@ -64,9 +74,7 @@ export const TodoModal: React.FC<Props> = ({
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={`mailto:${selectedUser?.email}Sincere@april.biz`}>
-                {selectedUser?.name}
-              </a>
+              <a href={`mailto:${selectedUser?.email}`}>{selectedUser?.name}</a>
             </p>
           </div>
         </div>

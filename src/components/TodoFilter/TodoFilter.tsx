@@ -9,10 +9,10 @@ export const TodoFilter: React.FC = () => {
   const status = useAppSelector(state => state.filter.status);
   const query = useAppSelector(state => state.filter.query);
 
-  const statusChange = (newStatus: Status) =>
+  const handleStatusChange = (newStatus: Status) =>
     dispatch(filterSlice.actions.setStatus(newStatus));
 
-  const queryChange = (newQuery: string) =>
+  const handleQueryChange = (newQuery: string) =>
     dispatch(filterSlice.actions.setQuery(newQuery));
 
   return (
@@ -26,7 +26,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="statusSelect"
             value={status}
             onChange={e => {
-              statusChange(e.target.value as Status);
+              handleStatusChange(e.target.value as Status);
             }}
           >
             <option value={Status.all}>All</option>
@@ -44,7 +44,7 @@ export const TodoFilter: React.FC = () => {
           placeholder="Search..."
           value={query}
           onChange={e => {
-            queryChange(e.target.value);
+            handleQueryChange(e.target.value);
           }}
         />
         <span className="icon is-left">
@@ -58,7 +58,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => queryChange('')}
+              onClick={() => handleQueryChange('')}
             />
           </span>
         )}

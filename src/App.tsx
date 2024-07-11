@@ -1,9 +1,7 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import React, { useEffect, useMemo, useState } from 'react';
-import { User } from './types/User';
-import { Todo } from './types/Todo';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getTodos } from './api';
 import { todosSlice } from './features/todos';
@@ -11,15 +9,12 @@ import { useAppSelector } from './app/hooks';
 
 export const App = () => {
   const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isLoading, setIsloading] = useState(true);
-  const todosFromServer = useAppSelector(state => state.todos);
-  const status = useAppSelector(state => state.filter.status);
-  const query = useAppSelector(state => state.filter.query);
+
+  const selectedTodo = useAppSelector(state => state.currentTodo);
 
   const dispatch = useDispatch();
-  const [isUserLoaded, setIsUserloaded] = useState(false);
 
   useEffect(() => {
     getTodos()
@@ -29,52 +24,13 @@ export const App = () => {
       .finally(() => setIsloading(false));
   }, [dispatch]);
 
-  const filterTodos = useMemo(() => {
-    return (currentTodos: Todo[]) => {
-      if (query) {
-        return currentTodos
-          .filter(todo => {
-            switch (status) {
-              case 'all':
-                return currentTodos;
-
-              case 'active':
-                return !todo.completed;
-
-              case 'completed':
-                return todo.completed;
-
-              default:
-                return;
-            }
-          })
-          .filter(todo =>
-            todo.title.toLowerCase().includes(query.toLowerCase()),
-          );
-      } else {
-        return currentTodos.filter(todo => {
-          switch (status) {
-            case 'all':
-              return currentTodos;
-
-            case 'active':
-              return !todo.completed;
-
-            case 'completed':
-              return todo.completed;
-
-            default:
-              return;
-          }
-        });
-      }
-    };
-  }, [query, status]);
-
-  const filteredTodos = useMemo(
-    () => filterTodos(todosFromServer),
-    [filterTodos, todosFromServer],
-  );
+  useEffect(() => {
+    if (selectedTodo) {
+      setIsTodoModalOpen(true);
+    } else {
+      setIsTodoModalOpen(false);
+    }
+  }, [selectedTodo]);
 
   return (
     <div className="section">
@@ -89,24 +45,9 @@ export const App = () => {
                 <TodoFilter />
               </div>
               <div className="block">
-                <TodoList
-                  setIsTodoModalOpen={setIsTodoModalOpen}
-                  setSelectedUser={setSelectedUser}
-                  setSelectedTodo={setSelectedTodo}
-                  selectedTodo={selectedTodo}
-                  setIsUserloaded={setIsUserloaded}
-                  todos={filteredTodos}
-                />
+                <TodoList setSelectedUserId={setSelectedUserId} />
                 {isTodoModalOpen && (
-                  <TodoModal
-                    setIsTodoModalOpen={setIsTodoModalOpen}
-                    setSelectedUser={setSelectedUser}
-                    setSelectedTodo={setSelectedTodo}
-                    selectedUser={selectedUser}
-                    selectedTodo={selectedTodo}
-                    setIsUserloaded={setIsUserloaded}
-                    isUserLoaded={isUserLoaded}
-                  />
+                  <TodoModal selectedUserId={selectedUserId} />
                 )}
               </div>
             </>
