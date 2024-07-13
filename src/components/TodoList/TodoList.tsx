@@ -1,18 +1,40 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Todo } from '../../types/Todo';
 import cn from 'classnames';
+import { currentTodoSlice } from '../../features/currentTodo';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
-type Props = {
-  todos: Todo[];
-  selectedTodoId?: number;
-  onTodoSelected: (todo: Todo) => void;
-};
+export const TodoList: React.FC = () => {
+  const dispatch = useDispatch();
+  const todos = useAppSelector(state => state.todos);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
 
-export const TodoList: React.FC<Props> = ({
-  todos,
-  selectedTodoId,
-  onTodoSelected,
-}) => {
+  const setSelectedTodo = (todo: Todo) =>
+    dispatch(currentTodoSlice.actions.setSelectedTodo(todo));
+
+  const filteredTodos = useMemo(() => {
+    return todos
+      .filter(todo => {
+        switch (status) {
+          case Status.completed:
+            return todo.completed;
+
+          case Status.active:
+            return !todo.completed;
+
+          default:
+            return true;
+        }
+      })
+      .filter(todo =>
+        todo.title.toLowerCase().trim().includes(query.trim().toLowerCase()),
+      );
+  }, [query, todos, status]);
+
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -29,11 +51,11 @@ export const TodoList: React.FC<Props> = ({
       </thead>
 
       <tbody>
-        {todos.map(todo => (
+        {filteredTodos.map(todo => (
           <tr
             data-cy="todo"
             className={cn({
-              'has-background-info-light': selectedTodoId === todo.id,
+              'has-background-info-light': selectedTodo?.id === todo.id,
             })}
             key={todo.id}
           >
@@ -60,10 +82,10 @@ export const TodoList: React.FC<Props> = ({
                 data-cy="selectButton"
                 className="button"
                 type="button"
-                onClick={() => onTodoSelected(todo)}
+                onClick={() => setSelectedTodo(todo)}
               >
                 <span className="icon">
-                  {selectedTodoId === todo.id ? (
+                  {selectedTodo?.id === todo.id ? (
                     <i className="far fa-eye-slash" />
                   ) : (
                     <i className="far fa-eye" />

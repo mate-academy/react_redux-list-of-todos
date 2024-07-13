@@ -1,20 +1,23 @@
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
-
-type Props = {
-  query: string;
-  onQueryChange: (query: string) => void;
-  status: Status;
-  setStatus: (status: Status) => void;
-};
+import filterSlice from '../../features/filter';
 
 const options = ['All', 'Active', 'Completed'];
 
-export const TodoFilter: React.FC<Props> = ({
-  query,
-  onQueryChange,
-  status,
-  setStatus,
-}) => {
+export const TodoFilter: React.FC = () => {
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
+  const dispatch = useDispatch();
+
+  const setQuery = (value: string) => {
+    dispatch(filterSlice.actions.setQuery(value));
+  };
+
+  const setStatus = (value: Status) => {
+    dispatch(filterSlice.actions.setStatus(value));
+  };
+
   return (
     <form className="field has-addons">
       <p className="control">
@@ -49,7 +52,7 @@ export const TodoFilter: React.FC<Props> = ({
           value={query}
           className="input"
           placeholder="Search..."
-          onChange={event => onQueryChange(event.target.value)}
+          onChange={event => setQuery(event.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -62,7 +65,7 @@ export const TodoFilter: React.FC<Props> = ({
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => onQueryChange('')}
+              onClick={() => setQuery('')}
             />
           </span>
         )}
