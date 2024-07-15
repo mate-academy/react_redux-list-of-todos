@@ -9,6 +9,16 @@ import { Todo } from '../types/Todo';
 
 // };
 
+type SetTodosAction = {
+  type: 'todos/SET';
+  payload: Todo[];
+};
+
+const setTodos = (value: Todo[]): SetTodosAction => ({
+  type: 'todos/SET',
+  payload: value,
+});
+
 export const todosSlice: Slice<Todo[]> = createSlice({
   name: 'todos',
   initialState: [] as Todo[],
@@ -18,5 +28,7 @@ export const todosSlice: Slice<Todo[]> = createSlice({
     },
   },
 });
+
+export const actions = { setTodos };
 
 export const { fetchTodos } = todosSlice.actions;

@@ -43,13 +43,12 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {visibleTodos.length === 0 && (
+      {!visibleTodos.length && query.length > 0 ? (
+
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
-      )}
-
-      {!!visibleTodos.length && (
+      ) : ( !!visibleTodos.length && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -113,7 +112,8 @@ export const TodoList: React.FC = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+      )
       )}
     </>
   );
