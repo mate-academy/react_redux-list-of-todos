@@ -6,15 +6,17 @@ import { todosSlice } from '../../features/todos';
 import cn from 'classnames';
 import { currentTodoSlice } from '../../features/currentTodo';
 import React from 'react';
+import { Status } from '../../types/Status';
+import { Todo } from '../../types/Todo';
 
-function filterTodos(todos: any, query: string, status: string) {
+function filterTodos(todos: Todo[], query: string, status: Status) {
   let filteredTodos = todos;
   if (query) {
     filteredTodos = todos.filter((todo: any) =>
       todo.title.toLowerCase().includes(query.toLowerCase()),
     );
   }
-  if (status !== 'all') {
+  if (status !== Status.All) {
     filteredTodos = filteredTodos.filter(
       (todo: any) => todo.completed === (status === 'completed'),
     );
@@ -66,7 +68,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {visibleTodos.map((todo: any) => (
+            {visibleTodos.map(todo => (
               <tr
                 data-cy="todo"
                 key={todo.id}
@@ -101,9 +103,10 @@ export const TodoList: React.FC = () => {
                     <span className="icon">
                       <i
                         className={
-                          currentTodo?.id !== todo.id
-                            ? 'far fa-eye'
-                            : 'far fa-eye-slash'
+                          cn({
+                            'far fa-eye': currentTodo?.id !== todo.id,
+                            'far fa-eye-slash': currentTodo?.id === todo.id,
+                          })
                         }
                       />
                     </span>

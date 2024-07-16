@@ -6,7 +6,7 @@ export const filterBy = (todos: Todo[], status: Status, query: string) => {
     const { completed, title } = todo;
 
     switch (status) {
-      case 'active': {
+      case Status.Active: {
         if (completed) {
           return;
         }
@@ -14,7 +14,7 @@ export const filterBy = (todos: Todo[], status: Status, query: string) => {
         break;
       }
 
-      case 'completed': {
+      case Status.Completed: {
         if (!completed) {
           return;
         }
