@@ -1,11 +1,6 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import {
-  removeQuery,
-  removeStatus,
-  setQuery,
-  setStatus,
-} from '../../features/filter';
+import { removeQuery, setQuery, setStatus } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +18,6 @@ export const TodoFilter: React.FC = () => {
 
   const handleClearButton = () => {
     dispatch(removeQuery(''));
-    dispatch(removeStatus('all'));
   };
 
   return (

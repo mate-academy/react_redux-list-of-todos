@@ -14,7 +14,6 @@ export const App: React.FC = () => {
   const status = useAppSelector(state => state.filter.status);
 
   const [loading, setLoading] = useState(false);
-  const [isTodoModalShown, setIsTodoModalShown] = useState(false);
 
   const filteredTodos = todos
     .filter(todo => {
@@ -52,25 +51,15 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loading && <Loader />}
-              {!loading && todos.length > 0 && (
-                <TodoList
-                  todos={filteredTodos}
-                  setIsTodoModalShown={setIsTodoModalShown}
-                />
-              )}
+              <div className="block">
+                {loading ? <Loader /> : <TodoList todos={filteredTodos} />}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {selectedTodo && isTodoModalShown && (
-        <TodoModal
-          loading={loading}
-          setLoading={setLoading}
-          setIsTodoModalShown={setIsTodoModalShown}
-        />
-      )}
+      {selectedTodo && <TodoModal />}
     </>
   );
 };

@@ -5,20 +5,12 @@ import { User } from '../../types/User';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { removeCurrentTodo } from '../../features/currentTodo';
 
-type Props = {
-  loading: boolean;
-  setLoading: (condition: boolean) => void;
-  setIsTodoModalShown: (condition: boolean) => void;
-};
-
-export const TodoModal: React.FC<Props> = ({
-  loading,
-  setLoading,
-  setIsTodoModalShown,
-}) => {
+export const TodoModal: React.FC = () => {
   const [userData, setUserData] = useState<User | null>(null);
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
+
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!selectedTodo) {
@@ -35,7 +27,6 @@ export const TodoModal: React.FC<Props> = ({
   }, [selectedTodo, setLoading]);
 
   const handleCloseButton = () => {
-    setIsTodoModalShown(false);
     dispatch(removeCurrentTodo(null));
   };
 

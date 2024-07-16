@@ -4,10 +4,9 @@ import { TodoItem } from '../TodoItem/TodoItem';
 
 type Props = {
   todos: Todo[];
-  setIsTodoModalShown: (condition: boolean) => void;
 };
 
-export const TodoList: React.FC<Props> = ({ todos, setIsTodoModalShown }) => {
+export const TodoList: React.FC<Props> = ({ todos }) => {
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -25,11 +24,7 @@ export const TodoList: React.FC<Props> = ({ todos, setIsTodoModalShown }) => {
 
       <tbody>
         {todos.map(todo => (
-          <TodoItem
-            todo={todo}
-            setIsTodoModalShown={setIsTodoModalShown}
-            key={todo.id}
-          />
+          <TodoItem todo={todo} key={todo.id} />
         ))}
       </tbody>
     </table>

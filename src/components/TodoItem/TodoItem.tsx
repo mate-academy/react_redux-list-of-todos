@@ -6,16 +6,14 @@ import { setCurrentTodo } from '../../features/currentTodo';
 
 type Props = {
   todo: Todo;
-  setIsTodoModalShown: (condition: boolean) => void;
 };
 
-export const TodoItem: React.FC<Props> = ({ todo, setIsTodoModalShown }) => {
+export const TodoItem: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
   const handleSelectButton = () => {
     dispatch(setCurrentTodo(todo));
-    setIsTodoModalShown(true);
   };
 
   return (
