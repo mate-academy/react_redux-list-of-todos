@@ -1,7 +1,5 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { useSelector } from 'react-redux';
-import { Todo } from './types/Todo';
 import { TodoFilter } from './components/TodoFilter/TodoFilter';
 import { TodoList } from './components/TodoList/TodoList';
 import { TodoModal } from './components/TodoModal/TodoModal';
@@ -9,7 +7,7 @@ import { Loader } from './components/Loader/Loader';
 import { useAppSelector } from './app/hooks';
 
 export const App = () => {
-  const currentTodo = useSelector((state: Todo) => state.currentTodoReducer);
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(state => state.todosReducer);
 
   return (
