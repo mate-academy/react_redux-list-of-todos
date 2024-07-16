@@ -19,7 +19,7 @@ function filterTodos(todos: Todo[], query: string, status: Status) {
   }
   if (status !== Status.All) {
     filteredTodos = filteredTodos.filter(
-      todo => todo.completed === (status === 'completed'),
+      todo => todo.completed,
     );
   }
   return filteredTodos;
