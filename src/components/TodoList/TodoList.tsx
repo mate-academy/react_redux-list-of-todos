@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React from 'react';
 
+import { Loader } from '..';
 import { useAppSelector } from '../../app/hooks';
-import { User } from '../../types/User';
 import { getFilteredByQuery, getPreparedTodos } from '../../utils';
 import { ErrorNotification } from '../ErrorNotification';
 import { TodoItem } from '../TodoItem';
@@ -10,28 +10,24 @@ import { TodoTitle } from '../TodoTitle';
 
 type Props = {
   onOpenModal: () => void;
-  getUserById: (userId: number) => Promise<User>;
-  errorFetch: string;
   showModal: boolean;
-  loading: boolean;
 };
 
-export const TodoList: React.FC<Props> = ({
-  onOpenModal,
-  getUserById,
-  errorFetch,
-  showModal,
-  loading,
-}) => {
-  const todos = useAppSelector(state => state.todos.items);
+export const TodoList: React.FC<Props> = ({ onOpenModal, showModal }) => {
+  const { loading, items, error } = useAppSelector(state => state.todos);
+
   const filterStatus = useAppSelector(state => state.filter.status);
   const filterQuery = useAppSelector(state => state.filter.query);
 
-  const preparedTodos = getPreparedTodos(todos, filterStatus);
+  const preparedTodos = getPreparedTodos(items, filterStatus);
   const filteredTodos = getFilteredByQuery(preparedTodos, filterQuery);
 
-  if (errorFetch) {
-    return <h1>Error fetch</h1>;
+  if (loading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <h1 className="error-message">{error}</h1>;
   }
 
   return (
@@ -44,9 +40,8 @@ export const TodoList: React.FC<Props> = ({
             <TodoItem
               key={todo.id}
               todo={todo}
-              getUserById={getUserById}
-              onOpenModal={onOpenModal}
               showModal={showModal}
+              onOpenModal={onOpenModal}
             />
           ))}
 

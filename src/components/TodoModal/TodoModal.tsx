@@ -1,19 +1,17 @@
 import cn from 'classnames';
 import React from 'react';
 import { Loader } from '..';
+import { useAppSelector } from '../../app/hooks';
 import { ModalCard } from '../ModalCard';
 
 type Props = {
   onCloseModal: () => void;
   showModal: boolean;
-  loading: boolean;
 };
 
-export const TodoModal: React.FC<Props> = ({
-  onCloseModal,
-  showModal,
-  loading,
-}) => {
+export const TodoModal: React.FC<Props> = ({ onCloseModal, showModal }) => {
+  const { loading } = useAppSelector(state => state.currentTodo);
+
   return (
     <>
       <div

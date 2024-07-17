@@ -2,43 +2,31 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import 'bulma/css/bulma.css';
 
 import { useCallback, useEffect, useState } from 'react';
-import { getTodos, getUser } from './api';
+import './App.scss';
+import { getTodos } from './api';
 import { useAppDispatch } from './app/hooks';
-import { Loader, TodoFilter, TodoList } from './components';
-import { loadTodos } from './features/todos';
-import { User } from './types/User';
+import { TodoFilter, TodoList, TodoModal } from './components';
+import { actions as todosActions } from './features/todos';
 
 export const App = () => {
   const dispatch = useAppDispatch();
 
   const [showModal, setShowModal] = useState(false);
-  const [errorFetch, setErrorFetch] = useState('');
-  const [loadingTodo, setLoadingTodo] = useState(false);
-  const [loadingTodos, setLoadingTodos] = useState(false);
 
-  const fetchTodos = useCallback(async () => {
-    setLoadingTodos(true);
+  const fetchTodos = useCallback(() => {
+    dispatch(todosActions.setLoading(true));
 
-    return getTodos()
-      .then(todos => {
-        dispatch(loadTodos(todos));
-
-        setLoadingTodos(false);
+    getTodos()
+      .then(todosFromServer => {
+        dispatch(todosActions.loadTodos(todosFromServer));
       })
       .catch(() => {
-        setErrorFetch('Error for fetch todos');
+        dispatch(todosActions.setError('Something went error'));
+      })
+      .finally(() => {
+        dispatch(todosActions.setLoading(false));
       });
   }, [dispatch]);
-
-  const getUserById = async (userId: number): Promise<User> => {
-    setLoadingTodo(true);
-
-    return getUser(userId).then(user => {
-      setLoadingTodo(false);
-
-      return user;
-    });
-  };
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -64,24 +52,13 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {loadingTodos && <Loader />}
-              <TodoList
-                getUserById={getUserById}
-                onOpenModal={handleOpenModal}
-                errorFetch={errorFetch}
-                loading={loadingTodos}
-                showModal={showModal}
-              />
+              <TodoList onOpenModal={handleOpenModal} showModal={showModal} />
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal
-        loading={loadingTodo}
-        showModal={showModal}
-        onCloseModal={handleCloseModal}
-      />
+      <TodoModal showModal={showModal} onCloseModal={handleCloseModal} />
     </>
   );
 };

@@ -1,44 +1,43 @@
 import cn from 'classnames';
 
-import { useState } from 'react';
-import { useAppDispatch } from '../../app/hooks';
-import { getCurrentTodo } from '../../features/currentTodo';
+import { getUser } from '../../api';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
-import { User } from '../../types/User';
 
 type Props = {
   todo: Todo;
-  getUserById: (userId: number) => Promise<User>;
   onOpenModal: () => void;
   showModal: boolean;
 };
 
-export const TodoItem: React.FC<Props> = ({
-  todo,
-  getUserById,
-  showModal,
-  onOpenModal,
-}) => {
+export const TodoItem: React.FC<Props> = ({ todo, showModal, onOpenModal }) => {
   const { id, title, completed, userId } = todo;
   const dispatch = useAppDispatch();
 
-  const [activeTodo, setActiveTodo] = useState<Todo>();
+  const currentTodo = useAppSelector(state => state.currentTodo.todo);
 
-  const handleOnActiveTodo = () => {
-    setActiveTodo(todo);
+  const fetchUserById = () => {
+    dispatch(currentTodoActions.setLoading(true));
+
+    getUser(userId)
+      .then(userFromServer => {
+        dispatch(currentTodoActions.loadCurrentUser(userFromServer));
+      })
+      .finally(() => {
+        dispatch(currentTodoActions.setLoading(false));
+      })
+      .catch(() => {
+        dispatch(currentTodoActions.setError('Something went error'));
+      });
   };
 
-  const handleGetCurrentTodo = async () => {
+  const handleGetCurrentTodo = () => {
     onOpenModal();
 
-    handleOnActiveTodo();
+    dispatch(currentTodoActions.loadCurrentTodo(todo));
 
-    const currentTodo = {
-      todo,
-      user: await getUserById(userId),
-    };
-
-    dispatch(getCurrentTodo(currentTodo));
+    fetchUserById();
   };
 
   return (
@@ -46,7 +45,7 @@ export const TodoItem: React.FC<Props> = ({
       key={id}
       data-cy="todo"
       className={cn({
-        'has-background-info-light': activeTodo?.id === id && showModal,
+        'has-background-info-light': currentTodo?.id === id && showModal,
       })}
     >
       <td className="is-vcentered">{id}</td>
