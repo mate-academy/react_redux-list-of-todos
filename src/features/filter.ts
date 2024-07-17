@@ -1,12 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Status } from '../types/Status';
 
-type InitialStateType = {
+type FilterState = {
   query: string;
   status: Status;
 };
 
-const initialState: InitialStateType = {
+const initialState: FilterState = {
   query: '',
   status: 'all',
 };
