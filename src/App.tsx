@@ -4,7 +4,7 @@ import 'bulma/css/bulma.css';
 import { useCallback, useEffect, useState } from 'react';
 import { getTodos, getUser } from './api';
 import { useAppDispatch } from './app/hooks';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { Loader, TodoFilter, TodoList } from './components';
 import { loadTodos } from './features/todos';
 import { User } from './types/User';
 
@@ -70,6 +70,7 @@ export const App = () => {
                 onOpenModal={handleOpenModal}
                 errorFetch={errorFetch}
                 loading={loadingTodos}
+                showModal={showModal}
               />
             </div>
           </div>

@@ -12,6 +12,7 @@ type Props = {
   onOpenModal: () => void;
   getUserById: (userId: number) => Promise<User>;
   errorFetch: string;
+  showModal: boolean;
   loading: boolean;
 };
 
@@ -19,6 +20,7 @@ export const TodoList: React.FC<Props> = ({
   onOpenModal,
   getUserById,
   errorFetch,
+  showModal,
   loading,
 }) => {
   const todos = useAppSelector(state => state.todos.items);
@@ -44,6 +46,7 @@ export const TodoList: React.FC<Props> = ({
               todo={todo}
               getUserById={getUserById}
               onOpenModal={onOpenModal}
+              showModal={showModal}
             />
           ))}
 
