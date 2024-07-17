@@ -45,7 +45,9 @@ export const ModalCard: React.FC<Props> = ({ onCloseModal }) => {
           </strong>
           {' by '}
 
-          <a href="mailto:Sincere@april.biz">Leanne Graham</a>
+          <a href={`mailto:${currentTodo?.user.email}`}>
+            {currentTodo?.user.name}
+          </a>
         </p>
       </div>
     </div>

@@ -18,9 +18,6 @@ export const currentTodoSlice = createSlice({
     getCurrentTodo: (state, action: PayloadAction<InitialStateType>) => {
       state.item = action.payload;
     },
-    clearCurrentTodo: state => {
-      state.item = null;
-    },
   },
 });
 

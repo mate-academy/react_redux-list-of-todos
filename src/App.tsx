@@ -1,5 +1,6 @@
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'bulma/css/bulma.css';
+
 import { useCallback, useEffect, useState } from 'react';
 import { getTodos, getUser } from './api';
 import { useAppDispatch } from './app/hooks';
@@ -12,12 +13,17 @@ export const App = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [errorFetch, setErrorFetch] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [loadingTodo, setLoadingTodo] = useState(false);
+  const [loadingTodos, setLoadingTodos] = useState(false);
 
   const fetchTodos = useCallback(async () => {
+    setLoadingTodos(true);
+
     return getTodos()
       .then(todos => {
         dispatch(loadTodos(todos));
+
+        setLoadingTodos(false);
       })
       .catch(() => {
         setErrorFetch('Error for fetch todos');
@@ -25,10 +31,10 @@ export const App = () => {
   }, [dispatch]);
 
   const getUserById = async (userId: number): Promise<User> => {
-    setLoading(true);
+    setLoadingTodo(true);
 
     return getUser(userId).then(user => {
-      setLoading(false);
+      setLoadingTodo(false);
 
       return user;
     });
@@ -58,11 +64,12 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {false && <Loader />}
+              {loadingTodos && <Loader />}
               <TodoList
                 getUserById={getUserById}
                 onOpenModal={handleOpenModal}
                 errorFetch={errorFetch}
+                loading={loadingTodos}
               />
             </div>
           </div>
@@ -70,7 +77,7 @@ export const App = () => {
       </div>
 
       <TodoModal
-        loading={loading}
+        loading={loadingTodo}
         showModal={showModal}
         onCloseModal={handleCloseModal}
       />

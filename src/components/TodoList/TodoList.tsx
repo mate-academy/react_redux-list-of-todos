@@ -12,12 +12,14 @@ type Props = {
   onOpenModal: () => void;
   getUserById: (userId: number) => Promise<User>;
   errorFetch: string;
+  loading: boolean;
 };
 
 export const TodoList: React.FC<Props> = ({
   onOpenModal,
   getUserById,
   errorFetch,
+  loading,
 }) => {
   const todos = useAppSelector(state => state.todos.items);
   const filterStatus = useAppSelector(state => state.filter.status);
@@ -26,10 +28,6 @@ export const TodoList: React.FC<Props> = ({
   const preparedTodos = getPreparedTodos(todos, filterStatus);
   const filteredTodos = getFilteredByQuery(preparedTodos, filterQuery);
 
-  if (!filteredTodos.length && !errorFetch) {
-    return <ErrorNotification />;
-  }
-
   if (errorFetch) {
     return <h1>Error fetch</h1>;
   }
@@ -37,7 +35,7 @@ export const TodoList: React.FC<Props> = ({
   return (
     <>
       <table className="table is-narrow is-fullwidth">
-        <TodoTitle />
+        {filteredTodos.length !== 0 && <TodoTitle />}
 
         <tbody>
           {filteredTodos.map(todo => (
@@ -48,6 +46,8 @@ export const TodoList: React.FC<Props> = ({
               onOpenModal={onOpenModal}
             />
           ))}
+
+          {!filteredTodos.length && !loading && <ErrorNotification />}
         </tbody>
       </table>
     </>
