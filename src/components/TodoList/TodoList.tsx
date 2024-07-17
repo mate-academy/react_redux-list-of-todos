@@ -16,14 +16,22 @@ export const TodoList: React.FC = () => {
   const setSelectedTodo = (todo: Todo) =>
     dispatch(currentTodoSlice.actions.setSelectedTodo(todo));
 
+  enum Status {
+    Active = 'active',
+    Completed = 'completed',
+  };
+
   let filterTodos = [...todos];
 
-  if (status === 'completed') {
-    filterTodos = filterTodos.filter(todo => todo.completed);
-  }
-
-  if (status === 'active') {
-    filterTodos = filterTodos.filter(todo => !todo.completed);
+  switch (status) {
+    case Status.Active:
+      filterTodos = filterTodos.filter(todo => todo.completed);
+      break;
+    case Status.Completed:
+      filterTodos = filterTodos.filter(todo => !todo.completed);
+      break;
+    default:
+      break;
   }
 
   if (query.trim().length > 0) {
@@ -34,7 +42,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {filterTodos.length === 0 ? (
+      {!filterTodos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
