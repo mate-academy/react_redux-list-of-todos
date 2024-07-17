@@ -16,6 +16,7 @@ export const TodoItem: React.FC<Props> = ({ todo, showModal, onOpenModal }) => {
   const dispatch = useAppDispatch();
 
   const currentTodo = useAppSelector(state => state.currentTodo.todo);
+  const isOpenCurrentTodo = currentTodo?.id === id && showModal;
 
   const fetchUserById = () => {
     dispatch(currentTodoActions.setLoading(true));
@@ -45,7 +46,7 @@ export const TodoItem: React.FC<Props> = ({ todo, showModal, onOpenModal }) => {
       key={id}
       data-cy="todo"
       className={cn({
-        'has-background-info-light': currentTodo?.id === id && showModal,
+        'has-background-info-light': isOpenCurrentTodo,
       })}
     >
       <td className="is-vcentered">{id}</td>
@@ -77,8 +78,8 @@ export const TodoItem: React.FC<Props> = ({ todo, showModal, onOpenModal }) => {
           <span className="icon">
             <i
               className={cn('far', {
-                'fa-eye': !showModal,
-                'fa-eye-slash': showModal,
+                'fa-eye': !isOpenCurrentTodo,
+                'fa-eye-slash': isOpenCurrentTodo,
               })}
             />
           </span>

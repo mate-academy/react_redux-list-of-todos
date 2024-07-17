@@ -3,15 +3,15 @@ import { Todo } from '../types/Todo';
 import { User } from '../types/User';
 
 type CurrentTodoState = {
-  todo: Todo;
-  user: User;
+  todo: Todo | null;
+  user: User | null;
   loading: boolean;
   error: string;
 };
 
 const initialState: CurrentTodoState = {
-  todo: {} as Todo,
-  user: {} as User,
+  todo: null,
+  user: null,
   loading: false,
   error: '',
 };
