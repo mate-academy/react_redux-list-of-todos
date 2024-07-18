@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Todo } from '../../types/Todo';
 import classNames from 'classnames';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { addCurrentTodo } from '../../features/currentTodo';
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
 }
 
 const TodoItem = ({ todo }: Props) => {
+  const { currentTodo } = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   const openModalHandler = () => {
@@ -16,7 +17,12 @@ const TodoItem = ({ todo }: Props) => {
   };
 
   return (
-    <tr data-cy="todo">
+    <tr
+      data-cy="todo"
+      className={classNames({
+        'has-background-info-light': currentTodo?.id === todo.id,
+      })}
+    >
       <td className="is-vcentered">{todo.id}</td>
       <td className="is-vcentered">
         {todo.completed && (
@@ -45,7 +51,12 @@ const TodoItem = ({ todo }: Props) => {
           onClick={openModalHandler}
         >
           <span className="icon">
-            <i className="far fa-eye" />
+            <i
+              className={classNames('far', {
+                'fa-eye': currentTodo?.id !== todo.id,
+                'fa-eye-slash': currentTodo?.id === todo.id,
+              })}
+            />
           </span>
         </button>
       </td>

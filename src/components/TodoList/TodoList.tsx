@@ -35,7 +35,7 @@ export const TodoList: React.FC<Props> = ({ isLoading }) => {
     }
 
     return visibleTodos;
-  }, [query, status]);
+  }, [query, status, todos]);
 
   return (
     <>
