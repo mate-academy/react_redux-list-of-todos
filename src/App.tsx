@@ -10,7 +10,6 @@ import { actions as todosActions } from './features/todos';
 
 export const App = () => {
   const dispatch = useAppDispatch();
-
   const [showModal, setShowModal] = useState(false);
 
   const fetchTodos = useCallback(() => {
@@ -58,7 +57,7 @@ export const App = () => {
         </div>
       </div>
 
-      <TodoModal showModal={showModal} onCloseModal={handleCloseModal} />
+      {showModal && <TodoModal onCloseModal={handleCloseModal} />}
     </>
   );
 };
