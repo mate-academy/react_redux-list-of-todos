@@ -1,3 +1,11 @@
+$color-black: black;
+
 iframe {
   display: none;
+}
+
+.error-message {
+  font-size: 30px;
+  color: $color-black;
+  text-align: center;
 }
