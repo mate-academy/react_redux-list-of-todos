@@ -3,7 +3,7 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { todosSlice } from './features/todos';
 import { getTodos } from './api';
 import { StatusType } from './features/filter';
@@ -23,30 +23,32 @@ export const App = () => {
 
     getTodos()
       .then(response => {
-        let queried = response.filter(todo =>
-          todo.title.toLowerCase().includes(filter.query.toLowerCase()),
-        );
-
-        switch (filter.status) {
-          case StatusType.ACTIVE: {
-            queried = queried.filter(todo => !todo.completed);
-
-            break;
-          }
-
-          case StatusType.COMPLETED: {
-            queried = queried.filter(todo => todo.completed);
-
-            break;
-          }
-        }
-
-        dispatch(setTodos(queried));
+        dispatch(setTodos(response));
       })
       .finally(() => {
         setIsLoad(false);
       });
-  }, [filter]);
+  }, []);
+
+  const filteredData = useMemo(() => {
+    const queried = todos.filter(todo =>
+      todo.title.toLowerCase().includes(filter.query.toLowerCase()),
+    );
+
+    switch (filter.status) {
+      case StatusType.ACTIVE: {
+        return queried.filter(todo => !todo.completed);
+      }
+
+      case StatusType.COMPLETED: {
+        return queried.filter(todo => todo.completed);
+      }
+
+      default: {
+        return queried;
+      }
+    }
+  }, [filter, todos]);
 
   return (
     <>
@@ -61,7 +63,7 @@ export const App = () => {
 
             <div className="block">
               {isLoad && <Loader />}
-              {!isLoad && <TodoList todos={todos} />}
+              {!isLoad && <TodoList todos={filteredData} />}
             </div>
           </div>
         </div>
