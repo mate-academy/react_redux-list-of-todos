@@ -18,13 +18,13 @@ const todosSlice = createSlice({
   initialState,
   reducers: {
     initTodos: (state, action: PayloadAction<Todo[]>) => {
-      state.data = action.payload;
+      return Object.assign({}, state, { data: action.payload });
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
+      return Object.assign({}, state, { loading: action.payload });
     },
     setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
+      return Object.assign({}, state, { error: action.payload });
     },
   },
 });
