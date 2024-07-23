@@ -8,7 +8,7 @@ export const QueryFilter = () => {
 
   useEffect(() => {
     dispatch(setQueryFilter(inputValue));
-  }, [inputValue]);
+  }, [inputValue, dispatch]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -29,6 +29,7 @@ export const QueryFilter = () => {
         className="input"
         placeholder="Search..."
         onChange={handleChange}
+        aria-label="Search input"
       />
       <span className="icon is-left">
         <i className="fas fa-magnifying-glass" />
@@ -41,6 +42,7 @@ export const QueryFilter = () => {
             type="button"
             className="delete"
             onClick={handleClear}
+            aria-label="Clear search"
           />
         </span>
       )}

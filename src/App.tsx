@@ -24,7 +24,7 @@ export const App = () => {
       .finally(() => {
         dispatch(setLoading(false));
       });
-  }, []);
+  }, [dispatch]);
 
   const handleClose = () => {
     dispatch(clearCurrentTodo());
