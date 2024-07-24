@@ -33,7 +33,7 @@ export const TodoModal: React.FC = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo #{currentItem?.id} {/* из todo */}
+              {`Todo #${currentItem?.id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -47,11 +47,10 @@ export const TodoModal: React.FC = () => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {currentItem?.title} {/* из todo */}
+              {currentItem?.title.trim()}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {/* <strong className="has-text-success">Done</strong> */}
               {currentItem?.completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (

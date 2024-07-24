@@ -7,7 +7,17 @@ import { useAppSelector } from '../../app/hooks';
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const currentItem = useAppSelector(state => state.currentTodo);
+  const select = useAppSelector(state => state.filter);
   const dispatch = useDispatch();
+
+  const filteredTodos = todos.filter(todo => {
+    const matchesStatus = select.status === 'all' ||
+      (select.status === 'active' && !todo.completed) ||
+      (select.status === 'completed' && todo.completed);
+    const matchesQuery = todo.title.toLowerCase().includes(select.query.toLowerCase());
+
+    return matchesStatus && matchesQuery;
+  });
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -25,7 +35,7 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-        {todos.map(todo => (
+        {filteredTodos.map(todo => (
           <tr
             data-cy="todo"
             className={cn({

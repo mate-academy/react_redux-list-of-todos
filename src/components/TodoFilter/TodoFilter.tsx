@@ -1,45 +1,11 @@
-import { useEffect, useState } from 'react';
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { rename, updateQuery } from '../../features/filter';
-import { add } from '../../features/todos';
-import { Todo } from '../../types/Todo';
 
 export const TodoFilter = () => {
-  const todos = useAppSelector(state => state.todos);
   const dispatch = useDispatch();
   const select = useAppSelector(state => state.filter);
-  const [initialTodos, setInitialTodos] = useState<Todo[]>([]);
-
-  useEffect(() => {
-    if (initialTodos.length === 0 && todos.length > 0) {
-      setInitialTodos(todos);
-    }
-  }, [todos, initialTodos]);
-
-  useEffect(() => {
-    let filteredTodos = initialTodos;
-
-    switch (select.status) {
-      case 'active':
-        filteredTodos = initialTodos.filter(todo => !todo.completed);
-        break;
-      case 'completed':
-        filteredTodos = initialTodos.filter(todo => todo.completed);
-        break;
-      default:
-        break;
-    }
-
-    if (select.query.trim() !== '') {
-      filteredTodos = filteredTodos.filter(todo =>
-        todo.title.toLowerCase().includes(select.query.toLowerCase()),
-      );
-    }
-
-    dispatch(add(filteredTodos));
-  }, [select.query, select.status]);
 
   const handleClearSearch = () => {
     dispatch(updateQuery(''));
