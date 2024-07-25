@@ -54,8 +54,8 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           <span className="icon">
             <i
               className={cn('far', {
-                'fa-eye': !currentTodo,
-                'fa-eye-slash': currentTodo,
+                'fa-eye': !isActive,
+                'fa-eye-slash': isActive,
               })}
             />
           </span>
