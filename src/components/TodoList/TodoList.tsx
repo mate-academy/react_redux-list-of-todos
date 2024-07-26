@@ -92,7 +92,7 @@ export const TodoList: React.FC = () => {
                   onClick={() => handleCurrentTodo(todo)}
                 >
                   <span className="icon">
-                    <i className={`far ${currentTodo ? 'fa-eye-slash' : 'fa-eye'}`} />
+                    <i className={`far ${currentTodo === todo ? 'fa-eye-slash' : 'fa-eye'}`} />
                   </span>
                 </button>
               </td>
