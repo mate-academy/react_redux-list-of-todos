@@ -1,7 +1,7 @@
 import React from 'react';
 import { setQuery, setStatus } from '../../features/filter';
 import { Todo } from '../../types/Todo';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';;
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
 
 type Props = {
