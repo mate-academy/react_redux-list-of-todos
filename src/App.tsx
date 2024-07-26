@@ -2,31 +2,28 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
-import { Todo } from './types/Todo';
 import { getTodos, getUser } from './api';
 import { User } from './types/User';
-import { AppDispatch, RootState } from './app/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { setTodos } from './features/todos';
+import { RootState } from './app/store';
+import { useSelector } from 'react-redux';
+import { todosSlice } from './features/todos';
+import { useAppDispatch } from './app/hooks';
+import { Todo } from './types/Todo';
 
 export const App = () => {
-  // const [todos, setTodos] = useState<Todo[]>([]);
   const todos = useSelector((state: RootState) => state.todosSlice);
   const [todosLoadErr, setTodosLoadErr] = useState<boolean>(false);
-  // const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
   const currentTodo = useSelector((state: RootState) => state.currentTodoSlice);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
   const [isLoadingTodos, setIsLoadingTodos] = useState(true);
-  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoadingTodos(true);
     getTodos()
-      .then(respond => {
-        dispatch(setTodos(respond));
-        setFilteredTodos(respond);
+      .then((t: Todo[]) => {
+        dispatch(todosSlice.actions.setTodos(t));
       })
       .catch(() => {
         setTodosLoadErr(true);
@@ -54,18 +51,12 @@ export const App = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter todos={todos} setFilteredTodos={setFilteredTodos} />
+              <TodoFilter todos={todos} />
             </div>
 
             <div className="block">
               {isLoadingTodos && <Loader />}
-              {!isLoadingTodos && (
-                <TodoList
-                  setSelectedTodo={currentTodo}
-                  todos={filteredTodos}
-                  todosLoadErr={todosLoadErr}
-                />
-              )}
+              {!isLoadingTodos && <TodoList todosLoadErr={todosLoadErr} />}
             </div>
           </div>
         </div>
@@ -77,7 +68,6 @@ export const App = () => {
           isLoadingUser={isLoadingUser}
           selectedUser={selectedUser}
           selectedTodo={currentTodo}
-          setSelectedTodo={currentTodo}
         />
       )}
     </>

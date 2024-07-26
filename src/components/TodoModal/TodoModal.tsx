@@ -2,13 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
+import { useAppDispatch } from '../../app/hooks';
+import { currentTodoSlice } from '../../features/currentTodo';
 
 type Props = {
   selectedTodo: Todo | null;
   selectedUser: User | null;
   isLoadingUser: boolean;
   setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
-  setSelectedTodo: React.Dispatch<React.SetStateAction<Todo | null>>;
 };
 
 export const TodoModal: React.FC<Props> = ({
@@ -16,15 +17,15 @@ export const TodoModal: React.FC<Props> = ({
   selectedTodo,
   selectedUser,
   setSelectedUser,
-  setSelectedTodo,
 }) => {
   const modal = useRef<HTMLDivElement>(null);
+  const dispatch = useAppDispatch();
 
   const handleClose = () => {
     if (modal.current !== null) {
       modal.current.classList.remove('is-active');
       setSelectedUser(null);
-      setSelectedTodo(null);
+      dispatch(currentTodoSlice.actions.setCurrentTodo(null));
     }
   };
 

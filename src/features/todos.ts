@@ -3,13 +3,13 @@ import { Todo } from '../types/Todo';
 
 const initialState: Todo[] = [];
 
-const todosSlice: Slice<Todo[]> = createSlice({
+export const todosSlice: Slice<Todo[]> = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    setTodos: (state, action: PayloadAction<Todo[]>) => {
+    setTodos: (todos, { payload }: PayloadAction<Todo[]>) => {
       // eslint-disable-next-line no-param-reassign
-      state = action.payload;
+      todos.push(...payload);
     },
   },
 });

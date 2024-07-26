@@ -73,4 +73,4 @@ export const filterSlice: Slice<FilterState> = createSlice({
 });
 
 export default filterSlice.reducer;
-export const { setActive, setAll, setCompleted } = filterSlice.actions;
+export const { setQuery, setStatus } = filterSlice.actions;

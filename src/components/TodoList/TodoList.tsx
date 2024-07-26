@@ -2,31 +2,50 @@
 import React from 'react';
 import cn from 'classnames';
 import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { currentTodoSlice } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 type Props = {
-  todos: Todo[];
   todosLoadErr: boolean;
-  setSelectedTodo: React.Dispatch<React.SetStateAction<Todo | null>>;
 };
 
-export const TodoList: React.FC<Props> = ({
-  todos,
-  setSelectedTodo,
-  todosLoadErr,
-}) => {
+export const TodoList: React.FC<Props> = ({ todosLoadErr }) => {
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todosSlice);
+
   const handleSelectedTodo = (todo: Todo) => {
-    setSelectedTodo(todo);
+    dispatch(currentTodoSlice.actions.setCurrentTodo(todo));
   };
+
+  const filteredTodos = () => {
+    return todos.filter(todo => {
+      const status = useAppSelector(state => state.filterSlice.status);
+      const query = useAppSelector(status => status.filterSlice.query);
+      const match = todo.title.toLowerCase().includes(query.toLowerCase());
+
+      switch (status) {
+        case Status.COMPLETED:
+          return match && todo.completed;
+        case Status.ACTIVE:
+          return match && !todo.completed;
+        default:
+          return match;
+      }
+    });
+  };
+
+  const visibleTodos = filteredTodos();
 
   return (
     <>
-      {!todos.length && (
+      {!visibleTodos.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
-      {!todosLoadErr && !!todos.length && (
+      {!todosLoadErr && !!visibleTodos.length && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -44,7 +63,7 @@ export const TodoList: React.FC<Props> = ({
           </thead>
 
           <tbody>
-            {todos.map(todo => {
+            {visibleTodos.map(todo => {
               return (
                 <tr key={todo.id} data-cy="todo">
                   <td className="is-vcentered">{todo.id}</td>
@@ -73,7 +92,6 @@ export const TodoList: React.FC<Props> = ({
                       type="button"
                     >
                       <span
-                        // onClick={() => setSelectedTodo(todo)}
                         className="icon"
                       >
                         <i
