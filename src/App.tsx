@@ -11,10 +11,10 @@ import { setTodos } from './features/todos';
 
 export const App = () => {
   // const [todos, setTodos] = useState<Todo[]>([]);
-  const todos = useSelector((state: RootState) => state.todos.todos);
+  const todos = useSelector((state: RootState) => state.todosSlice);
   const [todosLoadErr, setTodosLoadErr] = useState<boolean>(false);
   // const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
-  const currentTodo = useSelector((state: RootState) => state.todos.current);
+  const currentTodo = useSelector((state: RootState) => state.currentTodoSlice);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
   const [isLoadingTodos, setIsLoadingTodos] = useState(true);
@@ -24,9 +24,9 @@ export const App = () => {
   useEffect(() => {
     setIsLoadingTodos(true);
     getTodos()
-      .then(t => {
-        dispatch(setTodos(t));
-        setFilteredTodos(t);
+      .then(respond => {
+        dispatch(setTodos(respond));
+        setFilteredTodos(respond);
       })
       .catch(() => {
         setTodosLoadErr(true);
@@ -61,7 +61,7 @@ export const App = () => {
               {isLoadingTodos && <Loader />}
               {!isLoadingTodos && (
                 <TodoList
-                  setSelectedTodo={setCurrentTodo}
+                  setSelectedTodo={currentTodo}
                   todos={filteredTodos}
                   todosLoadErr={todosLoadErr}
                 />
@@ -77,7 +77,7 @@ export const App = () => {
           isLoadingUser={isLoadingUser}
           selectedUser={selectedUser}
           selectedTodo={currentTodo}
-          setSelectedTodo={setCurrentTodo}
+          setSelectedTodo={currentTodo}
         />
       )}
     </>

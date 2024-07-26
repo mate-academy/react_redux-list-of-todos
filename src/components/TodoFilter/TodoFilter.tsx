@@ -8,39 +8,39 @@ type Props = {
 };
 
 export const TodoFilter: React.FC<Props> = ({ todos, setFilteredTodos }) => {
-  const [activFilter, setActivFiter] = useState<Status>('all');
+  const [activFilter, setActivFiter] = useState<Status>(Status.ALL);
   const [query, setQuery] = useState('');
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setActivFiter(event.target.value as Status);
   };
 
-  useEffect(() => {
-    const todosFilter = (state: Todo[], action: Status, string: string) => {
-      let filtered = [...state];
+  // useEffect(() => {
+  //   const todosFilter = (state: Todo[], action: Status, string: string) => {
+  //     let filtered = [...state];
 
-      switch (action) {
-        case 'active':
-          filtered = [...state].filter(item => !item.completed);
-          break;
-        case 'completed':
-          filtered = [...state].filter(item => item.completed);
-          break;
-        default:
-          filtered = [...state];
-          break;
-      }
+  //     switch (action) {
+  //       case 'active':
+  //         filtered = [...state].filter(item => !item.completed);
+  //         break;
+  //       case 'completed':
+  //         filtered = [...state].filter(item => item.completed);
+  //         break;
+  //       default:
+  //         filtered = [...state];
+  //         break;
+  //     }
 
-      if (string !== '') {
-        filtered = filtered.filter(item =>
-          item.title.toLowerCase().includes(query.toLowerCase()),
-        );
-      }
+  //     if (string !== '') {
+  //       filtered = filtered.filter(item =>
+  //         item.title.toLowerCase().includes(query.toLowerCase()),
+  //       );
+  //     }
 
-      return filtered;
-    };
+  //     return filtered;
+  //   };
 
-    setFilteredTodos(todosFilter(todos, activFilter, query));
-  }, [activFilter, todos, query]);
+  //   setFilteredTodos(todosFilter(todos, activFilter, query));
+  // }, [activFilter, todos, query, setFilteredTodos]);
 
   return (
     <form
