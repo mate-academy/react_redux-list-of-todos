@@ -13,6 +13,7 @@ type Props = {
 export const TodoList: React.FC<Props> = ({ todosLoadErr }) => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todosSlice);
+  const selectedTodo = useAppSelector(state => state.currentTodoSlice)
 
   const handleSelectedTodo = (todo: Todo) => {
     dispatch(currentTodoSlice.actions.setCurrentTodo(todo));
@@ -65,7 +66,7 @@ export const TodoList: React.FC<Props> = ({ todosLoadErr }) => {
           <tbody>
             {visibleTodos.map(todo => {
               return (
-                <tr key={todo.id} data-cy="todo">
+                <tr key={todo.title} data-cy="todo">
                   <td className="is-vcentered">{todo.id}</td>
                   <td className="is-vcentered">
                     {todo.completed && (
@@ -91,12 +92,10 @@ export const TodoList: React.FC<Props> = ({ todosLoadErr }) => {
                       className="button"
                       type="button"
                     >
-                      <span
-                        className="icon"
-                      >
+                      <span className="icon">
                         <i
                           onClick={() => handleSelectedTodo(todo)}
-                          className="far fa-eye"
+                          className={`far ${selectedTodo === todo ? 'fa-eye-slash' : 'fa-eye'}`}
                         />
                       </span>
                     </button>

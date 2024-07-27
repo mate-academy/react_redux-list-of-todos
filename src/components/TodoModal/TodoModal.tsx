@@ -67,7 +67,13 @@ export const TodoModal: React.FC<Props> = ({
 
             <p className="block" data-cy="modal-user">
               {!selectedTodo?.completed && (
-                <strong className="has-text-danger">Planned</strong>
+                <>
+                  <strong className="has-text-danger">Planned</strong>
+                  {' by '}
+                  <a href={`mailto:${selectedUser?.email}`}>
+                    {selectedUser?.name}
+                  </a>
+                </>
               )}
 
               {selectedTodo?.completed && (
