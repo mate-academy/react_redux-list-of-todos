@@ -13,7 +13,9 @@ type Props = {
 export const TodoList: React.FC<Props> = ({ todosLoadErr }) => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todosSlice);
-  const selectedTodo = useAppSelector(state => state.currentTodoSlice)
+  const selectedTodo = useAppSelector(state => state.currentTodoSlice);
+  const status = useAppSelector(state => state.filterSlice.status);
+  const query = useAppSelector(status => status.filterSlice.query);
 
   const handleSelectedTodo = (todo: Todo) => {
     dispatch(currentTodoSlice.actions.setCurrentTodo(todo));
@@ -21,8 +23,6 @@ export const TodoList: React.FC<Props> = ({ todosLoadErr }) => {
 
   const filteredTodos = () => {
     return todos.filter(todo => {
-      const status = useAppSelector(state => state.filterSlice.status);
-      const query = useAppSelector(status => status.filterSlice.query);
       const match = todo.title.toLowerCase().includes(query.toLowerCase());
 
       switch (status) {
@@ -37,6 +37,7 @@ export const TodoList: React.FC<Props> = ({ todosLoadErr }) => {
   };
 
   const visibleTodos = filteredTodos();
+  const isTableVisible = !todosLoadErr && !!visibleTodos.length;
 
   return (
     <>
@@ -46,7 +47,7 @@ export const TodoList: React.FC<Props> = ({ todosLoadErr }) => {
         </p>
       )}
 
-      {!todosLoadErr && !!visibleTodos.length && (
+      {isTableVisible && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>

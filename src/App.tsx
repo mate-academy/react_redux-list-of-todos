@@ -12,8 +12,8 @@ import { Todo } from './types/Todo';
 
 export const App = () => {
   const todos = useSelector((state: RootState) => state.todosSlice);
-  const [todosLoadErr, setTodosLoadErr] = useState<boolean>(false);
   const currentTodo = useSelector((state: RootState) => state.currentTodoSlice);
+  const [todosLoadErr, setTodosLoadErr] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
   const [isLoadingTodos, setIsLoadingTodos] = useState(true);
@@ -22,8 +22,8 @@ export const App = () => {
   useEffect(() => {
     setIsLoadingTodos(true);
     getTodos()
-      .then((t: Todo[]) => {
-        dispatch(todosSlice.actions.setTodos(t));
+      .then((response: Todo[]) => {
+        dispatch(todosSlice.actions.setTodos(response));
       })
       .catch(() => {
         setTodosLoadErr(true);
@@ -34,10 +34,11 @@ export const App = () => {
   useEffect(() => {
     if (currentTodo) {
       setIsLoadingUser(true);
-      getUser(currentTodo?.userId)
+      getUser(currentTodo.userId)
         .then(setSelectedUser)
         .catch(err => {
-          throw new Error(err);
+          // eslint-disable-next-line no-console
+          console.error(err);
         })
         .finally(() => setIsLoadingUser(false));
     }
@@ -55,8 +56,11 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {isLoadingTodos && <Loader />}
-              {!isLoadingTodos && <TodoList todosLoadErr={todosLoadErr} />}
+              {isLoadingTodos ? (
+                <Loader />
+              ) : (
+                <TodoList todosLoadErr={todosLoadErr} />
+              )}
             </div>
           </div>
         </div>

@@ -41,6 +41,7 @@
 
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
 import { Status } from '../types/Status';
+import { RootState } from '../app/store';
 
 const initialState = {
   query: '',
@@ -55,6 +56,11 @@ type FilterState = {
 export const filterSlice: Slice<FilterState> = createSlice({
   name: 'filter',
   initialState,
+  // selectors: {
+  //   getQuery: state => {
+  //     return state.query;
+  //   },
+  // },
   reducers: {
     setQuery(state, action: PayloadAction<string>) {
       return {
@@ -74,3 +80,6 @@ export const filterSlice: Slice<FilterState> = createSlice({
 
 export default filterSlice.reducer;
 export const { setQuery, setStatus } = filterSlice.actions;
+
+export const getQuery = (state: RootState) => state.filterSlice.query;
+export const getStatus = (state: RootState) => state.filterSlice.status;

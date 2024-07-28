@@ -1,8 +1,13 @@
 import React from 'react';
-import { setQuery, setStatus } from '../../features/filter';
+import {
+  getQuery,
+  getStatus,
+  setQuery,
+  setStatus,
+} from '../../features/filter';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Status } from '../../types/Status';
+// import { Status } from '../../types/Status';
 
 type Props = {
   todos: Todo[];
@@ -10,8 +15,8 @@ type Props = {
 
 export const TodoFilter: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
-  const query = useAppSelector(state => state.filterSlice.query);
-  const status = useAppSelector(state => state.filterSlice.status);
+  const query = useAppSelector(getQuery);
+  const status = useAppSelector(getStatus);
 
   return (
     <form
@@ -21,9 +26,7 @@ export const TodoFilter: React.FC<Props> = () => {
       <p className="control">
         <span className="select">
           <select
-            onChange={event =>
-              dispatch(setStatus(event.target.value as Status))
-            }
+            onChange={event => dispatch(setStatus(event.target.value))}
             data-cy="statusSelect"
             value={status}
           >

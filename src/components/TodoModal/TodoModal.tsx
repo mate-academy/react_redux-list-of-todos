@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
@@ -22,21 +22,16 @@ export const TodoModal: React.FC<Props> = ({
   const dispatch = useAppDispatch();
 
   const handleClose = () => {
-    if (modal.current !== null) {
-      modal.current.classList.remove('is-active');
-      setSelectedUser(null);
-      dispatch(currentTodoSlice.actions.setCurrentTodo(null));
-    }
+    setSelectedUser(null);
+    dispatch(currentTodoSlice.actions.setCurrentTodo(null));
   };
 
-  useEffect(() => {
-    if (modal.current !== null) {
-      modal.current.classList.add('is-active');
-    }
-  }, [selectedTodo]);
-
   return (
-    <div ref={modal} className="modal is-active" data-cy="modal">
+    <div
+      ref={modal}
+      className={`modal ${selectedTodo ? 'is-active' : ''}`}
+      data-cy="modal"
+    >
       <div className="modal-background" />
 
       {isLoadingUser && <Loader />}
@@ -53,7 +48,7 @@ export const TodoModal: React.FC<Props> = ({
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
-              onClick={() => handleClose()}
+              onClick={handleClose}
               type="button"
               className="delete"
               data-cy="modal-close"
