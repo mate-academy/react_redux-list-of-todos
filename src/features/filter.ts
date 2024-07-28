@@ -56,11 +56,6 @@ type FilterState = {
 export const filterSlice: Slice<FilterState> = createSlice({
   name: 'filter',
   initialState,
-  // selectors: {
-  //   getQuery: state => {
-  //     return state.query;
-  //   },
-  // },
   reducers: {
     setQuery(state, action: PayloadAction<string>) {
       return {

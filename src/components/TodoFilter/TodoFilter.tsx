@@ -7,7 +7,6 @@ import {
 } from '../../features/filter';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-// import { Status } from '../../types/Status';
 
 type Props = {
   todos: Todo[];
