@@ -22,7 +22,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {filteredTodos.length === 0 && (
+      {!filteredTodos.length && (
         <tr>
           <td>
             <p className="notification is-warning">
@@ -32,7 +32,7 @@ export const TodoList: React.FC = () => {
         </tr>
       )}
 
-      {filteredTodos.length !== 0 && (
+      {filteredTodos.length > 0 && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -52,7 +52,7 @@ export const TodoList: React.FC = () => {
                 <td className="is-vcentered">{todo.id}</td>
                 <td className={cn('is-vcentered', { 'has-text-success': todo.completed, 'has-text-danger': !todo.completed })}>
                   {todo.completed && (
-                    <span className="icon">
+                    <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
                   )}

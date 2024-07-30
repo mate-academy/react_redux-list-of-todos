@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { actions } from '../../features/filter';
-import { Status } from '../../types/Status';
+import { StatusTp } from '../../features/statusType';
 
 export const TodoFilter: React.FC = () => {
   const { query } = useAppSelector((state: RootState) => state.filter);
@@ -13,7 +13,7 @@ export const TodoFilter: React.FC = () => {
   };
 
   const handelStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(actions.statusFilter(e.target.value as Status));
+    dispatch(actions.statusFilter(e.target.value as StatusTp));
   };
 
   const clearSearch = () => {

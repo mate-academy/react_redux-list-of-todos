@@ -1,10 +1,6 @@
 import { Status } from '../types/Status';
 import { Todo } from '../types/Todo';
-
-enum StatusTp {
-  Active = 'active',
-  Completed = 'completed',
-}
+import { StatusTp } from '../features/statusType';
 
 export const filterTodos = (todos: Todo[], status: Status, query: string) => {
   return todos.filter(todo => {

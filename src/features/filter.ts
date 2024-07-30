@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/default-param-last */
 
+import { StatusTp } from "./statusType";
+
 type StatusTodos = {
   type: 'filter/STATUS';
-  payload: string;
+  payload: StatusTp;
 };
 
 type QueryStatus = {
@@ -16,7 +18,7 @@ type ClearQuery = {
 
 type Action = StatusTodos | QueryStatus | ClearQuery;
 
-const statusFilter = (status: string): StatusTodos => ({
+const statusFilter = (status: StatusTp): StatusTodos => ({
   type: 'filter/STATUS',
   payload: status,
 });

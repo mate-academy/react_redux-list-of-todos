@@ -10,11 +10,11 @@ import { User } from '../../types/User';
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loader, setLoader] = useState(true);
-  const selectTodo = useAppSelector((state: RootState) => state.currentTodo);
+  const selectedTodo = useAppSelector((state: RootState) => state.currentTodo);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!selectTodo) {
+    if (!selectedTodo) {
       setLoader(false);
       setUser(null);
 
@@ -22,12 +22,12 @@ export const TodoModal: React.FC = () => {
     }
 
     setLoader(true);
-    getUser(selectTodo.userId)
+    getUser(selectedTodo.userId)
       .then(setUser)
       .finally(() => {
         setLoader(false);
       });
-  }, [selectTodo]);
+  }, [selectedTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -35,14 +35,14 @@ export const TodoModal: React.FC = () => {
 
       {loader && <Loader />}
 
-      {!loader && selectTodo && (
+      {!loader && selectedTodo && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${selectTodo.id}`}
+              {`Todo #${selectedTodo.id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -56,17 +56,17 @@ export const TodoModal: React.FC = () => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {selectTodo.title}
+              {selectedTodo.title}
             </p>
 
             <p className="block" data-cy="modal-user">
               <strong
                 className={cn({
-                  'has-text-success': selectTodo.completed,
-                  'has-text-danger': !selectTodo.completed,
+                  'has-text-success': selectedTodo.completed,
+                  'has-text-danger': !selectedTodo.completed,
                 })}
               >
-                Done
+                {selectedTodo.completed ? "Done" : "Planned"}
               </strong>
               {' by '}
               <a href={`mailto:${user?.email}`}>{user?.name}</a>
