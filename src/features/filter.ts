@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/default-param-last */
 
-import { StatusTp } from "./statusType";
+import { StatusTp } from './statusType';
 
 type StatusTodos = {
   type: 'filter/STATUS';
