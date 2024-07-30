@@ -42,52 +42,55 @@ export const TodoList = () => {
           </thead>
 
           <tbody>
-            {filteredTodos.map(todo => (
-              <tr
-                data-cy="todo"
-                key={todo.id}
-                className={classNames({
-                  'has-background-info-light': todo === currentTodo,
-                })}
-              >
-                <td className="is-vcentered">{todo.id}</td>
-                <td className="is-vcentered">
-                  {todo.completed && (
-                    <span className="icon" data-cy="iconCompleted">
-                      <i className="fas fa-check" />
-                    </span>
-                  )}
-                </td>
+            {filteredTodos.map(todo => {
+              const { id, completed, title } = todo;
 
-                <td className="is-vcentered is-expanded">
-                  <p
-                    className={
-                      todo.completed ? 'has-text-success' : 'has-text-danger'
-                    }
-                  >
-                    {/* quis ut nam facilis et officia qui */}
-                    {todo.title}
-                  </p>
-                </td>
+              return (
+                <tr
+                  data-cy="todo"
+                  key={id}
+                  className={classNames({
+                    'has-background-info-light': todo === currentTodo,
+                  })}
+                >
+                  <td className="is-vcentered">{id}</td>
+                  <td className="is-vcentered">
+                    {completed && (
+                      <span className="icon" data-cy="iconCompleted">
+                        <i className="fas fa-check" />
+                      </span>
+                    )}
+                  </td>
 
-                <td className="has-text-right is-vcentered">
-                  <button
-                    data-cy="selectButton"
-                    className="button"
-                    type="button"
-                    onClick={() => handleCurrentTodo(todo)}
-                  >
-                    <span className="icon">
-                      {currentTodo === todo ? (
-                        <i className="far fa-eye-slash" />
-                      ) : (
-                        <i className="far fa-eye" />
-                      )}
-                    </span>
-                  </button>
-                </td>
-              </tr>
-            ))}
+                  <td className="is-vcentered is-expanded">
+                    <p
+                      className={
+                        completed ? 'has-text-success' : 'has-text-danger'
+                      }
+                    >
+                      {title}
+                    </p>
+                  </td>
+
+                  <td className="has-text-right is-vcentered">
+                    <button
+                      data-cy="selectButton"
+                      className="button"
+                      type="button"
+                      onClick={() => handleCurrentTodo(todo)}
+                    >
+                      <span className="icon">
+                        {currentTodo === todo ? (
+                          <i className="far fa-eye-slash" />
+                        ) : (
+                          <i className="far fa-eye" />
+                        )}
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       ) : (

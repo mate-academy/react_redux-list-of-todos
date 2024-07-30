@@ -30,7 +30,7 @@ export const TodoModal: React.FC = () => {
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
-      {isLoading && !user ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <div className="modal-card">
