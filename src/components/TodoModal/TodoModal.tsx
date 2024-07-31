@@ -6,6 +6,7 @@ import { User } from '../../types/User';
 import { useDispatch } from 'react-redux';
 import { setCurrentTodo } from '../../features/currentTodo';
 import { AppDispatch } from '../../app/store';
+import { UserBlock } from '../UserBlock';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,7 +22,7 @@ export const TodoModal: React.FC = () => {
         .then(setUser)
         .finally(() => setIsLoading(false));
     }
-  }, [dispatch]);
+  }, [dispatch, currentTodo]);
 
   const handleCloseModal = () => {
     dispatch(setCurrentTodo(null));
@@ -56,15 +57,9 @@ export const TodoModal: React.FC = () => {
               {currentTodo?.title}
             </p>
 
-            <p className="block" data-cy="modal-user">
-              {currentTodo?.completed ? (
-                <strong className="has-text-success">Done</strong>
-              ) : (
-                <strong className="has-text-danger">Planned</strong>
-              )}
-              {' by '}
-              <a href={`mailto:${user?.email}`}>{user?.name}</a>
-            </p>
+            {currentTodo && user && (
+              <UserBlock user={user} isCompleted={currentTodo?.completed} />
+            )}
           </div>
         </div>
       )}

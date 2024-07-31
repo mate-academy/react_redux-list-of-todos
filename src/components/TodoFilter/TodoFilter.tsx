@@ -13,6 +13,14 @@ export const TodoFilter: React.FC = () => {
     dispatch(resetQuery());
   };
 
+  const handleChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(changeStatus(e.target.value as Status));
+  };
+
+  const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeQuery(e.target.value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -20,10 +28,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select
-            data-cy="statusSelect"
-            onChange={e => dispatch(changeStatus(e.target.value as Status))}
-          >
+          <select data-cy="statusSelect" onChange={handleChangeStatus}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -38,7 +43,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={filter.query}
-          onChange={e => dispatch(changeQuery(e.target.value))}
+          onChange={handleQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
