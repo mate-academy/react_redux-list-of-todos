@@ -6,15 +6,15 @@ import { selector } from '../../app/store';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const query = selector(state => state.filter).query
+  const query = selector(state => state.filter).query;
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeQuery(event.target.value))
-  }
+    dispatch(changeQuery(event.target.value));
+  };
 
   const handleChangeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeStatus(event.target.value as Status))
-  }
+    dispatch(changeStatus(event.target.value as Status));
+  };
 
   return (
     <form
@@ -46,12 +46,14 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          {query && (<button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={() => dispatch(changeQuery(''))}
-          />)}
+          {query && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(changeQuery(''))}
+            />
+          )}
         </span>
       </p>
     </form>

@@ -10,37 +10,38 @@ import { selector } from './app/store';
 export const App = () => {
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
-  const currentTodo = selector(state => state.currentTodo)
+  const currentTodo = selector(state => state.currentTodo);
 
   useEffect(() => {
-    setLoader(true)
+    setLoader(true);
 
     getTodos()
-    .then(todos => dispatch(setTodos(todos)))
-    .finally(() => setLoader(false));
+      .then(todos => dispatch(setTodos(todos)))
+      .finally(() => setLoader(false));
 
     dispatch(setTodos([]));
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+            <div className="block">
+              <TodoFilter />
+            </div>
 
-          <div className="block">
-            {loader && <Loader />}
-            {!loader && <TodoList />}
+            <div className="block">
+              {loader && <Loader />}
+              {!loader && <TodoList />}
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    {currentTodo && <TodoModal />}
-  </>
-)};
+      {currentTodo && <TodoModal />}
+    </>
+  );
+};
