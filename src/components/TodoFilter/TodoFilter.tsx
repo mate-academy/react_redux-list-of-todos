@@ -1,6 +1,21 @@
 import React from 'react';
+import { changeQuery, changeStatus } from '../../features/filter';
+import { Status } from '../../types/Status';
+import { useDispatch } from 'react-redux';
+import { selector } from '../../app/store';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const query = selector(state => state.filter).query;
+
+  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeQuery(event.target.value));
+  };
+
+  const handleChangeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(changeStatus(event.target.value as Status));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +23,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" onChange={handleChangeStatus}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +37,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleChangeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -29,11 +46,14 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {query && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(changeQuery(''))}
+            />
+          )}
         </span>
       </p>
     </form>
