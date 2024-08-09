@@ -9,7 +9,7 @@ import { Loader } from './components/Loader';
 
 import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { actions as actionsTodos } from './features/todos';
+import { setTodos } from './features/todos';
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +19,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     getTodos()
-      .then(data => dispatch(actionsTodos.setTodos(data)))
+      .then(data => dispatch(setTodos(data)))
       .finally(() => setIsLoading(false));
   }, [dispatch]);
 

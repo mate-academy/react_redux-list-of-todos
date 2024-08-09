@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { filterByStatus, todoMatchesQuery } from '../../servises';
-import { actions as actionsTodo } from '../../features/currentTodo';
+import { setTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -12,7 +12,7 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const handleSelectTodo = (todo: Todo) => {
-    dispatch(actionsTodo.setTodo(todo));
+    dispatch(setTodo(todo));
   };
 
   const filteredTodos = todos.filter(

@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { action as actionFilter } from '../../features/filter';
+import { setQuery, setStatus } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter = () => {
@@ -12,9 +12,7 @@ export const TodoFilter = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={e =>
-              dispatch(actionFilter.setStatus(e.target.value as Status))
-            }
+            onChange={e => dispatch(setStatus(e.target.value as Status))}
           >
             {Object.keys(Status).map(option => (
               <option
@@ -35,7 +33,7 @@ export const TodoFilter = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          onChange={e => dispatch(actionFilter.setOuery(e.target.value))}
+          onChange={e => dispatch(setQuery(e.target.value))}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -48,7 +46,7 @@ export const TodoFilter = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(actionFilter.setOuery(''))}
+              onClick={() => dispatch(setQuery(''))}
             />
           )}
         </span>

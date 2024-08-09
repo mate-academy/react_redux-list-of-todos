@@ -4,7 +4,7 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch } from '../../app/hooks';
-import { actions as actionsTodo } from '../../features/currentTodo';
+import { deleteTodo } from '../../features/currentTodo';
 
 type Props = {
   todo: Todo;
@@ -18,7 +18,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
     getUser(todo.userId).then(setUser);
   }, []);
 
-  const handleResetModal = () => dispatch(actionsTodo.deletTodo());
+  const handleResetModal = () => dispatch(deleteTodo());
 
   return (
     <div className="modal is-active" data-cy="modal">

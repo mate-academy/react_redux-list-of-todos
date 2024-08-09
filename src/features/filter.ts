@@ -1,47 +1,26 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Status } from '../types/Status';
-
-type SetOueryAction = {
-  type: 'filter/queru';
-  payload: string;
-};
-
-type SetStatusAction = {
-  type: 'filter/status';
-  payload: Status;
-};
-
-type Action = SetOueryAction | SetStatusAction;
-
-const setOuery = (query: string): SetOueryAction => ({
-  type: 'filter/queru',
-  payload: query,
-});
-
-const setStatus = (status: Status): SetStatusAction => ({
-  type: 'filter/status',
-  payload: status,
-});
 
 const initialState = {
   query: '',
   status: Status.All,
 };
 
-export const reducer = (
-  // eslint-disable-next-line @typescript-eslint/default-param-last
-  state = initialState,
-  action: Action,
-): typeof initialState => {
-  switch (action.type) {
-    case 'filter/queru':
-      return { ...state, query: action.payload };
+const filterSlice = createSlice({
+  name: 'filter',
+  initialState,
+  reducers: {
+    setQuery: (state, action: PayloadAction<string>) => ({
+      ...state,
+      query: action.payload,
+    }),
+    setStatus: (state, action: PayloadAction<Status>) => ({
+      ...state,
+      status: action.payload,
+    }),
+  },
+});
 
-    case 'filter/status':
-      return { ...state, status: action.payload };
+export const { setQuery, setStatus } = filterSlice.actions;
 
-    default:
-      return state;
-  }
-};
-
-export const action = { setOuery, setStatus };
+export default filterSlice.reducer;

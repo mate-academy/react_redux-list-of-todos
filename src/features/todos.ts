@@ -1,27 +1,16 @@
-/* eslint-disable @typescript-eslint/default-param-last */
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
-const initialState = [] as Todo[];
+const initialState: Todo[] = [];
 
-type SetTodosAction = {
-  type: 'todos/set';
-  payload: Todo[];
-};
-
-type Action = SetTodosAction;
-
-const setTodos = (todos: Todo[]): SetTodosAction => ({
-  type: 'todos/set',
-  payload: todos,
+const todosSlice = createSlice({
+  name: 'todos',
+  initialState,
+  reducers: {
+    setTodos: (_state, action: PayloadAction<Todo[]>) => action.payload,
+  },
 });
 
-export const reducer = (state = initialState, action: Action) => {
-  switch (action.type) {
-    case 'todos/set':
-      return action.payload;
-    default:
-      return state;
-  }
-};
+export const { setTodos } = todosSlice.actions;
 
-export const actions = { setTodos };
+export default todosSlice.reducer;
