@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/store';
+import { setQuery, setStatus } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const currentQuery = useAppSelector(store => store.filter.query);
+  const changeStatus = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setStatus(event.target.value));
+  };
+
+  const changeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setQuery(event.target.value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +20,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" onChange={e => changeStatus(e)}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +34,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={currentQuery}
+          onChange={changeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -29,11 +43,14 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {currentQuery && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(setQuery(''))}
+            />
+          )}
         </span>
       </p>
     </form>
