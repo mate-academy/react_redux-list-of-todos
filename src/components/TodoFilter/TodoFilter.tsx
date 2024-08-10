@@ -1,6 +1,17 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import {
+  filterEmprtyQuery,
+  filterQueryTodos,
+  filterStatusTodos,
+} from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const filterStatus = useAppSelector(state => state.filterTodos.select);
+  const filterQuery = useAppSelector(state => state.filterTodos.query);
+  const dispatch = useAppDispatch();
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +19,13 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={filterStatus}
+            onChange={event =>
+              dispatch(filterStatusTodos(event.target.value as Status))
+            }
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,19 +39,23 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={filterQuery}
+          onChange={event => dispatch(filterQueryTodos(event.target.value))}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {filterQuery && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(filterEmprtyQuery())}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
