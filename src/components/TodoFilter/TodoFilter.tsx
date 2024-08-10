@@ -4,36 +4,36 @@ import { filterSlice, Status } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const [querty, setQuerty] = useState('');
+  const [query, setQuery] = useState('');
   const timerId = useRef(0);
 
-  const showClearButton = querty.trim().length > 0;
+  const displayButton = query.trim().length > 0;
 
-  const onStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const changeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(filterSlice.actions.addStatus(e.target.value as Status));
   };
 
-  const updateQuerty = (value: string) => {
+  const updateQuery = (value: string) => {
     window.clearTimeout(timerId.current);
     timerId.current = window.setTimeout(() => {
       dispatch(filterSlice.actions.addQuery(value));
     }, 2000);
   };
 
-  const onQuertyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuerty(e.target.value);
+  const changeQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
 
     const normalizedValue = e.target.value.trim();
 
     if (normalizedValue.length > 0) {
-      updateQuerty(normalizedValue);
+      updateQuery(normalizedValue);
     } else {
       dispatch(filterSlice.actions.removeQuery());
     }
   };
 
-  const onQuertyDelete = () => {
-    setQuerty('');
+  const deleteQuery = () => {
+    setQuery('');
     dispatch(filterSlice.actions.removeQuery());
   };
 
@@ -44,7 +44,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect" onChange={onStatusChange}>
+          <select data-cy="statusSelect" onChange={changeStatus}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -58,20 +58,20 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={querty}
-          onChange={onQuertyChange}
+          value={query}
+          onChange={changeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {showClearButton && (
+        {displayButton && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={onQuertyDelete}
+              onClick={deleteQuery}
             />
           </span>
         )}

@@ -10,17 +10,17 @@ import { currentTodoSlice } from '../../features/currentTodo';
 export const TodoModal: React.FC = () => {
   const selectedTodo = useAppSelector(state => state.currentTodo) as Todo;
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const { id, title, completed } = selectedTodo as Todo;
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
 
     getUser(selectedTodo.userId)
       .then(currentUser => setUser(currentUser))
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   }, [selectedTodo]);
 
@@ -31,7 +31,7 @@ export const TodoModal: React.FC = () => {
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <div className="modal-card">

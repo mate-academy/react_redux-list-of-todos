@@ -6,15 +6,16 @@ import { getTodos } from './api';
 import { useDispatch } from 'react-redux';
 import { todosSlice } from './features/todos';
 import { useAppSelector } from './app/hooks';
+import { loadingSlice } from './features/isLoading';
 
 export const App = () => {
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const dispatch = useDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
+  const isLoading = useAppSelector(state => state.isLoading);
 
   useEffect(() => {
-    setLoading(true);
+    dispatch(loadingSlice.actions.start());
 
     getTodos()
       .then(todosFromServer => {
@@ -28,7 +29,7 @@ export const App = () => {
         setError('Something went wrong.');
       })
       .finally(() => {
-        setLoading(false);
+        dispatch(loadingSlice.actions.stop());
       });
   }, [dispatch]);
 
@@ -44,13 +45,13 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {loading && <Loader />}
+              {isLoading && <Loader />}
 
-              {error ? (
+              {!isLoading && error && (
                 <p className="notification is-warning">{error}</p>
-              ) : (
-                <TodoList />
               )}
+
+              {!isLoading && !error && <TodoList />}
             </div>
           </div>
         </div>
