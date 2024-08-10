@@ -4,9 +4,9 @@ import { todosSlice } from '../features/todos';
 import { currentTodoSlice } from '../features/currentTodo';
 
 const rootReducer = combineSlices({
-  todosReducer: todosSlice.reducer,
-  filterReducer: filterSlice.reducer,
-  currentTodoReducer: currentTodoSlice.reducer,
+  todos: todosSlice.reducer,
+  filter: filterSlice.reducer,
+  currentTodo: currentTodoSlice.reducer,
 });
 
 export const store = configureStore({

@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
-  const selectedTodoId = useAppSelector(state => state.currentTodoReducer?.id);
+  const selectedTodoId = useAppSelector(state => state.currentTodo?.id);
   const dispatch = useAppDispatch();
 
   return (

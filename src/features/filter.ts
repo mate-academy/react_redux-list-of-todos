@@ -3,7 +3,7 @@ import { FilterOptions } from '../types';
 
 const initialState = {
   query: '',
-  select: 'all' as FilterOptions,
+  select: FilterOptions.ALL,
 };
 
 type FilterState = {

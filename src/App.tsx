@@ -7,12 +7,14 @@ import { getTodos } from './api';
 import { todosSlice } from './features/todos';
 import { getPrepearedTodos } from './helpers/getPrepearedTodos';
 
+export const { setTodos } = todosSlice.actions;
+
 export const App = () => {
-  const todos = useAppSelector(state => state.todosReducer);
+  const todos = useAppSelector(state => state.todos);
   const [isLoading, setIsLoading] = useState(false);
-  const filterSelect = useAppSelector(state => state.filterReducer.select);
-  const filterQuery = useAppSelector(state => state.filterReducer.query);
-  const selectedTodo = useAppSelector(state => state.currentTodoReducer);
+  const filterSelect = useAppSelector(state => state.filter.select);
+  const filterQuery = useAppSelector(state => state.filter.query);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
 
   const dispatch = useAppDispatch();
 
@@ -21,7 +23,7 @@ export const App = () => {
 
     getTodos()
       .then(fetchedTodos => {
-        dispatch(todosSlice.actions.setTodos(fetchedTodos));
+        dispatch(setTodos(fetchedTodos));
       })
       .finally(() => setIsLoading(false));
   }, [dispatch]);

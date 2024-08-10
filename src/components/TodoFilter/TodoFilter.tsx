@@ -4,8 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { filterSlice } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
-  const select = useAppSelector(state => state.filterReducer.select);
-  const query = useAppSelector(state => state.filterReducer.query);
+  const { select, query } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
 
   return (

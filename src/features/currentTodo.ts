@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
 import { Todo } from '../types';
 
-const initialState = null as Todo | null;
+type CurrentTodoState = Todo | null;
 
-export const currentTodoSlice: Slice<Todo | null> = createSlice({
+const initialState: CurrentTodoState = null;
+
+export const currentTodoSlice: Slice = createSlice({
   name: 'currentTodo',
   initialState,
   reducers: {
-    setCurrentTodo: (_, action: PayloadAction<Todo>) => {
+    setCurrentTodo: (_, action: PayloadAction) => {
       return action.payload;
     },
     removeCurrentTodo: () => {

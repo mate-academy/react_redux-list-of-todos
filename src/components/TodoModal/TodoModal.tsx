@@ -9,7 +9,7 @@ export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User>();
   const [isLoading, setIsLoading] = useState(false);
 
-  const selectedTodo = useAppSelector(state => state.currentTodoReducer);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   const onClose = () => {
