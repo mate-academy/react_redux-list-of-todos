@@ -3,7 +3,7 @@ import { Status } from '../types/Status';
 
 const initialState = {
   query: '',
-  status: 'all' as Status,
+  status: Status.all,
 };
 
 type FilterState = {
@@ -16,17 +16,11 @@ export const filterSlice: Slice<FilterState> = createSlice({
   initialState,
   reducers: {
     setQuery(state, action: PayloadAction<string>) {
-      return {
-        ...state,
-        query: action.payload,
-      };
+      state.query = action.payload;
     },
 
     setStatus(state, action: PayloadAction<Status>) {
-      return {
-        ...state,
-        status: action.payload,
-      };
+      state.status = action.payload;
     },
   },
 });

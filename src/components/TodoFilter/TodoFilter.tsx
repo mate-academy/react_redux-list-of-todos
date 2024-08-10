@@ -4,8 +4,7 @@ import { filterSlice } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const status = useAppSelector(state => state.filterReducer.status);
-  const query = useAppSelector(state => state.filterReducer.query);
+  const { status, query } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
 
   return (

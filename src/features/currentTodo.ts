@@ -1,7 +1,9 @@
 import { PayloadAction, Slice, createSlice } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
-const initialState = null as Todo | null;
+type CurrentTodoState = Todo | null;
+
+const initialState: CurrentTodoState = null as Todo | null;
 
 export const currentTodoSlice: Slice<Todo | null> = createSlice({
   name: 'currentTodo',

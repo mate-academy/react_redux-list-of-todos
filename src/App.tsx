@@ -11,11 +11,9 @@ import React from 'react';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const todos = useAppSelector(state => state.todosReducer);
-  const selectedTodo = useAppSelector(state => state.currentTodoReducer);
-  const filterBy = useAppSelector(state => state.filterReducer.status);
-  const query = useAppSelector(state => state.filterReducer.query);
-
+  const todos = useAppSelector(state => state.todos);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const { status, query } = useAppSelector(state => state.filter);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -30,7 +28,7 @@ export const App = () => {
   const filteredTodos = useMemo(() => {
     return todos
       .filter((todo: Todo) => {
-        switch (filterBy) {
+        switch (status) {
           case Status.active:
             return !todo.completed;
 
@@ -44,7 +42,7 @@ export const App = () => {
       .filter(todo =>
         todo.title.toLowerCase().trim().includes(query.trim().toLowerCase()),
       );
-  }, [filterBy, todos, query]);
+  }, [todos, query, status]);
 
   return (
     <>

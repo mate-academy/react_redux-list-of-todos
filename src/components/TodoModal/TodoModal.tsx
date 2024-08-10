@@ -7,7 +7,7 @@ import { getUser } from '../../api';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const selectedTodo = useAppSelector(state => state.currentTodoReducer);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   const onClose = () => {
