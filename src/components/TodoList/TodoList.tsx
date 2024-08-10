@@ -15,10 +15,11 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {displayError ? (<p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>) :
-
+      {displayError ? (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      ) : (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -36,12 +37,12 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {displayedTodos.map((todo) => (
+            {displayedTodos.map(todo => (
               <TodoItem todo={todo} selectedTodo={selectedTodo} />
             ))}
           </tbody>
-        </table >
-      }
+        </table>
+      )}
     </>
   );
 };
