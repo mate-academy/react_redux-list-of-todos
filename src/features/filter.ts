@@ -1,8 +1,8 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-// import { FilterType } from '../types/FilterType';
 import { Status } from '../types/Status';
 
-interface FilterState {
+export interface FilterState {
   query: string;
   status: Status;
 }
@@ -14,19 +14,13 @@ const initialState: FilterState = {
 
 export const filterSlice = createSlice({
   name: 'filter',
-  initialState: initialState,
+  initialState,
   reducers: {
     setQuery: (state: FilterState, action: PayloadAction<string>) => {
-      return {
-        ...state,
-        query: action.payload,
-      };
+      state.query = action.payload;
     },
     setStatus: (state: FilterState, action: PayloadAction<Status>) => {
-      return {
-        ...state,
-        status: action.payload,
-      };
+      state.status = action.payload;
     },
   },
 });

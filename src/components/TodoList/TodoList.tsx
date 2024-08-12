@@ -1,18 +1,18 @@
 import React from 'react';
 
 import classNames from 'classnames';
-import { useAppSelector } from '../../app/store';
+import { RootState, useAppSelector } from '../../app/store';
 import { flterByTypes } from '../../utils/FilterTypes';
 import { useDispatch } from 'react-redux';
 import { setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const todos = useAppSelector(state => state.todos);
-  const query = useAppSelector(state => state.filter.query);
-  const status = useAppSelector(state => state.filter.status);
+  const todos = useAppSelector((state: RootState) => state.todos);
+  const { status, query } = useAppSelector(state => state.filter);
   const dispatch = useDispatch();
-  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const selectedTodo = useAppSelector((state: RootState) => state.currentTodo);
   const filteredTodos = flterByTypes(status, todos, query);
+
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
