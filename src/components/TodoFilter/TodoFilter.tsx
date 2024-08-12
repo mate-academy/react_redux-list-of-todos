@@ -1,17 +1,31 @@
 import React from 'react';
 
+import { FilterType } from '../../types/FilterType';
+import { useDispatch } from 'react-redux';
+import { setQuery, setStatus } from '../../features/filter';
+import { RootState, useAppSelector } from '../../app/store';
+
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const query = useAppSelector((state: RootState) => state.filter.query);
+
+  const handleChangeOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setStatus(event.target.value as FilterType));
+  };
+
+  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setQuery(event.target.value));
+  };
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select data-cy="statusSelect" onChange={handleChangeOption}>
+            <option value={FilterType.All}>All</option>
+            <option value={FilterType.Active}>Active</option>
+
+            <option value={FilterType.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +36,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleChangeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -29,11 +45,14 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {query && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(setQuery(''))}
+            />
+          )}
         </span>
       </p>
     </form>
