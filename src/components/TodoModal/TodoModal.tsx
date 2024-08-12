@@ -13,10 +13,10 @@ export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getUser(currentTodo.userId)
-    .then(setUser)
-    .finally(() => setLoading(false));
+      .then(setUser)
+      .finally(() => setLoading(false));
   }, [currentTodo]);
 
   const handleClearCurrentTodo = () => {

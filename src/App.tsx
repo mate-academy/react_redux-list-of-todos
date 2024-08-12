@@ -6,7 +6,7 @@ import { getTodos } from './api';
 import { todosSlice } from './features/todos';
 import { Todo } from './types/Todo';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { Status } from './types/Status';
+import { getFilteredTodos } from './utils/GetFilteredTodos';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,35 +15,6 @@ export const App = () => {
   const todos = useAppSelector(state => state.todos);
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const filter = useAppSelector(state => state.filter);
-
-  function getFilteredTodos(
-    todos: Todo[],
-    filter: { status: Status; query: string },
-  ) {
-    let filteredTodos = [...todos];
-    const normalizedQuery = filter.query.trim().toLowerCase();
-
-    switch (filter.status) {
-      case 'active':
-        filteredTodos = todos.filter(todo => !todo.completed);
-        break;
-
-      case 'completed':
-        filteredTodos = todos.filter(todo => todo.completed);
-        break;
-
-      default:
-        break;
-    }
-
-    if (normalizedQuery) {
-      return filteredTodos.filter(todo =>
-        todo.title.toLowerCase().includes(normalizedQuery),
-      );
-    }
-
-    return filteredTodos;
-  }
 
   const filteredTodos = getFilteredTodos(todos, filter);
 

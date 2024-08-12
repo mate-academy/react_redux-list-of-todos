@@ -7,7 +7,7 @@ import { currentTodoSlice } from '../../features/currentTodo';
 
 type Props = {
   todos: Todo[];
-}
+};
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
   const isTodo = todos.length > 0;
 
   return (
-     <>
+    <>
       {!isTodo && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
@@ -28,9 +28,9 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
             <tr>
               <th>#</th>
               <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
+                <span className="icon">
+                  <i className="fas fa-check" />
+                </span>
               </th>
               <th>Title</th>
               <th> </th>
@@ -41,8 +41,13 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
             {todos.map(todo => (
               <tr
                 data-cy="todo"
-                className={todo.id === selectedTodo?.id ? 'has-background-info-light' : ''}
-                key={todo.id}>
+                className={
+                  todo.id === selectedTodo?.id
+                    ? 'has-background-info-light'
+                    : ''
+                }
+                key={todo.id}
+              >
                 <td className="is-vcentered">{todo.id}</td>
                 {todo.completed ? (
                   <td className="is-vcentered">
