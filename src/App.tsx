@@ -17,36 +17,35 @@ export const App = () => {
   const filter = useAppSelector(state => state.filter);
 
   function getFilteredTodos(
-  todos: Todo[],
-  filter: { status: Status; query: string },
-) {
-  let filteredTodos = [...todos];
-  const normalizedQuery = filter.query.trim().toLowerCase();
+    todos: Todo[],
+    filter: { status: Status; query: string },
+  ) {
+    let filteredTodos = [...todos];
+    const normalizedQuery = filter.query.trim().toLowerCase();
 
-  switch (filter.status) {
-    case 'active':
-      filteredTodos = todos.filter(todo => !todo.completed);
-      break;
+    switch (filter.status) {
+      case 'active':
+        filteredTodos = todos.filter(todo => !todo.completed);
+        break;
 
-    case 'completed':
-      filteredTodos = todos.filter(todo => todo.completed);
-      break;
+      case 'completed':
+        filteredTodos = todos.filter(todo => todo.completed);
+        break;
 
-    default:
-      break;
-  }
+      default:
+        break;
+    }
 
-  if (normalizedQuery) {
-    return filteredTodos.filter(todo =>
-      todo.title.toLowerCase().includes(normalizedQuery),
-    );
-  }
+    if (normalizedQuery) {
+      return filteredTodos.filter(todo =>
+        todo.title.toLowerCase().includes(normalizedQuery),
+      );
+    }
 
-  return filteredTodos;
+    return filteredTodos;
   }
 
   const filteredTodos = getFilteredTodos(todos, filter);
-
 
   useEffect(() => {
     setIsLoading(true);

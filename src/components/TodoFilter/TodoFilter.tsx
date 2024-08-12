@@ -14,6 +14,7 @@ export const TodoFilter: React.FC = () => {
   const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filterSlice.actions.setQuery(event.target.value));
   };
+
   return (
     <form
       className="field has-addons"
@@ -21,7 +22,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-        <select
+          <select
             data-cy="statusSelect"
             value={filter.status}
             onChange={handleSelect}

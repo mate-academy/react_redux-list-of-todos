@@ -18,5 +18,3 @@ export const filterSlice: Slice = createSlice({
     },
   },
 });
-
-
