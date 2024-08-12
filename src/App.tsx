@@ -21,10 +21,10 @@ export const App: React.FC = () => {
       try {
         setIsLoadingTodos(true);
         const fetchedTodos: Todo[] = await getTodos();
+
         dispatch(setTodos(fetchedTodos));
-      } catch (error) {
-        console.error('Failed to fetch todos', error);
-        // You might want to show an error message to the user here
+      } catch {
+        throw new Error('Failed to fetch todos');
       } finally {
         setIsLoadingTodos(false);
       }

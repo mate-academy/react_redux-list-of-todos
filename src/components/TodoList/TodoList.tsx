@@ -68,9 +68,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                     type="button"
                     onClick={() => dispatch(setCurrentTodo(todo))}
                   >
-                    <span
-                      className="icon"
-                    >
+                    <span className="icon">
                       <i
                         className={cn({
                           'far fa-eye': currentTodo !== todo,

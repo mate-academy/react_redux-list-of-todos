@@ -14,14 +14,17 @@ export const TodoModal: React.FC = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      if (!currentTodo) return;
+      if (!currentTodo) {
+        return;
+      }
 
       try {
         setIsLoadingUser(true);
         const fetchedUser = await getUser(currentTodo.userId);
+
         setUser(fetchedUser);
-      } catch (error) {
-        console.error('Failed to fetch user', error);
+      } catch {
+        throw new Error('Failed to fetch user');
       } finally {
         setIsLoadingUser(false);
       }
@@ -71,7 +74,9 @@ export const TodoModal: React.FC = () => {
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={`mailto:${user?.email}`} data-cy="user-email">{user?.name}</a>
+              <a href={`mailto:${user?.email}`} data-cy="user-email">
+                {user?.name}
+              </a>
             </p>
           </div>
         </div>
