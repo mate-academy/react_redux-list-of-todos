@@ -31,7 +31,7 @@ export const TodoList: React.FC = () => {
             return todosList.filter(todo => isQuery(todo.title, query));
         }
       }
-    }, [status, query]);
+    }, [status, query, todos]);
 
   const filteredList = filteredTodos(todos);
   return (
