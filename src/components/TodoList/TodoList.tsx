@@ -1,35 +1,39 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TodoItem } from './TodoItem';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { Todo } from '../../types/Todo';
-import { State } from '../../types/State';
 import { Status } from '../../enums/Status';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector<Todo[]>(state => state.todos);
-  const status = useAppSelector(status => status.filter);
+  const {status, query} = useAppSelector(status => status.filter);
 
-  const filteredTodos = (filtBy: State, todosList: Todo[]) => {
-    const isQuery = (titleTodo: string, query: string) => {
-      return titleTodo.toLocaleLowerCase().includes(query.toLocaleLowerCase());
-    };
+  const filteredTodos = (todosList: Todo[]) =>
+    useMemo(() => {
+      {
+        const isQuery = (titleTodo: string, query: string) => {
+          return titleTodo
+            .toLocaleLowerCase()
+            .includes(query.toLocaleLowerCase());
+        };
 
-    switch (filtBy.status) {
-      case Status.active:
-        return todosList.filter(
-          todo => !todo.completed && isQuery(todo.title, filtBy.query),
-        );
-      case Status.completed:
-        return todosList.filter(
-          todo => todo.completed && isQuery(todo.title, filtBy.query),
-        );
-      default:
-        return todosList.filter(todo => isQuery(todo.title, filtBy.query));
-    }
-  };
+        switch (status) {
+          case Status.active:
+            return todosList.filter(
+              todo => !todo.completed && isQuery(todo.title, query),
+            );
+          case Status.completed:
+            return todosList.filter(
+              todo => todo.completed && isQuery(todo.title, query),
+            );
+          default:
+            return todosList.filter(todo => isQuery(todo.title, query));
+        }
+      }
+    }, [status, query]);
 
-  const filteredList = filteredTodos(status, todos);
+  const filteredList = filteredTodos(todos);
   return (
     <>
       {filteredList.length === 0 && (
