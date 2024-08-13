@@ -1,26 +1,20 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from './app/store';
 import { useEffect, useMemo, useState } from 'react';
 import { getTodos } from './api';
-import { Todo } from './types/Todo';
 import { todosReducer } from './features/todos';
 import { StatusTypes } from './features/filter';
+import { useAppDispatch, useAppSelector } from './features/useAppSelector';
 
 export const App = () => {
   const [isLoading, setisLoading] = useState(false);
 
-  const status = useSelector<RootState>(
-    state => state.filter.status,
-  ) as StatusTypes;
-  const query = useSelector<RootState>(state => state.filter.query) as string;
-  const currentTodo = useSelector<RootState>(
-    state => state.currentTodo,
-  ) as Todo;
-  const todos = useSelector<RootState>(state => state.todos) as Todo[];
-  const dispatch = useDispatch();
+  const status = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setisLoading(true);

@@ -1,20 +1,17 @@
 import React from 'react';
 import { Todo } from '../../types/Todo';
 import classNames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import { currentTodoReducer } from '../../features/currentTodo';
-import { RootState } from '../../app/store';
+import { useAppDispatch, useAppSelector } from '../../features/useAppSelector';
 
 interface Prop {
   todo: Todo;
 }
 
 export const TodoItem: React.FC<Prop> = ({ todo }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const activeModal = () => dispatch(currentTodoReducer(todo));
-  const currentTodo = useSelector<RootState>(
-    state => state.currentTodo,
-  ) as Todo;
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   return (
     <tr data-cy="todo">
