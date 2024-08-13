@@ -10,6 +10,7 @@ export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const closeModal = () => dispatch(clearTodo(null));
 
   useEffect(() => {
     async function fetchUser() {
@@ -46,7 +47,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(clearTodo(null))}
+              onClick={closeModal}
             />
           </header>
 
