@@ -11,10 +11,6 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
   const { query } = useAppSelector(state => state.filter);
 
-  const handleOnChange = (val: string) => {
-    dispatch(filterByQuery(val));
-  };
-
   return (
     <form
       className="field has-addons"
@@ -26,11 +22,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={e => {
-              const value = e.target.value.toLocaleLowerCase();
-
-              dispatch(filterBySelect(value));
-            }}
+            onChange={e => dispatch(filterBySelect(e.target.value))}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -45,7 +37,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          onChange={e => handleOnChange(e.target.value)}
+          onChange={e => dispatch(filterByQuery(e.target.value))}
           value={query}
         />
         <span className="icon is-left">
