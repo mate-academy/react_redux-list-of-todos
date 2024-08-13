@@ -10,7 +10,7 @@ export const TodoModal = ({ todo }: { todo: Todo }) => {
   const dispatch = useDispatch();
   const resetModal = () => dispatch(currentTodoReducer(null));
 
-  const [user, setUser] = useState({} as User);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export const TodoModal = ({ todo }: { todo: Todo }) => {
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href="mailto:Sincere@april.biz">{user.name}</a>
+              <a href="mailto:Sincere@april.biz">{user?.name}</a>
             </p>
           </div>
         </div>

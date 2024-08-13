@@ -22,14 +22,12 @@ export const App = () => {
   const todos = useSelector<RootState>(state => state.todos) as Todo[];
   const dispatch = useDispatch();
 
-  const loadTodos = (value: Todo[]) => dispatch(todosReducer(value));
-
   useEffect(() => {
     setisLoading(true);
 
     getTodos()
       .then(res => {
-        loadTodos(res);
+        dispatch(todosReducer(res));
       })
       .finally(() => {
         setisLoading(false);
