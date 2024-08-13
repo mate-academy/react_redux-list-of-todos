@@ -4,36 +4,28 @@ import { TodoItem } from './TodoItem';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { Todo } from '../../types/Todo';
 import { State } from '../../types/State';
+import { Status } from '../../enums/Status';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector<Todo[]>(state => state.todos);
   const status = useAppSelector(status => status.filter);
 
   const filteredTodos = (filtBy: State, todosList: Todo[]) => {
-    const copyTodos = [...todosList];
     const isQuery = (titleTodo: string, query: string) => {
       return titleTodo.toLocaleLowerCase().includes(query.toLocaleLowerCase());
     };
 
     switch (filtBy.status) {
-      case 'all':
-        return copyTodos.filter(todo => {
-          return filtBy.query ? isQuery(todo.title, filtBy.query) : todo;
-        });
-      case 'active':
-        return copyTodos.filter(todo => {
-          return filtBy.query
-            ? !todo.completed && isQuery(todo.title, filtBy.query)
-            : !todo.completed;
-        });
-      case 'completed':
-        return copyTodos.filter(todo => {
-          return filtBy.query
-            ? todo.completed && isQuery(todo.title, filtBy.query)
-            : todo.completed;
-        });
+      case Status.active:
+        return todosList.filter(
+          todo => !todo.completed && isQuery(todo.title, filtBy.query),
+        );
+      case Status.completed:
+        return todosList.filter(
+          todo => todo.completed && isQuery(todo.title, filtBy.query),
+        );
       default:
-        return copyTodos;
+        return todosList.filter(todo => isQuery(todo.title, filtBy.query));
     }
   };
 

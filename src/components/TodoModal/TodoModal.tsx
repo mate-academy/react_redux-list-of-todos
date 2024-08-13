@@ -15,6 +15,7 @@ export const TodoModal: React.FC = () => {
     async function fetchUser() {
       try {
         const user = await getUser(currentTodo.userId);
+
         setCurrentUser(user);
       } catch {
         throw new Error("Can't load the user");

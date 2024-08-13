@@ -5,7 +5,6 @@ export const todosSlice: Slice = createSlice({
   name: 'todos',
   initialState: [] as Todo[],
   reducers: {
-
     load(state, action) {
       return state.concat(action.payload);
     },

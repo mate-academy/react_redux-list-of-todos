@@ -16,6 +16,7 @@ export const App = () => {
       try {
         setIsLoader(true);
         const data = await getTodos();
+
         dispatch(load(data));
       } catch {
         throw new Error('Error load data');

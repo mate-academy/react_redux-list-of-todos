@@ -28,6 +28,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="statusSelect"
             onChange={e => {
               const value = e.target.value.toLocaleLowerCase();
+
               dispatch(filterBySelect(value));
             }}
           >
