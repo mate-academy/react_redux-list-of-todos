@@ -30,23 +30,29 @@ export const App = () => {
   }, []);
 
   const filteredTodos = useMemo(() => {
+    const normalizedQuery = query.toLowerCase();
+
     switch (status) {
       case StatusTypes.Active:
         return todos
           .flat()
           .filter(
-            todo => !todo.completed && todo.title.toLowerCase().includes(query),
+            todo =>
+              !todo.completed &&
+              todo.title.toLowerCase().includes(normalizedQuery),
           );
       case StatusTypes.Completed:
         return todos
           .flat()
           .filter(
-            todo => todo.completed && todo.title.toLowerCase().includes(query),
+            todo =>
+              todo.completed &&
+              todo.title.toLowerCase().includes(normalizedQuery),
           );
       default:
         return todos
           .flat()
-          .filter(todo => todo.title.toLowerCase().includes(query));
+          .filter(todo => todo.title.toLowerCase().includes(normalizedQuery));
     }
   }, [query, status, todos]);
 

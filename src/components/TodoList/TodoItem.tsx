@@ -9,15 +9,17 @@ interface Prop {
 }
 
 export const TodoItem: React.FC<Prop> = ({ todo }) => {
+  const { id, title, completed } = todo;
+
   const dispatch = useAppDispatch();
-  const activeModal = () => dispatch(currentTodoReducer(todo));
+  const activateModal = () => dispatch(currentTodoReducer(todo));
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   return (
     <tr data-cy="todo">
-      <td className="is-vcentered">{todo.id}</td>
+      <td className="is-vcentered">{id}</td>
       <td className="is-vcentered">
-        {todo.completed && (
+        {completed && (
           <span className="icon" data-cy="iconCompleted">
             <i className="fas fa-check" />
           </span>
@@ -27,11 +29,11 @@ export const TodoItem: React.FC<Prop> = ({ todo }) => {
       <td className="is-vcentered is-expanded">
         <p
           className={classNames({
-            'has-text-danger': !todo.completed,
-            'has-text-success': todo.completed,
+            'has-text-danger': !completed,
+            'has-text-success': completed,
           })}
         >
-          {todo.title}
+          {title}
         </p>
       </td>
 
@@ -40,16 +42,14 @@ export const TodoItem: React.FC<Prop> = ({ todo }) => {
           data-cy="selectButton"
           className="button"
           type="button"
-          onClick={() => activeModal()}
+          onClick={activateModal}
         >
           <span className="icon">
             <i
-              className={classNames(
-                'far',
-                currentTodo && currentTodo.id === todo.id
-                  ? 'fa-eye-slash'
-                  : 'fa-eye',
-              )}
+              className={classNames('far', {
+                'fa-eye': currentTodo?.id !== id,
+                'fa-eye-slash': currentTodo && currentTodo.id === id,
+              })}
             />
           </span>
         </button>
