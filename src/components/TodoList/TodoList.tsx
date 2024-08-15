@@ -5,15 +5,19 @@ import { Todo } from '../../types/Todo';
 
 type Props = {
   todos: Todo[];
-}
+};
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
+  if (!todos.length) {
+    return (
+      <p className="notification is-warning">
+        There are no todos matching current filter criteria
+      </p>
+    );
+  }
+
   return (
     <>
-      {!todos.length && <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>}
-
       <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
