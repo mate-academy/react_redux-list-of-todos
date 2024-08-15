@@ -12,6 +12,7 @@ export const App = () => {
   const todos = useAppSelector(state => state.todos);
   const status = useAppSelector(state => state.filter.status);
   const query = useAppSelector(state => state.filter.query);
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -71,13 +72,15 @@ export const App = () => {
             <div className="block">
               {isLoading && <Loader />}
 
-              {!isLoading && <TodoList todos={filteredTodos} />}
+              {todos.length > 0 && !isLoading && (
+                <TodoList todos={filteredTodos} />
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {false && <TodoModal />}
+      {currentTodo && <TodoModal todo={currentTodo} />}
     </>
   );
 };

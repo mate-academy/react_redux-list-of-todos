@@ -1,11 +1,21 @@
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
+import { useDispatch } from 'react-redux';
+import { setCurrentTodo } from '../../features/currentTodo';
+import { useAppSelector } from '../../hooks/reduxHooks';
 
 type Props = {
   todo: Todo;
 };
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
+  const dispatch = useDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+
+  const selectTodo = () => {
+    dispatch(setCurrentTodo(todo));
+  };
+
   return (
     <tr data-cy="todo">
       <td className="is-vcentered">{todo.id}</td>
@@ -27,9 +37,19 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
       </td>
 
       <td className="has-text-right is-vcentered">
-        <button data-cy="selectButton" className="button" type="button">
+        <button
+          data-cy="selectButton"
+          className="button"
+          type="button"
+          onClick={selectTodo}
+        >
           <span className="icon">
-            <i className="far fa-eye" />
+            <i
+              className={classNames('far', {
+                'fa-eye': currentTodo?.id !== todo.id,
+                'fa-eye-slash': currentTodo && currentTodo.id === todo.id,
+              })}
+            />
           </span>
         </button>
       </td>
