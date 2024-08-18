@@ -4,6 +4,7 @@ import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions as currentTodoActions } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { ErrorMessage } from '../../types/ErrorMessage';
 
 type Props = {
   todo: Todo;
@@ -29,7 +30,7 @@ export const TodoItem: React.FC<Props> = ({ todo, showModal, onOpenModal }) => {
         dispatch(currentTodoActions.setLoading(false));
       })
       .catch(() => {
-        dispatch(currentTodoActions.setError('Something went error'));
+        dispatch(currentTodoActions.setError(ErrorMessage.ERROR));
       });
   };
 
@@ -39,6 +40,20 @@ export const TodoItem: React.FC<Props> = ({ todo, showModal, onOpenModal }) => {
     dispatch(currentTodoActions.loadCurrentTodo(todo));
 
     fetchUserId();
+  };
+
+  const getTextClass = (isCompleted: boolean) => {
+    return cn({
+      'has-text-danger': !isCompleted,
+      'has-text-success': isCompleted,
+    });
+  };
+
+  const getIconClass = (openCurrentTodo: boolean) => {
+    return cn('far', {
+      'fa-eye': !openCurrentTodo,
+      'fa-eye-slash': openCurrentTodo,
+    });
   };
 
   return (
@@ -57,14 +72,7 @@ export const TodoItem: React.FC<Props> = ({ todo, showModal, onOpenModal }) => {
       </td>
 
       <td className="is-vcentered is-expanded">
-        <p
-          className={cn({
-            'has-text-danger': !completed,
-            'has-text-success': completed,
-          })}
-        >
-          {title}
-        </p>
+        <p className={getTextClass(completed)}>{title}</p>
       </td>
 
       <td className="has-text-right is-vcentered">
@@ -75,12 +83,7 @@ export const TodoItem: React.FC<Props> = ({ todo, showModal, onOpenModal }) => {
           type="button"
         >
           <span className="icon">
-            <i
-              className={cn({
-                'fa-eye': !isOpenCurrentTodo,
-                'fa-eye-slash': isOpenCurrentTodo,
-              })}
-            />
+            <i className={getIconClass(isOpenCurrentTodo)} />
           </span>
         </button>
       </td>

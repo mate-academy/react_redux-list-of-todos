@@ -20,22 +20,20 @@ export const currentTodoSlice: Slice<CurrentTodoState> = createSlice({
   name: 'currentTodo',
   initialState,
   reducers: {
+    /* eslint-disable no-param-reassign */
     setLoading: (state, action: PayloadAction<boolean>) => {
-      // eslint-disable-next-line no-param-reassign
       state.loading = action.payload;
     },
     setError: (state, action: PayloadAction<string>) => {
-      // eslint-disable-next-line no-param-reassign
       state.error = action.payload;
     },
     loadCurrentTodo: (state, action: PayloadAction<Todo>) => {
-      // eslint-disable-next-line no-param-reassign
       state.todo = action.payload;
     },
     loadCurrentUser: (state, action: PayloadAction<User>) => {
-      // eslint-disable-next-line no-param-reassign
       state.user = action.payload;
     },
+    /* eslint-disable no-param-reassign */
   },
 });
 

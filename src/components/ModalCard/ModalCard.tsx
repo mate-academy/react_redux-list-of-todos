@@ -32,14 +32,12 @@ export const ModalCard: React.FC<Props> = ({ onCloseModal }) => {
         </p>
 
         <p className="block" data-cy="modal-user">
-          {/* For not completed */}
           <strong
             className={todo?.completed ? 'has-text-success' : 'has-text-danger'}
           >
             {todo?.completed ? 'Done' : 'Planned'}
           </strong>
 
-          {/* For completed */}
           {' by '}
           <a href={`mailto:${user?.email}`}>{user?.name}</a>
         </p>

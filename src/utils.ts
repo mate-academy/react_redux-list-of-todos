@@ -1,12 +1,13 @@
 import { Status } from './types/Status';
+import { StatusEnum } from './types/StatusEnum';
 import { Todo } from './types/Todo';
 
 export const getPreparedTodos = (todos: Todo[], status: Status) => {
   switch (status) {
-    case 'active':
-      return todos.filter(item => !item.completed);
-    case 'completed':
-      return todos.filter(item => item.completed);
+    case StatusEnum.Active:
+      return todos.filter(todo => !todo.completed);
+    case StatusEnum.Completed:
+      return todos.filter(todo => todo.completed);
     default:
       return todos;
   }
