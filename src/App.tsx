@@ -6,17 +6,11 @@ import { getTodos } from './api';
 import { todosSlice } from './features/todos';
 import { Todo } from './types/Todo';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { getFilteredTodos } from './utils/GetFilteredTodos';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
-
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
   const selectedTodo = useAppSelector(state => state.currentTodo);
-  const filter = useAppSelector(state => state.filter);
-
-  const filteredTodos = getFilteredTodos(todos, filter);
 
   useEffect(() => {
     setIsLoading(true);
@@ -42,7 +36,7 @@ export const App = () => {
             </div>
             <div className="block">
               {isLoading && <Loader />}
-              {!isLoading && <TodoList todos={filteredTodos} />}
+              {!isLoading && <TodoList />}
             </div>
           </div>
         </div>

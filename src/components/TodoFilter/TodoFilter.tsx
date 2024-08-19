@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { filterSlice } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
-  const filter = useAppSelector(state => state.filter);
+  const { status, query } = useAppSelector(state => state.filter);
   const dispatch = useDispatch();
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -24,7 +24,7 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={filter.status}
+            value={status}
             onChange={handleSelect}
           >
             <option value="all">All</option>
@@ -40,14 +40,14 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={filter.query}
+          value={query}
           onChange={handleQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {filter.query && (
+        {query && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             <button
               data-cy="clearSearchButton"

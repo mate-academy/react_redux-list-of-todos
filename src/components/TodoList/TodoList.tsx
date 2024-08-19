@@ -1,28 +1,26 @@
 /* eslint-disable */
 import React from 'react';
-import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import cn from 'classnames';
 import { currentTodoSlice } from '../../features/currentTodo';
+import { getFilteredTodos } from '../../utils/GetFilteredTodos';
 
-type Props = {
-  todos: Todo[];
-};
-
-export const TodoList: React.FC<Props> = ({ todos }) => {
+export const TodoList: React.FC = () => {
+  const todos = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(state => state.currentTodo);
-
-  const isTodo = todos.length > 0;
+  const filter = useAppSelector(state => state.filter);
+  const filteredTodos = getFilteredTodos(todos, filter);
+  const hasTodo = todos.length;
 
   return (
     <>
-      {!isTodo && (
+      {!hasTodo && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
-      {isTodo && (
+      {hasTodo && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -38,14 +36,12 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
           </thead>
 
           <tbody>
-            {todos.map(todo => (
+            {filteredTodos.map(todo => (
               <tr
                 data-cy="todo"
-                className={
-                  todo.id === selectedTodo?.id
-                    ? 'has-background-info-light'
-                    : ''
-                }
+                className={cn({
+                  'has-background-info-light': todo.id === selectedTodo?.id
+                })}
                 key={todo.id}
               >
                 <td className="is-vcentered">{todo.id}</td>
@@ -61,8 +57,8 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
                 <td className="is-vcentered is-expanded">
                   <p
                     className={cn({
-                      'has-text-danger': todo.completed === false,
-                      'has-text-success': todo.completed === true,
+                      'has-text-danger': !todo.completed,
+                      'has-text-success': todo.completed,
                     })}
                   >
                     {todo.title}

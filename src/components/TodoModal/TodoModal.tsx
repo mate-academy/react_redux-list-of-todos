@@ -43,7 +43,8 @@ export const TodoModal: React.FC = () => {
               data-cy="modal-close"
               onClick={handleClearCurrentTodo}
             />
-          </header>
+            </header>
+            
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
               {currentTodo.title}
