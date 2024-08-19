@@ -1,12 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
+import { TodoStatus } from '../types/TodoStatus';
 
-const initialState = {
-  query: '',
-  status: 'all',
+type FilterState = {
+  query: string;
+  status: TodoStatus;
 };
 
-export const filterSlice = createSlice({
+const initialState: FilterState = {
+  query: '',
+  status: TodoStatus.all,
+};
+
+const filterSlice: Slice<FilterState> = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    setQuery: (state, action: PayloadAction<string>) => {
+      return { ...state, query: action.payload };
+    },
+    setStatus: (state, action: PayloadAction<TodoStatus>) => {
+      return { ...state, status: action.payload };
+    },
+  },
 });
+
+export const { setQuery, setStatus } = filterSlice.actions;
+
+export default filterSlice;
