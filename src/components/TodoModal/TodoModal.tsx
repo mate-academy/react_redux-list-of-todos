@@ -5,6 +5,7 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { useDispatch } from 'react-redux';
 import { currentTodoSlice } from '../../features/currentTodo';
+import cn from 'classnames';
 
 export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
@@ -32,7 +33,12 @@ export const TodoModal: React.FC = () => {
   };
 
   return (
-    <div className={`modal ${currentTodo ? 'is-active' : ''}`} data-cy="modal">
+    <div
+      className={cn('modal', {
+        'is-active': currentTodo,
+      })}
+      data-cy="modal"
+    >
       <div className="modal-background" />
       {loader && <Loader />}
 

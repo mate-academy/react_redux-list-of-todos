@@ -25,9 +25,11 @@ export const TodoFilter: React.FC = () => {
             value={status}
             onChange={handleChangeStatus}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            {Object.values(Status).map(elem => (
+              <option value={elem} key={elem}>
+                {elem.charAt(0).toUpperCase() + elem.slice(1)}
+              </option>
+            ))}
           </select>
         </span>
       </p>

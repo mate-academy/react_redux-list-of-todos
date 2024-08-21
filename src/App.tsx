@@ -5,12 +5,14 @@ import { useEffect, useState } from 'react';
 import { getTodos } from './api';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { todosSlice } from './features/todos';
+import { Status } from './types/Status';
 
 export const App = () => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(true);
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     getTodos()
@@ -29,16 +31,18 @@ export const App = () => {
 
   const getFilteredTodos = () => {
     switch (status) {
-      case 'active':
+      case Status.Active:
         return filteredTodos.filter(todo => !todo.completed);
 
-      case 'completed':
+      case Status.Completed:
         return filteredTodos.filter(todo => todo.completed);
 
       default:
         return filteredTodos;
     }
   };
+
+  const visibleList = getFilteredTodos();
 
   return (
     <>
@@ -53,13 +57,13 @@ export const App = () => {
 
             <div className="block">
               {loading && <Loader />}
-              <TodoList loading={loading} todos={getFilteredTodos()} />
+              <TodoList loading={loading} todos={visibleList} />
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal />
+      {currentTodo && <TodoModal />}
     </>
   );
 };
