@@ -6,6 +6,7 @@ import { RootState } from './app/store';
 import { useEffect, useMemo, useState } from 'react';
 import { getTodos } from './api';
 import { actions as actionTodos } from './features/todos';
+import { Status } from './types/Status';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -26,10 +27,10 @@ export const App = () => {
     let filtredTodos = [...todos];
 
     switch (status) {
-      case 'completed':
+      case Status.completed:
         filtredTodos = filtredTodos.filter(todo => todo.completed);
         break;
-      case 'active':
+      case Status.active:
         filtredTodos = filtredTodos.filter(todo => !todo.completed);
         break;
     }

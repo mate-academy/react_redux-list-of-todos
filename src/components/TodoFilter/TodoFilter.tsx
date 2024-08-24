@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearQuery, setQuery, setStatus } from '../../features/filter';
 import { RootState } from '../../app/store';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,9 +32,9 @@ export const TodoFilter: React.FC = () => {
             onChange={handleStatusChange}
             value={status}
           >
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+            <option value={Status.all}>All</option>
+            <option value={Status.active}>Active</option>
+            <option value={Status.completed}>Completed</option>
           </select>
         </span>
       </p>
