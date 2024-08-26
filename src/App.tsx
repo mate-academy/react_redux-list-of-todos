@@ -31,8 +31,7 @@ export const App: React.FC = () => {
               <TodoFilter />
             </div>
             <div className="block">
-              {isLoading && <Loader />}
-              {!isLoading && <TodoList />}
+              {isLoading ? <Loader /> : <TodoList />}
             </div>
           </div>
         </div>
