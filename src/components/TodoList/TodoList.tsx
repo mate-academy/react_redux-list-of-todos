@@ -1,7 +1,19 @@
 /* eslint-disable */
 import React from 'react';
+import { Todo } from '../../types/Todo';
+import classNames from 'classnames';
 
-export const TodoList: React.FC = () => {
+type Props = {
+  selectedTodoId?: number;
+  selectTodo: (id: Todo) => void;
+  filteredList: Todo[];
+};
+
+export const TodoList: React.FC<Props> = ({
+  selectedTodoId,
+  selectTodo,
+  filteredList,
+}) => {
   return (
     <>
       <p className="notification is-warning">
@@ -25,6 +37,51 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
+          {filteredList.map(todo => {
+            const { id, title, completed } = todo;
+
+            return (
+              <tr data-cy="todo" key={id} className="">
+                <td className="is-vcentered">{id}</td>
+                <td className="is-vcentered">
+                  {completed && (
+                    <span className="icon" data-cy="iconCompleted">
+                      <i className="fas fa-check" />
+                    </span>
+                  )}
+                </td>
+                <td className="is-vcentered is-expanded">
+                  <p
+                    className={classNames(
+                      completed ? 'has-text-success' : 'has-text-danger',
+                    )}
+                  >
+                    {title}
+                  </p>
+                </td>
+                <td className="has-text-right is-vcentered">
+                  <button
+                    data-cy="selectButton"
+                    className="button"
+                    type="button"
+                    onClick={() => selectTodo(todo)}
+                  >
+                    <span className="icon">
+                      <i
+                        className={
+                          'far ' +
+                          (id === selectedTodoId ? 'fa-eye-slash' : 'fa-eye')
+                        }
+                      />
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+
+        {/* <tbody>
           <tr data-cy="todo">
             <td className="is-vcentered">1</td>
             <td className="is-vcentered"> </td>
@@ -217,7 +274,7 @@ export const TodoList: React.FC = () => {
               </button>
             </td>
           </tr>
-        </tbody>
+        </tbody> */}
       </table>
     </>
   );
