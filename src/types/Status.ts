@@ -1,6 +1,6 @@
 // export type Status = 'all' | 'active' | 'completed';
 
-export enum TodoStatus {
+export enum Status {
   all = 'all',
   active = 'active',
   completed = 'completed',

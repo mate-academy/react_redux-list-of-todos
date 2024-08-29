@@ -1,13 +1,13 @@
 import { useCallback, useState } from 'react';
 import React from 'react';
 import debounce from 'lodash.debounce';
-import { TodoStatus } from '../../types/Status';
+import { Status } from '../../types/Status';
 
 type Props = {
   setAppliedQuery: (arg: string) => void;
   appliedQuery: string;
-  selectedStatus: TodoStatus;
-  setSelectedStatus: (arg: TodoStatus) => void;
+  selectedStatus: Status;
+  setSelectedStatus: (arg: Status) => void;
 };
 
 export const TodoFilter: React.FC<Props> = ({
@@ -34,8 +34,8 @@ export const TodoFilter: React.FC<Props> = ({
   };
 
   const handleSelectedStatus = (value: string) => {
-    const enumKey = value as keyof typeof TodoStatus;
-    const status = TodoStatus[enumKey];
+    const enumKey = value as keyof typeof Status;
+    const status = Status[enumKey];
 
     setSelectedStatus(status);
   };
@@ -52,9 +52,9 @@ export const TodoFilter: React.FC<Props> = ({
             value={selectedStatus}
             onChange={e => handleSelectedStatus(e.target.value)}
           >
-            <option value={TodoStatus.all}>All</option>
-            <option value={TodoStatus.active}>Active</option>
-            <option value={TodoStatus.completed}>Completed</option>
+            <option value={Status.all}>All</option>
+            <option value={Status.active}>Active</option>
+            <option value={Status.completed}>Completed</option>
           </select>
         </span>
       </p>
