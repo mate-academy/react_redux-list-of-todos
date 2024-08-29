@@ -3,7 +3,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useMemo, useState } from 'react';
 import { Todo } from './types/Todo';
-import { TodoStatus } from './types/Status';
+import { Status } from './types/Status';
 import { getTodos } from './api';
 
 export const App = () => {
@@ -11,7 +11,7 @@ export const App = () => {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [loading, setLoading] = useState(true);
   const [appliedQuery, setAppliedQuery] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState(TodoStatus.all);
+  const [selectedStatus, setSelectedStatus] = useState(Status.all);
 
   useEffect(() => {
     getTodos()
@@ -25,9 +25,9 @@ export const App = () => {
     );
 
     switch (selectedStatus) {
-      case TodoStatus.active:
+      case Status.active:
         return filteredByQuery.filter(todo => !todo.completed);
-      case TodoStatus.completed:
+      case Status.completed:
         return filteredByQuery.filter(todo => todo.completed);
       default:
         return filteredByQuery;
@@ -67,7 +67,6 @@ export const App = () => {
         </div>
       </div>
 
-      {/* <TodoModal /> */}
       {selectedTodo && (
         <TodoModal todo={selectedTodo} close={() => setSelectedTodo(null)} />
       )}
