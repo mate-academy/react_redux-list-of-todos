@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/hooks';
+import { Todo } from '../../types/Todo';
+import { setCurrentTodo } from '../../features/currentTodo';
 
-type Props = {
-  todo: Todo;
-  close: () => void;
-};
-
-export const TodoModal: React.FC<Props> = ({ todo, close }) => {
+export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const { id, userId, title, completed } = todo;
+  const dispatch = useDispatch();
+  const todo = useAppSelector(state => state.currentTodo);
+  const { id, userId, title, completed } = todo as Todo;
 
   useEffect(() => {
     setLoading(true);
@@ -20,6 +20,8 @@ export const TodoModal: React.FC<Props> = ({ todo, close }) => {
       .then(u => setUser(u))
       .finally(() => setLoading(false));
   }, [userId]);
+
+  const closeModal = () => dispatch(setCurrentTodo(null));
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -42,7 +44,7 @@ export const TodoModal: React.FC<Props> = ({ todo, close }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={close}
+              onClick={closeModal}
             />
           </header>
 

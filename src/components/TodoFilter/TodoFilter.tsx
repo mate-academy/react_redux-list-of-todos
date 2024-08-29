@@ -1,43 +1,25 @@
-import { useCallback, useState } from 'react';
 import React from 'react';
-import debounce from 'lodash.debounce';
 import { Status } from '../../types/Status';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setQuery, setStatus } from '../../features/filter';
 
-type Props = {
-  setAppliedQuery: (arg: string) => void;
-  appliedQuery: string;
-  selectedStatus: Status;
-  setSelectedStatus: (arg: Status) => void;
-};
-
-export const TodoFilter: React.FC<Props> = ({
-  setAppliedQuery,
-  appliedQuery,
-  setSelectedStatus,
-  selectedStatus,
-}) => {
-  const [query, setQuery] = useState('');
-
-  const applyQuery = useCallback(
-    (arg: string) => debounce(setAppliedQuery, 1000)(arg),
-    [setAppliedQuery],
-  );
+export const TodoFilter: React.FC = () => {
+  const { query, status } = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-    applyQuery(event.target.value);
+    dispatch(setQuery(event.target.value));
   };
 
   const handleQueryDelete = () => {
-    setQuery('');
-    setAppliedQuery('');
+    dispatch(setQuery(''));
   };
 
   const handleSelectedStatus = (value: string) => {
     const enumKey = value as keyof typeof Status;
-    const status = Status[enumKey];
+    const newStatus = Status[enumKey];
 
-    setSelectedStatus(status);
+    dispatch(setStatus(newStatus));
   };
 
   return (
@@ -49,7 +31,7 @@ export const TodoFilter: React.FC<Props> = ({
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={selectedStatus}
+            value={status}
             onChange={e => handleSelectedStatus(e.target.value)}
           >
             <option value={Status.all}>All</option>
@@ -74,7 +56,7 @@ export const TodoFilter: React.FC<Props> = ({
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          {appliedQuery && (
+          {query && (
             <button
               data-cy="clearSearchButton"
               type="button"

@@ -1,30 +1,27 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useEffect, useMemo, useState } from 'react';
-import { Todo } from './types/Todo';
+import { useEffect, useMemo } from 'react';
 import { Status } from './types/Status';
-import { getTodos } from './api';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import * as todosActions from './features/todos';
 
 export const App = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [appliedQuery, setAppliedQuery] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState(Status.all);
+  const { todos, loading } = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const { query, status } = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getTodos()
-      .then(setTodos)
-      .finally(() => setLoading(false));
+    dispatch(todosActions.init());
   }, []);
 
   const filteredList = useMemo(() => {
     const filteredByQuery = todos.filter(todo =>
-      todo.title.toLocaleLowerCase().includes(appliedQuery.toLocaleLowerCase()),
+      todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
     );
 
-    switch (selectedStatus) {
+    switch (status) {
       case Status.active:
         return filteredByQuery.filter(todo => !todo.completed);
       case Status.completed:
@@ -32,7 +29,7 @@ export const App = () => {
       default:
         return filteredByQuery;
     }
-  }, [appliedQuery, todos, selectedStatus]);
+  }, [query, todos, status]);
 
   return (
     <>
@@ -42,34 +39,21 @@ export const App = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                setAppliedQuery={setAppliedQuery}
-                appliedQuery={appliedQuery}
-                selectedStatus={selectedStatus}
-                setSelectedStatus={setSelectedStatus}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
               {loading ? (
                 <Loader />
               ) : (
-                todos.length > 0 && (
-                  <TodoList
-                    selectTodo={setSelectedTodo}
-                    selectedTodoId={selectedTodo?.id}
-                    filteredList={filteredList}
-                  />
-                )
+                todos.length > 0 && <TodoList filteredList={filteredList} />
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {selectedTodo && (
-        <TodoModal todo={selectedTodo} close={() => setSelectedTodo(null)} />
-      )}
+      {currentTodo && <TodoModal />}
     </>
   );
 };
