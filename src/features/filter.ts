@@ -19,7 +19,7 @@ export const filterSlice = createSlice({
       return { ...state, query: action.payload };
     },
     setStatus(state, action: PayloadAction<Status>) {
-      return { ...state, query: action.payload };
+      return { ...state, status: action.payload };
     },
   },
 });
