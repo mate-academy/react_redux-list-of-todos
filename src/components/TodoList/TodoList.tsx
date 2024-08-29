@@ -2,8 +2,7 @@
 import React from 'react';
 import { Todo } from '../../types/Todo';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setCurrentTodo } from '../../features/currentTodo';
 
 type Props = {
@@ -13,7 +12,7 @@ type Props = {
 export const TodoList: React.FC<Props> = ({
   filteredList,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   return !filteredList.length ?
