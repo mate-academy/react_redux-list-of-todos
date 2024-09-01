@@ -9,25 +9,23 @@ export const TodoList: React.FC = () => {
 
   const filteredTodos = todos.filter(todo => {
     let queryRes = true;
-    let statusRes = true;
 
     if (!todo.title.toLowerCase().includes(query.toLowerCase())) {
       queryRes = false;
     }
 
-    switch (true) {
-      case status === Status.completed && todo.completed:
-        statusRes = true;
-        break;
-      case status === Status.active && !todo.completed:
-        statusRes = true;
-        break;
-      case status === Status.all:
-        statusRes = true;
-        break;
-      default:
-        statusRes = false;
-    }
+    const statusRes = (() => {
+      switch (status) {
+        case Status.completed:
+          return todo.completed;
+        case Status.active:
+          return !todo.completed;
+        case Status.all:
+          return true;
+        default:
+          return false;
+      }
+    })();
 
     return queryRes && statusRes;
   });
@@ -56,9 +54,9 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {filteredTodos.map(todo => {
-              return <TodoItem key={todo.id} todo={todo} />;
-            })}
+            {filteredTodos.map(todo => (
+              <TodoItem key={todo.id} todo={todo} />
+            ))}
           </tbody>
         </table>
       )}
