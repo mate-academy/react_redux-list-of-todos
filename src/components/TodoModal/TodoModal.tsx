@@ -42,7 +42,7 @@ export const TodoModal: React.FC<Props> = ({ closeFunction, todo }) => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {todo.title};
+              {todo.title}
             </p>
 
             <p className="block" data-cy="modal-user">

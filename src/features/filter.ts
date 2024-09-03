@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
 
 const initialState = {
   query: '',
-  status: 'All',
+  status: 'all',
 };
 
 export const filterSlice: Slice<{

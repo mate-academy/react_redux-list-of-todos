@@ -25,7 +25,7 @@ export const TodoInfo: React.FC<Props> = ({ todo }) => {
           <p
             className={todo.completed ? 'has-text-success' : 'has-text-danger'}
           >
-            {todo.title};
+            {todo.title}
           </p>
         </td>
         <td className="has-text-right is-vcentered">
