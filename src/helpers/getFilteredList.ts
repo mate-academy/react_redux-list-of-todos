@@ -1,5 +1,5 @@
-import { Todo } from '../../types/Todo';
-import { Status } from '../../types/Status';
+import { Todo } from '../types/Todo';
+import { Status } from '../types/Status';
 
 export const getFilteredList = (
   todos: Todo[],

@@ -9,21 +9,15 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from './app/store';
-// import { getTodosAsync } from './features/todos';
-import { useAppSelector } from './app/hooks';
+
 import { addTodos } from './features/todos';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const selectedTodo = useAppSelector(state => state.currentTodo.value);
-  // const isLoading = useAppSelector(state => state.todos.isLoading);
   const dispatch = useDispatch<AppDispatch>();
 
-  // useEffect(() => {
-  //   dispatch(getTodosAsync());
-  // }, []);
   useEffect(() => {
     setIsLoading(true);
     getTodos()
@@ -51,7 +45,7 @@ export const App = () => {
         </div>
       </div>
 
-      {selectedTodo && <TodoModal />}
+      <TodoModal />
     </>
   );
 };

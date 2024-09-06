@@ -1,7 +1,5 @@
-/* eslint-disable no-console */
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { Todo } from '../../types/Todo';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../app/store';
 import { removeSelectedTodo } from '../../features/currentTodo';
@@ -10,20 +8,25 @@ import { getUser } from '../../api';
 import { User } from '../../types/User';
 
 export const TodoModal: React.FC = () => {
-  const { id, title, completed, userId } = useAppSelector(
-    state => state.currentTodo.value,
-  ) as Todo;
-  const [isLoading, setIsLoading] = useState(true);
+  const todo = useAppSelector(state => state.currentTodo.value);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
-  console.log('is user loading', isLoading);
-
   useEffect(() => {
-    getUser(userId)
-      .then(setUser)
-      .finally(() => setIsLoading(false));
-  }, [userId]);
+    if (todo) {
+      setIsLoading(true);
+      getUser(todo.userId)
+        .then(setUser)
+        .finally(() => setIsLoading(false));
+    }
+  }, [todo]);
+
+  if (!todo) {
+    return <></>;
+  }
+
+  const { id, title, completed } = todo;
 
   return (
     <div className="modal is-active" data-cy="modal">

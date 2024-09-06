@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { Todo } from '../../types/Todo';
 import { TodoItem } from '../TodoItem';
 import { TodoTable } from '../TodoTable';
-import { getFilteredList } from '../../utils/helpers/getFilteredList';
+import { getFilteredList } from '../../helpers/getFilteredList';
 import { useAppSelector } from '../../app/hooks';
 
 export const TodoTableContainer: React.FC = () => {
