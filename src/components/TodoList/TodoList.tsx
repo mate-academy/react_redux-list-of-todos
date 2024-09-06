@@ -1,13 +1,33 @@
-/* eslint-disable */
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import { Todo } from '../../types/Todo';
+import classNames from 'classnames';
+import { setCurrentTodo } from '../../features/currentTodo';
+import { filtredTodos } from '../../function/filterFunc';
+import { Status } from '../../types/Status';
+
+interface State {
+  query: string;
+  status: Status;
+}
 
 export const TodoList: React.FC = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector((state: RootState) => state.todos);
+  const currentTodo = useSelector((state: RootState) => state.currentTodo);
+  const filter = useSelector<RootState, State>(
+    (state: RootState) => state.filter,
+  );
+
+  const filteredTodo = filtredTodos(todos, filter);
+
+  const handleCurrentTodo = (todoItem: Todo) => {
+    dispatch(setCurrentTodo(todoItem));
+  };
+
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
-
       <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
@@ -25,23 +45,53 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          <tr data-cy="todo">
-            <td className="is-vcentered">1</td>
-            <td className="is-vcentered"> </td>
+          {/* currentTodo */}
+          {filteredTodo.map((todo: Todo) => (
+            <tr
+              data-cy="todo"
+              key={todo.id}
+              className={classNames({
+                'has-background-info-light': currentTodo?.id === todo.id,
+              })}
+            >
+              <td className="is-vcentered">{todo.id}</td>
+              <td className="is-vcentered">
+                {todo.completed && (
+                  <span className="icon" data-cy="iconCompleted">
+                    <i className="fas fa-check" />
+                  </span>
+                )}
+              </td>
 
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">delectus aut autem</p>
-            </td>
+              <td className="is-vcentered is-expanded">
+                <p
+                  className={classNames({
+                    'has-text-danger': !todo.completed,
+                    'has-text-success': todo.completed,
+                  })}
+                >
+                  {todo.title}
+                </p>
+              </td>
 
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
+              <td className="has-text-right is-vcentered">
+                <button data-cy="selectButton" className="button" type="button">
+                  <span
+                    className="icon"
+                    onClick={() => handleCurrentTodo(todo)}
+                  >
+                    <i
+                      className={classNames('far', {
+                        'fa-eye': currentTodo?.id !== todo.id,
+                        'fa-eye-slash': currentTodo?.id === todo.id,
+                      })}
+                    />
+                  </span>
+                </button>
+              </td>
+            </tr>
+          ))}
+          {/*
           <tr data-cy="todo">
             <td className="is-vcentered">2</td>
             <td className="is-vcentered"> </td>
@@ -61,7 +111,7 @@ export const TodoList: React.FC = () => {
             </td>
           </tr>
 
-          <tr data-cy="todo" className="has-background-info-light">
+          <tr data-cy="todo">
             <td className="is-vcentered">3</td>
             <td className="is-vcentered"> </td>
 
@@ -216,7 +266,7 @@ export const TodoList: React.FC = () => {
                 </span>
               </button>
             </td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </>

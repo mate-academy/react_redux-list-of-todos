@@ -1,6 +1,26 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeQuary, changeStatus } from '../../features/filter';
+import { Status } from '../../types/Status';
+import { RootState } from '../../app/store';
 
 export const TodoFilter: React.FC = () => {
+  const { status, query } = useSelector((state: RootState) => state.filter);
+
+  const dispatch = useDispatch();
+
+  const handleSelectFilter = (statusPayload: Status) => {
+    dispatch(changeStatus(statusPayload));
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    handleSelectFilter(event.target.value as Status);
+  };
+
+  const handleQuery = (queryPayload: string) => {
+    dispatch(changeQuary(queryPayload));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +28,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select data-cy="statusSelect" value={status} onChange={handleChange}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,6 +42,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={event => handleQuery(event.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
