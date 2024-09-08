@@ -1,7 +1,7 @@
 import { Todo } from '../types/Todo';
 import { Status } from '../enums/Status';
 
-const getFilteredListBySelectValue = (todo: Todo, condition: string) => {
+const getFilteredListBySelectValue = (todo: Todo, condition: Status) => {
   switch (condition) {
     case Status.Completed:
       return todo.completed;
@@ -19,7 +19,7 @@ const getFilteredListByInputValue = (title: string, query: string) => {
 export const getFilteredList = (
   todosList: Todo[],
   query: string,
-  status: string,
+  status: Status,
 ): Todo[] => {
   if (status || query) {
     return todosList.filter((todo: Todo) => {
@@ -34,4 +34,3 @@ export const getFilteredList = (
 
   return todosList;
 };
-
