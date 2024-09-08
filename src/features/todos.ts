@@ -1,8 +1,39 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
+import { LoadingTypes } from '../enums/LoadingTypes';
 
-export const todosSlice = createSlice({
+const initialState = {
+  todos: [] as Todo[],
+  todosLoadingStatus: LoadingTypes.idle,
+};
+
+const todosSlice = createSlice({
   name: 'todos',
-  initialState: [] as Todo[],
-  reducers: {},
+  initialState,
+  reducers: {
+    todosFetching: state => {
+      return {
+        ...state,
+        todosLoadingStatus: LoadingTypes.loading,
+      };
+    },
+    todosFetchError: state => {
+      return {
+        ...state,
+        todosLoadingStatus: LoadingTypes.error,
+      };
+    },
+    todosFetched: (state, action: PayloadAction<Todo[]>) => {
+      return {
+        ...state,
+        todos: action.payload,
+        todosLoadingStatus: LoadingTypes.idle,
+      };
+    },
+  },
 });
+
+export const { todosFetching, todosFetchError, todosFetched } =
+  todosSlice.actions;
+
+export default todosSlice.reducer;
