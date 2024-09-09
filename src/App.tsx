@@ -1,4 +1,4 @@
-/* eslint-disable */
+// App.tsx
 
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -14,7 +14,7 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(todosActions.init());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
