@@ -6,10 +6,10 @@ import { Todo } from '../../types/Todo';
 
 type Props = {
   todo: Todo;
-  closeModal: () => void;
+  onCloseModal: () => void;
 };
 
-export const TodoModal: React.FC<Props> = ({ todo, closeModal }) => {
+export const TodoModal: React.FC<Props> = ({ todo, onCloseModal }) => {
   const [todoOwner, setTodoOwner] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,7 +51,7 @@ export const TodoModal: React.FC<Props> = ({ todo, closeModal }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={closeModal}
+              onClick={onCloseModal}
             />
           </header>
 

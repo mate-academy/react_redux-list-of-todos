@@ -20,11 +20,11 @@ export const App: React.FC = () => {
   const { query, status } = useSelector((state: RootState) => state.filter);
 
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
 
-  const closeModal = () => {
+  const handleCloseModal = () => {
     dispatch(setSelectedTodo(null));
-    setShowModal(false);
+    setIsShowModal(false);
   };
 
   useEffect(() => {
@@ -50,8 +50,8 @@ export const App: React.FC = () => {
               <div className="block">
                 <TodoList
                   todos={visibleTodos}
-                  showModalWindow={setShowModal}
-                  isShowModal={showModal}
+                  showModalWindow={setIsShowModal}
+                  isShowModal={isShowModal}
                 />
               </div>
             )}
@@ -59,8 +59,8 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {showModal && selectedTodo && (
-        <TodoModal todo={selectedTodo} closeModal={closeModal} />
+      {(isShowModal && selectedTodo) && (
+        <TodoModal todo={selectedTodo} onCloseModal={handleCloseModal} />
       )}
     </>
   );

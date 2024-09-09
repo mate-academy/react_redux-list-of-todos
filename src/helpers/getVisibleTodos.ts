@@ -16,7 +16,7 @@ export const getVisibleTodos = (
 
   if (query) {
     filteredTodos = filteredTodos.filter(({ title }) =>
-      title.toLowerCase().includes(query.toLowerCase()),
+      title.toLowerCase().includes(query.trim().toLowerCase()),
     );
   }
 
