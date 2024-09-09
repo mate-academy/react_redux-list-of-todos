@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CurrentTodo } from '../types/Todo';
 
@@ -8,7 +9,7 @@ export type CurrentTodoState = {
 
 const initialState: CurrentTodoState = {
   currentTodo: null,
-  isLoading: false,
+  isLoading: true,
 };
 
 export const currentTodoSlice = createSlice({

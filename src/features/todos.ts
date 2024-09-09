@@ -14,6 +14,7 @@ export const todosSlice = createSlice({
   initialState,
   reducers: {
     setTodos(state, action: { payload: Todo[] }) {
+      // eslint-disable-next-line no-param-reassign
       state.todos = action.payload;
     },
   },

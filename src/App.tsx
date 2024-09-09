@@ -3,15 +3,20 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
 import { getTodos, getUser } from './api';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setTodos } from './features/todos';
-import { Todo } from './types/Todo';
+import { CurrentTodo, Todo } from './types/Todo';
 import { saveTodo } from './features/currentTodo';
+import { RootState } from './app/store';
 
 export const App = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpenerMOdal, setIsOpenerMOdal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const currentTodo = useSelector<RootState, CurrentTodo | null>(
+    state => state.currentTodoSlice.currentTodo,
+  );
 
   useEffect(() => {
     setIsLoading(true);
@@ -25,7 +30,7 @@ export const App = () => {
   }, []);
 
   const openerModalWindow = async (userId: number, todo: Todo) => {
-    setIsOpenerMOdal(true);
+    setIsModalOpen(true);
 
     const user = await getUser(userId);
 
@@ -37,7 +42,7 @@ export const App = () => {
     );
 
     setTimeout(() => {
-      setIsOpenerMOdal(false);
+      setIsModalOpen(false);
     }, 300);
   };
 
@@ -60,7 +65,9 @@ export const App = () => {
           </div>
         </div>
       </div>
-      <TodoModal isOpenerMOdal={isOpenerMOdal} />
+      {currentTodo?.user && (
+        <TodoModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      )}
     </>
   );
 };

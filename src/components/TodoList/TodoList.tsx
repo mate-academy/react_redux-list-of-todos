@@ -44,13 +44,15 @@ export const TodoList: React.FC<Props> = ({ openerModalWindow }) => {
 
   return (
     <>
+      <table className="table is-narrow is-fullwidth">
+
       {!filteredTodos.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
-      <table className="table is-narrow is-fullwidth">
+      {filteredTodos.length > 0 && (
         <thead>
           <tr>
             <th>#</th>
@@ -65,19 +67,22 @@ export const TodoList: React.FC<Props> = ({ openerModalWindow }) => {
             <th> </th>
           </tr>
         </thead>
-
+      )}
         <tbody>
           {filteredTodos.map(todo => (
             <tr key={todo.id} data-cy="todo">
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">
-                <span className="icon" data-cy="iconCompleted">
+              {todo.completed && (
+                  <span className="icon" data-cy="iconCompleted">
                   <i
                     className={classNames('fas', {
                       'fa-check': todo.completed,
                     })}
                   />
                 </span>
+              )}
+
               </td>
 
               <td className="is-vcentered is-expanded">

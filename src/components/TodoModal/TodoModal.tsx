@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Loader } from '../Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { CurrentTodo } from '../../types/Todo';
@@ -7,16 +7,19 @@ import { clearTodo } from '../../features/currentTodo';
 import classNames from 'classnames';
 
 type Props = {
-  isOpenerMOdal: boolean;
+  isModalOpen: boolean;
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export const TodoModal: React.FC<Props> = ({ isOpenerMOdal }) => {
+export const TodoModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
   const dispatch = useDispatch();
   const currentTodo = useSelector<RootState, CurrentTodo | null>(
     state => state.currentTodoSlice.currentTodo,
   );
 
   const handlerCloseModal = () => {
+    setIsModalOpen(false);
+
     dispatch(clearTodo());
   };
 
@@ -29,9 +32,9 @@ export const TodoModal: React.FC<Props> = ({ isOpenerMOdal }) => {
     >
       <div className="modal-background" />
 
-      {isOpenerMOdal && <Loader />}
+      {isModalOpen && <Loader />}
 
-      {!isOpenerMOdal && (
+      {currentTodo?.user && !isModalOpen && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
