@@ -59,7 +59,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {(isShowModal && selectedTodo) && (
+      {isShowModal && selectedTodo && (
         <TodoModal todo={selectedTodo} onCloseModal={handleCloseModal} />
       )}
     </>

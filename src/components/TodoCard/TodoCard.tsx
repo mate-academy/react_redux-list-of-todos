@@ -29,7 +29,6 @@ const TodoCard: React.FC<Props> = ({ todo, showModalWindow, isShowModal }) => {
           selectedTodo?.id === todo?.id && isShowModal,
       })}
     >
-
       <td className="is-vcentered">{todo.id}</td>
       <td className="is-vcentered">
         {todo.completed && (
@@ -60,7 +59,6 @@ const TodoCard: React.FC<Props> = ({ todo, showModalWindow, isShowModal }) => {
             showModalWindow(true);
           }}
         >
-
           <span className="icon">
             <i
               className={cn('far', {
@@ -69,10 +67,8 @@ const TodoCard: React.FC<Props> = ({ todo, showModalWindow, isShowModal }) => {
               })}
             />
           </span>
-          
         </button>
       </td>
-
     </tr>
   );
 };
