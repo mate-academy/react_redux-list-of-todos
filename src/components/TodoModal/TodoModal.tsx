@@ -16,11 +16,16 @@ export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getUser(selectedTodo.userId).then(userFromServer => {
-      setUser(userFromServer);
-      setIsLoading(false);
-    });
+    getUser(selectedTodo.userId)
+      .then(userFromServer => {
+        setUser(userFromServer);
+      })
+      .finally(() => setIsLoading(false));
   }, [selectedTodo]);
+
+  const hideTodo = () => {
+    dispatch(actions.setCurrentTodo(null));
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -42,7 +47,7 @@ export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(actions.setCurrentTodo(null))}
+              onClick={hideTodo}
             />
           </header>
 

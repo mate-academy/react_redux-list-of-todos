@@ -9,6 +9,18 @@ export const TodoFilter = () => {
   const selectQuery = useAppSelector(state => state.filter.status);
   const dispatch = useDispatch();
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(actions.setQuery(event.target.value));
+  };
+
+  const clearQueryInput = () => {
+    dispatch(actions.setQuery(''));
+  };
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(actions.setStatus(event.target.value as TodoState));
+  };
+
   return (
     <form className="field has-addons">
       <p className="control">
@@ -16,9 +28,7 @@ export const TodoFilter = () => {
           <select
             data-cy="statusSelect"
             value={selectQuery}
-            onChange={event =>
-              dispatch(actions.setStatus(event.target.value as TodoState))
-            }
+            onChange={handleSelectChange}
           >
             <option value={TodoState.ALL}>All</option>
             <option value={TodoState.ACTIVE}>Active</option>
@@ -34,7 +44,7 @@ export const TodoFilter = () => {
           className="input"
           placeholder="Search..."
           value={inputQuery}
-          onChange={event => dispatch(actions.setQuery(event.target.value))}
+          onChange={handleSearchChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -46,7 +56,7 @@ export const TodoFilter = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(actions.setQuery(''))}
+              onClick={clearQueryInput}
             />
           </span>
         )}

@@ -41,7 +41,12 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {!isLoading ? <TodoList todos={preparedTodos} /> : <Loader />}
+              {/* eslint-disable-next-line prettier/prettier */}
+              {
+                !isLoading
+                  ? <TodoList todos={preparedTodos} />
+                  : <Loader />
+              }
             </div>
           </div>
         </div>

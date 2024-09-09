@@ -4,16 +4,20 @@ import { useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
 import { actions } from '../../features/currentTodo';
 
-type Prop = {
+type Props = {
   todo: Todo;
 };
 
-export const TodoItem = ({ todo }: Prop) => {
+export const TodoItem = ({ todo }: Props) => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useDispatch();
 
   const isCompleted = todo.completed;
   const isSelectedTodo = selectedTodo?.id === todo.id;
+
+  const selectTodoToShow = (todoToShow: Todo) => {
+    dispatch(actions.setCurrentTodo(todoToShow));
+  };
 
   return (
     <tr
@@ -23,6 +27,7 @@ export const TodoItem = ({ todo }: Prop) => {
       })}
     >
       <td className="is-vcentered">{todo.id}</td>
+
       <td className="is-vcentered">
         {isCompleted && (
           <span className="icon" data-cy="iconCompleted">
@@ -30,6 +35,7 @@ export const TodoItem = ({ todo }: Prop) => {
           </span>
         )}
       </td>
+
       <td className="is-vcentered is-expanded">
         <p
           className={classNames({
@@ -40,12 +46,13 @@ export const TodoItem = ({ todo }: Prop) => {
           {todo.title}
         </p>
       </td>
+
       <td className="has-text-right is-vcentered">
         <button
           data-cy="selectButton"
           className="button"
           type="button"
-          onClick={() => dispatch(actions.setCurrentTodo(todo))}
+          onClick={() => selectTodoToShow(todo)}
         >
           <span className="icon">
             <i
