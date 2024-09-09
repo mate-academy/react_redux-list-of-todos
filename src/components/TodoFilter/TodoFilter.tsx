@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeQuary, changeStatus } from '../../features/filter';
 import { Status } from '../../types/Status';
@@ -17,8 +17,8 @@ export const TodoFilter: React.FC = () => {
     handleSelectFilter(event.target.value as Status);
   };
 
-  const handleQuery = (queryPayload: string) => {
-    dispatch(changeQuary(queryPayload));
+  const handleQuery = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(changeQuary(e.target.value));
   };
 
   return (
@@ -43,20 +43,21 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={event => handleQuery(event.target.value)}
+          onChange={handleQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
-
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+            />
+          </span>
+        )}
       </p>
     </form>
   );
