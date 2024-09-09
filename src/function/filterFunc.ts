@@ -13,9 +13,9 @@ export const filtredTodos = (todos: Todo[], filter: State) => {
 
   switch (filter.status) {
     case 'active':
-      return filtred.filter(todo => todo.completed === false);
+      return filtred.filter(todo => !todo.completed);
     case 'completed':
-      return filtred.filter(todo => todo.completed === true);
+      return filtred.filter(todo => todo.completed);
     case 'all':
       return [...filtred];
     default:

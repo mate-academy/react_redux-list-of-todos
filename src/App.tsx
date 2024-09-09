@@ -10,7 +10,7 @@ import { RootState } from './app/store';
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const currentUser = useSelector((state: RootState) => state.currentTodo);
+  const currentTodo = useSelector((state: RootState) => state.currentTodo);
 
   useEffect(() => {
     setIsLoading(true);
@@ -18,7 +18,7 @@ export const App = () => {
     getTodos()
       .then(todos => dispatch(setTodos(todos)))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -38,7 +38,7 @@ export const App = () => {
           </div>
         </div>
       </div>
-      {currentUser && <TodoModal todo={currentUser} />}
+      {currentTodo && <TodoModal todo={currentTodo} />}
     </>
   );
 };
