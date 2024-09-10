@@ -1,32 +1,40 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Loader } from '../Loader';
 import { useDispatch, useSelector } from 'react-redux';
-import { CurrentTodo } from '../../types/Todo';
+import { Todo } from '../../types/Todo';
 import { RootState } from '../../app/store';
-import { clearTodo } from '../../features/currentTodo';
+import { clearTodo, clearUser } from '../../features/currentTodo';
 import classNames from 'classnames';
+import { User } from '../../types/User';
 
 type Props = {
   isModalOpen: boolean;
-  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  setOpenerModalCard: Dispatch<SetStateAction<boolean>>;
 };
 
-export const TodoModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
+export const TodoModal: React.FC<Props> = ({
+  isModalOpen,
+  setOpenerModalCard,
+}) => {
   const dispatch = useDispatch();
-  const currentTodo = useSelector<RootState, CurrentTodo | null>(
+  const currentTodo = useSelector<RootState, Todo | null>(
     state => state.currentTodoSlice.currentTodo,
   );
 
-  const handlerCloseModal = () => {
-    setIsModalOpen(false);
+  const currentUser = useSelector<RootState, User | null>(
+    state => state.currentTodoSlice.currentUser,
+  );
 
+  const handlerCloseModal = () => {
     dispatch(clearTodo());
+    dispatch(clearUser());
+    setOpenerModalCard(false);
   };
 
   return (
     <div
       className={classNames('modal', {
-        'is-active': currentTodo,
+        'is-active': currentUser,
       })}
       data-cy="modal"
     >
@@ -34,7 +42,7 @@ export const TodoModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
 
       {isModalOpen && <Loader />}
 
-      {currentTodo?.user && !isModalOpen && (
+      {currentUser && currentTodo && !isModalOpen && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
@@ -66,7 +74,7 @@ export const TodoModal: React.FC<Props> = ({ isModalOpen, setIsModalOpen }) => {
               )}
 
               {' by '}
-              <a href={currentTodo?.user?.email}>{currentTodo?.user?.name}</a>
+              <a href={currentUser.email}>{currentUser.name}</a>
             </p>
           </div>
         </div>

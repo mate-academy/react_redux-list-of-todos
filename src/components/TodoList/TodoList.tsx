@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { CurrentTodo, Todo } from '../../types/Todo';
+import { Todo } from '../../types/Todo';
 import classNames from 'classnames';
 import { Status } from '../../types/Status';
 
@@ -18,7 +18,7 @@ export const TodoList: React.FC<Props> = ({ openerModalWindow }) => {
   const query = useSelector<RootState, string>(
     state => state.filterSlice.query,
   );
-  const currentTodo = useSelector<RootState, CurrentTodo | null>(
+  const currentTodo = useSelector<RootState, Todo | null>(
     state => state.currentTodoSlice.currentTodo,
   );
 
@@ -45,44 +45,42 @@ export const TodoList: React.FC<Props> = ({ openerModalWindow }) => {
   return (
     <>
       <table className="table is-narrow is-fullwidth">
+        {!filteredTodos.length && (
+          <p className="notification is-warning">
+            There are no todos matching current filter criteria
+          </p>
+        )}
 
-      {!filteredTodos.length && (
-        <p className="notification is-warning">
-          There are no todos matching current filter criteria
-        </p>
-      )}
+        {filteredTodos.length > 0 && (
+          <thead>
+            <tr>
+              <th>#</th>
 
-      {filteredTodos.length > 0 && (
-        <thead>
-          <tr>
-            <th>#</th>
+              <th>
+                <span className="icon">
+                  <i className="fas fa-check" />
+                </span>
+              </th>
 
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
-
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
-      )}
+              <th>Title</th>
+              <th> </th>
+            </tr>
+          </thead>
+        )}
         <tbody>
           {filteredTodos.map(todo => (
             <tr key={todo.id} data-cy="todo">
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">
-              {todo.completed && (
+                {todo.completed && (
                   <span className="icon" data-cy="iconCompleted">
-                  <i
-                    className={classNames('fas', {
-                      'fa-check': todo.completed,
-                    })}
-                  />
-                </span>
-              )}
-
+                    <i
+                      className={classNames('fas', {
+                        'fa-check': todo.completed,
+                      })}
+                    />
+                  </span>
+                )}
               </td>
 
               <td className="is-vcentered is-expanded">

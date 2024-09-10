@@ -3,20 +3,17 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
 import { getTodos, getUser } from './api';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setTodos } from './features/todos';
-import { CurrentTodo, Todo } from './types/Todo';
-import { saveTodo } from './features/currentTodo';
-import { RootState } from './app/store';
+import { Todo } from './types/Todo';
+import { saveTodo, saveUser } from './features/currentTodo';
+// import { User } from './types/User';
 
 export const App = () => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const currentTodo = useSelector<RootState, CurrentTodo | null>(
-    state => state.currentTodoSlice.currentTodo,
-  );
+  const [openerModalCard, setOpenerModalCard] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -29,21 +26,30 @@ export const App = () => {
       });
   }, []);
 
-  const openerModalWindow = async (userId: number, todo: Todo) => {
+  const openerModalWindow = (userId: number, todo: Todo) => {
     setIsModalOpen(true);
+    setOpenerModalCard(true);
 
-    const user = await getUser(userId);
+    getUser(userId)
+      .then(user => {
+        setIsModalOpen(true);
+        dispatch(
+          saveUser({
+            ...user,
+          }),
+        );
 
-    dispatch(
-      saveTodo({
-        ...todo,
-        user,
-      }),
-    );
-
-    setTimeout(() => {
-      setIsModalOpen(false);
-    }, 300);
+        dispatch(
+          saveTodo({
+            ...todo,
+          }),
+        );
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setIsModalOpen(false);
+        }, 300);
+      });
   };
 
   return (
@@ -65,8 +71,11 @@ export const App = () => {
           </div>
         </div>
       </div>
-      {currentTodo?.user && (
-        <TodoModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      {openerModalCard && (
+        <TodoModal
+          isModalOpen={isModalOpen}
+          setOpenerModalCard={setOpenerModalCard}
+        />
       )}
     </>
   );

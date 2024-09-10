@@ -1,14 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CurrentTodo } from '../types/Todo';
+import { Todo } from '../types/Todo';
+import { User } from '../types/User';
 
 export type CurrentTodoState = {
-  currentTodo: CurrentTodo | null;
+  currentTodo: Todo | null;
+  currentUser: User | null;
   isLoading: boolean;
 };
 
 const initialState: CurrentTodoState = {
   currentTodo: null,
+  currentUser: null,
   isLoading: true,
 };
 
@@ -16,8 +19,15 @@ export const currentTodoSlice = createSlice({
   name: 'currentTodo',
   initialState,
   reducers: {
-    saveTodo(state, action: PayloadAction<CurrentTodo>) {
+    saveTodo(state, action: PayloadAction<Todo>) {
       state.currentTodo = action.payload;
+    },
+
+    saveUser(state, action: PayloadAction<User>) {
+      state.currentUser = action.payload;
+    },
+    clearUser(state) {
+      state.currentTodo = null;
     },
 
     clearTodo(state) {
@@ -30,6 +40,6 @@ export const currentTodoSlice = createSlice({
   },
 });
 
-export const { saveTodo, clearTodo, changeIsLoading } =
+export const { saveTodo, clearTodo, changeIsLoading, saveUser, clearUser } =
   currentTodoSlice.actions;
 export default currentTodoSlice.reducer;
