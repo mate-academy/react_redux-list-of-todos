@@ -15,6 +15,8 @@ export const CurrentTodo: React.FC<Props> = ({ todo }) => {
   const currentTodo = useAppSelector(currentTodoSelector);
   const dispatch = useDispatch();
 
+  const handleSetOfTodo = () => dispatch(currentTodoActions.set(todo));
+
   return (
     <tr data-cy="todo" className="" key={todo.id}>
       <td className="is-vcentered">{todo.id}</td>
@@ -40,7 +42,7 @@ export const CurrentTodo: React.FC<Props> = ({ todo }) => {
           data-cy="selectButton"
           className="button"
           type="button"
-          onClick={() => dispatch(currentTodoActions.set(todo))}
+          onClick={handleSetOfTodo}
         >
           <span className="icon">
             <i

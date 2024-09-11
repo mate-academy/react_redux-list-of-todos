@@ -1,7 +1,7 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getTodos } from './api';
 import { getFilteredTodos } from './services/getFilteredTodos';
 import { useAppSelector } from './app/store';
@@ -14,7 +14,7 @@ import {
 import { filterSelector } from './features/filter';
 
 export const App: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const todos = useAppSelector(todosSelector);
   const currentTodo = useAppSelector(currentTodoSelector);
   const filter = useAppSelector(filterSelector);
@@ -29,9 +29,9 @@ export const App: React.FC = () => {
       .finally(() => setIsLoading(false));
   }, [dispatch]);
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     dispatch(currentTodoActions.set(null));
-  };
+  }, [dispatch]);
 
   const preparedTodos = getFilteredTodos(todos, filter);
 

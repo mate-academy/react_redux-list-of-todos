@@ -7,7 +7,7 @@ const initialState: {
   status: Status;
 } = {
   query: '',
-  status: 'all',
+  status: Status.All,
 };
 
 export const filterSlice = createSlice({

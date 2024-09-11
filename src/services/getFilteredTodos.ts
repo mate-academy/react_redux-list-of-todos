@@ -1,4 +1,5 @@
 import { Filters } from '../types/Filters';
+import { Status } from '../types/Status';
 import { Todo } from '../types/Todo';
 
 export const getFilteredTodos = (todos: Todo[], selectedFilters: Filters) => {
@@ -11,8 +12,8 @@ export const getFilteredTodos = (todos: Todo[], selectedFilters: Filters) => {
       }
     }
 
-    if (selectedFilters.status !== 'all') {
-      return selectedFilters.status === 'completed'
+    if (selectedFilters.status !== Status.All) {
+      return selectedFilters.status === Status.Completed
         ? todo.completed
         : !todo.completed;
     }
