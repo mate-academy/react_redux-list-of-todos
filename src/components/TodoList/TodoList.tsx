@@ -1,14 +1,20 @@
 /* eslint-disable */
 import React from 'react';
+import { Todo } from '../../types/Todo';
 
-export const TodoList: React.FC = () => {
+import { TodoItem } from '../TodoItem';
+type Props = {
+  todos: Todo[];
+};
+export const TodoList: React.FC<Props> = ({ todos }) => {
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
-
-      <table className="table is-narrow is-fullwidth">
+      {!todos.length ? (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      ) : (
+        <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
             <th>#</th>
@@ -25,7 +31,20 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          <tr data-cy="todo">
+          {todos.map(todo => (
+            <TodoItem todo={todo} key={todo.id} />
+          ))}
+        </tbody>
+      </table>
+            )}
+    </>
+  );
+};
+
+
+
+{
+  /* <tr data-cy="todo">
             <td className="is-vcentered">1</td>
             <td className="is-vcentered"> </td>
 
@@ -216,9 +235,5 @@ export const TodoList: React.FC = () => {
                 </span>
               </button>
             </td>
-          </tr>
-        </tbody>
-      </table>
-    </>
-  );
-};
+          </tr> */
+}
