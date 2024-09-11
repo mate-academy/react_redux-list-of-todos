@@ -1,12 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/store';
-import { actions as filterActions } from './../../features/filter';
+import {
+  actions as filterActions,
+  filterSelector,
+} from './../../features/filter';
 
 export const TodoFilter = () => {
-  const filter = useAppSelector(state => {
-    return state.filter;
-  });
-
+  const filter = useAppSelector(filterSelector);
   const dispatch = useDispatch();
 
   return (

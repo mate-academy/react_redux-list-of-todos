@@ -6,32 +6,27 @@ import { getTodos } from './api';
 import { getFilteredTodos } from './services/getFilteredTodos';
 import { useAppSelector } from './app/store';
 import { useDispatch } from 'react-redux';
-import { actions as todosActions } from './features/todos';
-import { actions as currentTodoActions } from './features/currentTodo';
+import { actions as todosActions, todosSelector } from './features/todos';
+import {
+  actions as currentTodoActions,
+  currentTodoSelector,
+} from './features/currentTodo';
+import { filterSelector } from './features/filter';
 
 export const App: React.FC = () => {
-  const todos = useAppSelector(state => {
-    return state.todos;
-  });
-
-  const filter = useAppSelector(state => {
-    return state.filter;
-  });
-
-  const currentTodo = useAppSelector(state => {
-    return state.currentTodo;
-  });
+  const [isLoading, setIsLoading] = useState(false);
+  const todos = useAppSelector(todosSelector);
+  const currentTodo = useAppSelector(currentTodoSelector);
+  const filter = useAppSelector(filterSelector);
 
   const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
-
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
 
     getTodos()
       .then(value => dispatch(todosActions.set(value)))
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   }, [dispatch]);
 
   const handleModalClose = () => {
@@ -52,7 +47,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loading && <Loader />}
+              {isLoading && <Loader />}
               <TodoList todos={preparedTodos} />
             </div>
           </div>
