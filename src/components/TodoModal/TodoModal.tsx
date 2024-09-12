@@ -1,36 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { actions as currentTodoActions } from '../../features/currentTodo';
+import { Todo } from '../../types/Todo';
+import { useAppDispatch } from '../../app/hooks';
+import { currentTodoSlice } from '../../features/currentTodo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 
-export const TodoModal: React.FC = () => {
+type Props = {
+  todo: Todo;
+};
+
+export const TodoModal: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
-  const currentTodo = useAppSelector(state => state.currentTodo);
-  const [user, setUser] = React.useState<User | null>(null);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const { id, title, completed, userId } = todo;
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (currentTodo) {
-      setIsLoading(true);
-      getUser(currentTodo.userId)
+    setIsLoading(true);
+    setTimeout(() => {
+      getUser(userId)
         .then(setUser)
         .finally(() => setIsLoading(false));
-    }
-  }, [currentTodo]);
+    }, 1000);
+  }, [userId]);
 
-  const removeTodo = () => {
-    dispatch(currentTodoActions.removeTodo());
+  const handleClick = () => {
+    dispatch(currentTodoSlice.actions.addTodo(null));
   };
-
-  if (!currentTodo) {
-    return null;
-  }
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
+
       {isLoading ? (
         <Loader />
       ) : (
@@ -40,7 +42,7 @@ export const TodoModal: React.FC = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo #{currentTodo.id}
+              {`Todo #${id}`}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -48,26 +50,23 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={removeTodo}
+              onClick={handleClick}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {currentTodo.title}
+              {title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              <strong
-                className={
-                  currentTodo.completed ? 'has-text-success' : 'has-text-danger'
-                }
-              >
-                {currentTodo.completed ? 'Done' : 'Planned'}
-              </strong>
+              {completed ? (
+                <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>
+              )}
 
               {' by '}
-
               <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>

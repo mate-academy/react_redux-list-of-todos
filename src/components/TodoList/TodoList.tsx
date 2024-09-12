@@ -1,66 +1,52 @@
 /* eslint-disable */
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { currentTodoSlice } from '../../features/currentTodo';
 import classNames from 'classnames';
-import { actions as setTodoActions } from '../../features/currentTodo';
-import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const currentFilter = useAppSelector(state => state.filter);
-
-  const toggleTodo = (todo: Todo) => {
-    dispatch(setTodoActions.setTodo(todo));
-  };
-
-  const visibleTodos = todos.filter(todo => {
-    const matchesQuery = todo.title
-      .toLowerCase()
-      .includes(currentFilter.query.toLowerCase());
-
-    switch (currentFilter.status) {
-      case 'completed':
-        return todo.completed && matchesQuery;
-
-      case 'active':
-        return !todo.completed && matchesQuery;
-
-      default:
-        return matchesQuery;
-    }
-  });
 
   return (
     <>
-      {!visibleTodos.length ? (
+      {!todos.length ? (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       ) : (
         <table className="table is-narrow is-fullwidth">
-          <thead>
-            <tr>
-              <th>#</th>
+        <thead>
+          <tr>
+            <th>#</th>
 
-              <th>
-                <span className="icon">
-                  <i className="fas fa-check" />
-                </span>
-              </th>
+            <th>
+              <span className="icon">
+                <i className="fas fa-check" />
+              </span>
+            </th>
 
-              <th>Title</th>
-              <th> </th>
-            </tr>
-          </thead>
+            <th>Title</th>
+            <th> </th>
+          </tr>
+        </thead>
 
-          <tbody>
-            {visibleTodos.map(todo => (
-              <tr data-cy="todo" key={todo.id}>
-                <td className="is-vcentered">{todo.id}</td>
+        <tbody>
+          {todos.map(todo => {
+            const { id, title, completed } = todo;
+
+            return (
+              <tr
+                key={id}
+                data-cy="todo"
+                className={classNames({
+                  'has-background-info-light': currentTodo?.id === id,
+                })}
+              >
+                <td className="is-vcentered">{id}</td>
                 <td className="is-vcentered">
-                  {todo.completed && (
+                  {completed && (
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
@@ -70,11 +56,11 @@ export const TodoList: React.FC = () => {
                 <td className="is-vcentered is-expanded">
                   <p
                     className={classNames({
-                      'has-text-success': todo.completed,
-                      'has-text-danger': !todo.completed,
+                      'has-text-success': completed,
+                      'has-text-danger': !completed,
                     })}
                   >
-                    {todo.title}
+                    {title}
                   </p>
                 </td>
 
@@ -83,23 +69,26 @@ export const TodoList: React.FC = () => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => toggleTodo(todo)}
+                    onClick={() =>
+                      dispatch(currentTodoSlice.actions.addTodo(todo))
+                    }
                   >
                     <span className="icon">
-                      <i
-                        className={classNames('far', {
-                          'fa-eye-slash': currentTodo?.id === todo.id,
-                          'fa-eye': currentTodo?.id !== todo.id,
-                        })}
-                      />
+                      {currentTodo?.id === id ? (
+                        <i className="far fa-eye-slash" />
+                      ) : (
+                        <i className="far fa-eye" />
+                      )}
                     </span>
                   </button>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            );
+          })}
+        </tbody>
+      </table>
       )}
+
     </>
   );
 };
