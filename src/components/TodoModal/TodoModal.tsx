@@ -11,7 +11,18 @@ export const TodoModal: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   if (currentTodos) {
+  //     getUser(currentTodos?.userId)
+  //       .then(setUser)
+  //       // eslint-disable-next-line no-console
+  //       .catch(error => console.log(error.message))
+  //       .finally(() => setIsLoading(false));
+  //   }
+  // }, [currentTodos]);
+
+  const findUser = useCallback(() => {
     setIsLoading(true);
     if (currentTodos) {
       getUser(currentTodos?.userId)
@@ -21,6 +32,10 @@ export const TodoModal: React.FC = () => {
         .finally(() => setIsLoading(false));
     }
   }, [currentTodos]);
+
+  useEffect(() => {
+    findUser();
+  }, [findUser]);
 
   const onCloseHandler = useCallback(() => {
     dispatch(selectTodo(null));

@@ -7,6 +7,7 @@ import { setTodos } from './features/todos';
 import { getTodos } from './api';
 import { setQuery, setStatus } from './features/filter';
 import { Status } from './types/Status';
+import { FilterTypes } from './types/FilterType';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -15,17 +16,20 @@ export const App = () => {
   const currentTodos = useAppSelector(state => state.currentTodo);
   const { query, status } = useAppSelector(state => state.filter);
 
-  useEffect(() => {
-    setIsLoading(true);
+  const fetchTodos = async () => {
+    try {
+      setIsLoading(true);
+      const response = await getTodos();
 
-    getTodos()
-      .then(response => {
-        dispatch(setTodos(response));
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [dispatch]);
+      dispatch(setTodos(response));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setStatus(event.target.value as Status));
@@ -38,9 +42,9 @@ export const App = () => {
   const filteredTodos = todos.filter(todo => {
     const matchesQuery = todo.title.toLowerCase().includes(query.toLowerCase());
     const matchesStatus =
-      status === 'all' ||
-      (status === 'completed' && todo.completed) ||
-      (status === 'active' && !todo.completed);
+      status === FilterTypes.All ||
+      (status === FilterTypes.Completed && todo.completed) ||
+      (status === FilterTypes.Active && !todo.completed);
 
     return matchesQuery && matchesStatus;
   });
