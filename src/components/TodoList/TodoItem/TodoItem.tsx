@@ -43,7 +43,9 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
         >
           <span className="icon">
             <i
-              className={currentTodo?.id === id ? 'far fa-eye-slash' : 'far fa-eye'}
+              className={
+                currentTodo?.id === id ? 'far fa-eye-slash' : 'far fa-eye'
+              }
             />
           </span>
         </button>

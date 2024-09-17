@@ -19,10 +19,7 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select
-            data-cy="statusSelect"
-            onChange={handleFilterChange}
-          >
+          <select data-cy="statusSelect" onChange={handleFilterChange}>
             <select>
               {Object.values(Status).map(status => (
                 <option key={status} value={status}>
