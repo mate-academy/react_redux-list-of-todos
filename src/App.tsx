@@ -25,7 +25,6 @@ export const App = () => {
       });
   }, [dispatch]);
 
-
   return (
     <>
       <div className="section">
@@ -46,5 +45,5 @@ export const App = () => {
 
       {currentTodo && <TodoModal />}
     </>
-  )
+  );
 };
