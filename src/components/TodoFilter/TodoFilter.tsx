@@ -8,6 +8,10 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const query = useSelector((state: RootState) => state.filter.query);
 
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.setQuery(event.target.value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -17,13 +21,15 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={event => {
-              dispatch(filterActions.setStatus(event.target.value));
-            }}
+            onChange={handleFilterChange}
           >
-            <option value={Status.All}>All</option>
-            <option value={Status.Active}>Active</option>
-            <option value={Status.Completed}>Completed</option>
+            <select>
+              {Object.values(Status).map(status => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
           </select>
         </span>
       </p>
