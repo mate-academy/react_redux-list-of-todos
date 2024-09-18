@@ -1,15 +1,14 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { Todo } from '../../../types/Todo';
-import { AppDispatch, RootState } from '../../../app/store';
 import { currTodoActions } from '../../../features/currentTodo';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 
 type Props = {
   todo: Todo;
 };
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector((state) => state.currentTodo);
 
   const { id, completed, title } = todo;
 

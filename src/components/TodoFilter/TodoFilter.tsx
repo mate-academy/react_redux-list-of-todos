@@ -1,14 +1,17 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../app/store';
 import { filterActions } from '../../features/filter';
 import { Status } from '../../types/Status';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const query = useSelector((state: RootState) => state.filter.query);
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector((state) => state.filter);
 
-  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(filterActions.setStatus(event.target.value));
+  };
+
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filterActions.setQuery(event.target.value));
   };
 
@@ -19,14 +22,12 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect" onChange={handleFilterChange}>
-            <select>
-              {Object.values(Status).map(status => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </select>
+          <select data-cy="statusSelect" value={status} onChange={handleStatusChange}>
+            {Object.values(Status).map(statusOption => (
+              <option key={statusOption} value={statusOption}>
+                {statusOption}
+              </option>
+            ))}
           </select>
         </span>
       </p>
@@ -38,9 +39,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={event => {
-            dispatch(filterActions.setQuery(event.target.value));
-          }}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

@@ -1,13 +1,12 @@
 /* eslint-disable */
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { TodoItem } from './TodoItem';
-import { RootState } from '../../app/store';
 import { filterTodos } from '../filterTodos';
+import { useAppSelector } from '../../app/hooks';
 
 export const TodoList: React.FC = () => {
-  const todos = useSelector((state: RootState) => state.todos);
-  const { query, status } = useSelector((state: RootState) => state.filter);
+  const todos = useAppSelector((state) => state.todos);
+  const { query, status } = useAppSelector((state) => state.filter);
   const filteredTodos = filterTodos(todos, query, status);
 
   const noMatchesMessage = (
