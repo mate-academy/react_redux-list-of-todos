@@ -1,8 +1,8 @@
 /* eslint-disable */
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../app/store';
 import classNames from 'classnames';
+import { AppDispatch, RootState } from '../../app/store';
 import { currentTodoSlice } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
@@ -10,7 +10,6 @@ export const TodoList: React.FC = () => {
   const todos = useSelector((state: RootState) => state.todos);
   const currentTodo = useSelector((state: RootState) => state.currentTodo);
   const { status, query } = useSelector((state: RootState) => state.filter);
-
 
   const filterTodos = () => {
     return todos

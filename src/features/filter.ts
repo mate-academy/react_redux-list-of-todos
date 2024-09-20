@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -9,14 +10,14 @@ export const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setQuery: (state, action: PayloadAction<string>) => {
-      return { ...state, query: action.payload };
+    setQuery: (state, { payload }: PayloadAction<string>) => {
+      state.query = payload;
     },
     clearQuery: state => {
-      return { ...state, query: '' };
+      state.query = '';
     },
-    setStatus: (state, action: PayloadAction<string>) => {
-      return { ...state, status: action.payload };
+    setStatus: (state, { payload }: PayloadAction<string>) => {
+      state.status = payload;
     },
   },
 });

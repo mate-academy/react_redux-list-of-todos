@@ -1,16 +1,16 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { getTodos } from './api';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './app/store';
 import { todosSlice } from './features/todos';
-import { useEffect, useState } from 'react';
+import { getTodos } from './api';
+import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 
 export const App = () => {
-  const [loading, setLoading] = useState(true);
   const dispatch: AppDispatch = useDispatch();
   const currentTodo = useSelector((state: RootState) => state.currentTodo);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getTodos()
@@ -19,7 +19,7 @@ export const App = () => {
       })
       .catch()
       .finally(() => setLoading(false));
-  }, [dispatch]);
+  }, []);
 
   return (
     <>

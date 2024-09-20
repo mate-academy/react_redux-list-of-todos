@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Loader } from '../Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
 import { getUser } from '../../api';
 import { Todo } from '../../types/Todo';
-import { User } from '../../types/User';
 import { currentTodoSlice } from '../../features/currentTodo';
+import { User } from '../../types/User';
+import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
   const [loading, setLoading] = useState(true);
