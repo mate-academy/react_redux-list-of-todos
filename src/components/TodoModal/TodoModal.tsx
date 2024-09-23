@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { User } from '../../types/User';
-import { useAppSelector } from '../../app/hooks';
+import { useDispatch } from 'react-redux';
 import { getUser } from '../../api';
 import { currentTodoSlice } from '../../features/currentTodo';
-import { useDispatch } from 'react-redux';
 import { Loader } from '../Loader';
+import { User } from '../../types/User';
+import { useAppSelector } from '../../app/hooks';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -12,15 +12,18 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useDispatch();
 
-      <Loader />
   useEffect(() => {
-    getUser(currentTodo?.userId)
-      .then(setUser)
-      .finally(() => setLoading(false));
+    if (currentTodo?.userId) {
+      getUser(currentTodo.userId)
+        .then(setUser)
+        .finally(() => setLoading(false));
+    }
   }, [currentTodo]);
+
   const closingTodo = () => {
     dispatch(currentTodoSlice.actions.closeTodo(''));
   };
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
@@ -29,10 +32,7 @@ export const TodoModal: React.FC = () => {
       ) : (
         <div className="modal-card">
           <header className="modal-card-head">
-            <div
-              className="modal-card-title has-text-weight-medium"
-              data-cy="modal-header"
-            >
+            <div className="modal-card-title has-text-weight-medium" data-cy="modal-header">
               {`Todo #${currentTodo.id}`}
             </div>
             <button
@@ -57,7 +57,7 @@ export const TodoModal: React.FC = () => {
             </p>
           </div>
         </div>
- )}
- </div>
-);
+      )}
+    </div>
+  );
 };

@@ -6,14 +6,14 @@ import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
-  const query = filter.query;
+  const query = filter?.query || '';
   const dispatch = useDispatch();
 
   const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(filterSlice.actions.setStatus(event.target.value));
   };
 
-  const ChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filterSlice.actions.setQuery(event.target.value));
   };
 
@@ -43,7 +43,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          onChange={ChangeQuery}
+          onChange={changeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
