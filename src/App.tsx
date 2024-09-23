@@ -31,8 +31,7 @@ export const App = () => {
               <TodoFilter />
             </div>
             <div className="block">
-              {loading && <Loader />}
-              {!loading && <TodoList />}
+            {loading ? <Loader /> : <TodoList />}
             </div>
           </div>
         </div>

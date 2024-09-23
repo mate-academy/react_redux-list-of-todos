@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import classNames from 'classnames';
@@ -12,104 +11,108 @@ export const TodoList: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useDispatch();
+
   const handleSelectTodo = (todo: Todo) => {
     dispatch(currentTodoSlice.actions.selectTodo(todo));
   };
-  function getFilteredTodos(inheritTodods: Todo[]) {
-    let filteredTodos = [...inheritTodods];
+
+  function getFilteredTodos(inheritTodos: Todo[]) {
+    let filteredTodos = [...inheritTodos];
     const adaptedQuery = filter.query.trim().toLowerCase();
+
     switch (filter.status) {
       case Status.Active:
-        filteredTodos = inheritTodods.filter(todo => !todo.completed);
+        filteredTodos = inheritTodos.filter(todo => !todo.completed);
         break;
-        case Status.Completed:
-          filteredTodos = inheritTodods.filter(todo => todo.completed);
-          break;
-          default:
-            break;
-        }
-        if (adaptedQuery) {
-          return filteredTodos.filter(todo =>
-            todo.title.toLowerCase().includes(adaptedQuery),
-          );
-        }
-        return filteredTodos;
-      }
+      case Status.Completed:
+        filteredTodos = inheritTodos.filter(todo => todo.completed);
+        break;
+      default:
+        break;
+    }
 
-      const todos = getFilteredTodos(todosFilter);
-      return (
-        <>
-          {!todos.length ? (
-            <p className="notification is-warning">
-              There are no todos matching current filter criteria
-            </p>
-          ) : (
-            <table className="table is-narrow is-fullwidth">
-              <thead>
-                <tr>
-                  <th>#</th>
+    if (adaptedQuery) {
+      return filteredTodos.filter(todo =>
+        todo.title.toLowerCase().includes(adaptedQuery),
+      );
+    }
 
-                  <th>
-                  <span className="icon">
+    return filteredTodos;
+  }
+
+  const todos = getFilteredTodos(todosFilter);
+
+  return (
+    <>
+      {!todos.length ? (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      ) : (
+        <table className="table is-narrow is-fullwidth">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>
+                <span className="icon">
                   <i className="fas fa-check" />
-                  </span>
-                  </th>
+                </span>
+              </th>
+              <th>Title</th>
+              <th></th>
+            </tr>
+          </thead>
 
-<th>Title</th>
-<th> </th>
-</tr>
-</thead>
+          <tbody>
+            {todos.map(({ id, completed, title, userId }) => (
+              <tr
+                data-cy="todo"
+                key={id}
+                className={classNames({
+                  'has-background-info-light': currentTodo?.id === id,
+                })}
+              >
+                <td className="is-vcentered">{id}</td>
+                <td className="is-vcentered">
+                  {completed && (
+                    <span className="icon" data-cy="iconCompleted">
+                      <i className="fas fa-check" />
+                    </span>
+                  )}
+                </td>
 
-<tbody>
-{todos.map(todo => (
-<tr
-  data-cy="todo"
-  key={todo.id}
-  className={classNames({
-    'has-background-info-light': currentTodo?.id === todo.id,
-  })}
->
-  <td className="is-vcentered">{todo.id}</td>
-  <td className="is-vcentered">
-    {todo.completed && (
-      <span className="icon" data-cy="iconCompleted">
-        <i className="fas fa-check" />
-      </span>
-    )}
-  </td>
+                <td className="is-vcentered is-expanded">
+                  <p
+                    className={classNames({
+                      'has-text-danger': !completed,
+                      'has-text-success': completed,
+                    })}
+                  >
+                    {title}
+                  </p>
+                </td>
 
-  <td className="is-vcentered is-expanded">
-    <p
-      className={classNames({
-        'has-text-danger': !todo.completed,
-        'has-text-success': todo.completed,
-      })}
-    >
-      {todo.title}
-    </p>
-  </td>
-
-  <td className="has-text-right is-vcentered">
-    <button
-      data-cy="selectButton"
-      className="button"
-      type="button"
-      onClick={() => handleSelectTodo(todo)}
-    >
-      <span className="icon">
-        {currentTodo?.id === todo.id ? (
-          <i className="far fa-eye-slash" />
-        ) : (
-          <i className="far fa-eye" />
-        )}
-      </span>
-    </button>
-  </td>
-</tr>
-))}
-</tbody>
-</table>
-)}
-</>
-);
+                <td className="has-text-right is-vcentered">
+                  <button
+                    data-cy="selectButton"
+                    className="button"
+                    type="button"
+                    onClick={() => handleSelectTodo({ id, completed, title, userId })}
+                  >
+                    <span className="icon">
+                      {currentTodo?.id === id ? (
+                        <i className="far fa-eye-slash" />
+                      ) : (
+                        <i className="far fa-eye" />
+                      )}
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </>
+  );
 };
