@@ -30,13 +30,12 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
         {todos.map(todo => (
           <TodoItem todo={todo} key={todo.id} currentTodoId={currentTodoId} />
         ))}
-
-        {/* {!todos.length && (
-          <p className="notification is-warning">
-            There are no todos matching current filter criteria
-          </p>
-        )} */}
       </tbody>
+      {/* {!todos.length && (
+        <th className="notification is-warning">
+          There are no todos matching current filter criteria
+        </th>
+      )} */}
     </table>
   );
 };

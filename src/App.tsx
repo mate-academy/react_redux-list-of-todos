@@ -31,6 +31,10 @@ export const App: React.FC = () => {
     let visTodos = [];
 
     switch (filter) {
+      case 'all':
+        visTodos = todos;
+        break;
+
       case 'active':
         visTodos = todos.filter(todo => !todo.completed);
         break;
@@ -56,7 +60,10 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter setSearchFilter={setSeacrhFilter} />
+              <TodoFilter
+                setSearchFilter={setSeacrhFilter}
+                searchFilter={searchFilter}
+              />
             </div>
 
             <div className="block">

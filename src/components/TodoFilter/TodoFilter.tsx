@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useAppDispatch } from '../../app/store';
 import { filterSlice } from '../../features/filter';
 import { Status } from '../../types/Status';
@@ -6,10 +6,13 @@ import { debounce } from 'lodash';
 
 type Props = {
   setSearchFilter: (a: string) => void;
+  searchFilter: string;
 };
 
-export const TodoFilter: React.FC<Props> = ({ setSearchFilter }) => {
-  const [title, setTitle] = useState('');
+export const TodoFilter: React.FC<Props> = ({
+  setSearchFilter,
+  searchFilter,
+}) => {
   const dispatch = useAppDispatch();
 
   const applyTitle = useMemo(
@@ -17,17 +20,17 @@ export const TodoFilter: React.FC<Props> = ({ setSearchFilter }) => {
     [setSearchFilter],
   );
 
-  const setFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const setFilter = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(filterSlice.actions.setFilter(e.target.value));
   };
 
   const handleInputFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setSearchFilter(e.target.value);
     applyTitle(e.target.value);
   };
 
   const clearSearch = () => {
-    setTitle('');
+    setSearchFilter('');
     applyTitle('');
   };
 
@@ -35,7 +38,7 @@ export const TodoFilter: React.FC<Props> = ({ setSearchFilter }) => {
     <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect" onChange={() => setFilter}>
+          <select data-cy="statusSelect" onChange={setFilter}>
             <option value={'all' as Status}>All</option>
             <option value={'active' as Status}>Active</option>
             <option value={'completed' as Status}>Completed</option>
@@ -49,14 +52,14 @@ export const TodoFilter: React.FC<Props> = ({ setSearchFilter }) => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={title}
+          value={searchFilter}
           onChange={handleInputFilter}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {title.length !== 0 && (
+        {searchFilter.length !== 0 && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             <button
               data-cy="clearSearchButton"

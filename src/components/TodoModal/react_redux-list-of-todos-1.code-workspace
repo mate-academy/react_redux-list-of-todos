@@ -1,11 +1,8 @@
 {
 	"folders": [
-		{
-			"path": "../../.."
-		},
-		{
-			"path": "../../../../../reactTypeScript/react_dynamic-list-of-todos"
-		}
-	],
+    {
+      "path": "../../.."
+    }
+  ],
   "settings": {}
 }
