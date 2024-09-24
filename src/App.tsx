@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App = () => {
   const dispatch = useAppDispatch();
-  const currentTodo = useAppSelector((state) => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const [isTodosLoading, setIsTodosLoading] = useState(false);
 

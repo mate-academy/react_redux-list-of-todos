@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { query, status } = useAppSelector((state) => state.filter);
+  const { query, status } = useAppSelector(state => state.filter);
 
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(filterActions.setStatus(event.target.value));
@@ -22,7 +22,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect" value={status} onChange={handleStatusChange}>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleStatusChange}
+          >
             {Object.values(Status).map(statusOption => (
               <option key={statusOption} value={statusOption}>
                 {statusOption}

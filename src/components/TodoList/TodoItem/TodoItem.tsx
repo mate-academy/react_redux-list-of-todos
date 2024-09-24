@@ -8,7 +8,7 @@ type Props = {
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
   const dispatch = useAppDispatch();
-  const currentTodo = useAppSelector((state) => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const { id, completed, title } = todo;
 

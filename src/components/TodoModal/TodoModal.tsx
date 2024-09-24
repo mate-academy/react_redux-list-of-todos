@@ -7,9 +7,7 @@ import { currTodoActions } from '../../features/currentTodo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoModal: React.FC = () => {
-  const currentTodo = useAppSelector(
-    (state) => state.currentTodo,
-  ) as Todo;
+  const currentTodo = useAppSelector(state => state.currentTodo) as Todo;
   const dispatch = useAppDispatch();
   const [todoOwner, setTodoOwner] = useState<User | null>(null);
   const [isUserLoading, setIsUserLoading] = useState(false);
