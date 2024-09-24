@@ -69,6 +69,7 @@ export const TodoList: React.FC = () => {
           <tbody>
             {visibleTodos.map(todo => (
               <tr
+                key={todo.id}
                 data-cy="todo"
                 className={classNames('', {
                   'has-background-info-light': todo.id === currentTodo?.id,
