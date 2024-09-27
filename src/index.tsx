@@ -5,10 +5,15 @@ import { HashRouter as Router } from 'react-router-dom';
 import { store } from './app/store';
 import { App } from './App';
 
-createRoot(document.getElementById('root') as HTMLElement).render(
+const container = document.getElementById('root') as HTMLElement;
+const root = createRoot(container);
+
+const Root = () => (
   <Provider store={store}>
     <Router>
       <App />
     </Router>
-  </Provider>,
+  </Provider>
 );
+
+root.render(<Root />);
