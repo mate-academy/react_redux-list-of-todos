@@ -4,7 +4,7 @@ import { Todo } from '../../types/Todo';
 import { useAppDispatch } from '../../app/hooks';
 import { currentTodoSlice } from '../../features/currentTodo';
 import { User } from '../../types/User';
-import { getUser } from '../../api';
+import { getUserById } from '../../api';
 
 type Props = {
   todo: Todo;
@@ -18,11 +18,9 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
 
   useEffect(() => {
     setIsLoading(true);
-    setTimeout(() => {
-      getUser(userId)
-        .then(setUser)
-        .finally(() => setIsLoading(false));
-    }, 1000);
+    getUserById(userId)
+      .then(setUser)
+      .finally(() => setIsLoading(false));
   }, [userId]);
 
   const handleClick = () => {
@@ -45,7 +43,6 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               {`Todo #${id}`}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"
@@ -67,7 +64,11 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               )}
 
               {' by '}
-              <a href={`mailto:${user?.email}`}>{user?.name}</a>
+              {user ? (
+                <a href={`mailto:${user.email}`}>{user.name}</a>
+              ) : (
+                <span>Loading user info...</span>
+              )}
             </p>
           </div>
         </div>
