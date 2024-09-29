@@ -11,15 +11,15 @@ export const App: React.FC = () => {
   const dispatch = useDispatch();
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const [loader, setLoader] = useState(false);
+  const [loading, isLoading] = useState(false);
 
   useEffect(() => {
-    setLoader(true);
+    isLoading(true);
     getTodos()
       .then(getTodo => {
         dispatch(setTodos(getTodo));
       })
-      .finally(() => setLoader(false));
+      .finally(() => isLoading(false));
   }, [dispatch]);
 
   return (
@@ -34,8 +34,8 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loader && <Loader />}
-              {!loader && !!todos.length && <TodoList />}
+              {loading && <Loader />}
+              {!loading && !!todos.length && <TodoList />}
             </div>
           </div>
         </div>

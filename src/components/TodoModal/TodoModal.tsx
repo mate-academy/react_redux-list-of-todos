@@ -10,18 +10,18 @@ export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User>();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, isLoading] = useState<boolean>(true);
 
   const handleClose = () => {
     dispatch(setCurrentTodo(null));
   };
 
   useEffect(() => {
-    setLoading(true);
+    isLoading(true);
     if (currentTodo) {
       getUser(currentTodo?.userId)
         .then(setUser)
-        .finally(() => setLoading(false));
+        .finally(() => isLoading(false));
     }
   }, [currentTodo]);
 
