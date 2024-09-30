@@ -1,26 +1,81 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from './app/store';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { getTodos } from './api';
+import { Todo } from './types/Todo';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  const searchQuery = useSelector((state: RootState) => state.filter.query);
+  const status = useSelector((state: RootState) => state.filter.status);
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+  useEffect(() => {
+    const fetchTodos = async () => {
+      try {
+        const todos = await getTodos();
+
+        setTodos(todos);
+      } catch (error) {
+        console.error('Error loading todos:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTodos();
+  }, []);
+
+  const filteredTodos = todos.filter(todo => {
+    const matchesQuery = todo.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      status === 'all' ||
+      (status === 'active' && !todo.completed) ||
+      (status === 'completed' && todo.completed);
+
+    return matchesQuery && matchesStatus;
+  });
+
+  const handleTodoClick = (todo: Todo) => {
+    setSelectedTodo(todo);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTodo(null);
+  };
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {loading ? (
+                <Loader />
+              ) : (
+                <TodoList todos={filteredTodos} onTodoClick={handleTodoClick} />
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {selectedTodo && (
+        <TodoModal todo={selectedTodo} onClose={handleCloseModal} />
+      )}
+    </>
+  );
+};
