@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { setCurrentTodo } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
-import classNames from 'classnames';
 import { filterTodos } from '../../utils/filterTodos';
+import { TodoItem } from '../TodoItem/TodoItem';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,47 +35,13 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-        {filteredTodos.map(({ id, completed, title, userId }) => (
-          <tr data-cy="todo" key={id}>
-            <td className="is-vcentered">{id}</td>
-            <td className="is-vcentered">
-              {completed && (
-                <span className="icon" data-cy="iconCompleted">
-                  <i className="fas fa-check" />
-                </span>
-              )}
-            </td>
-
-            <td className="is-vcentered is-expanded">
-              <p
-                className={classNames({
-                  'has-text-success': completed,
-                  'has-text-danger': !completed,
-                })}
-              >
-                {title}
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button
-                data-cy="selectButton"
-                className="button"
-                type="button"
-                onClick={() =>
-                  handleSelectTodo({ id, completed, title, userId })
-                }
-              >
-                <span className="icon">
-                  {currentTodo?.id === id ? (
-                    <i className="far fa-eye-slash" />
-                  ) : (
-                    <i className="far fa-eye" />
-                  )}
-                </span>
-              </button>
-            </td>
-          </tr>
+        {filteredTodos.map(todo => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            isSelected={currentTodo?.id === todo.id}
+            onSelect={handleSelectTodo}
+          />
         ))}
       </tbody>
     </table>

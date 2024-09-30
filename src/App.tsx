@@ -6,20 +6,21 @@ import { useAppSelector } from './app/hooks';
 import { useEffect, useState } from 'react';
 import { getTodos } from './api';
 import { setTodos } from './features/todos';
+import { selectCurrentTodo, selectTodos } from './features/todoSelectors';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const todos = useAppSelector(state => state.todos);
-  const currentTodo = useAppSelector(state => state.currentTodo);
-  const [loading, isLoading] = useState(false);
+  const todos = useAppSelector(selectTodos);
+  const currentTodo = useAppSelector(selectCurrentTodo);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    isLoading(true);
+    setIsLoading(true);
     getTodos()
       .then(getTodo => {
         dispatch(setTodos(getTodo));
       })
-      .finally(() => isLoading(false));
+      .finally(() => setIsLoading(false));
   }, [dispatch]);
 
   return (
@@ -34,8 +35,8 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loading && <Loader />}
-              {!loading && !!todos.length && <TodoList />}
+              {isLoading && <Loader />}
+              {!isLoading && !!todos.length && <TodoList />}
             </div>
           </div>
         </div>

@@ -6,17 +6,26 @@ export const filterTodos = (
   query: string,
   status: Status,
 ): Todo[] => {
-  return todos
-    .filter(todo => {
-      if (status === Status.Active) {
-        return !todo.completed;
-      }
-
-      if (status === Status.Completed) {
-        return todo.completed;
-      }
-
+  return todos.filter(todo => {
+    if (!query && status === Status.All) {
       return true;
-    })
-    .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
+    }
+
+    switch (status) {
+      case Status.Active:
+        if (todo.completed) {
+          return false;
+        }
+
+        break;
+      case Status.Completed:
+        if (!todo.completed) {
+          return false;
+        }
+
+        break;
+    }
+
+    return todo.title.toLowerCase().includes(query.toLowerCase());
+  });
 };
