@@ -18,13 +18,8 @@
   },
   "devDependencies": {
     "@cypress/react18": "^2.0.1",
-<<<<<<< HEAD
     "@mate-academy/scripts": "^1.9.12",
     "@mate-academy/students-ts-config": "*",
-=======
-    "@mate-academy/scripts": "^1.8.5",
-    "@mate-academy/students-ts-config": "0.0.4",
->>>>>>> 4aa7262b4d769f9a83afd8e270b2fd2d4cbe824d
     "@mate-academy/stylelint-config": "*",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.3",
