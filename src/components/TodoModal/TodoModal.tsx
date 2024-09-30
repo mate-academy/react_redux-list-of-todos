@@ -16,6 +16,17 @@ export const TodoModal: React.FC = () => {
     dispatch(setCurrentTodo(null));
   };
 
+  const fetchUserData = async (userId: number) => {
+    setIsLoading(true);
+    try {
+      const userData = await getUser(userId);
+
+      setUser(userData);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!currentTodo) {
       setIsLoading(false);
@@ -23,12 +34,7 @@ export const TodoModal: React.FC = () => {
       return;
     }
 
-    setIsLoading(true);
-    if (currentTodo) {
-      getUser(currentTodo?.userId)
-        .then(setUser)
-        .finally(() => setIsLoading(false));
-    }
+    fetchUserData(currentTodo.userId);
   }, [currentTodo]);
 
   return (

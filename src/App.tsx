@@ -3,7 +3,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from './app/hooks';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getTodos } from './api';
 import { setTodos } from './features/todos';
 import { selectCurrentTodo, selectTodos } from './features/todoSelectors';
@@ -14,14 +14,20 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(selectCurrentTodo);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
+  const fetchTodos = useCallback(async () => {
     setIsLoading(true);
-    getTodos()
-      .then(getTodo => {
-        dispatch(setTodos(getTodo));
-      })
-      .finally(() => setIsLoading(false));
+    try {
+      const fetchedTodos = await getTodos();
+
+      dispatch(setTodos(fetchedTodos));
+    } finally {
+      setIsLoading(false);
+    }
   }, [dispatch]);
+
+  useEffect(() => {
+    fetchTodos();
+  }, [fetchTodos]);
 
   return (
     <>
