@@ -1,26 +1,67 @@
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+import { Loader } from './components/Loader';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from './app/store';
+import { getVisibleTodos } from './helpers/getVisibleTodos';
+import { setTodos } from './features/todos';
+import { getAllTodos } from './helpers/getAllTodos';
+import { setSelectedTodo } from './features/currentTodo';
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+export const App: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const todos = useSelector((state: RootState) => state.todos);
+  const selectedTodo = useSelector((state: RootState) => state.currentTodo);
+  const { query, status } = useSelector((state: RootState) => state.filter);
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+  const [isLoading, setIsLoading] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
+
+  const handleCloseModal = () => {
+    dispatch(setSelectedTodo(null));
+    setIsShowModal(false);
+  };
+
+  useEffect(() => {
+    getAllTodos(setIsLoading, data => dispatch(setTodos(data)));
+  }, []);
+
+  const visibleTodos = getVisibleTodos(todos, status, query);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <div className="block">
+                <TodoList
+                  todos={visibleTodos}
+                  showModalWindow={setIsShowModal}
+                  isShowModal={isShowModal}
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {isShowModal && selectedTodo && (
+        <TodoModal todo={selectedTodo} onCloseModal={handleCloseModal} />
+      )}
+    </>
+  );
+};
