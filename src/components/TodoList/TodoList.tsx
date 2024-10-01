@@ -1,10 +1,11 @@
 /* eslint-disable */
-import cn from 'classnames';
+import React from 'react';
 import { Todo } from '../../types/Todo';
 import { useAppSelector } from '../../app/hooks';
 import { useDispatch } from 'react-redux';
-import { Status } from '../../types/Status';
 import { setCurrentTodo } from '../../features/currentTodo';
+import { TodoItem } from '../TodoItem/TodoItem';
+import { filterTodos } from '../../features/filterTodos';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,19 +17,7 @@ export const TodoList: React.FC = () => {
     dispatch(setCurrentTodo(todo));
   };
 
-  const filteredTodos = todos
-    .filter(todo => {
-      if (status === Status.Active) {
-        return !todo.completed;
-      }
-
-      if (status === Status.Completed) {
-        return todo.completed;
-      }
-
-      return true;
-    })
-    .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
+  const filteredTodos = filterTodos(todos, status, query);
 
   return (
     <table className="table is-narrow is-fullwidth">
@@ -46,45 +35,13 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-        {filteredTodos.map(({ id, completed, title, userId }) => (
-          <tr key={id} data-cy="todo">
-            <td className="is-vcentered">{id}</td>
-            <td className="is-vcentered">
-              {completed && (
-                <span className="icon" data-cy="iconCompleted">
-                  <i className="fas fa-check" />
-                </span>
-              )}
-            </td>
-            <td className="is-vcentered is-expanded">
-              <p
-                className={cn({
-                  'has-text-success': completed,
-                  'has-text-danger': !completed,
-                })}
-              >
-                {title}
-              </p>
-            </td>
-            <td className="has-text-right is-vcentered">
-              <button
-                data-cy="selectButton"
-                className="button"
-                type="button"
-                onClick={() =>
-                  handleSelectTodo({ id, completed, title, userId })
-                }
-              >
-                <span className="icon">
-                  {currentTodo?.id === id ? (
-                    <i className="far fa-eye-slash" />
-                  ) : (
-                    <i className="far fa-eye" />
-                  )}
-                </span>
-              </button>
-            </td>
-          </tr>
+        {filteredTodos.map(todo => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            currentTodoId={currentTodo?.id || null}
+            onSelect={handleSelectTodo}
+          />
         ))}
       </tbody>
     </table>

@@ -10,20 +10,21 @@ import { getTodos } from './api';
 import { useAppSelector } from './app/hooks';
 import { useDispatch } from 'react-redux';
 import { setTodos } from './features/todos';
+import { selectTodos, selectCurrentTodo } from './features/selectors';
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const todos = useAppSelector(state => state.todos);
-  const currentTodo = useAppSelector(state => state.currentTodo);
-  const [loader, setLoader] = useState(false);
+  const todos = useAppSelector(selectTodos);
+  const currentTodo = useAppSelector(selectCurrentTodo);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setLoader(true);
+    setIsLoading(true);
     getTodos()
       .then(getTodo => {
         dispatch(setTodos(getTodo));
       })
-      .finally(() => setLoader(false));
+      .finally(() => setIsLoading(false));
   }, [dispatch]);
 
   return (
@@ -38,8 +39,8 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {loader && <Loader />}
-              {!loader && !!todos.length && <TodoList />}
+              {isLoading && <Loader />}
+              {!isLoading && !!todos.length && <TodoList />}
             </div>
           </div>
         </div>

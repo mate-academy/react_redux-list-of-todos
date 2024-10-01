@@ -10,18 +10,20 @@ export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User>();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const handleClose = () => {
     dispatch(setCurrentTodo(null));
   };
 
   useEffect(() => {
-    setLoading(true);
     if (currentTodo) {
-      getUser(currentTodo?.userId)
+      setIsLoading(true);
+      getUser(currentTodo.userId)
         .then(setUser)
-        .finally(() => setLoading(false));
+        .finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
     }
   }, [currentTodo]);
 
@@ -29,7 +31,7 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <div className="modal-card">
