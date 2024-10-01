@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
+import { Todo } from '../../types/Todo'
 import { User } from '../../types/User';
+import { useDispatch } from 'react-redux';
+import { currTodoActions } from '../../features/currentTodo';
 
 interface TodoModalProps {
-  todo: {
-    id: number;
-    title: string;
-    completed: boolean;
-    userId: number;
-  };
+  todo: Todo;
   onClose: () => void;
 }
 
 export const TodoModal: React.FC<TodoModalProps> = ({ todo, onClose }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+    const dispatch = useDispatch();
 
   useEffect(() => {
     if (todo) {
@@ -45,7 +44,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({ todo, onClose }) => {
             className="modal-card-title has-text-weight-medium"
             data-cy="modal-header"
           >
-            Todo #{todo.id}
+            Todo #{todo?.id}
           </div>
 
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -53,7 +52,10 @@ export const TodoModal: React.FC<TodoModalProps> = ({ todo, onClose }) => {
             type="button"
             className="delete"
             data-cy="modal-close"
-            onClick={onClose}
+            onClick={() => {
+              dispatch(currTodoActions.clearCurrentTodo());
+              onClose();
+            }}
           />
         </header>
 

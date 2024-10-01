@@ -7,7 +7,11 @@ interface TodoListProps {
   onTodoClick: (todo: Todo) => void;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({ todos, selectedTodo, onTodoClick }) => {
+export const TodoList: React.FC<TodoListProps> = ({
+  todos,
+  selectedTodo,
+  onTodoClick,
+}) => {
   if (todos.length === 0) {
     return (
       <p className="notification is-warning">
