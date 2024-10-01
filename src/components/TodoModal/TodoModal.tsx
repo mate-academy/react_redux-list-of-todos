@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
-import { Todo } from '../../types/Todo'
+import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { useDispatch } from 'react-redux';
 import { currTodoActions } from '../../features/currentTodo';
@@ -14,7 +14,7 @@ interface TodoModalProps {
 export const TodoModal: React.FC<TodoModalProps> = ({ todo, onClose }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (todo) {
