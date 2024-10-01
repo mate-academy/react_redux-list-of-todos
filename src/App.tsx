@@ -18,10 +18,11 @@ export const App = () => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const todos = await getTodos();
+        const fetchedTodos = await getTodos();
 
-        setTodos(todos);
+        setTodos(fetchedTodos);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Error loading todos:', error);
       } finally {
         setLoading(false);
@@ -31,14 +32,14 @@ export const App = () => {
     fetchTodos();
   }, []);
 
-  const filteredTodos = todos.filter(todo => {
-    const matchesQuery = todo.title
+  const filteredTodos = todos.filter(item => {
+    const matchesQuery = item.title
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
     const matchesStatus =
       status === 'all' ||
-      (status === 'active' && !todo.completed) ||
-      (status === 'completed' && todo.completed);
+      (status === 'active' && !item.completed) ||
+      (status === 'completed' && item.completed);
 
     return matchesQuery && matchesStatus;
   });
