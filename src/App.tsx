@@ -79,7 +79,7 @@ export const App = () => {
       </div>
 
       {selectedTodo && (
-        <TodoModal todo={selectedTodo} onClose={handleCloseModal} />
+        <TodoModal onClose={handleCloseModal} />
       )}
     </>
   );
