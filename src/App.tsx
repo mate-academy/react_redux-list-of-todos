@@ -67,7 +67,11 @@ export const App = () => {
               {loading ? (
                 <Loader />
               ) : (
-                <TodoList todos={filteredTodos} onTodoClick={handleTodoClick} />
+                <TodoList
+                  todos={filteredTodos}
+                  onTodoClick={handleTodoClick}
+                  selectedTodo={selectedTodo}
+                />
               )}
             </div>
           </div>

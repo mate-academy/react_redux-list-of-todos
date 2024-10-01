@@ -3,10 +3,11 @@ import { Todo } from '../../types/Todo';
 
 interface TodoListProps {
   todos: Todo[];
+  selectedTodo: Todo | null;
   onTodoClick: (todo: Todo) => void;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({ todos, onTodoClick }) => {
+export const TodoList: React.FC<TodoListProps> = ({ todos, selectedTodo, onTodoClick }) => {
   if (todos.length === 0) {
     return (
       <p className="notification is-warning">
@@ -57,7 +58,11 @@ export const TodoList: React.FC<TodoListProps> = ({ todos, onTodoClick }) => {
                 onClick={() => onTodoClick(todo)}
               >
                 <span className="icon">
-                  <i className="far fa-eye" />
+                  {selectedTodo && selectedTodo.id === todo.id ? (
+                    <i className="far fa-eye-slash" />
+                  ) : (
+                    <i className="far fa-eye" />
+                  )}
                 </span>
               </button>
             </td>
