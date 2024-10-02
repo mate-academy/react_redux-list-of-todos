@@ -11,6 +11,7 @@ export const App = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const searchQuery = useSelector((state: RootState) => state.filter.query);
   const status = useSelector((state: RootState) => state.filter.status);
@@ -21,9 +22,8 @@ export const App = () => {
         const fetchedTodos = await getTodos();
 
         setTodos(fetchedTodos);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error loading todos:', error);
+      } catch (err) {
+        setError('Error loading todos. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -40,7 +40,7 @@ export const App = () => {
       const matchesStatus =
         status === 'all' ||
         (status === 'active' && !item.completed) ||
-        (status === 'completed' && item.completed); 
+        (status === 'completed' && item.completed);
 
       return matchesQuery && matchesStatus;
     });
@@ -53,6 +53,10 @@ export const App = () => {
   const handleCloseModal = () => {
     setSelectedTodo(null);
   };
+
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
 
   return (
     <>
