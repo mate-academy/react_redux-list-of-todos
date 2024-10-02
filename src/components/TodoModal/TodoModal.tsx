@@ -11,7 +11,10 @@ interface TodoModalProps {
   onClose: () => void;
 }
 
-export const TodoModal: React.FC<TodoModalProps> = ({ selectedTodo, onClose }) => {
+export const TodoModal: React.FC<TodoModalProps> = ({
+  selectedTodo,
+  onClose,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();

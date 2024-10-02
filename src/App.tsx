@@ -1,6 +1,6 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from './app/store';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
@@ -32,17 +32,19 @@ export const App = () => {
     fetchTodos();
   }, []);
 
-  const filteredTodos = todos.filter(item => {
-    const matchesQuery = item.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-    const matchesStatus =
-      status === 'all' ||
-      (status === 'active' && !item.completed) ||
-      (status === 'completed' && item.completed);
+  const filteredTodos = useMemo(() => {
+    return todos.filter(item => {
+      const matchesQuery = item.title
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
+      const matchesStatus =
+        status === 'all' ||
+        (status === 'active' && !item.completed) ||
+        (status === 'completed' && item.completed); 
 
-    return matchesQuery && matchesStatus;
-  });
+      return matchesQuery && matchesStatus;
+    });
+  }, [todos, searchQuery, status]);
 
   const handleTodoClick = (todo: Todo) => {
     setSelectedTodo(todo);
@@ -78,7 +80,9 @@ export const App = () => {
         </div>
       </div>
 
-      {selectedTodo && <TodoModal selectedTodo={selectedTodo} onClose={handleCloseModal} />}
+      {selectedTodo && (
+        <TodoModal selectedTodo={selectedTodo} onClose={handleCloseModal} />
+      )}
     </>
   );
 };
