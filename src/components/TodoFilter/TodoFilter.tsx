@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { useAppSelector } from '../../utils/hooks';
 import { useDispatch } from 'react-redux';
 import { setFilter, setQuery } from '../../features/filter';
 import { Status } from '../../types/Status';
-import debounce from 'lodash/debounce';
 
 export const TodoFilter: React.FC = () => {
-  const [inputValue, setInputValue] = useState<string>('');
   const filter = useAppSelector(state => state.filter);
   const dispatch = useDispatch();
 
@@ -14,31 +12,13 @@ export const TodoFilter: React.FC = () => {
     dispatch(setFilter(event.target.value as Status));
   };
 
-  const handleClearSearch = () => {
-    setInputValue('');
-    dispatch(setQuery(''));
-    debouncedSetQuery.cancel();
-  };
-
-  const debouncedSetQuery = useCallback(
-    debounce((value: string) => {
-      dispatch(setQuery(value));
-    }, 300),
-    [dispatch],
-  );
-
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-
-    setInputValue(value);
-    debouncedSetQuery(value);
+    dispatch(setQuery(event.target.value));
   };
 
-  useEffect(() => {
-    return () => {
-      debouncedSetQuery.cancel();
-    };
-  }, [debouncedSetQuery]);
+  const handleClearSearch = () => {
+    dispatch(setQuery(''));
+  };
 
   return (
     <form className="field has-addons">
@@ -62,7 +42,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={inputValue}
+          value={filter.query}
           onChange={handleQueryChange}
         />
         <span className="icon is-left">
@@ -70,8 +50,7 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          {inputValue && (
+          {filter.query && (
             <button
               data-cy="clearSearchButton"
               type="button"
