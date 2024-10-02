@@ -78,9 +78,7 @@ export const App = () => {
         </div>
       </div>
 
-      {selectedTodo && (
-        <TodoModal onClose={handleCloseModal} />
-      )}
+      {selectedTodo && <TodoModal selectedTodo={selectedTodo} onClose={handleCloseModal} />}
     </>
   );
 };

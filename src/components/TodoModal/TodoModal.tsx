@@ -3,32 +3,27 @@ import { Loader } from '../Loader';
 import { getUser } from '../../api';
 import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
+import { useDispatch } from 'react-redux';
 import { currTodoActions } from '../../features/currentTodo';
 
 interface TodoModalProps {
+  selectedTodo: Todo;
   onClose: () => void;
 }
 
-export const TodoModal: React.FC<TodoModalProps> = ({ onClose }) => {
+export const TodoModal: React.FC<TodoModalProps> = ({ selectedTodo, onClose }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
-  const currentTodo = useSelector(
-    (state: RootState) => state.currentTodo,
-  ) as Todo;
 
   useEffect(() => {
-    if (currentTodo) {
+    if (selectedTodo) {
       setLoading(true);
-      getUser(currentTodo.userId)
+      getUser(selectedTodo.userId)
         .then(setUser)
         .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
     }
-  }, [currentTodo]);
+  }, [selectedTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -43,10 +38,9 @@ export const TodoModal: React.FC<TodoModalProps> = ({ onClose }) => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo #{currentTodo.id}
+              Todo #{selectedTodo.id}
             </div>
 
-            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"
@@ -60,11 +54,11 @@ export const TodoModal: React.FC<TodoModalProps> = ({ onClose }) => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {currentTodo?.title}
+              {selectedTodo.title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {currentTodo.completed ? (
+              {selectedTodo.completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>
