@@ -13,8 +13,7 @@ export const App = () => {
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const searchQuery = useSelector((state: RootState) => state.filter.query);
-  const status = useSelector((state: RootState) => state.filter.status);
+  const { query: searchQuery, status } = useSelector((state: RootState) => state.filter);
 
   useEffect(() => {
     const fetchTodos = async () => {
