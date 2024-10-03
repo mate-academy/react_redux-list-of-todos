@@ -9,11 +9,11 @@ export function getFilteredTodos(
   const normalisedQuery = filter.query.trim().toLowerCase();
 
   switch (filter.status) {
-    case 'active':
+    case Status.Active:
       filteredTodos = todos.filter(todo => !todo.completed);
       break;
 
-    case 'completed':
+    case Status.Completed:
       filteredTodos = todos.filter(todo => todo.completed);
       break;
 
