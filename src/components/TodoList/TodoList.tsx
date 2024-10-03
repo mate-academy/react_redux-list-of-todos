@@ -41,7 +41,7 @@ export const TodoList: React.FC<Props> = ({
               <tr
                 key={todo.id}
                 data-cy="todo"
-                className={classNames('', {
+                className={classNames({
                   'has-background-info-ligth': selectedTodo,
                 })}
               >
@@ -56,9 +56,10 @@ export const TodoList: React.FC<Props> = ({
 
                 <td className="is-vcentered is-expanded">
                   <p
-                    className={
-                      todo.completed ? 'has-text-succes' : 'has-text-danger'
-                    }
+                    className={classNames({
+                      'has-text-succes': todo.completed,
+                      'has-text-danger': !todo.completed,
+                    })}
                   >
                     {todo.title}
                   </p>
@@ -73,11 +74,10 @@ export const TodoList: React.FC<Props> = ({
                   >
                     <span className="icon">
                       <i
-                        className={
-                          selectedTodo?.id === todo.id
-                            ? 'far fa-eye-slash'
-                            : 'far fa-eye'
-                        }
+                        className={classNames({
+                          'far fa-eye-slash': selectedTodo?.id === todo.id,
+                          'far fa-eye': selectedTodo?.id !== todo.id,
+                        })}
                       />
                     </span>
                   </button>
