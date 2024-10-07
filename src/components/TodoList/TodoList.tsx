@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
-import { currentTodoSlice } from '../../features/currentTodo';
+import { setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -73,7 +73,7 @@ export const TodoList: React.FC = () => {
                   <button
                     onClick={() =>
                       dispatch(
-                        currentTodoSlice.actions.setCurrentTodo({
+                        setCurrentTodo({
                           id,
                           title,
                           completed,
@@ -88,8 +88,10 @@ export const TodoList: React.FC = () => {
                     <span className="icon">
                       <i
                         className={classNames('far', {
-                          'fa-eye': currentTodo === null,
-                          'fa-eye-slash': currentTodo !== null,
+                          'fa-eye':
+                            currentTodo === null || currentTodo.id !== id,
+                          'fa-eye-slash':
+                            currentTodo !== null && currentTodo.id === id,
                         })}
                       />
                     </span>

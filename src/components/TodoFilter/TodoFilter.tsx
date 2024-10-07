@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { filterSlice } from '../../features/filter';
 import { useAppSelector } from '../../app/hooks';
+import { setStatus, setQuery } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const { query, status } = useAppSelector(state => state.filter);
@@ -9,11 +9,11 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(filterSlice.actions.setStatus(event.target.value));
+    dispatch(setStatus(event.target.value));
   };
 
   const handleQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(filterSlice.actions.setQuery(event.target.value.toLowerCase()));
+    dispatch(setQuery(event.target.value.toLowerCase()));
   };
 
   return (
@@ -51,7 +51,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(filterSlice.actions.setQuery(''))}
+              onClick={() => dispatch(setQuery(''))}
             />
           )}
         </span>

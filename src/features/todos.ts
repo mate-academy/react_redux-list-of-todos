@@ -8,3 +8,5 @@ export const todosSlice = createSlice({
     setTodos: (_, { payload }: PayloadAction<Todo[]>) => [...payload],
   },
 });
+
+export const { setTodos } = todosSlice.actions;

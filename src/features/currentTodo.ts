@@ -10,3 +10,5 @@ export const currentTodoSlice = createSlice({
     setCurrentTodo: (_, { payload }: PayloadAction<Todo | null>) => payload,
   },
 });
+
+export const { setCurrentTodo } = currentTodoSlice.actions;

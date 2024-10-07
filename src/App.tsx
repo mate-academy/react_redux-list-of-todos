@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { getTodos } from './api';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from './app/hooks';
-import { todosSlice } from './features/todos';
+import { setTodos } from './features/todos';
 
 export const App = () => {
   const [listLoading, setListLoading] = useState(false);
@@ -17,10 +17,10 @@ export const App = () => {
     setListLoading(true);
     getTodos()
       .then(array => {
-        dispatch(todosSlice.actions.setTodos(array));
+        dispatch(setTodos(array));
       })
       .finally(() => setListLoading(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

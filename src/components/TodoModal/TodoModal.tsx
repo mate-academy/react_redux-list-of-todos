@@ -5,7 +5,7 @@ import { getUser } from '../../api';
 import { useAppSelector } from '../../app/hooks';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
-import { currentTodoSlice } from '../../features/currentTodo';
+import { setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
   const [modalLoading, setModalLoading] = useState(false);
@@ -25,10 +25,10 @@ export const TodoModal: React.FC = () => {
     getUser(currentTodo.userId)
       .then(data => setUser({ ...data }))
       .finally(() => setModalLoading(false));
-  }, []);
+  }, [currentTodo]);
 
   const closeModal = () => {
-    dispatch(currentTodoSlice.actions.setCurrentTodo(null));
+    dispatch(setCurrentTodo(null));
   };
 
   return (

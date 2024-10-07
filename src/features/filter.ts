@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Status } from '../types/Status';
 
 const initialState = {
   query: '',
@@ -10,13 +9,15 @@ export const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setStatus: ({ query }, { payload }: PayloadAction<Status>) => ({
+    setStatus: ({ query }, { payload }: PayloadAction<string>) => ({
       query,
       status: payload,
     }),
-    setQuery: ({ status }, { payload }: PayloadAction<Status>) => ({
+    setQuery: ({ status }, { payload }: PayloadAction<string>) => ({
       status,
       query: payload,
     }),
   },
 });
+
+export const { setStatus, setQuery } = filterSlice.actions;
