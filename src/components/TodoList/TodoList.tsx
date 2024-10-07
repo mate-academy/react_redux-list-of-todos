@@ -3,6 +3,7 @@ import { useAppSelector } from '../../app/hooks';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { setCurrentTodo } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
@@ -13,11 +14,11 @@ export const TodoList: React.FC = () => {
 
   const filteredTodos = todos
     .filter(todo => {
-      if (status === 'completed') {
+      if (status === Status.Completed) {
         return todo.completed;
       }
 
-      if (status === 'active') {
+      if (status === Status.Active) {
         return !todo.completed;
       }
 
