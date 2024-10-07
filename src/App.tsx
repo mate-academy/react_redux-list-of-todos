@@ -34,8 +34,7 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {listLoading && <Loader />}
-              <TodoList />
+              {listLoading ? <Loader /> : <TodoList />}
             </div>
           </div>
         </div>
