@@ -4,3 +4,9 @@ export interface Todo {
   completed: boolean;
   userId: number;
 }
+
+export interface TodosState {
+  todos: Todo[];
+  loading: boolean;
+  error: string | null;
+}
