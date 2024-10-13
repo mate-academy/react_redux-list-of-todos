@@ -4,11 +4,14 @@ import { HashRouter as Router } from 'react-router-dom';
 
 import { store } from './app/store';
 import { App } from './App';
+import { AppContextContainer } from './context/AppContext';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
+    <AppContextContainer>
+      <Router>
+        <App />
+      </Router>
+    </AppContextContainer>
   </Provider>,
 );
