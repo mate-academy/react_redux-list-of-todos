@@ -30,7 +30,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({ onClose }) => {
         setTimeout(() => {
           setUser(fetchedUser);
           setIsLoading(false);
-        }, 300); // Задержка в 300 мс для проверки лоадера
+        }, 300);
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Ошибка при загрузке данных пользователя:', error);
