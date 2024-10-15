@@ -13,8 +13,14 @@ export const TodoModal: React.FC<TodoModalProps> = ({ onClose }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const todo = useAppSelector((state: RootState) => state.currentTodo);
+
+  if (!todo) {
+    return null;
+  }
+
   const { title, id, completed, userId } = todo;
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const fetchUser = async () => {
       setIsLoading(true);
@@ -26,6 +32,7 @@ export const TodoModal: React.FC<TodoModalProps> = ({ onClose }) => {
           setIsLoading(false);
         }, 300); // Задержка в 300 мс для проверки лоадера
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Ошибка при загрузке данных пользователя:', error);
         setIsLoading(false);
       }

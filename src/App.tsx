@@ -6,7 +6,6 @@ import { RootState } from './app/store';
 
 export const App = () => {
   const status = useAppSelector((state: RootState) => state.todos.status);
-  console.log(status);
 
   return (
     <>
