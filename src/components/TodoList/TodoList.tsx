@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { getTodos } from '../../api';
+import React, { useState } from 'react';
+
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks';
 import { RootState } from '../../app/store';
-import { setError, setTodos, setEndLoading } from '../../features/todos';
+
 import classNames from 'classnames';
 import { TodoModal } from '../TodoModal';
 import { setCurrentTodo } from '../../features/currentTodo';
@@ -12,28 +12,10 @@ import { Todo } from '../../types/Todo';
 export const TodoList: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeTodoId, setActiveTodoId] = useState<number | null>(null);
-  const dispatch = useDispatch();
   const todos = useAppSelector((state: RootState) => state.todos.items);
   const filterState = useAppSelector((state: RootState) => state.filter);
   const { query, status } = filterState;
-
-  useEffect(() => {
-    const fetchTodos = async () => {
-      try {
-        const fetchedTodos = await getTodos();
-
-        dispatch(setTodos(fetchedTodos));
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to fetch todos:', error);
-        dispatch(setError());
-      } finally {
-        dispatch(setEndLoading());
-      }
-    };
-
-    fetchTodos();
-  }, [dispatch]);
+  const dispatch = useDispatch();
 
   const handleTodoClick = (todo: Todo) => {
     dispatch(setCurrentTodo(todo));
