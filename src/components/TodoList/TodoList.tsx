@@ -1,15 +1,9 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { getTodos } from '../../api';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../hooks';
 import { RootState } from '../../app/store';
-import {
-  setError,
-  setLoading,
-  setTodos,
-  setEndLoading,
-} from '../../features/todos';
+import { setError, setTodos, setEndLoading } from '../../features/todos';
 import classNames from 'classnames';
 import { TodoModal } from '../TodoModal';
 import { setCurrentTodo } from '../../features/currentTodo';
@@ -17,21 +11,20 @@ import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [activeTodoId, setActiveTodoId] = useState<number | null>(null);
   const dispatch = useDispatch();
   const todos = useAppSelector((state: RootState) => state.todos.items);
   const filterState = useAppSelector((state: RootState) => state.filter);
-  const statusLoading = useAppSelector(
-    (state: RootState) => state.todos.status,
-  );
   const { query, status } = filterState;
 
   useEffect(() => {
     const fetchTodos = async () => {
-      dispatch(setLoading());
       try {
         const fetchedTodos = await getTodos();
+
         dispatch(setTodos(fetchedTodos));
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Failed to fetch todos:', error);
         dispatch(setError());
       } finally {
@@ -44,6 +37,7 @@ export const TodoList: React.FC = () => {
 
   const handleTodoClick = (todo: Todo) => {
     dispatch(setCurrentTodo(todo));
+    setActiveTodoId(todo.id);
     setModalOpen(true);
   };
 
@@ -81,6 +75,7 @@ export const TodoList: React.FC = () => {
           <tbody>
             {filteredTodos.map(todo => {
               const { title, id, completed } = todo;
+
               return (
                 <tr data-cy="todo" key={id}>
                   <td className="is-vcentered">{id}</td>
@@ -113,7 +108,12 @@ export const TodoList: React.FC = () => {
                       onClick={() => handleTodoClick(todo)}
                     >
                       <span className="icon">
-                        <i className="far fa-eye" />
+                        <i
+                          className={classNames('far', {
+                            'fa-eye-slash': modalOpen && activeTodoId === id,
+                            'fa-eye': !(modalOpen && activeTodoId === id),
+                          })}
+                        />
                       </span>
                     </button>
                   </td>
