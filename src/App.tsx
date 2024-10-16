@@ -2,23 +2,22 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Todo } from './types/Todo';
-import { todosSlice } from './features/todos';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { getTodos } from './api';
-import { useAppSelector } from './app/hooks';
+import { setTodos } from './features/todos';
 
 export const App = () => {
-  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = useState(false);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     getTodos()
-      .then((data: Todo[]) => dispatch(todosSlice.actions.setTodos(data)))
-      .finally(() => setLoading(false));
-  }, [dispatch]);
+      .then(getTodo => dispatch(setTodos(getTodo)))
+      .finally(() => setIsLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -30,10 +29,7 @@ export const App = () => {
             <div className="block">
               <TodoFilter />
             </div>
-            <div className="block">
-              {loading && <Loader />}
-              {!loading && <TodoList />}
-            </div>
+            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>

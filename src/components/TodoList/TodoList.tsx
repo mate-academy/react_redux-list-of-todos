@@ -1,55 +1,33 @@
-/* eslint-disable */
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { useAppSelector } from '../../app/hooks';
-import { useDispatch } from 'react-redux';
-import { Todo } from '../../types/Todo';
-import { currentTodoSlice } from '../../features/currentTodo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setСurrentTodo } from '../../features/currentTodo';
 import { Status } from '../../types/Status';
 
-import classNames from 'classnames';
-
 export const TodoList: React.FC = () => {
-  const todosFilter = useAppSelector(state => state.todos);
-  const filter = useAppSelector(state => state.filter);
+  const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const dispatch = useDispatch();
-  const handleSelectTodo = (todo: Todo) => {
-    dispatch(currentTodoSlice.actions.selectTodo(todo));
-  };
-  function getFilteredTodos(inheritTodods: Todo[]) {
-    let filteredTodos = [...inheritTodods];
-    const adaptedQuery = filter.query.trim().toLowerCase();
-    switch (filter.status) {
-      case Status.Active:
-        filteredTodos = inheritTodods.filter(todo => !todo.completed);
-        break;
-      case Status.Completed:
-        filteredTodos = inheritTodods.filter(todo => todo.completed);
-        break;
-      default:
-        break;
-    }
-    if (adaptedQuery) {
-      return filteredTodos.filter(todo =>
-        todo.title.toLowerCase().includes(adaptedQuery),
-      );
-    }
-    return filteredTodos;
-  }
-  const todos = getFilteredTodos(todosFilter);
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
+  const filteredTodos = useMemo(() => {
+    const normalizedQuery = query.toLowerCase().trim();
+
+    return todos
+      .filter(
+        todo =>
+          status === Status.all ||
+          (status === Status.completed ? todo.completed : !todo.completed),
+      )
+      .filter(todo => todo.title.toLowerCase().includes(normalizedQuery));
+  }, [query, todos, status]);
+
   return (
     <>
-      {!todos.length ? (
-        <p className="notification is-warning">
-          There are no todos matching current filter criteria
-        </p>
-      ) : (
+      {todos ? (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
               <th>#</th>
-
               <th>
                 <span className="icon">
                   <i className="fas fa-check" />
@@ -62,14 +40,8 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {todos.map(todo => (
-              <tr
-                data-cy="todo"
-                key={todo.id}
-                className={classNames({
-                  'has-background-info-light': currentTodo?.id === todo.id,
-                })}
-              >
+            {filteredTodos.map(todo => (
+              <tr key={todo.id} data-cy="todo">
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {todo.completed && (
@@ -81,10 +53,9 @@ export const TodoList: React.FC = () => {
 
                 <td className="is-vcentered is-expanded">
                   <p
-                    className={classNames({
-                      'has-text-danger': !todo.completed,
-                      'has-text-success': todo.completed,
-                    })}
+                    className={
+                      todo.completed ? 'has-text-success' : 'has-text-danger'
+                    }
                   >
                     {todo.title}
                   </p>
@@ -95,10 +66,10 @@ export const TodoList: React.FC = () => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => handleSelectTodo(todo)}
+                    onClick={() => dispatch(setСurrentTodo(todo))}
                   >
                     <span className="icon">
-                      {currentTodo?.id === todo.id ? (
+                      {currentTodo === todo ? (
                         <i className="far fa-eye-slash" />
                       ) : (
                         <i className="far fa-eye" />
@@ -110,6 +81,10 @@ export const TodoList: React.FC = () => {
             ))}
           </tbody>
         </table>
+      ) : (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
       )}
     </>
   );
