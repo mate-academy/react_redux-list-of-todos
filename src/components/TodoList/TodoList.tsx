@@ -1,33 +1,42 @@
-import React, { useMemo } from 'react';
-
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { setСurrentTodo } from '../../features/currentTodo';
+import React from 'react';
+import { useAppSelector } from '../../app/hooks';
+import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
+import { setCurrentTodo } from '../../features/currentTodo';
 import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
+  const { status, query } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const dispatch = useAppDispatch();
-  const { query, status } = useAppSelector(state => state.filter);
-  const filteredTodos = useMemo(() => {
-    const normalizedQuery = query.toLowerCase().trim();
-
-    return todos
-      .filter(
-        todo =>
-          status === Status.all ||
-          (status === Status.completed ? todo.completed : !todo.completed),
-      )
-      .filter(todo => todo.title.toLowerCase().includes(normalizedQuery));
-  }, [query, todos, status]);
+  const dispatch = useDispatch();
+  const filteredTodos = todos
+    .filter(todo => {
+      switch (status) {
+        case Status.Completed:
+          return todo.completed;
+        case Status.Active:
+          return !todo.completed;
+        default:
+          return todo;
+      }
+    })
+    .filter(todo =>
+      todo.title.toLowerCase().includes(query.toLocaleLowerCase()),
+    );
 
   return (
     <>
-      {todos ? (
+      {filteredTodos.length === 0 ? (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      ) : (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
               <th>#</th>
+
               <th>
                 <span className="icon">
                   <i className="fas fa-check" />
@@ -40,40 +49,51 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {filteredTodos.map(todo => (
-              <tr key={todo.id} data-cy="todo">
-                <td className="is-vcentered">{todo.id}</td>
+            {filteredTodos.map(({ id, title, completed, userId }) => (
+              <tr key={id} data-cy="todo">
+                <td className="is-vcentered">{id}</td>
                 <td className="is-vcentered">
-                  {todo.completed && (
+                  {completed && (
                     <span className="icon" data-cy="iconCompleted">
                       <i className="fas fa-check" />
                     </span>
                   )}
                 </td>
-
                 <td className="is-vcentered is-expanded">
                   <p
-                    className={
-                      todo.completed ? 'has-text-success' : 'has-text-danger'
-                    }
+                    className={classNames({
+                      'has-text-danger': !completed,
+                      'has-text-success': completed,
+                    })}
                   >
-                    {todo.title}
+                    {title}
                   </p>
                 </td>
-
                 <td className="has-text-right is-vcentered">
                   <button
+                    onClick={() =>
+                      dispatch(
+                        setCurrentTodo({
+                          id,
+                          title,
+                          completed,
+                          userId,
+                        }),
+                      )
+                    }
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => dispatch(setСurrentTodo(todo))}
                   >
                     <span className="icon">
-                      {currentTodo === todo ? (
-                        <i className="far fa-eye-slash" />
-                      ) : (
-                        <i className="far fa-eye" />
-                      )}
+                      <i
+                        className={classNames('far', {
+                          'fa-eye':
+                            currentTodo === null || currentTodo.id !== id,
+                          'fa-eye-slash':
+                            currentTodo !== null && currentTodo.id === id,
+                        })}
+                      />
                     </span>
                   </button>
                 </td>
@@ -81,10 +101,6 @@ export const TodoList: React.FC = () => {
             ))}
           </tbody>
         </table>
-      ) : (
-        <p className="notification is-warning">
-          There are no todos matching current filter criteria
-        </p>
       )}
     </>
   );
