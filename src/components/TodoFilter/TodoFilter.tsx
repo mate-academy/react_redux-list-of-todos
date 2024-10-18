@@ -4,7 +4,7 @@ import {
   filterEmprtyQuery,
   filterQueryTodos,
   filterStatusTodos,
-} from '../../features/filter';
+} from '../../features/filterSlice';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {

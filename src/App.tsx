@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { useEffect, useMemo, useState } from 'react';
 import { getTodos } from './api';
 import { addTodos } from './features/todos';
+import { filterTodos } from './features/filterTodos';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -19,32 +20,10 @@ export const App = () => {
     getTodos()
       .then(todosFromServer => dispatch(addTodos(todosFromServer)))
       .finally(() => setIsLoading(false));
-  }, []);
+  });
 
-  const filterTodos = useMemo(() => {
-    let newTodos = [...todos];
-
-    if (filterStatus) {
-      newTodos = newTodos.filter(item => {
-        switch (filterStatus) {
-          case 'active':
-            return item.completed === false;
-          case 'completed':
-            return item.completed;
-          case 'all':
-          default:
-            return true;
-        }
-      });
-    }
-
-    if (filterQuery) {
-      newTodos = newTodos.filter(item => {
-        return item.title.toLowerCase().includes(filterQuery.toLowerCase());
-      });
-    }
-
-    return newTodos;
+  const filteredTodos = useMemo(() => {
+    return filterTodos(todos, filterStatus, filterQuery);
   }, [todos, filterStatus, filterQuery]);
 
   return (
@@ -59,7 +38,7 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {isLoading ? <Loader /> : <TodoList todos={filterTodos} />}
+              {isLoading ? <Loader /> : <TodoList todos={filteredTodos} />}
             </div>
           </div>
         </div>

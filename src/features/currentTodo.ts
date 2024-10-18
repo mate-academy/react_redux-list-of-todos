@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
@@ -12,11 +14,9 @@ export const currTodoSlice = createSlice({
   initialState,
   reducers: {
     selectTodo: (state: CurrTodoState, action: PayloadAction<Todo>) => {
-      // eslint-disable-next-line no-param-reassign
       state.value = action.payload;
     },
     deselectTodo: (state: CurrTodoState) => {
-      // eslint-disable-next-line no-param-reassign
       state.value = null;
     },
   },

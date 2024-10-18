@@ -10,13 +10,12 @@ interface Props {
 export const TodoList: React.FC<Props> = ({ todos }) => {
   const currTodo = useAppSelector(state => state.currTodo.value);
   const dispatch = useAppDispatch();
+  const warning = 'There are no todos matching current filter criteria';
 
   return (
     <>
       {!todos.length ? (
-        <p className="notification is-warning">
-          There are no todos matching current filter criteria
-        </p>
+        <p className="notification is-warning">{warning}</p>
       ) : (
         <table className="table is-narrow is-fullwidth">
           <thead>

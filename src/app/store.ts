@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import todosReducer from '../features/todos';
 import currTodoReducer from '../features/currentTodo';
-import filterTodosReducer from '../features/filter';
+import filterTodosReducer from '../features/filterSlice';
 
 export const store = configureStore({
   reducer: {

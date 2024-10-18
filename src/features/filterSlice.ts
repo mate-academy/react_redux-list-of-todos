@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Status } from '../types/Status';
 
@@ -19,18 +21,15 @@ export const filterSlice = createSlice({
       state: FilterTodoState,
       action: PayloadAction<Status>,
     ) => {
-      // eslint-disable-next-line no-param-reassign
       state.select = action.payload;
     },
     filterQueryTodos: (
       state: FilterTodoState,
       action: PayloadAction<string>,
     ) => {
-      // eslint-disable-next-line no-param-reassign
       state.query = action.payload;
     },
     filterEmprtyQuery: (state: FilterTodoState) => {
-      // eslint-disable-next-line no-param-reassign
       state.query = '';
     },
   },
