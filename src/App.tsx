@@ -47,7 +47,7 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {!isLoading || todos.length > 0 ? (
+              {!isLoading && todos.length > 0 ? (
                 <TodoList todos={preparedTodos} />
               ) : (
                 <Loader />
