@@ -1,6 +1,6 @@
 import { Todo } from '../types/Todo';
 
-export function getPrepapredTodos(
+export function getPreparedTodos(
   todos: Todo[],
   { query, status }: { query: string; status: string },
 ) {

@@ -11,7 +11,7 @@ export const App: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const [loading, setLoading] = useState(false);
-  const [hasError, setHasError] = useState('');
+  const [hasError, setHasError] = useState<string>('');
 
   useEffect(() => {
     setLoading(true);
@@ -19,9 +19,10 @@ export const App: React.FC = () => {
     getTodos()
       .then(todosFromServer => {
         dispatch(setTodos(todosFromServer));
+        setHasError('');
       })
       .catch(() =>
-        setHasError('There are no todos matching current filter criteria'),
+        setHasError('Something went wrong. Check network connection'),
       )
       .finally(() => setLoading(false));
   }, [dispatch]);

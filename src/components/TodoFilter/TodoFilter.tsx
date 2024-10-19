@@ -2,9 +2,7 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { queryChange, statusChange } from '../../features/filter';
 
-type Props = {};
-
-export const TodoFilter: React.FC<Props> = () => {
+export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query, status } = useAppSelector(state => state.filter);
 

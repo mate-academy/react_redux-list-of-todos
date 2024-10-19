@@ -19,7 +19,6 @@ export const TodoModal: React.FC = () => {
     if (userId) {
       getUser(userId)
         .then(setUser)
-        .catch(e => e)
         .finally(() => setLoading(false));
     }
   }, [userId]);
@@ -62,7 +61,7 @@ export const TodoModal: React.FC = () => {
               )}
 
               {' by '}
-              <a href={`mailto:${user.email}`}>{user.name}</a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>

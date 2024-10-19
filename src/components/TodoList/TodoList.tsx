@@ -1,11 +1,10 @@
 /* eslint-disable */
 import React from 'react';
-import { Todo } from '../../types/Todo';
 import cn from 'classnames';
 import { Loader } from '../Loader';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setCurrentTodo } from '../../features/currentTodo';
-import { getPrepapredTodos } from '../../services/getPreparedTodos';
+import { getPreparedTodos } from '../../services/getPreparedTodos';
 
 type Props = {
   loading: boolean;
@@ -18,7 +17,7 @@ export const TodoList: React.FC<Props> = ({ loading, hasError }) => {
   const { query, status } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
-  const preparedTodos = getPrepapredTodos(todos, { query, status });
+  const preparedTodos = getPreparedTodos(todos, { query, status });
 
   return (
     <>
