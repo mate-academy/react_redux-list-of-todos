@@ -1,26 +1,51 @@
+import React, { useState, useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { TodoFilter, TodoList, TodoModal } from './components';
+import { getTodos } from './api';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { setTodos } from './features/todos';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  const [loading, setLoading] = useState(false);
+  const [hasError, setHasError] = useState<string>('');
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+  useEffect(() => {
+    setLoading(true);
+
+    getTodos()
+      .then(todosFromServer => {
+        dispatch(setTodos(todosFromServer));
+        setHasError('');
+      })
+      .catch(() =>
+        setHasError('Something went wrong. Check network connection'),
+      )
+      .finally(() => setLoading(false));
+  }, [dispatch]);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              <TodoList loading={loading} hasError={hasError} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {currentTodo && <TodoModal />}
+    </>
+  );
+};
