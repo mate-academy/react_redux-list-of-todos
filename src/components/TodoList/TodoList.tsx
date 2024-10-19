@@ -27,7 +27,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {todos ? (
+      {todos.length > 0 ? (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
