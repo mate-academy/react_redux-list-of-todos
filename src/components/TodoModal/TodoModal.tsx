@@ -21,6 +21,9 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
 
     getUser(todo.userId)
       .then(setUser)
+      .catch(e => {
+        throw new Error(e);
+      })
       .finally(() => setIsLoading(false));
   }, [todo.userId]);
 
@@ -61,7 +64,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href={`mailto: ${user?.email}`}>{user?.name}</a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>

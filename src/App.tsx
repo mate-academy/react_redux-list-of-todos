@@ -21,25 +21,26 @@ export const App = () => {
       .then(data => {
         dispatch(setTodoList(data));
       })
+      .catch(e => {
+        throw new Error(e);
+      })
       .finally(() => setIsLoading(false));
   }, [dispatch]);
 
   const filteredTodosList = useMemo(() => {
-    let filteredTodos = todos;
+    let FilteredTodos = todos;
 
     if (status === 'active') {
-      filteredTodos = todos.filter(todo => !todo.completed);
+      FilteredTodos = todos.filter(todo => !todo.completed);
     } else if (status === 'completed') {
-      filteredTodos = todos.filter(todo => todo.completed);
+      FilteredTodos = todos.filter(todo => todo.completed);
+    } else {
+      FilteredTodos = todos;
     }
 
-    if (query) {
-      filteredTodos = filteredTodos.filter(todo =>
-        todo.title.toLowerCase().includes(query.toLowerCase()),
-      );
-    }
-
-    return filteredTodos;
+    return FilteredTodos.filter(todo =>
+      todo.title.toLowerCase().includes(query.toLowerCase()),
+    );
   }, [query, status, todos]);
 
   return (
