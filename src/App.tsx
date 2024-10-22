@@ -32,10 +32,7 @@ export const App = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">
-              {isLoading && <Loader />}
-              <TodoList />
-            </div>
+            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
