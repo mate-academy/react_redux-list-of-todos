@@ -16,7 +16,7 @@ export const App = () => {
     getTodos()
       .then(data => dispatch(setTodos(data)))
       .catch(() => {
-        throw new Error('error loading todos');
+        alert('error loading todos');
       })
       .finally(() => setIsLoading(false));
   }, []);

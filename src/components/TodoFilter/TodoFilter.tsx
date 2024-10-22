@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setQuery, setStatus } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
-  // const [queryString, setQueryString] = useState('');
   const query = useAppSelector(state => state.filter.query);
   const dispatch = useAppDispatch();
 

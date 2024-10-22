@@ -17,7 +17,7 @@ export const TodoModal: React.FC = () => {
       getUser(currentTodo?.userId)
         .then(setCurrentUser)
         .catch(() => {
-          throw new Error('error loading user');
+          alert('error loading user');
         })
         .finally(() => setIsLoading(false));
     }
