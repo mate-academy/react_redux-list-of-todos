@@ -50,7 +50,7 @@ export const TodoItem: FC<Props> = ({ todo }) => {
           data-cy="selectButton"
           className="button"
           type="button"
-          onClick={() => handleSetCurrentTodo(todo)}
+          onClick={handleSetCurrentTodo}
         >
           <span className="icon">
             <i
