@@ -1,1 +1,1 @@
-export * from './TodoFilter';
+export { TodoFilter } from './TodoFilter';
