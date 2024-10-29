@@ -18,7 +18,7 @@ export const getFilteredTodos = (todos: Todo[], { query, status }: Params) => {
         return todo.completed;
 
       default:
-        return todo;
+        return true;
     }
   });
 
