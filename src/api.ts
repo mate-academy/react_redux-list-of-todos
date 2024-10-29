@@ -1,9 +1,7 @@
 import { Todo } from './types/Todo';
 import { User } from './types/User';
 
-// eslint-disable-next-line operator-linebreak
-const BASE_URL =
-  'https://mate-academy.github.io/react_dynamic-list-of-todos/api';
+const BASE_URL = 'https://hma-3.github.io/react_dynamic-list-of-todos/api';
 
 function wait(delay: number): Promise<void> {
   return new Promise(resolve => {
