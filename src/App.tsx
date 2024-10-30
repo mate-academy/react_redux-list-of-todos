@@ -22,12 +22,9 @@ export const App: React.FC = () => {
     getTodos()
       .then(todosFromServer => {
         dispatch(todosSlice.actions.loadTodos(todosFromServer));
+        setFilteredTodos(todos);
       })
       .finally(() => setIsLoading(false));
-  }, [dispatch]);
-
-  useEffect(() => {
-    setFilteredTodos(todos);
   }, [todos]);
 
   const selectedTodo = useMemo(() => {

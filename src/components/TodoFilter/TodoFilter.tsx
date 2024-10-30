@@ -52,7 +52,7 @@ export const TodoFilter: React.FC<TodoFilterProps> = ({
 
   const handleChangeQuery = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      dispatch(filterSlice.actions.setQuery(event.target.value.trimStart()));
+      dispatch(filterSlice.actions.setQuery(event.target.value));
     },
     [dispatch],
   );
