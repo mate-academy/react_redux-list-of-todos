@@ -5,7 +5,7 @@ import { filterSlice } from '../../features/filter';
 const nameForCategoriesOption = {
   [TodoCompletedCategory.all]: 'All',
   [TodoCompletedCategory.active]: 'Active',
-  [TodoCompletedCategory.competed]: 'Competed',
+  [TodoCompletedCategory.completed]: 'Completed',
 };
 
 export const TodoFilter = () => {
@@ -29,12 +29,19 @@ export const TodoFilter = () => {
           <select
             data-cy="statusSelect"
             value={todoCategory}
-            onChange={event =>
-              changeTodoCategory(event.target.value as TodoCompletedCategory)
-            }
+            onChange={event => {
+              const selectedCategory = event.target
+                .value as TodoCompletedCategory;
+
+              if (
+                Object.values(TodoCompletedCategory).includes(selectedCategory)
+              ) {
+                changeTodoCategory(selectedCategory);
+              }
+            }}
           >
             {Object.values(TodoCompletedCategory).map(option => (
-              <option key={option} value={option.toLowerCase()}>
+              <option key={option} value={option}>
                 {nameForCategoriesOption[option]}
               </option>
             ))}

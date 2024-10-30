@@ -13,7 +13,7 @@ export const TodoLine: React.FC<Props> = ({ todo, isSelected }) => {
   const selectedTodoDispatch = useAppDispatch();
 
   const changeCurrentTodo = (newTodos: Todo) => {
-    selectedTodoDispatch(currentTodoSlice.actions.changecurrentTodo(newTodos));
+    selectedTodoDispatch(currentTodoSlice.actions.changeCurrentTodo(newTodos));
   };
 
   return (

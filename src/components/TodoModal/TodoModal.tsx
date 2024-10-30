@@ -16,7 +16,7 @@ export const TodoModal = () => {
   const changeCurrentTodo = useCallback(
     (newTodos: Todo | null) => {
       selectedTodoDispatch(
-        currentTodoSlice.actions.changecurrentTodo(newTodos),
+        currentTodoSlice.actions.changeCurrentTodo(newTodos),
       );
     },
     [selectedTodoDispatch],
@@ -27,6 +27,10 @@ export const TodoModal = () => {
       setUserFromApiById(selectedTodo.userId, setUser, setIsLoading);
     }
   }, [selectedTodo]);
+
+  if (!selectedTodo) {
+    return;
+  }
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -41,7 +45,7 @@ export const TodoModal = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo #{selectedTodo?.id || 0}
+              Todo #{selectedTodo.id}
             </div>
 
             <button
@@ -54,18 +58,18 @@ export const TodoModal = () => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {selectedTodo?.title || ''}
+              {selectedTodo.title}
             </p>
 
             <p className="block" data-cy="modal-user">
               <strong
                 className={
-                  selectedTodo?.completed
+                  selectedTodo.completed
                     ? 'has-text-success'
                     : 'has-text-danger'
                 }
               >
-                {selectedTodo?.completed ? 'Done' : 'Planned'}
+                {selectedTodo.completed ? 'Done' : 'Planned'}
               </strong>
 
               {' by '}

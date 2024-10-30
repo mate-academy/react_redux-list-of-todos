@@ -33,7 +33,7 @@ export const TodoList: React.FC<Props> = ({
           <TodoLine
             key={todo.id}
             todo={todo}
-            isSelected={selectedTodo === todo}
+            isSelected={selectedTodo?.id === todo.id}
           />
         ))}
       </tbody>

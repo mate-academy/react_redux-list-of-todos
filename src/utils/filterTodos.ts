@@ -11,7 +11,7 @@ export function filterTodos(
       return todos.filter(
         todo => !todo.completed && todo.title.toLowerCase().includes(query),
       );
-    case TodoCompletedCategory.competed:
+    case TodoCompletedCategory.completed:
       return todos.filter(
         todo => todo.completed && todo.title.toLowerCase().includes(query),
       );

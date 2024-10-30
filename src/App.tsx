@@ -15,7 +15,6 @@ import { todosSlice } from './features/todos';
 export const App = () => {
   const todos = useAppSelector(state => state.todos);
   const todoDispatch = useAppDispatch();
-  const selectedTodo = useAppSelector(state => state.currentTodo);
   const { query, category: todoCategory } = useAppSelector(
     state => state.filter,
   );
@@ -33,7 +32,7 @@ export const App = () => {
   const setTodosFromApi = useCallback(() => {
     getTodos()
       .then(setTodos)
-      .catch(() => alert('Todos api is wrong!'))
+      .catch(() => alert('Failed to fetch user data. Please try again later.'))
       .finally(() => {
         setIsLoading(false);
       });
@@ -68,7 +67,7 @@ export const App = () => {
         </div>
       </div>
 
-      {selectedTodo && <TodoModal />}
+      <TodoModal />
     </>
   );
 };
