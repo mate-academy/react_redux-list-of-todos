@@ -23,8 +23,5 @@ export const filterSlice = createSlice({
       ...state,
       status: payload,
     }),
-    clearFilter: () => ({
-      ...initialState,
-    }),
   },
 });

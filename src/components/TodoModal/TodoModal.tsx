@@ -19,7 +19,7 @@ export const TodoModal: React.FC = () => {
         .then(setCurrentUser)
         .finally(() => setIsLoading(false));
     }
-  }, []);
+  }, [currentTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">

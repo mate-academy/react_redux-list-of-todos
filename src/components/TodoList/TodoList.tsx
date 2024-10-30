@@ -19,7 +19,7 @@ export const TodoList: React.FC = () => {
 
   useEffect(() => {
     setFilteredTodos(getFilteredTodos(todos, filter))
-  }, [filter]);
+  }, [filter, todos]);
 
   return (
     <>
