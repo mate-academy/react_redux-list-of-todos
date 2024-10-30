@@ -25,7 +25,7 @@ export const App: React.FC = () => {
         setFilteredTodos(todos);
       })
       .finally(() => setIsLoading(false));
-  }, [todos]);
+  }, []);
 
   const selectedTodo = useMemo(() => {
     return filteredTodos.find(todo => todo.id === selectedTodoId);
