@@ -41,9 +41,9 @@ function handleFiltration(data: Todo[], query: string, filterBy: string) {
 
 export const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [query, setQuery] = useState('');
 
-  const filterBy = useAppSelector(state => state.filter);
+  const filterBy = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
@@ -57,7 +57,7 @@ export const App: React.FC = () => {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const visibleData = handleFiltration(todos, query, filterBy.status);
+  const visibleData = handleFiltration(todos, query, filterBy);
 
   return (
     <>
@@ -67,11 +67,7 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                filterBy={filterBy.status}
-                onQuery={setQuery}
-                query={query}
-              />
+              <TodoFilter filterBy={filterBy} query={query} />
             </div>
 
             <div className="block">
