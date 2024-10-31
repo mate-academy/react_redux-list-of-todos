@@ -14,7 +14,7 @@ const filterSlice = createSlice({
     },
 
     setQuery: (value, action) => {
-      return { status: value.query, query: action.payload };
+      return { status: value.status, query: action.payload };
     },
   },
 });
