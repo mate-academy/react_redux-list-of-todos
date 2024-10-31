@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable max-len */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -10,6 +10,8 @@ import { Todo } from './types/Todo';
 import { getTodos } from './api';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
+import { useTodos } from './hooks/useTodos';
+import { filteringTodos } from './utils/FIlteringTodos';
 
 export enum Filter {
   All = 'all',
@@ -17,48 +19,23 @@ export enum Filter {
   Completed = 'completed',
 }
 
-function filteringTodos(
-  array: Todo[],
-  settings: { filterType: Filter; query: string },
-) {
-  let arrayCopy = [...array];
-
-  if (settings.filterType === Filter.Active) {
-    arrayCopy = arrayCopy.filter(element => element.completed === false);
-  }
-
-  if (settings.filterType === Filter.Completed) {
-    arrayCopy = arrayCopy.filter(element => element.completed === true);
-  }
-
-  if (settings.query) {
-    arrayCopy = arrayCopy.filter(element =>
-      element.title
-        .toLowerCase()
-        .includes(settings.query.toLowerCase().trimStart()),
-    );
-  }
-
-  return arrayCopy;
-}
-
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [isTodosLoaded, setIsTodosLoaded] = useState(false);
-
-  const [filterType, setFilterType] = useState<Filter>(Filter.All);
-  const [query, setQuery] = useState('');
-
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
-  const [selectedUserId, setSelectedUserId] = useState<number>(0);
-
-  const handleResetQuery = () => {
-    setQuery('');
-  };
-
-  const handleTodoReset = (value: Todo | null) => {
-    setSelectedTodo(value);
-  };
+  const {
+    todos,
+    isTodosLoaded,
+    filterType,
+    query,
+    selectedTodo,
+    selectedUserId,
+    setTodos,
+    setIsTodosLoaded,
+    setFilterType,
+    setSelectedUserId,
+    handleResetQuery,
+    handleTodoReset,
+    setQuery,
+    setSelectedTodo,
+  } = useTodos();
 
   useEffect(() => {
     getTodos()
