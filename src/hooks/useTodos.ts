@@ -8,11 +8,7 @@ export const useTodos = () => {
   const dispatch = useDispatch();
   const [isTodosLoaded, setIsTodosLoaded] = useState(false);
 
-  const [filterType, setFilterType] = useState<Filter>(Filter.All);
   const [query, setQuery] = useState('');
-
-  // const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
-  // const [selectedUserId, setSelectedUserId] = useState<number>(0);
 
   const handleResetQuery = () => {
     setQuery('');
@@ -30,6 +26,7 @@ export const useTodos = () => {
   const selectedUserId = useSelector(
     (state: RootState) => state.currentTodo?.userId,
   );
+  const filterType = useSelector((state: RootState) => state.filter.status);
 
   return {
     isTodosLoaded,
@@ -38,7 +35,6 @@ export const useTodos = () => {
     selectedTodo,
     selectedUserId,
     setIsTodosLoaded,
-    setFilterType,
     handleResetQuery,
     setQuery,
     anotherTodos,

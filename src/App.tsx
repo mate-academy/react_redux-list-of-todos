@@ -12,9 +12,9 @@ import { getTodos } from './api';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { useTodos } from './hooks/useTodos';
-import { filteringTodos } from './utils/FIlteringTodos';
 import { todosSlice } from './features/todos';
 import { useDispatch } from 'react-redux';
+import { filterFunc } from './utils/filterFunc';
 
 export enum Filter {
   All = 'all',
@@ -30,9 +30,7 @@ export const App: React.FC = () => {
     filterType,
     query,
     selectedTodo,
-    selectedUserId,
     setIsTodosLoaded,
-    setFilterType,
     handleResetQuery,
     setQuery,
     anotherTodos,
@@ -50,7 +48,7 @@ export const App: React.FC = () => {
   }, []);
 
   const filteredTodos: Todo[] = useMemo(() => {
-    return filteringTodos(anotherTodos, {
+    return filterFunc(anotherTodos, {
       filterType: filterRightNow,
       query: queryRightNow,
     });
@@ -67,7 +65,6 @@ export const App: React.FC = () => {
               <TodoFilter
                 query={query}
                 filterType={filterType}
-                onFilter={setFilterType}
                 onQuery={setQuery}
                 onResetQuery={handleResetQuery}
               />
@@ -84,12 +81,7 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {selectedTodo && (
-        <TodoModal
-          selectedTodo={selectedTodo}
-          selectedUserId={selectedUserId!}
-        />
-      )}
+      {selectedTodo && <TodoModal selectedTodo={selectedTodo} />}
     </>
   );
 };

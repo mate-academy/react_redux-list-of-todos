@@ -4,9 +4,8 @@ import { useDispatch } from 'react-redux';
 import { filterSlice } from '../../features/filter';
 
 type Props = {
-  filterType: Filter;
+  filterType: string;
   query: string;
-  onFilter: Dispatch<SetStateAction<Filter>>;
   onQuery: Dispatch<SetStateAction<string>>;
   onResetQuery: () => void;
 };
@@ -14,7 +13,6 @@ type Props = {
 export const TodoFilter: React.FC<Props> = ({
   filterType,
   query,
-  onFilter,
   onQuery,
   onResetQuery,
 }) => {
@@ -28,26 +26,11 @@ export const TodoFilter: React.FC<Props> = ({
             data-cy="statusSelect"
             value={filterType}
             onChange={event => {
-              onFilter(event.target.value as Filter);
               dispatch(filterSlice.actions.toggleFilter(event.target.value));
             }}
           >
-            <option
-              onClick={() =>
-                dispatch(filterSlice.actions.toggleFilter(Filter.All))
-              }
-              value={Filter.All}
-            >
-              All
-            </option>
-            <option
-              onClick={() =>
-                dispatch(filterSlice.actions.toggleFilter(Filter.Active))
-              }
-              value={Filter.Active}
-            >
-              Active
-            </option>
+            <option value={Filter.All}>All</option>
+            <option value={Filter.Active}>Active</option>
             <option value={Filter.Completed}>Completed</option>
           </select>
         </span>

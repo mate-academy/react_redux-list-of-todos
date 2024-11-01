@@ -9,8 +9,7 @@ import { useDispatch } from 'react-redux';
 import { currentTodoSlice } from '../../features/currentTodo';
 
 type Props = {
-  selectedUserId: number;
-  selectedTodo: Todo | null;
+  selectedTodo: Todo;
 };
 
 const defaultUser: User = {
@@ -20,12 +19,11 @@ const defaultUser: User = {
   phone: 'Default Phonenumber',
 };
 
-export const TodoModal: React.FC<Props> = ({
-  selectedUserId,
-  selectedTodo,
-}) => {
+export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
   const [user, setUser] = useState<User>(defaultUser);
   const dispatch = useDispatch();
+
+  const selectedUserId = selectedTodo.userId;
 
   useEffect(() => {
     getUser(selectedUserId)
@@ -77,7 +75,7 @@ export const TodoModal: React.FC<Props> = ({
 
               {' by '}
 
-              <a href={`mailto:${user?.email}`}>{user?.name}</a>
+              <a href={`mailto:${user.email}`}>{user.name}</a>
             </p>
           </div>
         </div>

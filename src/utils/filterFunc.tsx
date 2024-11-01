@@ -1,7 +1,7 @@
 import { Filter } from '../App';
 import { Todo } from '../types/Todo';
 
-export const filteringTodos = (
+export const filterFunc = (
   array: Todo[],
   settings: { filterType: Filter; query: string },
 ) => {
