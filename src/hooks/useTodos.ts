@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { Todo } from '../types/Todo';
 import { Filter } from '../App';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../app/store';
+import { filterSlice } from '../features/filter';
 
 export const useTodos = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const dispatch = useDispatch();
   const [isTodosLoaded, setIsTodosLoaded] = useState(false);
 
   const [filterType, setFilterType] = useState<Filter>(Filter.All);
@@ -14,20 +17,27 @@ export const useTodos = () => {
 
   const handleResetQuery = () => {
     setQuery('');
+    dispatch(filterSlice.actions.settingQuery(''));
   };
 
   const handleTodoReset = (value: Todo | null) => {
     setSelectedTodo(value);
   };
 
+  const anotherTodos = useSelector((state: RootState) => state.todos);
+  const filterRightNow = useSelector(
+    (state: RootState) => state.filter.status as Filter,
+  );
+  const queryRightNow: string = useSelector(
+    (state: RootState) => state.filter.query,
+  );
+
   return {
-    todos,
     isTodosLoaded,
     filterType,
     query,
     selectedTodo,
     selectedUserId,
-    setTodos,
     setIsTodosLoaded,
     setFilterType,
     setSelectedUserId,
@@ -35,5 +45,8 @@ export const useTodos = () => {
     handleTodoReset,
     setQuery,
     setSelectedTodo,
+    anotherTodos,
+    filterRightNow,
+    queryRightNow,
   };
 };

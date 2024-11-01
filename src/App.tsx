@@ -13,6 +13,8 @@ import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { useTodos } from './hooks/useTodos';
 import { filteringTodos } from './utils/FIlteringTodos';
+import { todosSlice } from './features/todos';
+import { useDispatch } from 'react-redux';
 
 export enum Filter {
   All = 'all',
@@ -21,14 +23,14 @@ export enum Filter {
 }
 
 export const App: React.FC = () => {
+  const dispatch = useDispatch();
+
   const {
-    todos,
     isTodosLoaded,
     filterType,
     query,
     selectedTodo,
     selectedUserId,
-    setTodos,
     setIsTodosLoaded,
     setFilterType,
     setSelectedUserId,
@@ -36,18 +38,26 @@ export const App: React.FC = () => {
     handleTodoReset,
     setQuery,
     setSelectedTodo,
+    anotherTodos,
+    filterRightNow,
+    queryRightNow,
   } = useTodos();
 
   useEffect(() => {
     getTodos()
-      .then(setTodos)
+      .then(current => {
+        dispatch(todosSlice.actions.add(current));
+      })
       .catch(() => console.error('Error while getting todos!'))
       .finally(() => setIsTodosLoaded(true));
   }, []);
 
   const filteredTodos: Todo[] = useMemo(() => {
-    return filteringTodos(todos, { filterType, query });
-  }, [todos, filterType, query]);
+    return filteringTodos(anotherTodos, {
+      filterType: filterRightNow,
+      query: queryRightNow,
+    });
+  }, [anotherTodos, filterRightNow, queryRightNow]);
 
   return (
     <>
