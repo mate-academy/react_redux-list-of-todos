@@ -33,11 +33,8 @@ export const App: React.FC = () => {
     selectedUserId,
     setIsTodosLoaded,
     setFilterType,
-    setSelectedUserId,
     handleResetQuery,
-    handleTodoReset,
     setQuery,
-    setSelectedTodo,
     anotherTodos,
     filterRightNow,
     queryRightNow,
@@ -78,12 +75,7 @@ export const App: React.FC = () => {
 
             <div className="block">
               {isTodosLoaded ? (
-                <TodoList
-                  onTodoSelect={setSelectedTodo}
-                  onUserIdSelect={setSelectedUserId}
-                  selectedTodo={selectedTodo}
-                  todos={filteredTodos}
-                />
+                <TodoList selectedTodo={selectedTodo} todos={filteredTodos} />
               ) : (
                 <Loader />
               )}
@@ -94,9 +86,8 @@ export const App: React.FC = () => {
 
       {selectedTodo && (
         <TodoModal
-          handleTodoReset={handleTodoReset}
           selectedTodo={selectedTodo}
-          selectedUserId={selectedUserId}
+          selectedUserId={selectedUserId!}
         />
       )}
     </>

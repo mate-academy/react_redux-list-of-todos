@@ -1,20 +1,17 @@
-import React, { Dispatch } from 'react';
+import React from 'react';
 import { Todo } from '../../types/Todo';
 import cn from 'classnames';
+import { useDispatch } from 'react-redux';
+import { currentTodoSlice } from '../../features/currentTodo';
 
 interface Props {
   todos: Todo[];
-  onTodoSelect: Dispatch<React.SetStateAction<Todo | null>>;
   selectedTodo: Todo | null;
-  onUserIdSelect: Dispatch<React.SetStateAction<number>>;
 }
 
-export const TodoList: React.FC<Props> = ({
-  todos,
-  onTodoSelect,
-  selectedTodo,
-  onUserIdSelect,
-}) => {
+export const TodoList: React.FC<Props> = ({ todos, selectedTodo }) => {
+  const dispatch = useDispatch();
+
   return (
     <>
       {todos.length > 0 ? (
@@ -65,8 +62,9 @@ export const TodoList: React.FC<Props> = ({
                 <td className="has-text-right is-vcentered">
                   <button
                     onClick={() => {
-                      onTodoSelect(todo);
-                      onUserIdSelect(todo.userId);
+                      // onTodoSelect(todo);
+                      dispatch(currentTodoSlice.actions.viewTodo(todo));
+                      // onUserIdSelect(todo.userId);
                     }}
                     data-cy="selectButton"
                     className="button"

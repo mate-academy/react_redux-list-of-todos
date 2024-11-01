@@ -5,9 +5,10 @@ import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { Todo } from '../../types/Todo';
 import cn from 'classnames';
+import { useDispatch } from 'react-redux';
+import { currentTodoSlice } from '../../features/currentTodo';
 
 type Props = {
-  handleTodoReset: (value: Todo | null) => void;
   selectedUserId: number;
   selectedTodo: Todo | null;
 };
@@ -20,11 +21,11 @@ const defaultUser: User = {
 };
 
 export const TodoModal: React.FC<Props> = ({
-  handleTodoReset,
   selectedUserId,
   selectedTodo,
 }) => {
   const [user, setUser] = useState<User>(defaultUser);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getUser(selectedUserId)
@@ -52,7 +53,7 @@ export const TodoModal: React.FC<Props> = ({
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
-              onClick={() => handleTodoReset(null)}
+              onClick={() => dispatch(currentTodoSlice.actions.viewTodo(null))}
               type="button"
               className="delete"
               data-cy="modal-close"
