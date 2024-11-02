@@ -8,11 +8,11 @@ const statusOptions: Status[] = ['all', 'active', 'completed'];
 export const TodoFilter: React.FC = () => {
   const { query, status } = useAppSelector(selectFilter);
 
+  const dispatch = useAppDispatch();
+
   const setFilterOption = (event: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setStatus(event.target.value as Status));
   };
-
-  const dispatch = useAppDispatch();
 
   return (
     <form
