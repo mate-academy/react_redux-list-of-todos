@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { selectCurrentTodo, setTodos } from './features';
 
 export const App = () => {
-  const [isloading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
   const selectedTodo = useAppSelector(selectCurrentTodo);
 
@@ -34,7 +34,7 @@ export const App = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">{isloading ? <Loader /> : <TodoList />}</div>
+            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Status } from '../../types/Status';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { selectFilter, setQuery, setStatus } from '../../features';
@@ -10,10 +10,6 @@ export const TodoFilter: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const setFilterOption = (event: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setStatus(event.target.value as Status));
-  };
-
   return (
     <form
       className="field has-addons"
@@ -24,7 +20,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={status}
-            onChange={setFilterOption}
+            onChange={(event) => dispatch(setStatus(event.target.value as Status))}
           >
             {statusOptions.map(option => (
               <option key={option} value={option}>
