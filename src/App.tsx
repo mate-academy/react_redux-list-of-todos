@@ -15,7 +15,7 @@ export const App = () => {
     getTodos().then(todosFromServer =>
       dispatch(todosSlice.actions.set(todosFromServer)),
     );
-  }, [dispatch]);
+  }, []);
 
   return (
     <>

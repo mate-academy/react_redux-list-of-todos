@@ -31,7 +31,7 @@ export const TodoList: React.FC = () => {
           return true;
       }
     });
-  }, [status, query]);
+  }, [todos, status, query]);
 
   const handleSelectTodo = (todo: Todo) => {
     dispatch(currentTodoSlice.actions.set(todo));
