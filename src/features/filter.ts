@@ -15,11 +15,11 @@ export const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setStatus(filter: Filter, { payload }: PayloadAction<Status>): Filter {
-      return { ...filter, status: payload };
+    setStatus(state: Filter, action: PayloadAction<Status>): Filter {
+      return { ...state, status: action.payload };
     },
-    setQuery(filter: Filter, { payload }: PayloadAction<string>): Filter {
-      return { ...filter, query: payload };
+    setQuery(state: Filter, action: PayloadAction<string>): Filter {
+      return { ...state, query: action.payload };
     },
   },
 });

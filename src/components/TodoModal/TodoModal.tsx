@@ -11,7 +11,7 @@ export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
 
   if (!currentTodo) {
-    throw Error('Not todo');
+    throw Error('No current todo selected.');
   }
 
   useEffect(() => {
