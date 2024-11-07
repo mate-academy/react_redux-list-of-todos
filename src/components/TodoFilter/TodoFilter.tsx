@@ -28,8 +28,8 @@ export const TodoFilter: React.FC = () => {
     setLocalQuery(event.target.value);
   };
 
-  const handleStatus = (event: React.ChangeEvent) => {
-    const { value } = event.target as HTMLOptionElement;
+  const handleStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target;
 
     dispatch(setStatus(value as Status));
   };

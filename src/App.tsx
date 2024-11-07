@@ -22,8 +22,6 @@ export const App: React.FC = () => {
       const loadedTodos = getTodos();
 
       dispatch(setTodos(await loadedTodos));
-
-      setTodos(await loadedTodos);
       setLoaded(false);
     };
 

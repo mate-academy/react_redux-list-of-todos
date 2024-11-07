@@ -9,9 +9,12 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query, status } = useAppSelector(state => state.filter);
 
-  const handleButton = useCallback((todo: Todo) => {
-    dispatch(setCurrentTodo(todo));
-  }, []);
+  const handleButton = useCallback(
+    (todo: Todo) => {
+      dispatch(setCurrentTodo(todo));
+    },
+    [dispatch],
+  );
 
   const visibleTodos = useMemo(() => {
     let filteredTodos;
@@ -32,7 +35,7 @@ export const TodoList: React.FC = () => {
 
     if (query) {
       filteredTodos = filteredTodos.filter(todo =>
-        todo.title.toLocaleLowerCase().includes(query.toLowerCase()),
+        todo.title.toLowerCase().includes(query.toLowerCase()),
       );
     }
 

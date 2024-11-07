@@ -3,7 +3,6 @@ import { Loader } from '../Loader';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { Todo } from '../../types/Todo';
 import { setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
@@ -11,14 +10,16 @@ export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
-  const { userId, id, title, completed } = currentTodo as Todo;
+  const { userId, id, title, completed } = currentTodo || {};
 
   useEffect(() => {
     const loadUser = async () => {
-      const loadedUser = getUser(userId);
+      if (userId) {
+        const loadedUser = await getUser(userId);
 
-      setUser(await loadedUser);
-      setLoaded(false);
+        setUser(loadedUser);
+        setLoaded(false);
+      }
     };
 
     loadUser();
