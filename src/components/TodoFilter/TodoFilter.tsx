@@ -1,41 +1,67 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from '../../app/store';
+import { setStatus, setQuery } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
+  const { query, status } = useAppSelector(state => state.filter);
+  const dispatch = useDispatch();
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setStatus(event.target.value));
+  };
+
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setQuery(event.target.value.toLowerCase()));
+  };
+
+  const clearQuery = () => {
+    dispatch(setQuery(''));
+  };
+
   return (
     <form
       className="field has-addons"
       onSubmit={event => event.preventDefault()}
     >
-      <p className="control">
-        <span className="select">
-          <select data-cy="statusSelect">
+      <div className="control">
+        <div className="select">
+          <select
+            data-cy="statusSelect"
+            onChange={handleStatusChange}
+            value={status}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
           </select>
-        </span>
-      </p>
+        </div>
+      </div>
 
-      <p className="control is-expanded has-icons-left has-icons-right">
+      <div className="control is-expanded has-icons-left has-icons-right">
         <input
-          data-cy="searchInput"
           type="text"
           className="input"
+          data-cy="searchInput"
           placeholder="Search..."
+          value={query}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
-      </p>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              type="button"
+              data-cy="clearSearchButton"
+              className="delete"
+              onClick={clearQuery}
+            />
+          </span>
+        )}
+      </div>
     </form>
   );
 };
