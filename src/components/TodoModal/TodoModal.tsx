@@ -10,7 +10,7 @@ import { loaderSlice } from '../../features/loader';
 
 export const TodoModal: React.FC = () => {
   const todo = useAppSelector(state => state.currentTodo);
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>(null);
   const loading = useAppSelector(state => state.loading.loading);
   const dispatch = useDispatch();
 
@@ -75,7 +75,7 @@ export const TodoModal: React.FC = () => {
                     )}
 
                     {' by '}
-                    {user && <a href={`mailto":${user.email}`}>{user.name}</a>}
+                    {user && <a href={`mailto:${user.email}`}>{user.name}</a>}
                   </p>
                 </div>
               </>

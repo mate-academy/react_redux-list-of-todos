@@ -11,7 +11,9 @@ export const TodoFilter: React.FC = () => {
   const [appliedQuery, setAppliedQuery] = useState<string>('');
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const applyQuery = useCallback(debounce(setAppliedQuery, 1000), []);
+  const applyQuery = useCallback(debounce(setAppliedQuery, 1000), [
+    appliedQuery,
+  ]);
 
   const handleFilterChange = (value: string) => {
     dispatch(filterSlice.actions.filterStatus(value));
