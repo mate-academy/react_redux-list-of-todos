@@ -1,8 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { filterSlice } from '../../features/filter';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import debounce from 'lodash.debounce';
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+function debounce(callback: Function, delay: number) {
+  let timerId = 0;
+
+  //eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (...args: any) => {
+    window.clearTimeout(timerId);
+
+    timerId = window.setTimeout(() => {
+      callback(...args);
+    }, delay);
+  };
+}
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
