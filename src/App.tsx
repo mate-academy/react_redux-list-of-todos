@@ -1,26 +1,47 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { selector } from './app/store';
+import { getTodos } from './api';
+import { setTodos } from './features/todos';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const [loader, setLoader] = useState(false);
+  const dispatch = useDispatch();
+  const currentTodo = selector(state => state.currentTodo);
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  useEffect(() => {
+    setLoader(true);
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+    getTodos()
+      .then(todos => dispatch(setTodos(todos)))
+      .finally(() => setLoader(false));
+
+    dispatch(setTodos([]));
+  }, [dispatch]);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {loader && <Loader />}
+              {!loader && <TodoList />}
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {currentTodo && <TodoModal />}
+    </>
+  );
+};
