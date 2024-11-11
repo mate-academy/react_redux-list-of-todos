@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { filteredTodos } from '../../features/filter';
 import { useTypedSelector } from '../../app/hooks';
-import { actions } from '../../features/currentTodo';
+import { setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const todos = useTypedSelector(state => state.todos);
@@ -56,7 +56,7 @@ export const TodoList: React.FC = () => {
 
               <td className="has-text-right is-vcentered">
                 <button data-cy="selectButton" className="button" type="button">
-                  <span className="icon" onClick={() => dispatch(actions.setTodo(todo))}>
+                  <span className="icon" onClick={() => dispatch(setCurrentTodo(todo))}>
                     <i className={currentTodo !== todo && "far fa-eye" || "far fa-eye-slash"} />
                   </span>
                 </button>

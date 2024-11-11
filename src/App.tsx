@@ -8,7 +8,7 @@ import { getTodos } from './api';
 import { useTypedSelector } from './app/hooks';
 // import set from './features/todos';
 // import { RootState } from './app/store';
-import { actions } from './features/todos';
+import { setTodos } from './features/todos';
 
 export const App = () => {
   const [loader, setLoader] = useState(false);
@@ -19,7 +19,7 @@ export const App = () => {
     setLoader(true);
 
     getTodos()
-      .then(todos => dispatch(actions.set(todos)))
+      .then(todos => dispatch(setTodos(todos)))
       .finally(() => setLoader(false));
   }, [dispatch]);
 

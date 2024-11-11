@@ -3,7 +3,7 @@ import { Loader } from '../Loader';
 import { User } from '../../types/User';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../api';
-import { actions } from '../../features/currentTodo';
+import { clearCurrentTodo } from '../../features/currentTodo';
 import { useTypedSelector } from '../../app/hooks';
 
 export const TodoModal: React.FC = () => {
@@ -43,9 +43,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() =>
-                currentTodo && dispatch(actions.setTodo(currentTodo))
-              }
+              onClick={() => currentTodo && dispatch(clearCurrentTodo())}
             />
           </header>
 
