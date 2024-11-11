@@ -1,19 +1,19 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { selector } from '../../app/store';
-import { setQuery, setStatus } from '../../features/filter';
+import { actions } from '../../features/filter';
 import { Status } from '../../types/Status';
+import { useTypedSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const query = selector(state => state.filter).query;
+  const query = useTypedSelector(state => state.filter.query);
 
   const handleChangeQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setQuery(e.target.value));
+    dispatch(actions.setQuery(e.target.value));
   };
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setStatus(e.target.value as Status));
+    dispatch(actions.setStatus(e.target.value as Status));
   };
 
   return (
@@ -51,7 +51,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispatch(setQuery(''))}
+              onClick={() => dispatch(actions.setQuery(''))}
             />
           )}
         </span>

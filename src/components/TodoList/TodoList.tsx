@@ -1,17 +1,18 @@
 /* eslint-disable */
 import React from 'react';
-import { selector } from '../../app/store';
 import { useDispatch } from 'react-redux';
-import { filtredTodos } from '../../features/filter';
-import { setCurrentTodo } from '../../features/currentTodo';
+import { filteredTodos } from '../../features/filter';
+import { useTypedSelector } from '../../app/hooks';
+import { actions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const filter = selector(state => state.filter);
-  const todos = selector(state => state.todos);
-  const currentTodo = selector(state => state.currentTodo);
+  const todos = useTypedSelector(state => state.todos);
+  const filter = useTypedSelector(state => state.filter);
+  const currentTodo = useTypedSelector(state => state.currentTodo);
+
   const dispatch = useDispatch();
 
-  const filtredArrayOfTodos = filtredTodos(todos, filter);
+  const filtredArrayOfTodos = filteredTodos(todos, filter);
 
   return (
     <>
@@ -55,7 +56,7 @@ export const TodoList: React.FC = () => {
 
               <td className="has-text-right is-vcentered">
                 <button data-cy="selectButton" className="button" type="button">
-                  <span className="icon" onClick={() => dispatch(setCurrentTodo(todo))}>
+                  <span className="icon" onClick={() => dispatch(actions.setTodo(todo))}>
                     <i className={currentTodo !== todo && "far fa-eye" || "far fa-eye-slash"} />
                   </span>
                 </button>
@@ -63,7 +64,6 @@ export const TodoList: React.FC = () => {
             </tr>
           ))}
         </tbody>
-
       </table>
     </>
   );

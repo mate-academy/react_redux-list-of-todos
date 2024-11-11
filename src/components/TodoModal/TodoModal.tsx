@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { selector } from '../../app/store';
 import { User } from '../../types/User';
 import { useDispatch } from 'react-redux';
 import { getUser } from '../../api';
-import { setCurrentTodo } from '../../features/currentTodo';
+import { actions } from '../../features/currentTodo';
+import { useTypedSelector } from '../../app/hooks';
 
 export const TodoModal: React.FC = () => {
-  const currentTodo = selector(state => state.currentTodo);
+  const currentTodo = useTypedSelector(state => state.currentTodo);
   const [loader, setLoader] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const dispatch = useDispatch();
@@ -43,7 +43,9 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(setCurrentTodo(null))}
+              onClick={() =>
+                currentTodo && dispatch(actions.setTodo(currentTodo))
+              }
             />
           </header>
 
