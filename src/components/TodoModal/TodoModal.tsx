@@ -20,7 +20,7 @@ export const TodoModal: React.FC = () => {
         .then(db => setUser(db))
         .finally(() => setLoading(false));
     }
-  }, []);
+  }, [currentTodo]);
 
   const hndaleClearCurrentTask = () => {
     dispatch(clearTodo());

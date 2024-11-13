@@ -15,4 +15,4 @@ export const currentTodoSlice = createSlice({
 
 export const { setTodo, clearTodo } = currentTodoSlice.actions;
 
-export const selectCurrentTodos = (state: RootState) => state.todo;
+export const selectCurrentTodos = (state: RootState) => state.currentTodo;
