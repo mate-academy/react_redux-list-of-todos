@@ -8,9 +8,7 @@ type Props = {
   todos: Todo[];
 };
 
-export const TodoList: React.FC<Props> = ({
-  todos
-}) => {
+export const TodoList: React.FC<Props> = ({ todos }) => {
   const selectedTodoId = useAppSelector(state => state.currentTodoReducer?.id);
   const dispatch = useAppDispatch();
 
@@ -61,7 +59,9 @@ export const TodoList: React.FC<Props> = ({
                 data-cy="selectButton"
                 className="button"
                 type="button"
-                onClick={() => dispatch(currentTodoSlice.actions.setCurrentTodo(todo))}
+                onClick={() =>
+                  dispatch(currentTodoSlice.actions.setCurrentTodo(todo))
+                }
               >
                 <span className="icon">
                   <i

@@ -20,7 +20,7 @@ export const App = () => {
   useEffect(() => {
     setIsLoading(true);
     getTodos()
-      .then(todos => dispatch(todosSlice.actions.setTodos(todos)))
+      .then(fetchTodos => dispatch(todosSlice.actions.setTodos(fetchTodos)))
       .finally(() => setIsLoading(false));
   }, [dispatch]);
 
@@ -42,7 +42,6 @@ export const App = () => {
         todo.title.toLowerCase().trim().includes(query.trim().toLowerCase()),
       );
   }, [filterBy, todos, query]);
-
 
   return (
     <>
