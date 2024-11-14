@@ -1,14 +1,26 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hook';
+import { filterSlice } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const status = useAppSelector(state => state.filterReducer.status);
+  const query = useAppSelector(state => state.filterReducer.query);
+  const dispatch = useAppDispatch();
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={event =>
+              dispatch(
+                filterSlice.actions.setStatus(event.target.value as Status),
+              )
+            }
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,19 +34,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={e => dispatch(filterSlice.actions.setQuery(e.target.value))}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(filterSlice.actions.setQuery(''))}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
