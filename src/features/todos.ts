@@ -4,8 +4,8 @@ import { getTodos } from '../api';
 
 type InitialState = {
   todos: Todo[];
-  loaded: boolean,
-  selectedTodo: Todo | null,
+  loaded: boolean;
+  selectedTodo: Todo | null;
 };
 
 const initialState: InitialState = {

@@ -11,7 +11,7 @@ export const App = () => {
 
   useEffect(() => {
     dispatch(todosActions.init());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -25,7 +25,11 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {loaded ? <Loader /> : <TodoList todos={todos} selectedTodo={selectedTodo} />}
+              {loaded ? (
+                <Loader />
+              ) : (
+                <TodoList todos={todos} selectedTodo={selectedTodo} />
+              )}
             </div>
           </div>
         </div>

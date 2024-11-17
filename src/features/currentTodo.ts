@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
 type InitialState = {
-  selectedTodo: Todo | null,
+  selectedTodo: Todo | null;
 };
 
 const initialState: InitialState = {

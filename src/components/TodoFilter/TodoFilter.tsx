@@ -2,19 +2,19 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import * as filterActions from '../../features/filter';
 
-export const TodoFilter: React.FC= () => {
+export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query } = useAppSelector(state => state.filter);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(filterActions.setQuery(event.target.value));
-  }
+  };
 
   const handleClear = () => {
     dispatch(filterActions.setQuery(''));
-  }
+  };
 
-  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => { 
+  const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(filterActions.setStatus(event.target.value));
   };
 
