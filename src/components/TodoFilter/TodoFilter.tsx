@@ -1,17 +1,50 @@
-import React from 'react';
+import { TodoCompletedCategory } from '../../types/todoCompletedCategory';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { filterSlice } from '../../features/filter';
 
-export const TodoFilter: React.FC = () => {
+const nameForCategoriesOption = {
+  [TodoCompletedCategory.all]: 'All',
+  [TodoCompletedCategory.active]: 'Active',
+  [TodoCompletedCategory.completed]: 'Completed',
+};
+
+export const TodoFilter = () => {
+  const { query, category: todoCategory } = useAppSelector(
+    state => state.filter,
+  );
+  const dispatch = useAppDispatch();
+
+  const changeQuery = (newQuery: string) => {
+    dispatch(filterSlice.actions.changeQuery(newQuery));
+  };
+
+  const changeTodoCategory = (newCategory: TodoCompletedCategory) => {
+    dispatch(filterSlice.actions.changeStatus(newCategory));
+  };
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={todoCategory}
+            onChange={event => {
+              const selectedCategory = event.target
+                .value as TodoCompletedCategory;
+
+              if (
+                Object.values(TodoCompletedCategory).includes(selectedCategory)
+              ) {
+                changeTodoCategory(selectedCategory);
+              }
+            }}
+          >
+            {Object.values(TodoCompletedCategory).map(option => (
+              <option key={option} value={option}>
+                {nameForCategoriesOption[option]}
+              </option>
+            ))}
           </select>
         </span>
       </p>
@@ -21,20 +54,24 @@ export const TodoFilter: React.FC = () => {
           data-cy="searchInput"
           type="text"
           className="input"
+          value={query}
           placeholder="Search..."
+          onChange={event => changeQuery(event.target.value.toLowerCase())}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query !== '' && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => changeQuery('')}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
