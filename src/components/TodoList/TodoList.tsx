@@ -21,7 +21,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
       case 'active':
         return !todo.completed;
       default:
-        return todos;
+        return true;
     }
   });
   const visibleTodos = filteredTodos.filter(todo =>
