@@ -11,12 +11,14 @@ export const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setFilter: (state, action) => {
-      state.status = action.payload as Status;
-    },
-    setQuery: (state, action) => {
-      state.query = action.payload;
-    },
+    setFilter: (state, action) => ({
+      ...state,
+      status: action.payload as Status,
+    }),
+    setQuery: (state, action) => ({
+      ...state,
+      query: action.payload,
+    }),
   },
 });
 

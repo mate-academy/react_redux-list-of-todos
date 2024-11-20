@@ -22,7 +22,7 @@ export const App = () => {
       .finally(() => setIsLoading(false));
   }, [dispatch]);
 
-  const todos = useAppSelector(state => state.todos.todos);
+  const todos = useAppSelector(state => state.todos);
 
   return (
     <>
