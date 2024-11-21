@@ -13,6 +13,8 @@ interface Props {
 export const TodoModal: React.FC<Props> = ({ todo }) => {
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+  const [error, setError] = useState('');
+
   const { removeCurrentTodo } = currentTodoSlice.actions;
 
   const dispatch = useDispatch();
@@ -20,13 +22,15 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
   useLayoutEffect(() => {
     getUser(todo.userId)
       .then(setUser)
-      .catch()
+      .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [isLoading, todo.userId]);
+  }, [todo.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
+
+      {error && <p>{error}</p>}
 
       {isLoading ? (
         <Loader />
