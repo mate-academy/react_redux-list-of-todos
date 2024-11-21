@@ -22,7 +22,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
       .then(setUser)
       .catch()
       .finally(() => setLoading(false));
-  }, [isLoading]);
+  }, [isLoading, todo.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -45,11 +45,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => {
-                console.log('aa');
-
-                dispatch(removeCurrentTodo());
-              }}
+              onClick={() => dispatch(removeCurrentTodo())}
             />
           </header>
 
