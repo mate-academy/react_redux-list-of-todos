@@ -1,6 +1,26 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
+import { TODO_FILTER_OPTIONS } from '../../constants/TodoFilter';
+import { useAppSelector } from '../../hooks/useAppSelector';
+import { useDispatch } from 'react-redux';
+import { filterSlice } from '../../features/filter';
+import { FilterStatuses } from '../../utils/enums/FiltersStatus';
 
 export const TodoFilter: React.FC = () => {
+  const filter = useAppSelector(state => state.filter);
+  const dispatch = useDispatch();
+  const { setFilterQuery, setFilterStatus, clearFilterState } =
+    filterSlice.actions;
+
+  const handleChangeStatus = (event: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setFilterStatus(event.target.value as FilterStatuses));
+  };
+
+  const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setFilterQuery(event.target.value.toLowerCase()));
+  };
+
+  const handleClearState = () => dispatch(clearFilterState());
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +28,16 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={filter.status}
+            onChange={handleChangeStatus}
+          >
+            {TODO_FILTER_OPTIONS.map(({ value, title, id }) => (
+              <option value={value} key={id}>
+                {title}
+              </option>
+            ))}
           </select>
         </span>
       </p>
@@ -22,19 +48,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={filter.query}
+          onChange={handleChangeQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {filter.query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleClearState}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
