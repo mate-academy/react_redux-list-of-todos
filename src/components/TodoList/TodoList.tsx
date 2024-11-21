@@ -1,224 +1,82 @@
-/* eslint-disable */
-import React from 'react';
+import cn from 'classnames';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Todo } from '../../types/Todo';
+import { currentTodoSlice } from '../../features/currentTodo';
 
-export const TodoList: React.FC = () => {
+export const TodoList = () => {
+  const { todos, currentTodo } = useAppSelector(state => state);
+  const dispatch = useAppDispatch();
+
+  function handleSetCurrentTodo(todo: Todo) {
+    dispatch(currentTodoSlice.actions.changeCurrentTodo(todo));
+  }
+
   return (
-    <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+    <table className="table is-narrow is-fullwidth">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>
+            <span className="icon">
+              <i className="fas fa-check" />
+            </span>
+          </th>
+          <th>Title</th>
+          <th> </th>
+        </tr>
+      </thead>
 
-      <table className="table is-narrow is-fullwidth">
-        <thead>
-          <tr>
-            <th>#</th>
+      <tbody>
+        {todos.map(todo => {
+          const { completed, id, title } = todo;
 
-            <th>
-              <span className="icon">
-                <i className="fas fa-check" />
-              </span>
-            </th>
-
-            <th>Title</th>
-            <th> </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr data-cy="todo">
-            <td className="is-vcentered">1</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">delectus aut autem</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">2</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">
-                quis ut nam facilis et officia qui
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo" className="has-background-info-light">
-            <td className="is-vcentered">3</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">fugiat veniam minus</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye-slash" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">4</td>
-            <td className="is-vcentered">
-              <span className="icon" data-cy="iconCompleted">
-                <i className="fas fa-check" />
-              </span>
-            </td>
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-success">et porro tempora</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">5</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">
-                laboriosam mollitia et enim quasi adipisci quia provident illum
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">6</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">
-                qui ullam ratione quibusdam voluptatem quia omnis
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">7</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">
-                illo expedita consequatur quia in
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">8</td>
-
-            <td className="is-vcentered">
-              <span className="icon" data-cy="iconCompleted">
-                <i className="fas fa-check" />
-              </span>
-            </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-success">quo adipisci enim quam ut ab</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">9</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">molestiae perspiciatis ipsa</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">10</td>
-
-            <td className="is-vcentered">
-              <span className="icon" data-cy="iconCompleted">
-                <i className="fas fa-check" />
-              </span>
-            </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-success">
-                illo est ratione doloremque quia maiores aut
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </>
+          return (
+            <tr
+              data-cy="todo"
+              className={cn({
+                'has-background-info-light': id === currentTodo?.id,
+              })}
+              key={id}
+            >
+              <td className="is-vcentered">{id}</td>
+              <td className="is-vcentered">
+                {completed && (
+                  <span className="icon" data-cy="iconCompleted">
+                    <i className="fas fa-check" />
+                  </span>
+                )}
+              </td>
+              <td className="is-vcentered is-expanded">
+                <p
+                  className={cn({
+                    'has-text-danger': !completed,
+                    'has-text-success': completed,
+                  })}
+                >
+                  {title}
+                </p>
+              </td>
+              <td className="has-text-right is-vcentered">
+                <button
+                  data-cy="selectButton"
+                  className="button"
+                  type="button"
+                  onClick={() => handleSetCurrentTodo(todo)}
+                >
+                  <span className="icon">
+                    <i
+                      className={cn('far', {
+                        'fa-eye': id !== currentTodo?.id,
+                        'fa-eye-slash': id === currentTodo?.id,
+                      })}
+                    />
+                  </span>
+                </button>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 };
