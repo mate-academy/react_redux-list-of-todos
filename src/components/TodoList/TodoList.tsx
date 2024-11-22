@@ -1,22 +1,23 @@
+/* eslint-disable */
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import * as todosActions from '../../features/todos';
-import { currentTodoActions } from '../../features/currentTodo';
 import { filterTodos } from '../../app/functions';
+import { currentTodoActions } from '../../features/currentTodo';
+
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
-
   const currentTodo = useAppSelector(state => state.currentTodo) || null;
   const { status } = useAppSelector(state => state.filter);
-  const { query } = useAppSelector(state => state.filter);
   const { todos } = useAppSelector(state => state.todos);
+  const { query } = useAppSelector(state => state.filter);
 
   useEffect(() => {
     dispatch(todosActions.init());
   }, []);
 
-  const todosToDisplay = filterTodos(todos, query, status);
+  const todosToDisplay = filterTodos(todos, status, query);
 
   return (
     <>

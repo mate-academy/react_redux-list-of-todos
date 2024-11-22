@@ -10,7 +10,6 @@ export const currentTodoSlice = createSlice({
     add: (state, action: PayloadAction<Todo>) => {
       return action.payload;
     },
-
     delete: () => {
       return null;
     },

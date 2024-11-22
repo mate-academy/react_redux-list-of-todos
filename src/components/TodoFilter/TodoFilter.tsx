@@ -1,9 +1,9 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { filterActions } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-
   const { status, query } = useAppSelector(state => state.filter);
 
   return (
@@ -29,9 +29,9 @@ export const TodoFilter: React.FC = () => {
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
+          value={query}
           data-cy="searchInput"
           type="text"
-          value={query}
           className="input"
           placeholder="Search..."
           onChange={event => {
@@ -54,11 +54,6 @@ export const TodoFilter: React.FC = () => {
               }}
             />
           )}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
         </span>
       </p>
     </form>

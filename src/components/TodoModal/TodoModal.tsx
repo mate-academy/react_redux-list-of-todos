@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { currentTodoActions } from '../../features/currentTodo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
+
 export const TodoModal: React.FC = () => {
   const [choosedTodoUser, setChoosedTodoUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
-  const currentTodo = useAppSelector(state => state.currentTodo);
-
-  const handleDeleteCurrentTodo = () => {
-    dispatch(currentTodoActions.delete());
-    setChoosedTodoUser(null);
-  };
+  const currentTodo = useAppSelector(state => state.currentTodo) || null;
 
   useEffect(() => {
     if (currentTodo) {
@@ -22,6 +18,11 @@ export const TodoModal: React.FC = () => {
       });
     }
   }, [currentTodo]);
+
+  const handleDeleteCurrentTodo = () => {
+    dispatch(currentTodoActions.delete());
+    setChoosedTodoUser(null);
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
