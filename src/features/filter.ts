@@ -5,7 +5,7 @@ type FilterState = {
   status: string;
 };
 
-const initialState : FilterState = {
+const initialState: FilterState = {
   query: '',
   status: 'all',
 };
