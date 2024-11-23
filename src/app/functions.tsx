@@ -1,8 +1,9 @@
 import { Todo } from '../types/Todo';
+import { TodoStatus } from '../types/Status';
 
 export const filterTodos = (
   todos: Todo[],
-  status: string,
+  status: TodoStatus,
   query: string,
 ): Todo[] => {
   let filteredTodos;

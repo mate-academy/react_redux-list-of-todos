@@ -5,7 +5,6 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-
 export const TodoModal: React.FC = () => {
   const [choosedTodoUser, setChoosedTodoUser] = useState<User | null>(null);
   const dispatch = useAppDispatch();
