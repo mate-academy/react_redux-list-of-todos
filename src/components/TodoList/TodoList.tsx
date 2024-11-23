@@ -1,24 +1,22 @@
-/* eslint-disable */
 import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import * as todosActions from '../../features/todos';
 import { filterTodos } from '../../app/functions';
-import { currentTodoActions } from '../../features/currentTodo';
-import classNames from 'classnames';
-
+import { TodoItem } from '../TodoItem/TodoItem';
+import { TodoStatus } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo) || null;
-  const { status } = useAppSelector(state => state.filter);
+  const { status, query } = useAppSelector(state => state.filter);
   const { todos } = useAppSelector(state => state.todos);
-  const { query } = useAppSelector(state => state.filter);
 
   useEffect(() => {
     dispatch(todosActions.init());
-  }, []);
+  }, [dispatch]);
 
-  const todosToDisplay = filterTodos(todos, status, query);
+  // Приведення status до TodoStatus
+  const todosToDisplay = filterTodos(todos, status as TodoStatus, query);
 
   return (
     <>
@@ -31,61 +29,18 @@ export const TodoList: React.FC = () => {
           <thead>
             <tr>
               <th>#</th>
-
               <th>
                 <span className="icon">
                   <i className="fas fa-check" />
                 </span>
               </th>
-
               <th>Title</th>
               <th> </th>
             </tr>
           </thead>
-
           <tbody>
             {todosToDisplay.map(todo => (
-              <tr
-                data-cy="todo"
-                key={todo.id}
-                className={
-                  currentTodo?.id === todo.id ? 'has-background-info-light' : ''
-                }
-              >
-                <td className="is-vcentered">{todo.id}</td>
-                <td className="is-vcentered">
-                  {todo.completed && (
-                    <span className="icon" data-cy="iconCompleted">
-                      <i className="fas fa-check" />
-                    </span>
-                  )}
-                </td>
-
-                <td className="is-vcentered is-expanded">
-                  <p
-                    className={
-                      todo.completed ? 'has-text-success' : 'has-text-danger'
-                    }
-                  >
-                    {todo.title}
-                  </p>
-                </td>
-
-                <td className="has-text-right is-vcentered">
-                  <button
-                    data-cy="selectButton"
-                    className="button"
-                    type="button"
-                    onClick={() => dispatch(currentTodoActions.add(todo))}
-                  >
-                    <span className="icon">
-                      <i
-                        className={`far ${currentTodo ? 'fa-eye-slash' : 'fa-eye'}`}
-                      />
-                    </span>
-                  </button>
-                </td>
-              </tr>
+              <TodoItem key={todo.id} todo={todo} currentTodo={currentTodo} />
             ))}
           </tbody>
         </table>

@@ -3,16 +3,16 @@ import { TodoStatus } from '../types/Status';
 
 export const filterTodos = (
   todos: Todo[],
-  status: TodoStatus,
+  status: TodoStatus, // Використання enum
   query: string,
 ): Todo[] => {
   let filteredTodos;
 
   switch (status) {
-    case 'active':
+    case TodoStatus.Active:
       filteredTodos = todos.filter(todo => !todo.completed);
       break;
-    case 'completed':
+    case TodoStatus.Completed:
       filteredTodos = todos.filter(todo => todo.completed);
       break;
     default:
