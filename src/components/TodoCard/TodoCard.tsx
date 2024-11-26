@@ -17,7 +17,9 @@ export const TodoCard: React.FC<Props> = ({ todo }) => {
   };
 
   function handleEye() {
-    add(todo);
+    const clonedTodo = { ...todo };
+
+    add(clonedTodo);
   }
 
   return (
@@ -52,7 +54,7 @@ export const TodoCard: React.FC<Props> = ({ todo }) => {
           <span className="icon">
             <i
               className={classNames({
-                'far fa-eye': currentTodo !== todo,
+                'far fa-eye': currentTodo?.id !== todo.id,
                 'far fa-eye-slash': currentTodo && currentTodo.id === todo.id,
               })}
             />

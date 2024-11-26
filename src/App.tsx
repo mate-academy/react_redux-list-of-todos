@@ -28,6 +28,7 @@ export const App: React.FC = () => {
       .then((todo: Todo[]) => {
         dispatch(todosActions.addTodos(todo));
       })
+      .catch()
       .finally(() => setLoader(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
