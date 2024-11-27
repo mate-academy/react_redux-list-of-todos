@@ -12,4 +12,3 @@ createRoot(document.getElementById('root') as HTMLElement).render(
     </Router>
   </Provider>,
 );
-

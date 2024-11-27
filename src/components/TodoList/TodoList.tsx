@@ -13,7 +13,7 @@ export const TodoList: React.FC = () => {
 
   useEffect(() => {
     dispatch(todosActions.init());
-  }, []);
+  }, [dispatch]);
 
   const todosToDisplay = filterTodos(todos, status, query);
 
