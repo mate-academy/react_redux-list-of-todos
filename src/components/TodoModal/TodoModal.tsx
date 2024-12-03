@@ -10,6 +10,8 @@ import { currentTodoSlice } from '../../features/currentTodo';
 export const TodoModal: FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
 
   const dispatch = useAppDispatch();
   const todo = useAppSelector(state => state.currentTodo);
@@ -24,6 +26,10 @@ export const TodoModal: FC = () => {
 
       getUser(todo.userId)
         .then(setUser)
+        .catch(err => {
+          setError(`Error fetching user: ${err.message}`);
+          setUser(null);
+        })
         .finally(() => setLoading(false));
     }
   }, [todo]);
@@ -57,26 +63,30 @@ export const TodoModal: FC = () => {
           </header>
 
           <div className="modal-card-body">
-            <p className="block" data-cy="modal-title">
-              {todo.title}
-            </p>
+            {error ? (
+              <p className="has-text-danger">{error}</p>
+            ) : (
+              <>
+                <p className="block" data-cy="modal-title">
+                  {todo.title}
+                </p>
 
-            <p className="block" data-cy="modal-user">
-              <strong
-                className={cn({
-                  'has-text-danger': !todo.completed,
-                  'has-text-success': todo.completed,
-                })}
-              >
-                {todo.completed ? `Done` : `Planned`}
-              </strong>
+                <p className="block" data-cy="modal-user">
+                  <strong
+                    className={cn({
+                      'has-text-danger': !todo.completed,
+                      'has-text-success': todo.completed,
+                    })}
+                  >
+                    {todo.completed ? `Done` : `Planned`}
+                  </strong>
 
-              {' by '}
+                  {' by '}
 
-              <a href={`mailto:${user?.email}`}>
-                {user?.name}
-              </a>
-            </p>
+                  <a href={`mailto:${user?.email}`}>{user?.name}</a>
+                </p>
+              </>
+            )}
           </div>
         </div>
       )}

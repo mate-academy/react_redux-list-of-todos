@@ -22,6 +22,7 @@ export const getFilteredData = (
   }
 
   const normalizeQuery = query.toLowerCase().trim();
+
   if (normalizeQuery) {
     filteredData = filteredData.filter(todo => {
       const todoName = todo.title.toLowerCase().trim();

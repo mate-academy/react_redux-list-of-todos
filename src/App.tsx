@@ -9,6 +9,8 @@ import { todosSlice } from './features/todos';
 
 export const App: FC = () => {
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
   const dispatch = useAppDispatch();
   const openedTodo = useAppSelector(state => state.currentTodo);
@@ -19,6 +21,9 @@ export const App: FC = () => {
 
     getTodos()
       .then(res => dispatch(todosSlice.actions.setTodos(res)))
+      .catch(error => {
+        setErrorMessage(`Failed to fetch todos: ${error.message}`);
+      })
       .finally(() => setLoading(false));
   }, [dispatch]);
 
@@ -34,14 +39,16 @@ export const App: FC = () => {
           <div className="box">
             <h1 className="title">Todos:</h1>
 
+            {errorMessage && (
+              <p className="notification is-danger">{errorMessage}</p>
+            )}
+
             <div className="block">
               <TodoFilter />
             </div>
 
             <div className="block">
-              {loading && <Loader />}
-
-              {!loading && todos.length > 0 && (
+              {loading ? <Loader /> :(
                 <TodoList todos={filteredData} />
               )}
             </div>

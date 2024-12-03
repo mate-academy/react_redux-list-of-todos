@@ -81,7 +81,6 @@ export const TodoList: FC<Props> = ({ todos }) => {
                   </span>
                 </button>
               </td>
-              
             </tr>
           ))}
         </tbody>
