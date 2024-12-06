@@ -1,69 +1,85 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
-import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { useAppDispatch } from '../../app/hooks';
-import { removeCurrentTodo } from '../../features/currentTodo';
+import { currentTodoSlice } from '../../features/currentTodo';
 
-interface Props {
-  todo: Todo;
-}
+type Props = {
+  selectedTodo: Todo | null;
+  selectedUser: User | null;
+  isLoadingUser: boolean;
+  setSelectedUser: React.Dispatch<React.SetStateAction<User | null>>;
+};
 
-export const TodoModal: React.FC<Props> = ({ todo }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+export const TodoModal: React.FC<Props> = ({
+  isLoadingUser,
+  selectedTodo,
+  selectedUser,
+  setSelectedUser,
+}) => {
+  const modal = useRef<HTMLDivElement>(null);
   const dispatch = useAppDispatch();
 
-  const closeModalHandler = () => {
-    dispatch(removeCurrentTodo());
+  const handleClose = () => {
+    setSelectedUser(null);
+    dispatch(currentTodoSlice.actions.setCurrentTodo(null));
   };
 
-  useEffect(() => {
-    setIsLoading(true);
-    getUser(todo.userId)
-      .then(setUser)
-      .finally(() => setIsLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
-    <div className="modal is-active" data-cy="modal">
+    <div
+      ref={modal}
+      className={`modal ${selectedTodo ? 'is-active' : ''}`}
+      data-cy="modal"
+    >
       <div className="modal-background" />
 
-      {isLoading ? (
-        <Loader />
-      ) : (
+      {isLoadingUser && <Loader />}
+
+      {!isLoadingUser && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo #{todo.id}
+              Todo #{selectedTodo?.id}
             </div>
 
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
+              onClick={handleClose}
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={closeModalHandler}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {todo.title}
+              {selectedTodo?.title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {todo.completed ? (
-                <strong className="has-text-success">Done</strong>
-              ) : (
-                <strong className="has-text-danger">Planned</strong>
+              {!selectedTodo?.completed && (
+                <>
+                  <strong className="has-text-danger">Planned</strong>
+                  {' by '}
+                  <a href={`mailto:${selectedUser?.email}`}>
+                    {selectedUser?.name}
+                  </a>
+                </>
               )}
-              {' by '}
-              <a href={`mailto:${user?.email}`}>{user?.name}</a>
+
+              {selectedTodo?.completed && (
+                <>
+                  <strong className="has-text-success">Done</strong>
+                  {' by '}
+                  <a href={`mailto:${selectedUser?.email}`}>
+                    {selectedUser?.name}
+                  </a>
+                </>
+              )}
             </p>
           </div>
         </div>

@@ -1,51 +1,53 @@
 /* eslint-disable */
-import React, { useMemo } from 'react';
-import { useAppSelector } from '../../app/hooks';
-import { TodoItem } from '../TodoItem';
-import { TodosSortField } from '../../utils/const';
+import React from 'react';
+import cn from 'classnames';
+import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { currentTodoSlice } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
-interface Props {
-  isLoading: boolean;
-}
+type Props = {
+  todosLoadErr: boolean;
+};
 
-export const TodoList: React.FC<Props> = ({ isLoading }) => {
-  const todos = useAppSelector(state => state.todos.todos);
-  const { query, status } = useAppSelector(state => state.filter);
+export const TodoList: React.FC<Props> = ({ todosLoadErr }) => {
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todosSlice);
+  const selectedTodo = useAppSelector(state => state.currentTodoSlice);
+  const status = useAppSelector(state => state.filterSlice.status);
+  const query = useAppSelector(status => status.filterSlice.query);
 
-  const filteredTodos = useMemo(() => {
-    let visibleTodos = [...todos];
+  const handleSelectedTodo = (todo: Todo) => {
+    dispatch(currentTodoSlice.actions.setCurrentTodo(todo));
+  };
 
-    switch (status) {
-      case TodosSortField.ACTIVE:
-        visibleTodos = visibleTodos.filter(todo => !todo.completed);
-        break;
+  const filteredTodos = () => {
+    return todos.filter(todo => {
+      const match = todo.title.toLowerCase().includes(query.toLowerCase());
 
-      case TodosSortField.COMPLETED:
-        visibleTodos = visibleTodos.filter(todo => todo.completed);
-        break;
+      switch (status) {
+        case Status.COMPLETED:
+          return match && todo.completed;
+        case Status.ACTIVE:
+          return match && !todo.completed;
+        default:
+          return match;
+      }
+    });
+  };
 
-      default:
-        break;
-    }
-
-    if (!!query.length) {
-      visibleTodos = visibleTodos.filter(todo =>
-        todo.title.toLowerCase().includes(query.trim().toLowerCase()),
-      );
-    }
-
-    return visibleTodos;
-  }, [query, status, todos]);
+  const visibleTodos = filteredTodos();
+  const isTableVisible = !todosLoadErr && !!visibleTodos.length;
 
   return (
     <>
-      {!filteredTodos.length && !isLoading && (
+      {!visibleTodos.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
-      {!!filteredTodos.length && (
+      {isTableVisible && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -63,9 +65,45 @@ export const TodoList: React.FC<Props> = ({ isLoading }) => {
           </thead>
 
           <tbody>
-            {filteredTodos.map(todo => (
-              <TodoItem key={todo.id} todo={todo} />
-            ))}
+            {visibleTodos.map(todo => {
+              return (
+                <tr key={todo.title} data-cy="todo">
+                  <td className="is-vcentered">{todo.id}</td>
+                  <td className="is-vcentered">
+                    {todo.completed && (
+                      <span className="icon" data-cy="iconCompleted">
+                        <i className="fas fa-check" />
+                      </span>
+                    )}
+                  </td>
+
+                  <td className="is-vcentered is-expanded">
+                    <p
+                      className={cn({
+                        'has-text-success': todo.completed,
+                        'has-text-danger': !todo.completed,
+                      })}
+                    >
+                      {todo.title}
+                    </p>
+                  </td>
+                  <td className="has-text-right is-vcentered">
+                    <button
+                      data-cy="selectButton"
+                      className="button"
+                      type="button"
+                    >
+                      <span className="icon">
+                        <i
+                          onClick={() => handleSelectedTodo(todo)}
+                          className={`far ${selectedTodo === todo ? 'fa-eye-slash' : 'fa-eye'}`}
+                        />
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

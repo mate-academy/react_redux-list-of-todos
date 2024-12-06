@@ -1,38 +1,17 @@
-/* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
-interface CurrentTodoState {
-  currentTodo: Todo | null;
-  loading: boolean;
-}
+const initialState = null as Todo | null;
 
-const initialState: CurrentTodoState = {
-  currentTodo: null,
-  loading: false,
-};
-
-export const currentTodoSlice = createSlice({
+export const currentTodoSlice: Slice<Todo | null> = createSlice({
   name: 'currentTodo',
   initialState,
   reducers: {
-    addCurrentTodo: (state, action: PayloadAction<Todo>) => {
-      state.currentTodo = action.payload;
-    },
-
-    removeCurrentTodo: state => {
-      state.currentTodo = null;
-    },
-
-    startLoading: state => {
-      state.loading = true;
-    },
-    stopLoading: state => {
-      state.loading = false;
+    setCurrentTodo: (_state, action: PayloadAction<Todo | null>) => {
+      return action.payload;
     },
   },
 });
 
-export const { addCurrentTodo, removeCurrentTodo, startLoading, stopLoading } = currentTodoSlice.actions;
-export const { reducer: currentTodoReducer } = currentTodoSlice;
-export const { name: currentTodoName } = currentTodoSlice;
+export const { setCurrentTodo } = currentTodoSlice.actions;
+export default currentTodoSlice.reducer;

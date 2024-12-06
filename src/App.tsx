@@ -1,23 +1,48 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useEffect } from 'react';
-import { getTodos } from './api';
-import { useAppDispatch, useAppSelector } from './app/hooks';
-import { todosFetching } from './features/todos';
-import { startLoading, stopLoading } from './features/currentTodo';
+import { useEffect, useState } from 'react';
+import { getTodos, getUser } from './api';
+import { User } from './types/User';
+import { RootState } from './app/store';
+import { useSelector } from 'react-redux';
+import { todosSlice } from './features/todos';
+import { useAppDispatch } from './app/hooks';
+import { Todo } from './types/Todo';
 
 export const App = () => {
-  const { currentTodo, loading } = useAppSelector(state => state.currentTodo);
-  const { todos } = useAppSelector(state => state.todos);
+  const todos = useSelector((state: RootState) => state.todosSlice);
+  const currentTodo = useSelector((state: RootState) => state.currentTodoSlice);
+  const [todosLoadErr, setTodosLoadErr] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isLoadingUser, setIsLoadingUser] = useState<boolean>(true);
+  const [isLoadingTodos, setIsLoadingTodos] = useState(true);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(startLoading()); // Start loader
+    setIsLoadingTodos(true);
     getTodos()
-      .then(data => dispatch(todosFetching(data))) // Load todos
-      .finally(() => dispatch(stopLoading())); // Stop loader
+      .then((response: Todo[]) => {
+        dispatch(todosSlice.actions.setTodos(response));
+      })
+      .catch(() => {
+        setTodosLoadErr(true);
+      })
+      .finally(() => setIsLoadingTodos(false));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (currentTodo) {
+      setIsLoadingUser(true);
+      getUser(currentTodo.userId)
+        .then(setSelectedUser)
+        .catch(err => {
+          // eslint-disable-next-line no-console
+          console.error(err);
+        })
+        .finally(() => setIsLoadingUser(false));
+    }
+  }, [currentTodo]);
 
   return (
     <>
@@ -27,21 +52,28 @@ export const App = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter />
+              <TodoFilter todos={todos} />
             </div>
 
             <div className="block">
-              {loading && <Loader data-cy="loader" />} {/* Show loader */}
-              {!loading && todos.length > 0 && <TodoList isLoading={false} />}
-              {!loading && todos.length === 0 && (
-                <p data-cy="no-todos">No todos available</p>
+              {isLoadingTodos ? (
+                <Loader />
+              ) : (
+                <TodoList todosLoadErr={todosLoadErr} />
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {currentTodo && <TodoModal todo={currentTodo} />}
+      {currentTodo && (
+        <TodoModal
+          setSelectedUser={setSelectedUser}
+          isLoadingUser={isLoadingUser}
+          selectedUser={selectedUser}
+          selectedTodo={currentTodo}
+        />
+      )}
     </>
   );
 };

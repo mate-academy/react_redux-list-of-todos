@@ -1,43 +1,21 @@
-import React, { ChangeEvent, useMemo } from 'react';
-import { firstLetterUpperCase } from '../../utils/halper';
+import React from 'react';
+import {
+  getQuery,
+  getStatus,
+  setQuery,
+  setStatus,
+} from '../../features/filter';
+import { Todo } from '../../types/Todo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { setQuery, setStatus } from '../../features/filter';
-import { TodosSortField } from '../../utils/const';
-import { SelectOption } from '../../types/select';
 
-export const TodoFilter: React.FC = () => {
-  const { query, status } = useAppSelector(state => state.filter);
+type Props = {
+  todos: Todo[];
+};
+
+export const TodoFilter: React.FC<Props> = () => {
   const dispatch = useAppDispatch();
-
-  const statusHandler = (e: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setStatus(e.target.value as TodosSortField));
-  };
-
-  const searchQueryHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setQuery(e.target.value));
-  };
-
-  const deleteSearchQuery = () => {
-    dispatch(setQuery(''));
-  };
-
-  const options = useMemo<SelectOption<TodosSortField>[]>(
-    () => [
-      {
-        value: TodosSortField.ALL,
-        content: firstLetterUpperCase(TodosSortField.ALL),
-      },
-      {
-        value: TodosSortField.ACTIVE,
-        content: firstLetterUpperCase(TodosSortField.ACTIVE),
-      },
-      {
-        value: TodosSortField.COMPLETED,
-        content: firstLetterUpperCase(TodosSortField.COMPLETED),
-      },
-    ],
-    [],
-  );
+  const query = useAppSelector(getQuery);
+  const status = useAppSelector(getStatus);
 
   return (
     <form
@@ -47,39 +25,38 @@ export const TodoFilter: React.FC = () => {
       <p className="control">
         <span className="select">
           <select
+            onChange={event => dispatch(setStatus(event.target.value))}
             data-cy="statusSelect"
             value={status}
-            onChange={statusHandler}
           >
-            {options.map(({ value, content }) => (
-              <option key={value} value={value}>
-                {content}
-              </option>
-            ))}
+            <option value="all">All</option>
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
           </select>
         </span>
       </p>
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
+          value={query}
+          onChange={event => dispatch(setQuery(event.target.value))}
           data-cy="searchInput"
           type="text"
           className="input"
           placeholder="Search..."
-          value={query}
-          onChange={searchQueryHandler}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {!!query.length && (
+        {query !== '' && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
+              onClick={() => dispatch(setQuery(''))}
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={deleteSearchQuery}
             />
           </span>
         )}

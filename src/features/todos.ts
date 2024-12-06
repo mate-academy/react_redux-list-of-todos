@@ -1,25 +1,18 @@
-/* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, Slice } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
-export interface TodosState {
-  todos: Todo[];
-}
+const initialState: Todo[] = [];
 
-const initialState: TodosState = {
-  todos: [],
-};
-
-const todosSlice = createSlice({
+export const todosSlice: Slice<Todo[]> = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    todosFetching: (state, action: PayloadAction<Todo[]>) => {
-      state.todos = action.payload;
+    setTodos: (todos, { payload }: PayloadAction<Todo[]>) => {
+      // eslint-disable-next-line no-param-reassign
+      todos.push(...payload);
     },
   },
 });
 
-export const { todosFetching } = todosSlice.actions;
-export const { reducer: todosSliceReducer } = todosSlice;
-export const { name: todosSliceName } = todosSlice;
+export const { setTodos } = todosSlice.actions;
+export default todosSlice.reducer;
