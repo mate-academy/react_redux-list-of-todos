@@ -1,12 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FilterBy } from '../types/FilterBy';
 
 const initialState = {
   query: '',
-  status: 'all',
+  status: FilterBy.All,
 };
 
 export const filterSlice = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    filterStatus(state, { payload }: PayloadAction<FilterBy>) {
+      return { ...state, status: payload };
+    },
+    filterQuery(state, { payload }: PayloadAction<string>) {
+      return { ...state, query: payload };
+    },
+  },
 });
