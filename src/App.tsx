@@ -3,7 +3,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
 import { getTodos } from './api';
-import { todosSlice } from './features/todos';
+import { loadTodos } from './features/todos';
 import { useAppDispatch } from './hooks/useAppDispatch';
 import { useAppSelector } from './hooks/useAppSelector';
 
@@ -15,10 +15,10 @@ export const App = () => {
   useEffect(() => {
     getTodos()
       .then(todos => {
-        dispatch(todosSlice.actions.load(todos));
+        dispatch(loadTodos(todos));
       })
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

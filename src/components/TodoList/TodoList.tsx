@@ -9,21 +9,19 @@ export const TodoList: React.FC = () => {
   const { status, query } = useAppSelector(state => state.filter);
 
   const filteredTodos = todos.filter(todo => {
-    let passedQuery = false;
-
     const trimmedQuery = query.trim();
 
-    if (todo.title.toLowerCase().includes(trimmedQuery)) {
-      passedQuery = true;
+    if (!todo.title.toLowerCase().includes(trimmedQuery)) {
+      return false;
     }
 
     if (status === FilterBy.All) {
-      return passedQuery;
+      return true;
     }
 
     const isActive = status === FilterBy.Active;
 
-    return isActive === !todo.completed && passedQuery;
+    return isActive === !todo.completed;
   });
 
   return (

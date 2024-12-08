@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FilterBy } from '../../types/FilterBy';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { filterSlice } from '../../features/filter';
+import { setFilterQuery, setFilterStatus } from '../../features/filter';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { useDebounce } from '../../hooks/useDebounce';
 
@@ -12,20 +12,16 @@ export const TodoFilter: React.FC = () => {
   const debouncedValue = useDebounce(query, 500);
 
   const selectValue = (value: FilterBy) => {
-    dispatch(filterSlice.actions.filterStatus(value));
-  };
-
-  const search = (value: string) => {
-    setQuery(value);
+    dispatch(setFilterStatus(value));
   };
 
   const resetQuery = () => {
     setQuery('');
-    dispatch(filterSlice.actions.filterQuery(''));
+    dispatch(setFilterQuery(''));
   };
 
   useEffect(() => {
-    dispatch(filterSlice.actions.filterQuery(debouncedValue.toLowerCase()));
+    dispatch(setFilterQuery(debouncedValue.toLowerCase()));
   }, [debouncedValue]);
 
   return (
@@ -56,7 +52,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={e => search(e.target.value)}
+          onChange={e => setQuery(e.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

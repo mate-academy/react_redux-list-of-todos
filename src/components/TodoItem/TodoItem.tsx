@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { currentTodoSlice } from '../../features/currentTodo';
+import { setCurrentTodo } from '../../features/currentTodo';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
 interface Props {
@@ -11,11 +11,10 @@ interface Props {
 export const TodoItem: FC<Props> = ({
   todo: { id, title, completed, userId },
 }) => {
-  // const [isTodoOpen, setIsTodoOpen] = useState(false);
   const todo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const openTodo = () => {
-    dispatch(currentTodoSlice.actions.open({ id, title, completed, userId }));
+    dispatch(setCurrentTodo({ id, title, completed, userId }));
   };
 
   return (

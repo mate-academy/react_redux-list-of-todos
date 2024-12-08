@@ -4,17 +4,13 @@ import { useAppSelector } from '../../hooks/useAppSelector';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { currentTodoSlice } from '../../features/currentTodo';
+import { closeCurrentTodo } from '../../features/currentTodo';
 
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User>();
   const [isLoading, setIsLoading] = useState(false);
   const todo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
-
-  const closeModal = () => {
-    dispatch(currentTodoSlice.actions.close());
-  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -23,7 +19,7 @@ export const TodoModal: React.FC = () => {
         .then(setUser)
         .finally(() => setIsLoading(false));
     }
-  }, []);
+  }, [todo]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -45,7 +41,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={closeModal}
+              onClick={() => dispatch(closeCurrentTodo())}
             />
           </header>
 
