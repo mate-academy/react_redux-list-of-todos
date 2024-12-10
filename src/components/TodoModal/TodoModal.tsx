@@ -29,7 +29,7 @@ export const TodoModal: React.FC = () => {
 
   const renderUserInfo = () => {
     if (!userFromServer) {
-      return <p>Loading user...</p>;
+      return <Loader />;
     }
 
     return <a href={`mailto:${userFromServer.email}`}>{userFromServer.name}</a>;
@@ -52,37 +52,33 @@ export const TodoModal: React.FC = () => {
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
-      {userFromServer === null ? (
-        <Loader />
-      ) : (
-        <div className="modal-card">
-          <header className="modal-card-head">
-            <div
-              className="modal-card-title has-text-weight-medium"
-              data-cy="modal-header"
-            >
-              {`Todo #${currentTodo.id}`}
-            </div>
-            <button
-              type="button"
-              className="delete"
-              data-cy="modal-close"
-              onClick={closeModal}
-            />
-          </header>
-
-          <div className="modal-card-body">
-            <p className="block" data-cy="modal-title">
-              {currentTodo.title}
-            </p>
-
-            <p className="block" data-cy="modal-user">
-              {renderTodoStatus()} {'by '}
-              {renderUserInfo()}
-            </p>
+      <div className="modal-card">
+        <header className="modal-card-head">
+          <div
+            className="modal-card-title has-text-weight-medium"
+            data-cy="modal-header"
+          >
+            {`Todo #${currentTodo.id}`}
           </div>
+          <button
+            type="button"
+            className="delete"
+            data-cy="modal-close"
+            onClick={closeModal}
+          />
+        </header>
+
+        <div className="modal-card-body">
+          <p className="block" data-cy="modal-title">
+            {currentTodo.title}
+          </p>
+
+          <p className="block" data-cy="modal-user">
+            {renderTodoStatus()} {'by '}
+            {renderUserInfo()}
+          </p>
         </div>
-      )}
+      </div>
     </div>
   );
 };

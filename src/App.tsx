@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
@@ -11,13 +11,18 @@ import { actions as todosActions } from './features/todos';
 import { Todo } from './types/Todo';
 import { getTodos } from './api';
 import { filterTodos } from './utils/todos';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { toast } from 'react-toastify';
 
 export const App: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const todos = useAppSelector(state => state.todos);
-  const { query, status } = useAppSelector(state => state.filter);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const { todos, query, status, currentTodo } = useAppSelector(state => ({
+    todos: state.todos,
+    query: state.filter.query,
+    status: state.filter.status,
+    currentTodo: state.currentTodo,
+  }));
 
   const dispatch = useAppDispatch();
 
@@ -25,10 +30,16 @@ export const App: React.FC = () => {
     setIsLoading(true);
     getTodos()
       .then((data: Todo[]) => dispatch(todosActions.setTodos(data)))
+      .catch(() => {
+        toast.error('Failed to fetch todos');
+      })
       .finally(() => setIsLoading(false));
   }, [dispatch]);
 
-  const filteredTodos = filterTodos(todos, { query, status });
+  const filteredTodos = useMemo(
+    () => filterTodos(todos, { query, status }),
+    [todos, query, status],
+  );
 
   return (
     <>
