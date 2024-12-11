@@ -18,8 +18,8 @@ export const TodoModal: React.FC = () => {
 
       getUser(currentTodo?.userId)
         .then(setUserData)
-        .catch(error => {
-          throw error;
+        .catch(() => {
+          throw Error('Something went wrong with UserData loading');
         })
         .finally(() => {
           setIsLoading(false);

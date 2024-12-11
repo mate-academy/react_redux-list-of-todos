@@ -51,8 +51,8 @@ export const App = () => {
 
     getTodos()
       .then(setTodos)
-      .catch(error => {
-        throw error;
+      .catch(() => {
+        throw Error('Something went wrong with Todos loading');
       })
       .finally(() => {
         setIsLoading(false);
