@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
-import { getTodos } from '../api';
 import { RootState } from '../app/store';
 
 export interface Todos {
@@ -15,41 +14,28 @@ const initialState: Todos = {
   hasError: false,
 };
 
-export const loadTodoFromServer = createAsyncThunk<Todo[]>(
-  'todos/getTodosFromServer',
-  () => getTodos(),
-);
-
 export const todosSlice = createSlice({
   name: 'todos',
   initialState,
-  reducers: {},
-  extraReducers: builder => {
-    builder
-      .addCase(loadTodoFromServer.fulfilled, (state, action) => {
-        return {
-          ...state,
-          todos: action.payload,
-          loaded: true,
-        };
-      })
-      .addCase(loadTodoFromServer.pending, state => {
-        return {
-          ...state,
-          loaded: false,
-        };
-      })
-      .addCase(loadTodoFromServer.rejected, state => {
-        return {
-          ...state,
-          loaded: true,
-          hasError: true,
-        };
-      });
+  reducers: {
+    setTodos(state, action) {
+      return {
+        ...state,
+        todos: action.payload,
+      };
+    },
+    setLoaded(state, action) {
+      return {
+        ...state,
+        loaded: action.payload,
+      };
+    },
   },
 });
 
 export const selectTodosLoaded = (state: RootState) =>
   state.todosReducer.loaded;
 export const selectTodos = (state: RootState) => state.todosReducer.todos;
+
+export const { setTodos, setLoaded } = todosSlice.actions;
 export default todosSlice.reducer;
