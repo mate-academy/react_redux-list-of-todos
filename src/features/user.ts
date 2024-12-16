@@ -1,21 +1,21 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Todo } from '../types/Todo';
+import { User } from '../types/User';
 
-type TodoState = {
-  todos: Todo[];
+type UserState = {
+  user: User | null;
   isLoading: boolean;
   error: string;
 };
 
-const initialState: TodoState = {
-  todos: [],
+const initialState: UserState = {
+  user: null,
   isLoading: false,
   error: '',
 };
 
-const todosSlice = createSlice({
-  name: 'todos',
+const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {
     setLoading: (state, action: PayloadAction<boolean>) => {
@@ -24,11 +24,11 @@ const todosSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
-    setTodos: (state, action: PayloadAction<Todo[]>) => {
-      state.todos = action.payload;
+    setUser: (state, action: PayloadAction<User | null>) => {
+      state.user = action.payload;
     },
   },
 });
 
-export default todosSlice.reducer;
-export const { actions } = todosSlice;
+export default userSlice.reducer;
+export const { actions } = userSlice;
