@@ -8,7 +8,7 @@ import * as todosAction from './features/todos';
 export const App = () => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector(state => state.todos);
-  const { todo: curentUser } = useAppSelector(state => state.currentTodo);
+  const { todo: currentUser } = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     dispatch(todosAction.init());
@@ -30,7 +30,7 @@ export const App = () => {
         </div>
       </div>
 
-      {!!curentUser && <TodoModal />}
+      {!!currentUser && <TodoModal />}
     </>
   );
 };

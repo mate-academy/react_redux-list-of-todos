@@ -11,7 +11,7 @@ export const TodoList: React.FC = () => {
   const { todos, error } = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
   const { todo: currentTodo } = useAppSelector(state => state.currentTodo);
-  const [filtedTodos, setFiltedTodos] = useState<Todo[]>([]);
+  const [filteredTodos, setFiltedTodos] = useState<Todo[]>([]);
 
   useEffect(() => {
     setFiltedTodos(filterByStatus(filterByQuery(todos, query), status));
@@ -23,7 +23,7 @@ export const TodoList: React.FC = () => {
     );
   }
 
-  if (filtedTodos.length < 1) {
+  if (filteredTodos.length < 1) {
     return (
       <p className="notification is-warning">
         There are no Todos matching current filter criteria
@@ -57,8 +57,8 @@ export const TodoList: React.FC = () => {
       </thead>
 
       <tbody>
-        {filtedTodos &&
-          filtedTodos.map((todo: Todo) => {
+        {filteredTodos &&
+          filteredTodos.map((todo: Todo) => {
             return (
               <tr key={todo.id} data-cy="todo" className="">
                 <td className="is-vcentered">{todo?.id}</td>
