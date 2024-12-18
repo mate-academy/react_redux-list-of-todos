@@ -1,21 +1,28 @@
-# React + Redux list of TODOs
+# List of TODOs
 
-> ❗ Read the lesson theory before solving this task
+### Description
 
-You are given an `app` folder with already implemented `store` and `hooks`.
-Use them to implement [Dynamic list of TODOs](https://github.com/mate-academy/react_dynamic-list-of-todos#react-dynamic-list-of-todos)
-using the Redux. It should look and work identically, so use the same markup.
+- Implemented List of TODOs using React Redux
 
-> Here is [the working version](https://mate-academy.github.io/react_redux-list-of-todos/)
+### Stack
 
-- `features/currentTodo` contains a sample of all the required types;
-- implement `features/filter` storing `query` and `status`;
-- implement `features/todos` storing an array of todos;
-- load the todos in the `App` on page load (don't use Redux Thunk for now);
-- `useAppSelector` already aware of `RootState` so you can write selectors in your
-components (no need to write them in the store file)
+- HTML (BEM)
+- CSS (Bulma)
+- JS
+- Typescript
+- React
+- ReactDOM
+- React Router
+- React Redux
 
-## Instructions
-- Install Prettier Extention and use this [VSCode settings](https://mate-academy.github.io/fe-program/tools/vscode/settings.json) to enable format on save.
-- Replace `<your_account>` with your Github username in the [DEMO LINK](https://AndriiZakharenko.github.io/react_redux-list-of-todos/)
-- Follow the [React task guideline](https://github.com/mate-academy/react_task-guideline#react-tasks-guideline)
+### Tools
+
+- ESlint
+- Prettier
+- Cypress
+- Mochawesome
+- Vite
+
+### Demo links
+
+- [Demo](https://AndriiZakharenko.github.io/list-of-todos/)
