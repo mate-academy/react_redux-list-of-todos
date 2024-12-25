@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { FilterParams } from '../types/filterParams';
+import { FilterParams } from '../types/FilterParams';
 import { Todo } from '../types/Todo';
 import { RootState } from '../app/store';
 

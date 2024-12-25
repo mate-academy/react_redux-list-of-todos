@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Status } from '../types/Status';
-import { FilterParams } from '../types/filterParams';
+import { FilterParams } from '../types/FilterParams';
 
 const initialState: FilterParams = {
   query: '',
