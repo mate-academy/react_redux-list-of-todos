@@ -2,10 +2,25 @@ import classNames from 'classnames';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { currentTodoSlice } from '../../features/currentTodo';
+import { useEffect, useState } from 'react';
+import { getTodos } from '../../services/api';
+import { todosSlice } from '../../features/todos';
+import { Loader } from '../Loader';
 
 export const TodoList = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   const dispatch = useAppDispatch();
   const { filter, currentTodo, todos } = useAppSelector(state => state);
+
+  useEffect(() => {
+    getTodos()
+      .then(loadedTodos => {
+        dispatch(todosSlice.actions.setTodos(loadedTodos));
+      })
+      .finally(() => setIsLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //#region filterTodos
   const filteredTodos = todos
@@ -24,6 +39,10 @@ export const TodoList = () => {
       todo.title.toLowerCase().includes(filter.query.toLowerCase()),
     );
   //#endregion
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <>

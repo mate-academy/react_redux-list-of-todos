@@ -5,9 +5,7 @@ export const currentTodoSlice = createSlice({
   name: 'currentTodo',
   initialState: null as Todo | null,
   reducers: {
-    set: (currentTodo, { payload }: PayloadAction<Todo | null>) => {
-      return payload;
-    },
+    set: (currentTodo, { payload }: PayloadAction<Todo | null>) => payload,
     clear: () => null,
   },
 });
