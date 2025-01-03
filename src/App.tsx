@@ -36,6 +36,8 @@ export const App: React.FC = () => {
     selectedFilter: selectedCondition,
   });
 
+  const isShow = !isLoading && !!todos.length;
+
   return (
     <>
       <div className="section">
@@ -50,9 +52,7 @@ export const App: React.FC = () => {
             <div className="block">
               {isLoading && <Loader />}
 
-              {!isLoading && todos.length > 0 && (
-                <TodoList todos={visibleTodos} />
-              )}
+              {isShow && <TodoList todos={visibleTodos} />}
             </div>
           </div>
         </div>

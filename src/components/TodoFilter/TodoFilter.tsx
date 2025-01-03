@@ -2,8 +2,7 @@ import React from 'react';
 import { Filters } from '../../types/Filters';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import { setFilter, setQuery } from '../../features/filter';
-
-const filters = ['All', 'Active', 'Completed'];
+import { FILTERS } from '../../constans/filters';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -29,7 +28,7 @@ export const TodoFilter: React.FC = () => {
             value={selectedFilter}
             onChange={onFilterChange}
           >
-            {filters.map(filter => (
+            {FILTERS.map(filter => (
               <option value={filter.toLowerCase()} key={filter}>
                 {filter}
               </option>

@@ -25,13 +25,13 @@ export const getFilteredTodos = (
     }
   });
 
-  const normilizedQuery = query.toLowerCase().trim();
+  const normalizedQuery = query.toLowerCase().trim();
 
-  if (normilizedQuery) {
+  if (normalizedQuery) {
     filteredTodos = filteredTodos.filter(({ title }) => {
-      const normilizedTitle = title.toLowerCase();
+      const normalizedTitle = title.toLowerCase();
 
-      return normilizedTitle.includes(normilizedQuery);
+      return normalizedTitle.includes(normalizedQuery);
     });
   }
 

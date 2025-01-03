@@ -8,7 +8,9 @@ type Props = {
   todos: Todo[];
 };
 
-export const TodoList: React.FC<Props> = ({ todos }) => {
+export const TodoList: React.FC<Props> = props => {
+  const { todos } = props;
+
   const dispatch = useAppDispatch();
 
   const currentTodo = useAppSelector(state => state.currentTodo);
