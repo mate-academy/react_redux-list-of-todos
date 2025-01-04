@@ -14,9 +14,9 @@ export const TodoList: React.FC = () => {
 
   const selectTodo = (todo: Todo) => {
     if (currentTodo === todo) {
-      dispatch(currentTodoActions.clearCurrentUser())
+      dispatch(currentTodoActions.clearCurrentTodo())
     } else {
-      dispatch(currentTodoActions.setCurrentUser(todo));
+      dispatch(currentTodoActions.setCurrentTodo(todo));
     }
   };
   const filteredTodos = todos.filter((todo) => todo.title.toLowerCase().includes(query.trim().toLowerCase()))

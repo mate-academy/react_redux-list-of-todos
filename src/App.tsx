@@ -8,6 +8,7 @@ import { getTodos } from './api';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
   const dispatch = useAppDispatch();
   const currentTodo = useAppSelector(state => state.currentTodo);
 
@@ -20,8 +21,7 @@ export const App = () => {
         dispatch(todosActions.setTodos(result));
         setIsLoading(false);
       } catch {
-        setIsLoading(false);
-        throw new Error('error');
+        setHasError(true);
       }
     })();
   }, [dispatch]);
@@ -39,7 +39,13 @@ export const App = () => {
 
             <div className="block">
               {isLoading && <Loader />}
-              <TodoList />
+              {hasError ? (
+                <p className="has-text-danger">
+                  Super User Friendly Error notification :`(
+                </p>
+              ) : (
+                <TodoList />
+              )}
             </div>
           </div>
         </div>

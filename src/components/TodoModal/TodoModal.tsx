@@ -8,10 +8,11 @@ import { User } from '../../types/User';
 export const TodoModal: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<null | User>(null);
+  const [hasError, setHasError] = useState(false);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const closeCurrentTodo = () => {
-    dispatch(currentTodoActions.clearCurrentUser());
+    dispatch(currentTodoActions.clearCurrentTodo());
   };
 
   useEffect(() => {
@@ -23,7 +24,9 @@ export const TodoModal: React.FC = () => {
 
           setUser(result);
           setIsLoading(false);
-        } catch {}
+        } catch {
+          setHasError(true);
+        }
       })();
     }
   }, [currentTodo]);
@@ -31,7 +34,7 @@ export const TodoModal: React.FC = () => {
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
-
+      {hasError && <p>Somehow an error has occurred, Sry</p>}
       {isLoading ? (
         <Loader />
       ) : (
