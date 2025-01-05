@@ -1,26 +1,47 @@
+import { useEffect, useState } from 'react';
+import { useAppSelector } from './app/hooks';
+
+import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { filterTodos } from './services/service';
+
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const todos = useAppSelector(state => state.todos.todos);
+  const filter = useAppSelector(state => state.filter);
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  const filteredTodos = filterTodos(todos, filter);
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+  useEffect(() => {
+    if (!!todos.length) {
+      setIsLoading(false);
+    }
+  }, [todos]);
+
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {isLoading && <Loader />}
+              <TodoList filteredTodos={filteredTodos} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {selectedTodo && <TodoModal />}
+    </>
+  );
+};
