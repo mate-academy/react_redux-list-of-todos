@@ -7,17 +7,17 @@ import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
 import { getTodos } from './api';
-import { useAppDispatch, useAppSelector } from './app/hook';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './app/store';
 import { setTodos } from './features/todos';
 
 export const App: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { query, status: selectFilter } = useAppSelector(
+  const dispatch = useDispatch();
+  const { query, status: selectFilter } = useSelector(
     (state: RootState) => state.filter,
   );
 
-  const todos = useAppSelector((state: RootState) => state.todos);
+  const todos = useSelector((state: RootState) => state.todos);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const App: React.FC = () => {
     };
 
     loadTodos();
-  }, [dispatch]);
+  }, [dispatch, selectFilter, query]);
 
   const filteredTodos = todos
     .filter(todo => {

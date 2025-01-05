@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hook';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentTodo } from '../../features/currentTodo';
 import { RootState } from '../../app/store';
 import { Todo } from '../../types/Todo';
@@ -9,8 +9,8 @@ type Props = {
 };
 
 export const TodoList: React.FC<Props> = ({ todos }) => {
-  const dispatch = useAppDispatch();
-  const selectTodo = useAppSelector((state: RootState) => state.currentTodo);
+  const dispatch = useDispatch();
+  const selectTodo = useSelector((state: RootState) => state.currentTodo);
   const handleTodoSelect = (todo: Todo) => {
     if (selectTodo && selectTodo.id === todo.id) {
       dispatch(setCurrentTodo(null));

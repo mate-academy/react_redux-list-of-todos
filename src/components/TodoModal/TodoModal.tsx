@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hook';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentTodo } from '../../features/currentTodo';
 import { RootState } from '../../app/store';
 import { Loader } from '../Loader';
@@ -7,8 +7,8 @@ import { getUser } from '../../api';
 import { User } from '../../types/User';
 
 export const TodoModal: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const selectTodo = useAppSelector((state: RootState) => state.currentTodo);
+  const dispatch = useDispatch();
+  const selectTodo = useSelector((state: RootState) => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -58,7 +58,7 @@ export const TodoModal: React.FC = () => {
               className="delete"
               data-cy="modal-close"
               onClick={onClose}
-            />
+            ></button>
           </header>
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">

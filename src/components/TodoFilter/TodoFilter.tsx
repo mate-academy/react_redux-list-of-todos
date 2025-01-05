@@ -1,12 +1,12 @@
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../app/hook';
+import { useDispatch, useSelector } from 'react-redux';
 import { setFilter, setQuery } from '../../features/filter';
 import { RootState } from '../../app/store';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const { query, status } = useAppSelector((state: RootState) => state.filter);
+  const dispatch = useDispatch();
+  const { query, status } = useSelector((state: RootState) => state.filter);
 
   const filterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setFilter(event.target.value as Status));
@@ -50,7 +50,7 @@ export const TodoFilter: React.FC = () => {
               type="button"
               className="delete"
               onClick={() => dispatch(setQuery(''))}
-            />
+            ></button>
           </span>
         )}
       </p>
