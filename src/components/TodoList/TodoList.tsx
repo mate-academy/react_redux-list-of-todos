@@ -1,6 +1,5 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
-import { fetchTodos } from '../../features/todos';
+import React from 'react';
 import { currentTodoSlice } from '../../features/currentTodo';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
@@ -14,10 +13,6 @@ export const TodoList: React.FC<Props> = ({ filteredTodos }) => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(state => state.todos.loading);
   const currentTodo = useAppSelector(state => state.currentTodo);
-
-  useEffect(() => {
-    dispatch(fetchTodos());
-  }, [dispatch]);
 
   const handleClick = (todo: Todo) => {
     dispatch(currentTodoSlice.actions.currentTodo(todo));

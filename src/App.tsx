@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react';
-import { useAppSelector } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { filterTodos } from './services/service';
 
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import { useEffect } from 'react';
+import { fetchTodos } from './features/todos';
 
 export const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos.todos);
+  const isLoading = useAppSelector(state => state.todos.loading);
   const filter = useAppSelector(state => state.filter);
 
-  const filteredTodos = filterTodos(todos, filter);
-
   useEffect(() => {
-    if (!!todos.length) {
-      setIsLoading(false);
-    }
-  }, [todos]);
+    dispatch(fetchTodos());
+  }, [dispatch]);
+
+  const filteredTodos = filterTodos(todos, filter);
 
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
