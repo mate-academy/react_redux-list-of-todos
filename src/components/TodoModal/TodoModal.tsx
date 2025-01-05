@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { currentTodoSlice } from '../../features/currentTodo';
 
 import { Loader } from '../Loader';
+
 import { User } from '../../types/User';
 
 import cn from 'classnames';
