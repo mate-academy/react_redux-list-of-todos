@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { actions } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -10,27 +11,21 @@ export const TodoFilter: React.FC = () => {
     dispatch(actions.setQuery(event.target.value));
   };
 
+  const statusOptions = ['all', 'active', 'completed'];
+
+  const StatusGuard = (status: string): status is Status => {
+    return statusOptions.includes(status);
+  };
+
   const handleStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    switch (event.target.value) {
-      case 'all':
-        dispatch(actions.setStatus('all'));
-        break;
-      case 'active':
-        dispatch(actions.setStatus('active'));
-        break;
-      case 'completed':
-        dispatch(actions.setStatus('completed'));
-        break;
-      default:
-        return;
+    if (StatusGuard(event.target.value)) {
+      dispatch(actions.setStatus(event.target.value));
     }
   };
 
   const handleClearQuery = () => {
     dispatch(actions.clearQuery());
   };
-
-  const options = ['all', 'active', 'completed'];
 
   return (
     <form
@@ -43,7 +38,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="statusSelect"
             onChange={event => handleStatus(event)}
           >
-            {options.map(option => {
+            {statusOptions.map(option => {
               return (
                 <option key={option} value={option}>
                   {option}
@@ -61,20 +56,14 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={event => {
-            handleQuery(event);
-          }}
+          onChange={handleQuery}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
         {query && (
-          <span
-            className="icon is-right"
-            style={{ pointerEvents: 'all' }}
-            onClick={handleClearQuery}
-          >
+          <span className="icon is-right" onClick={handleClearQuery}>
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               data-cy="clearSearchButton"
