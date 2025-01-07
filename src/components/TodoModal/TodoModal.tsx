@@ -34,7 +34,7 @@ export const TodoModal: React.FC = () => {
       // eslint-disable-next-line no-console
       .catch(err => console.log(err))
       .finally(() => setLoading(false));
-  }, [todo.userId]);
+  }, []);
 
   const { id, title, completed } = todo;
   const { name, email } = user;

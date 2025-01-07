@@ -30,7 +30,7 @@ export const App = () => {
       // eslint-disable-next-line no-console
       .catch(err => console.log(err))
       .finally(() => setLoading(false));
-  }, [setTodos]);
+  }, []);
 
   return (
     <>
