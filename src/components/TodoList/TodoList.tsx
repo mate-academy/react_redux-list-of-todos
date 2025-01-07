@@ -5,9 +5,10 @@ import cn from 'classnames';
 import { useDispatch } from 'react-redux';
 import { currentTodoSlice } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { AppDispatch } from '../../app/store';
 
 export const TodoList: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { actions: currentTodoActions } = currentTodoSlice;
   const {todos, currentTodo, filter } = useAppSelector(state => state);
   const { query, status } = filter;
@@ -16,7 +17,10 @@ export const TodoList: React.FC = () => {
     return title.toLowerCase().includes(query.toLowerCase());
   }, [])
 
-  const selectTodo = useCallback((newTodo: Todo) => dispatch(currentTodoActions.set(newTodo)), []);
+  const selectTodo = useCallback(
+    (newTodo: Todo) => dispatch(currentTodoActions.set(newTodo)),
+    [dispatch, currentTodoActions],
+  );
 
   const filteredTodos: Todo[] = useMemo(() => {
     return status === 'all'

@@ -3,9 +3,10 @@ import { useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
 import { useDispatch } from 'react-redux';
 import { filterSlice } from '../../features/filter';
+import { AppDispatch } from '../../app/store';
 
 export const TodoFilter: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const { actions: filterActions } = filterSlice;
   const { query, status } = useAppSelector(state => state.filter);
 

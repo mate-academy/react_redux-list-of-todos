@@ -6,6 +6,7 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { useDispatch } from 'react-redux';
 import { currentTodoSlice } from '../../features/currentTodo';
+import { AppDispatch } from '../../app/store';
 
 const emptyUser: User = {
   id: 0,
@@ -15,7 +16,7 @@ const emptyUser: User = {
 };
 
 export const TodoModal: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const todo = useAppSelector(state => state.currentTodo) as Todo;
 
   const [loading, setLoading] = useState(false);
