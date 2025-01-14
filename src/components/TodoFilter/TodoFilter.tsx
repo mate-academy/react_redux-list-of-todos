@@ -20,8 +20,8 @@ export const TodoFilter: React.FC = () => {
       onSubmit={event => event.preventDefault()}
     >
       <p className="control">
-        <span className="select" onChange={handlerSelect}>
-          <select data-cy="statusSelect">
+        <span className="select">
+          <select data-cy="statusSelect" onChange={handlerSelect}>
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
