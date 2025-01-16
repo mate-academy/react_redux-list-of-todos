@@ -1,41 +1,105 @@
-import React from 'react';
-import { Loader } from '../Loader';
+// src/components/TodoModal/TodoModal.tsx
+import React, { useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { setCurrentTodo } from '../../features/currentTodo';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
 
 export const TodoModal: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(
+    state =>
+      state.currentTodo as {
+        id: number;
+        userId: number;
+        title: string;
+        completed: boolean;
+      } | null,
+  );
+
+  const [user, setUser] = useState<User | null>(null);
+  const [loadingUser, setLoadingUser] = useState(false);
+
+  useEffect(() => {
+    if (!currentTodo) {
+      return;
+    }
+
+    const loadUser = async () => {
+      setLoadingUser(true);
+      setUser(null);
+
+      try {
+        // Завантажимо дані про автора
+        // напр. "https://jsonplaceholder.typicode.com/users/1"
+        const res = await fetch(
+          `https://jsonplaceholder.typicode.com/users/${currentTodo.userId}`,
+        );
+        const data: User = await res.json();
+
+        setUser(data);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+
+    loadUser();
+  }, [currentTodo]);
+
+  const handleClose = () => {
+    dispatch(setCurrentTodo(null));
+  };
+
+  // Якщо не обрано todo, не відображаємо модалку
+  if (!currentTodo) {
+    return null;
+  }
+
   return (
     <div className="modal is-active" data-cy="modal">
-      <div className="modal-background" />
-
-      <Loader />
+      <div className="modal-background" onClick={handleClose} />
 
       <div className="modal-card">
         <header className="modal-card-head">
-          <div
-            className="modal-card-title has-text-weight-medium"
-            data-cy="modal-header"
-          >
-            Todo #3
-          </div>
-
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
+          <p className="modal-card-title" data-cy="modal-header">
+            {`Todo #${currentTodo.id}`}
+          </p>
+          {/* Кнопка закрити */}
+          <button
+            type="button"
+            className="delete"
+            data-cy="modal-close"
+            onClick={handleClose}
+          />
         </header>
 
-        <div className="modal-card-body">
+        <section className="modal-card-body">
           <p className="block" data-cy="modal-title">
-            fugiat veniam minus
+            {currentTodo.title}
           </p>
 
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
+          {/* Показуємо "loading" чи "Done/Planned by..." */}
+          {loadingUser && <div data-cy="loader">Loading user...</div>}
 
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
-            {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-          </p>
-        </div>
+          {!loadingUser && user && (
+            <p className="block" data-cy="modal-user">
+              {currentTodo.completed ? (
+                <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>
+              )}
+              {' by '}
+              {user.name}
+            </p>
+          )}
+        </section>
       </div>
     </div>
   );
