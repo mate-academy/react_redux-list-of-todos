@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
@@ -21,7 +22,7 @@ export const App = () => {
   useEffect(() => {
     setLoading(true);
     getAllTodos();
-  });
+  }, []);
 
   return (
     <>
