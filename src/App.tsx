@@ -42,7 +42,7 @@ export const App = () => {
               </div>
 
               <div className="block">
-                {todos.length < 0 && <Loader />}
+                {todos.length === 0 && <Loader />}
                 <TodoList todos={todos} />
               </div>
             </div>

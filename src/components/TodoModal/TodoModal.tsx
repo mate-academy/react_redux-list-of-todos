@@ -70,7 +70,7 @@ export const TodoModal: React.FC = () => {
                 <strong className="has-text-success">Done</strong>
               )}
               {' by '}
-              <a href="mailto:Sincere@april.biz">{user?.name}</a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>

@@ -16,7 +16,7 @@ export const TodoFilter: React.FC = () => {
     dispatch(filterSlice.actions.setQuery(newQuery));
   };
 
-  const handleClearButton = () => {
+  const handleClearQuery = () => {
     setQuery('');
     dispatch(filterSlice.actions.setQuery(''));
   };
@@ -56,7 +56,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={handleClearButton}
+              onClick={handleClearQuery}
             />
           </span>
         )}
