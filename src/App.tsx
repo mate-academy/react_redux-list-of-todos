@@ -7,10 +7,8 @@ import { TodoList, TodoFilter, TodoModal, Loader } from './components';
 import { getTodos } from './api';
 import { Todo } from './types/Todo';
 import { Status } from './types/Status';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from './app/store';
 import { todosSlice } from './features/todos';
-import { Filter } from './types/Filter';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 function getFilteredTodos(todos: Todo[], query: string, filterOption: Status) {
   const filteredTodos = todos
@@ -32,14 +30,10 @@ function getFilteredTodos(todos: Todo[], query: string, filterOption: Status) {
 }
 
 export const App: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const selectedTodo = useSelector<RootState>(
-    state => state.currentTodo,
-  ) as Todo;
-  const todos = useSelector<RootState>(state => state.todos) as Todo[];
-  const { query, status } = useSelector<RootState>(
-    state => state.filter,
-  ) as Filter;
+  const dispatch = useAppDispatch();
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+  const { query, status } = useAppSelector(state => state.filter);
   const [isLoading, setIsLoading] = useState(false);
 
   const setTodos = (todosData: Todo[]) => {

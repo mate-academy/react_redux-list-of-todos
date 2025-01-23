@@ -1,12 +1,10 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../app/store';
 import { Status } from '../../types/Status';
-import { Filter } from '../../types/Filter';
 import { filterSlice } from '../../features/filter';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoFilter = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { query } = useSelector<RootState>(state => state.filter) as Filter;
+  const dispatch = useAppDispatch();
+  const { query } = useAppSelector(state => state.filter);
 
   const setStatus = (stat: Status) =>
     dispatch(filterSlice.actions.setStatus(stat));
