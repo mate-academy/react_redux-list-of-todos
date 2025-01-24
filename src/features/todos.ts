@@ -1,8 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
+const initialState: Todo[] = [];
+
 export const todosSlice = createSlice({
-  name: 'todos',
-  initialState: [] as Todo[],
-  reducers: {},
+  name: 'features',
+  initialState: initialState,
+  reducers: {
+    todos(state, action: PayloadAction<Todo[]>) {
+      return action.payload;
+    },
+  },
 });
+
+export const { todos } = todosSlice.actions;
