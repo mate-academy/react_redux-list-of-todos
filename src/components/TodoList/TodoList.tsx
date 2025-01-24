@@ -3,38 +3,42 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { currentTodo } from '../../features/currentTodo';
+import { Todo } from '../../types/Todo';
 
-export const TodoList: React.FC = () => {
-  const todos = useSelector((state: RootState) => state.todos);
+interface Props {
+  todosList: Todo[];
+}
+
+export const TodoList: React.FC<Props> = ({ todosList }) => {
   const current = useSelector((state: RootState) => state.currentTodo);
-  const currentStatus = useSelector((state: RootState) => state.filter);
+  const filter = useSelector((state: RootState) => state.filter);
   const dispatch = useDispatch();
 
   function filterTodos() {
-    switch (currentStatus.status) {
+    switch (filter.status) {
       case 'all': {
-        return currentStatus.query
-          ? todos.filter(todo => todo.title.toLowerCase().includes(currentStatus.query.toLowerCase()))
-          : todos;
+        return filter.query
+          ? todosList.filter(todo => todo.title.toLowerCase().includes(filter.query.toLowerCase()))
+          : todosList;
       }
       case 'active': {
-        return currentStatus.query
-          ? todos.filter(
+        return filter.query
+          ? todosList.filter(
               todo =>
-                !todo.completed && todo.title.toLowerCase().includes(currentStatus.query.toLowerCase()),
+                !todo.completed && todo.title.toLowerCase().includes(filter.query.toLowerCase()),
             )
-          : todos.filter(todo => !todo.completed);
+          : todosList.filter(todo => !todo.completed);
       }
       case 'completed': {
-        return currentStatus.query
-          ? todos.filter(
+        return filter.query
+          ? todosList.filter(
               todo =>
-                todo.completed && todo.title.toLowerCase().includes(currentStatus.query.toLowerCase()),
+                todo.completed && todo.title.toLowerCase().includes(filter.query.toLowerCase()),
             )
-          : todos.filter(todo => todo.completed);
+          : todosList.filter(todo => todo.completed);
       }
       default:
-        return todos;
+        return todosList;
     }
   }
 

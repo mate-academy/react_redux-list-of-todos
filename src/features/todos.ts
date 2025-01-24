@@ -8,7 +8,7 @@ export const todosSlice = createSlice({
   initialState: initialState,
   reducers: {
     todos(state, action: PayloadAction<Todo[]>) {
-      return [...state, ...action.payload];
+      return action.payload;
     },
   },
 });

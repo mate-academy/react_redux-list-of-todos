@@ -8,11 +8,7 @@ export const currentTodoSlice = createSlice({
   initialState: initialState,
   reducers: {
     currentTodo(state, action: PayloadAction<Todo>) {
-      if (state === null) {
-        return action.payload;
-      } else {
-        return { ...state, ...action.payload };
-      }
+      return action.payload;
     },
     clearCurrentTodo() {
       return null;
