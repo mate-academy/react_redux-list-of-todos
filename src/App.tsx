@@ -45,7 +45,7 @@ export const App: React.FC = () => {
         .then(res => dispatch(todosActions.todos(res)))
         .finally(() => setLoading(false));
     }
-  }, [filter.status]);
+  }, [filter.status, dispatch]);
 
   function handleCloseButton() {
     dispatch(currentTodoActions.selectTodo(null));
