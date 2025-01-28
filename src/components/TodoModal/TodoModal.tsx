@@ -19,6 +19,9 @@ export const TodoModal: React.FC = () => {
       setIsLoading(true);
       getUser(selectedTodo.userId)
         .then(setUser)
+        .catch(() => {
+          setUser(null);
+        })
         .finally(() => setIsLoading(false));
     }
   }, [selectedTodo]);
@@ -64,7 +67,6 @@ export const TodoModal: React.FC = () => {
             </p>
 
             <p className="block" data-cy="modal-user">
-              {/* <strong className="has-text-success">Done</strong> */}
               {completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
@@ -73,7 +75,11 @@ export const TodoModal: React.FC = () => {
 
               {' by '}
 
-              <a href={`mailto:${user?.email}`}>{user?.name}</a>
+              {user ? (
+                <a href={`mailto:${user.email}`}>{user.name}</a>
+              ) : (
+                <span className="has-text-grey">User not available</span>
+              )}
             </p>
           </div>
         </div>

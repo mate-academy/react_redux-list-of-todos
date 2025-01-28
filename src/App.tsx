@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -18,16 +17,18 @@ export const App: React.FC = () => {
 
   const todos = useAppSelector(state => state.todos);
   const query = useAppSelector(state => state.filter.query);
-
   const selectedCondition = useAppSelector(state => state.filter.status);
   const selectedTodo = useAppSelector(state => state.currentTodo);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
+    setError(null);
     getTodos()
       .then(res => dispatch(todosSlice.actions.setTodos(res)))
+      .catch(() => setError('Failed to load todos. Please try again later.'))
       .finally(() => setIsLoading(false));
   }, [dispatch]);
 
@@ -36,7 +37,7 @@ export const App: React.FC = () => {
     selectedFilter: selectedCondition,
   });
 
-  const isShow = !isLoading && !!todos.length;
+  const isShow = !isLoading && todos.length > 0;
 
   return (
     <>
@@ -51,8 +52,9 @@ export const App: React.FC = () => {
 
             <div className="block">
               {isLoading && <Loader />}
-
+              {error && <p className="has-text-danger">{error}</p>}
               {isShow && <TodoList todos={visibleTodos} />}
+              {!isShow && !isLoading && !error && <p>No todos available.</p>}
             </div>
           </div>
         </div>

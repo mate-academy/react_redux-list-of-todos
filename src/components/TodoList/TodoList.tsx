@@ -48,9 +48,7 @@ export const TodoList: React.FC<Props> = props => {
                   <span className="icon" data-cy="iconCompleted">
                     <i className="fas fa-check" />
                   </span>
-                ) : (
-                  ''
-                )}
+                ) : null}
               </td>
 
               <td className="is-vcentered is-expanded">
@@ -69,13 +67,20 @@ export const TodoList: React.FC<Props> = props => {
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => dispatch(setCurrentTodo(todo))}
+                  onClick={() => {
+                    if (currentTodo && currentTodo.id === todo.id) {
+                      dispatch(setCurrentTodo(null));
+                    } else {
+                      dispatch(setCurrentTodo(todo));
+                    }
+                  }}
                 >
                   <span className="icon">
                     <i
                       className={cn('far', {
-                        'fa-eye-slash': isSelected,
-                        'fa-eye': !isSelected,
+                        'fa-eye-slash':
+                          currentTodo && currentTodo.id === todo.id,
+                        'fa-eye': !(currentTodo && currentTodo.id === todo.id),
                       })}
                     />
                   </span>
