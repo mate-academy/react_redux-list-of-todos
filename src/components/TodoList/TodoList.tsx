@@ -1,14 +1,14 @@
 /* eslint-disable */
 import React, { useCallback, useMemo } from 'react';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
 
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { currentTodoSlice } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 export const TodoList: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
@@ -23,7 +23,7 @@ export const TodoList: React.FC = () => {
         todo.title.toLowerCase().includes(cleanQuery) &&
         (status === 'all' || todo.completed === cleanStatus),
     );
-  }, [query, status]);
+  }, [todos, query, status]);
 
   const selectTodo = useCallback((todo: Todo | null) => {
     dispatch(currentTodoSlice.actions.select(todo));

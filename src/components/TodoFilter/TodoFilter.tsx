@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { filterSlice } from '../../features/filter';
 import { useAppSelector } from '../../hooks/useAppSelector';
 
 import { Status } from '../../types/Status';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 export const TodoFilter: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { query, status } = useAppSelector(state => state.filter);
 
   const handleQueryChange = useCallback(

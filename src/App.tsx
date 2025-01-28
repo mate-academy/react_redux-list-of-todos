@@ -1,16 +1,16 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
-import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 
 import { getTodos } from './api';
 import { todosSlice } from './features/todos';
 import { useAppSelector } from './hooks/useAppSelector';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { useAppDispatch } from './hooks/useAppDispatch';
 
 export const App = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
