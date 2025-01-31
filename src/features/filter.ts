@@ -10,10 +10,16 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     setQuery(state, action) {
-      state.query = action.payload;
+      return {
+        ...state,
+        query: action.payload,
+      };
     },
     setStatus(state, action) {
-      state.status = action.payload;
+      return {
+        ...state,
+        status: action.payload,
+      };
     },
   },
 });

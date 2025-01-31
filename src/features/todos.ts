@@ -9,8 +9,11 @@ export const todosSlice = createSlice({
   },
   reducers: {
     setTodos(state, action) {
-      state.todos = action.payload;
-      state.originalTodos = action.payload;
+      return {
+        ...state,
+        todos: action.payload,
+        originalTodos: action.payload,
+      };
     },
     applyFilters(state, action) {
       const newTodos = state.originalTodos
@@ -28,7 +31,10 @@ export const todosSlice = createSlice({
               : todo.completed,
         );
 
-      state.todos = newTodos;
+      return {
+        ...state,
+        todos: newTodos,
+      };
     },
   },
 });

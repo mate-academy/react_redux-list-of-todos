@@ -20,10 +20,6 @@ export const TodoModal: React.FC<Props> = ({
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    console.log(currentTodo);
-  }, [active]);
-
-  useEffect(() => {
     if (selectedUserId !== null) {
       setLoading(true);
       getUser(selectedUserId)
