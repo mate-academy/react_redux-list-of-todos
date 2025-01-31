@@ -18,7 +18,9 @@ export const App = () => {
     setIsLoading(true);
 
     getTodos()
-      .then(todosFromServer => dispatch(todosSlice.actions.setTodos(todosFromServer)))
+      .then(todosFromServer =>
+        dispatch(todosSlice.actions.setTodos(todosFromServer)),
+      )
       .finally(() => setIsLoading(false));
   }, [dispatch]);
 
@@ -31,7 +33,7 @@ export const App = () => {
       return false;
     }
 
-    if (filter.query && !todo.title.includes(filter.query)) {
+    if (filter.query && !todo.title.toLowerCase().includes(filter.query.toLowerCase())) {
       return false;
     }
 
