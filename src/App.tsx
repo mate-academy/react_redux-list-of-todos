@@ -5,7 +5,6 @@ import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
 import { getTodos } from './api';
 import { todosSlice } from './features/todos';
-// import { filterSlice } from '../../features/filter';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +32,10 @@ export const App = () => {
       return false;
     }
 
-    if (filter.query && !todo.title.toLowerCase().includes(filter.query.toLowerCase())) {
+    if (
+      filter.query &&
+      !todo.title.toLowerCase().includes(filter.query.toLowerCase())
+    ) {
       return false;
     }
 
