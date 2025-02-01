@@ -1,31 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { currentTodoSlice } from '../../features/currentTodo';
-import { getUser } from '../../api';
+import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
+import { getUser } from '../../api';
+import { useAppDispatch } from '../../app/hooks';
+import { currentTodoSlice } from '../../features/currentTodo';
 
-export const TodoModal: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const currentTodo = useAppSelector(state => state.currentTodo);
+type Props = {
+  currentTodo: Todo;
+};
+
+export const TodoModal: React.FC<Props> = ({ currentTodo }) => {
+  const { id, title, userId, completed } = currentTodo;
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (currentTodo) {
-      const loadUser = async () => {
-        try {
-          const currentUser = await getUser(currentTodo.userId);
+    const loadUser = async () => {
+      try {
+        const data = await getUser(userId);
 
-          setUser(currentUser);
-        } finally {
-          setIsLoading(false);
-        }
-      };
+        setUser(data);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-      loadUser();
-    }
-  }, [currentTodo]);
+    loadUser();
+  }, [userId]);
+
+  const handleModalClose = () => {
+    dispatch(currentTodoSlice.actions.clearTodo());
+  };
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -40,7 +47,7 @@ export const TodoModal: React.FC = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${currentTodo?.id}`}
+              Todo #{id}
             </div>
 
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
@@ -48,25 +55,19 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() =>
-                dispatch(currentTodoSlice.actions.clearCurrentTodo())
-              }
+              onClick={handleModalClose}
             />
           </header>
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {currentTodo?.title}
+              {title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {/* For not completed */}
-              {!currentTodo?.completed && (
+              {!completed ? (
                 <strong className="has-text-danger">Planned</strong>
-              )}
-
-              {/* For completed */}
-              {currentTodo?.completed && (
+              ) : (
                 <strong className="has-text-success">Done</strong>
               )}
               {' by '}

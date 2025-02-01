@@ -1,25 +1,22 @@
-import React, { useState } from 'react';
-import { useAppDispatch } from '../../app/hooks';
+import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { filterSlice } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const [query, setQuery] = useState('');
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
 
-  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuery = e.target.value;
-
-    setQuery(newQuery);
-    dispatch(filterSlice.actions.setQuery(newQuery));
-  };
-
-  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleSelection = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(filterSlice.actions.setStatus(event.target.value));
   };
 
-  const handleClearButton = () => {
-    setQuery('');
-    dispatch(filterSlice.actions.setQuery(''));
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterSlice.actions.setQuery(event.target.value));
+  };
+
+  const handleQueryClear = () => {
+    dispatch(filterSlice.actions.clearQuery());
   };
 
   return (
@@ -29,7 +26,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect" onChange={handleStatusChange}>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleSelection}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -57,7 +58,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={handleClearButton}
+              onClick={handleQueryClear}
             />
           </span>
         )}
