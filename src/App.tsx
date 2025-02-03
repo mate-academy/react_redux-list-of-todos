@@ -12,6 +12,7 @@ export const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const todos = useSelector((state: RootState) => state.todosReducer);
   const selectedTodo = todos.find(todo => todo.selectedTodo);
+  const [fetchErorr, setFetchErorr] = useState(false);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -21,6 +22,7 @@ export const App = () => {
 
         dispatch(setTodos(todosByServer));
       } catch (error) {
+        setFetchErorr(true);
         throw error;
       } finally {
         setIsLoading(false);
@@ -35,13 +37,21 @@ export const App = () => {
       <div className="section">
         <div className="container">
           <div className="box">
-            <h1 className="title">Todos:</h1>
+            {fetchErorr ? (
+              <p>Something going wrong</p>
+            ) : (
+              <>
+                <h1 className="title">Todos:</h1>
 
-            <div className="block">
-              <TodoFilter />
-            </div>
+                <div className="block">
+                  <TodoFilter />
+                </div>
 
-            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
+                <div className="block">
+                  {isLoading ? <Loader /> : <TodoList />}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

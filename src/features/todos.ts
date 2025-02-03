@@ -15,10 +15,10 @@ export const todosSlice = createSlice({
       return state.map(todo =>
         todo.id === action.payload
           ? {
-              ...todo,
-              selectedTodo:
+            ...todo,
+            selectedTodo:
                 todo.selectedTodo !== undefined ? !todo.selectedTodo : true,
-            }
+          }
           : todo,
       );
     },
