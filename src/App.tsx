@@ -26,7 +26,7 @@ export const App = () => {
       dispatch(addTodos(results));
       setTodosLoaded(true);
     });
-  });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
