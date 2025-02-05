@@ -1,6 +1,19 @@
 import React from 'react';
-
-export const TodoFilter: React.FC = () => {
+import { Status } from '../../types/Status';
+interface Props {
+  selectedFilter: Status;
+  setSelectedFilter: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  searchTerm: string;
+  setSearchTerm: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onClear: () => void;
+}
+export const TodoFilter: React.FC<Props> = ({
+  selectedFilter,
+  setSelectedFilter,
+  searchTerm,
+  setSearchTerm,
+  onClear,
+}) => {
   return (
     <form
       className="field has-addons"
@@ -8,7 +21,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={selectedFilter}
+            onChange={setSelectedFilter}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,19 +39,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={searchTerm}
+          onChange={setSearchTerm}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
-
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {searchTerm.length > 0 && (
+          <>
+            <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+              <button
+                data-cy="clearSearchButton"
+                type="button"
+                className="delete"
+                onClick={onClear}
+              />
+            </span>
+          </>
+        )}
       </p>
     </form>
   );
