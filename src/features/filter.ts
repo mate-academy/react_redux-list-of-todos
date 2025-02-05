@@ -13,24 +13,38 @@ export const filterSlice = createSlice({
       return {
         ...state,
         query: action.payload,
+        status: 'all',
       };
     },
     setActiveFilter: state => {
       return {
         ...state,
-        query: '',
+        status: 'active',
       };
     },
     setCompletedFilter: state => {
       return {
         ...state,
-        query: '',
+        status: 'completed',
+      };
+    },
+    setStatusFilter: (
+      state,
+      action: PayloadAction<'all' | 'active' | 'completed'>,
+    ) => {
+      return {
+        ...state,
+        status: action.payload,
       };
     },
   },
 });
 
-export const { setAllFilter, setActiveFilter, setCompletedFilter } =
-  filterSlice.actions;
+export const {
+  setAllFilter,
+  setActiveFilter,
+  setCompletedFilter,
+  setStatusFilter,
+} = filterSlice.actions;
 
 export default filterSlice.reducer;
