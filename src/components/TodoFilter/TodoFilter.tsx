@@ -1,6 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Status } from '../../types/Status';
 
-export const TodoFilter: React.FC = () => {
+interface TodoFilterProps {
+  onFilterChange: (status: Status, search: string) => void;
+  currentStatus: Status;
+  currentSearch: string;
+}
+
+export const TodoFilter: React.FC<TodoFilterProps> = ({
+  onFilterChange,
+  currentStatus,
+  currentSearch,
+}) => {
+  const [status, setStatus] = useState<Status>(currentStatus);
+  const [search, setSearch] = useState<string>(currentSearch);
+
+  useEffect(() => {
+    setStatus(currentStatus);
+    setSearch(currentSearch);
+  }, [currentStatus, currentSearch]);
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newStatus = event.target.value as Status;
+    setStatus(newStatus);
+    onFilterChange(newStatus, search);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearch = event.target.value;
+    setSearch(newSearch);
+    onFilterChange(status, newSearch);
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +39,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            value={status}
+            onChange={handleStatusChange}
+            data-cy="statusSelect"
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -18,6 +53,8 @@ export const TodoFilter: React.FC = () => {
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
+          value={search}
+          onChange={handleSearchChange}
           data-cy="searchInput"
           type="text"
           className="input"
@@ -26,15 +63,19 @@ export const TodoFilter: React.FC = () => {
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
-
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {search.length !== 0 && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => {
+                setSearch('');
+                onFilterChange(status, '');
+              }}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
