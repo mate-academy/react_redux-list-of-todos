@@ -17,7 +17,7 @@ export const App = () => {
 
       dispatch(todosSlice.actions.loadTodos(loadedTodos));
     } catch {
-      new Error('Something went wrong!');
+      alert('Something went wrong!');
     } finally {
       setIsLoading(false);
     }

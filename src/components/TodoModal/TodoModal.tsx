@@ -21,7 +21,7 @@ export const TodoModal: React.FC<Props> = ({ selectedTodo }) => {
 
       setUser(loadedUser);
     } catch {
-      new Error('Something went wrong!');
+      alert('Something went wrong!');
     } finally {
       setIsLoading(false);
     }
