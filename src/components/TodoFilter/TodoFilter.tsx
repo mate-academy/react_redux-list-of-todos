@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setStatusFilter, setQueryFilter } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
+  const [query, setQuery] = useState('');
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(
@@ -12,10 +13,14 @@ export const TodoFilter: React.FC = () => {
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setQueryFilter(event.target.value));
+    const newQuery = event.target.value;
+
+    setQuery(newQuery);
+    dispatch(setQueryFilter(newQuery));
   };
 
   const handleClearSearch = () => {
+    setQuery('');
     dispatch(setQueryFilter(''));
   };
 
@@ -40,20 +45,23 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
           onChange={handleSearchChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={handleClearSearch}
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleClearSearch}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
