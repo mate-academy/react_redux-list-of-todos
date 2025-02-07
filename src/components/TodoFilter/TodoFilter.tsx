@@ -1,26 +1,22 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  setAllFilter,
-  setActiveFilter,
-  setCompletedFilter,
-} from '../../features/filter';
+import { setStatusFilter, setQueryFilter } from '../../features/filter';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    switch (event.target.value) {
-      case 'active':
-        dispatch(setActiveFilter());
-        break;
-      case 'completed':
-        dispatch(setCompletedFilter());
-        break;
-      default:
-        dispatch(setAllFilter(''));
-        break;
-    }
+    dispatch(
+      setStatusFilter(event.target.value as 'all' | 'active' | 'completed'),
+    );
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setQueryFilter(event.target.value));
+  };
+
+  const handleClearSearch = () => {
+    dispatch(setQueryFilter(''));
   };
 
   return (
@@ -44,6 +40,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={handleSearchChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -54,6 +51,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="clearSearchButton"
             type="button"
             className="delete"
+            onClick={handleClearSearch}
           />
         </span>
       </p>

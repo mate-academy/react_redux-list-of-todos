@@ -37,6 +37,12 @@ export const filterSlice = createSlice({
         status: action.payload,
       };
     },
+    setQueryFilter: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        query: action.payload,
+      };
+    },
   },
 });
 
@@ -45,6 +51,7 @@ export const {
   setActiveFilter,
   setCompletedFilter,
   setStatusFilter,
+  setQueryFilter,
 } = filterSlice.actions;
 
 export default filterSlice.reducer;
