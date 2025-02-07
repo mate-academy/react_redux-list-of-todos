@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { getTodos } from './api';
@@ -11,21 +11,21 @@ export const App = () => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadTodos = async () => {
+  const loadTodos = useCallback(async () => {
     try {
       const todos = await getTodos();
 
       dispatch(todosSlice.actions.loadTodos(todos));
     } catch {
-      alert('Error to load todos');
+      alert('Unable to load todo list');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     loadTodos();
-  });
+  }, [loadTodos]);
 
   return (
     <>
