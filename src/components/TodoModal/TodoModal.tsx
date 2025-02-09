@@ -13,9 +13,14 @@ export const TodoModal: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getUser(currentTodo?.userId)
-      .then(setUser)
-      .finally(() => setLoading(false));
+    if (currentTodo?.userId) {
+      getUser(currentTodo.userId)
+        .then(setUser)
+        .finally(() => setLoading(false));
+    } else {
+      setUser(null);
+      setLoading(false);
+    }
   }, [currentTodo]);
 
   const closingTodo = () => {
@@ -35,7 +40,7 @@ export const TodoModal: React.FC = () => {
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              {`Todo #${currentTodo.id}`}
+              {`Todo #${currentTodo?.id}`}
             </div>
             <button
               type="button"
@@ -47,11 +52,11 @@ export const TodoModal: React.FC = () => {
 
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {currentTodo.title}
+              {currentTodo?.title}
             </p>
 
             <p className="block" data-cy="modal-user">
-              {currentTodo.completed ? (
+              {currentTodo?.completed ? (
                 <strong className="has-text-success">Done</strong>
               ) : (
                 <strong className="has-text-danger">Planned</strong>

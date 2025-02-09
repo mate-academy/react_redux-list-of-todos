@@ -4,7 +4,10 @@ import { filterSlice } from '../../features/filter';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const filter = useAppSelector(state => state.filter);
+  const filter = useAppSelector(state => state.filter) || {
+    query: '',
+    status: Status.All,
+  };
   const query = filter.query || '';
   const dispatch = useAppDispatch();
 
@@ -34,7 +37,6 @@ export const TodoFilter: React.FC = () => {
           </select>
         </span>
       </p>
-
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
           data-cy="searchInput"
@@ -47,7 +49,6 @@ export const TodoFilter: React.FC = () => {
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
-
         {!!query.length && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             <button

@@ -10,7 +10,7 @@ import { useAppSelector } from './app/hooks';
 
 export const App = () => {
   const [loading, setLoading] = useState(false);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo) || null;
   const dispatch = useDispatch();
 
   useEffect(() => {
