@@ -3,15 +3,13 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import 'bulma/css/bulma.css';
 import React, { useEffect, useState } from 'react';
 
+import { useDispatch } from 'react-redux';
 import { getTodos } from './api';
+import { useAppSelector } from './app/hooks';
 import { Loader } from './components/Loader';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoList } from './components/TodoList';
 import { TodoModal } from './components/TodoModal';
-// import { Todo } from './types/Todo';
-// import { useAppSelector } from './app/hooks';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from './app/hooks';
 import { setTodos } from './features/todos';
 
 export const App: React.FC = () => {

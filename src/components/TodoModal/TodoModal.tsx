@@ -20,7 +20,7 @@ export const TodoModal: FC = () => {
         .then(setUser)
         .finally(() => setIsLoadingUser(false));
     }
-  }, [currentTodo, currentTodo?.id]);
+  }, [currentTodo]);
 
   return (
     <div className="modal is-active" data-cy="modal">

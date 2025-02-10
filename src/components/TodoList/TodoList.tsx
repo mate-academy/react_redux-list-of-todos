@@ -34,7 +34,7 @@ export const TodoList: FC = () => {
     }
 
     setUpdatedTodos(filteredTodos);
-  }, [status, todos, setUpdatedTodos, query]);
+  }, [status, todos, query]);
 
   return (
     <table className="table is-narrow is-fullwidth">
