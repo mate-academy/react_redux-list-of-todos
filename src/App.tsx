@@ -1,26 +1,52 @@
-import 'bulma/css/bulma.css';
+/* eslint-disable max-len */
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import 'bulma/css/bulma.css';
+import React, { useEffect, useState } from 'react';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+import { useDispatch } from 'react-redux';
+import { getTodos } from './api';
+import { useAppSelector } from './app/hooks';
+import { Loader } from './components/Loader';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoList } from './components/TodoList';
+import { TodoModal } from './components/TodoModal';
+import { setTodos } from './features/todos';
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+export const App: React.FC = () => {
+  const [isLoadingTodos, setIsLoadingTodos] = useState(false); // no need to move in redux
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useDispatch();
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+  useEffect(() => {
+    setIsLoadingTodos(true);
+
+    getTodos()
+      .then(data => dispatch(setTodos(data)))
+      .finally(() => {
+        setIsLoadingTodos(false);
+      });
+  }, [dispatch]);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {isLoadingTodos && <Loader />}
+              <TodoList />
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {currentTodo && <TodoModal />}
+    </>
+  );
+};
