@@ -15,6 +15,7 @@ export const TodoModal: React.FC = () => {
     if (!currentTodo) {
       return;
     }
+
     const fetchUser = async () => {
       setLoading(true);
       try {
