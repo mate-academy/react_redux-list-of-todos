@@ -1,36 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
+import { getUser } from '../../api';
+import { User } from '../../types/User';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { currentTodoSlice } from '../../features/currentTodo';
 
-interface Props {
-  todo: {
-    id: number;
-    title: string;
-    completed: boolean;
-  } | null;
-  user: {
-    name: string;
-    email: string;
-  } | null;
-  isLoading: boolean;
-  onClose: () => void;
-}
+export const TodoModal: React.FC = () => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
 
-// eslint-disable-next-line max-len
-export const TodoModal: React.FC<Props> = ({
-  todo,
-  user,
-  isLoading,
-  onClose,
-}) => {
-  if (!todo) {
-    return null; // Якщо завдання не вибране, модальне вікно не відображається
+  useEffect(() => {
+    if (!currentTodo) {
+      return;
+    }
+
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const user = await getUser(currentTodo.userId);
+
+        setCurrentUser(user);
+      } catch (error) {
+        setCurrentUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [currentTodo]);
+
+  if (!currentTodo) {
+    return null;
   }
 
   return (
     <div className="modal is-active" data-cy="modal">
-      <div className="modal-background" onClick={onClose} />
-
-      {isLoading ? (
+      <div className="modal-background" />
+      {loading ? (
         <Loader />
       ) : (
         <div className="modal-card">
@@ -39,39 +48,33 @@ export const TodoModal: React.FC<Props> = ({
               className="modal-card-title has-text-weight-medium"
               data-cy="modal-header"
             >
-              Todo #{todo.id}
+              {`Todo #${currentTodo.id}`}
             </div>
-
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={onClose}
+              onClick={() =>
+                dispatch(currentTodoSlice.actions.setCurrentTodo(null))
+              }
             />
           </header>
-
           <div className="modal-card-body">
             <p className="block" data-cy="modal-title">
-              {todo.title}
+              {currentTodo.title}
             </p>
-
             <p className="block" data-cy="modal-user">
-              <strong
-                className={
-                  todo.completed ? 'has-text-success' : 'has-text-danger'
-                }
-              >
-                {todo.completed ? 'Done' : 'Planned'}
-              </strong>
-
-              {' by '}
-
-              {user ? (
-                <a href={`malito:${user.email}`}>{user.name}</a>
+              {currentTodo.completed ? (
+                // eslint-disable-line no-nested-ternary
+                <strong className="has-text-success">Done</strong>
               ) : (
-                'Unknown user'
+                <strong className="has-text-danger">Planned</strong>
               )}
+              {' by '}
+              <a href="mailto:Sincere@april.biz">
+                {currentUser?.name ?? 'user not found'}
+              </a>
             </p>
           </div>
         </div>
