@@ -1,13 +1,13 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { filterSlice } from '../../features/filter';
+import { useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
   const sortValues = ['All', 'Active', 'Completed'];
-  const filterQuery = useSelector(
-    (state: { filter: { query: string } }) => state.filter.query,
-  );
+  const filterQuery = useAppSelector(state => state.filter.query);
+
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value;
 

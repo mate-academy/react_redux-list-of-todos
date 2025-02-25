@@ -3,22 +3,14 @@ import React, { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Loader } from '../Loader';
 import { fetchTodos } from '../../features/todos';
-import { useSelector } from 'react-redux';
 import { Todo } from '../../types/Todo';
 import { setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const currentTodo = useSelector(
-    (state: { currentTodo: Todo | null }) => state.currentTodo,
-  );
-  const filterQuery = useSelector(
-    (state: { filter: { query: string } }) => state.filter.query,
-  );
-  const filterStatus = useSelector(
-    (state: { filter: { status: string } }) => state.filter.status,
-  );
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const filterQuery = useAppSelector(state => state.filter.query);
+  const filterStatus = useAppSelector(state => state.filter.status);
   const dispatch = useAppDispatch();
-
   const { todos, status } = useAppSelector(state => state.todos);
 
   useEffect(() => {
@@ -105,7 +97,7 @@ export const TodoList: React.FC = () => {
                 >
                   <span className="icon">
                     <i
-                      className={`far ${currentTodo !== todo ? 'fa-eye' : 'fa-eye-slash'}`}
+                      className={`far ${currentTodo.currentTodo?.id !== todo.id ? 'fa-eye' : 'fa-eye-slash'}`}
                     />
                   </span>
                 </button>

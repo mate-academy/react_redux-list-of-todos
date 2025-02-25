@@ -1,13 +1,10 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useSelector } from 'react-redux';
-import { Todo } from './types/Todo';
+import { useAppSelector } from './app/hooks';
 
 export const App = () => {
-  const currentTodo = useSelector(
-    (state: { currentTodo: Todo | null }) => state.currentTodo,
-  );
+  const { currentTodo } = useAppSelector(state => state.currentTodo);
 
   return (
     <>
