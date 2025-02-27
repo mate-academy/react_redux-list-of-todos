@@ -4,7 +4,7 @@ import { Todo } from '../../types/Todo';
 import classNames from 'classnames';
 
 type Props = {
-  todos: Todo[];
+  todos: Todo[] | undefined;
   currentTodo: Todo | null;
   setCurrentTodo: (todo: Todo) => void;
 };
@@ -15,18 +15,16 @@ export const TodoList: React.FC<Props> = ({
   setCurrentTodo,
 }) => {
   const toggleTodoVisibility = (id: number) => {
-    const newTodo = todos.find(todo => todo.id === id);
+    const newTodo = todos?.find(todo => todo.id === id);
 
     if (newTodo) {
       setCurrentTodo(newTodo);
     }
   };
 
-  const filteredTodos = todos.filter(todo => todo === todo); // заглушка
-
   return (
     <>
-      {!filteredTodos.length && (
+      {!todos?.length && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -49,7 +47,7 @@ export const TodoList: React.FC<Props> = ({
         </thead>
 
         <tbody>
-          {todos.map(todo => (
+          {todos?.map(todo => (
             <tr data-cy="todo" key={todo.id}>
               <td className="is-vcentered">{todo.id}</td>
               <td className="is-vcentered">

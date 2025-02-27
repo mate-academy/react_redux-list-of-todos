@@ -10,6 +10,8 @@ export const App = () => {
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
   const [todos, setTodos] = useState<Todo[] | null>(null);
   const [error, setError] = useState<null | unknown>(null);
+  const [status, setStatus] = useState('all');
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
     setIsLoading(true);
@@ -28,7 +30,25 @@ export const App = () => {
     };
 
     fetchTodos();
-  }, [error]);
+  }, [error, status, query]);
+
+  let filteredTodos = todos?.filter(todo =>
+    todo.title.toLowerCase().includes(query.toLowerCase()),
+  );
+
+  switch (status) {
+    case 'completed':
+      filteredTodos = filteredTodos?.filter(todo => todo.completed);
+      break;
+
+    case 'active':
+      filteredTodos = filteredTodos?.filter(todo => !todo.completed);
+      break;
+
+    default: {
+      break;
+    }
+  }
 
   return (
     <>
@@ -38,14 +58,19 @@ export const App = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter />
+              <TodoFilter
+                status={status}
+                setStatus={setStatus}
+                query={query}
+                setQuery={setQuery}
+              />
             </div>
 
             <div className="block">
               {isLoading && <Loader />}
               {todos && (
                 <TodoList
-                  todos={todos}
+                  todos={filteredTodos}
                   currentTodo={currentTodo}
                   setCurrentTodo={setCurrentTodo}
                 />
