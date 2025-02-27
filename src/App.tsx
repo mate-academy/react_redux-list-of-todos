@@ -7,7 +7,6 @@ import { getTodos } from './api';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
   const [todos, setTodos] = useState<Todo[] | null>(null);
   const [error, setError] = useState<null | unknown>(null);
@@ -29,7 +28,7 @@ export const App = () => {
     };
 
     fetchTodos();
-  }, []);
+  }, [error]);
 
   return (
     <>
@@ -49,14 +48,15 @@ export const App = () => {
                   todos={todos}
                   currentTodo={currentTodo}
                   setCurrentTodo={setCurrentTodo}
-                  setIsVisible={setIsVisible}
                 />
               )}
             </div>
           </div>
         </div>
       </div>
-      {isVisible && <TodoModal />}
+      {currentTodo && (
+        <TodoModal currentTodo={currentTodo} setCurrentTodo={setCurrentTodo} />
+      )}
     </>
   );
 };

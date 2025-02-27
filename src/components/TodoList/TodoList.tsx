@@ -7,21 +7,18 @@ type Props = {
   todos: Todo[];
   currentTodo: Todo | null;
   setCurrentTodo: (todo: Todo) => void;
-  setIsVisible: (toggled: boolean) => void;
 };
 
 export const TodoList: React.FC<Props> = ({
   todos,
   currentTodo,
   setCurrentTodo,
-  setIsVisible,
 }) => {
   const toggleTodoVisibility = (id: number) => {
     const newTodo = todos.find(todo => todo.id === id);
 
     if (newTodo) {
       setCurrentTodo(newTodo);
-      setIsVisible(true);
     }
   };
 
