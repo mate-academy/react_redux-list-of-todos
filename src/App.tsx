@@ -1,26 +1,62 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { useEffect, useState } from 'react';
+import { Todo } from './types/Todo';
+import { getTodos } from './api';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
+  const [todos, setTodos] = useState<Todo[] | null>(null);
+  const [error, setError] = useState<null | unknown>(null);
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchTodos = async () => {
+      try {
+        const data = await getTodos();
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+        setTodos(data);
+      } catch (err: unknown) {
+        // eslint-disable-next-line no-console
+        console.warn(error);
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTodos();
+  }, []);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {isLoading && <Loader />}
+              {todos && (
+                <TodoList
+                  todos={todos}
+                  currentTodo={currentTodo}
+                  setCurrentTodo={setCurrentTodo}
+                  setIsVisible={setIsVisible}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <TodoModal />
-  </>
-);
+      {isVisible && <TodoModal />}
+    </>
+  );
+};
