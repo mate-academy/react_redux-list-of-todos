@@ -43,7 +43,7 @@ export const App = () => {
     };
 
     fetchTodos();
-  }, [status, query]);
+  }, [status, query, error]);
 
   let filteredTodos = todos?.filter(todo =>
     todo.title.toLowerCase().includes(query.toLowerCase()),
