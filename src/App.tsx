@@ -4,14 +4,27 @@ import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
 import { Todo } from './types/Todo';
 import { getTodos } from './api';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, AppDispatch } from './app/store';
+import { setQuery, setStatus } from './features/filter';
+import { Status } from './types/Status';
 
 export const App = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const query = useSelector((state: RootState) => state.filter.query);
+  const status = useSelector((state: RootState) => state.filter.status);
   const [isLoading, setIsLoading] = useState(false);
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
   const [todos, setTodos] = useState<Todo[] | null>(null);
   const [error, setError] = useState<null | unknown>(null);
-  const [status, setStatus] = useState('all');
-  const [query, setQuery] = useState('');
+
+  const handleStatusChange = (newStatus: string) => {
+    dispatch(setStatus(newStatus as Status));
+  };
+
+  const handleQueryChange = (newQuery: string) => {
+    dispatch(setQuery(newQuery));
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -21,16 +34,16 @@ export const App = () => {
 
         setTodos(data);
       } catch (err: unknown) {
+        setError(err);
         // eslint-disable-next-line no-console
         console.warn(error);
-        setError(err);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchTodos();
-  }, [error, status, query]);
+  }, [status, query]);
 
   let filteredTodos = todos?.filter(todo =>
     todo.title.toLowerCase().includes(query.toLowerCase()),
@@ -45,9 +58,8 @@ export const App = () => {
       filteredTodos = filteredTodos?.filter(todo => !todo.completed);
       break;
 
-    default: {
+    default:
       break;
-    }
   }
 
   return (
@@ -59,10 +71,10 @@ export const App = () => {
 
             <div className="block">
               <TodoFilter
-                status={status}
-                setStatus={setStatus}
-                query={query}
-                setQuery={setQuery}
+                status={status} // Используй status из Redux
+                setStatus={handleStatusChange} // Изменяем статус через Redux
+                query={query} // Используй query из Redux
+                setQuery={handleQueryChange} // Изменяем query через Redux
               />
             </div>
 
