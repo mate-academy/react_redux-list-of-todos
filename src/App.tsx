@@ -8,15 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from './app/store';
 import { setQuery, setStatus } from './features/filter';
 import { Status } from './types/Status';
+import { setTodos } from './features/todos';
 
 export const App = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const query = useSelector((state: RootState) => state.filter.query);
-  const status = useSelector((state: RootState) => state.filter.status);
-  const [isLoading, setIsLoading] = useState(false);
+  const { query, status } = useSelector((state: RootState) => state.filter);
+  const todos = useSelector((state: RootState) => state.todos.todos);
   const [currentTodo, setCurrentTodo] = useState<Todo | null>(null);
-  const [todos, setTodos] = useState<Todo[] | null>(null);
-  const [error, setError] = useState<null | unknown>(null);
 
   const handleStatusChange = (newStatus: string) => {
     dispatch(setStatus(newStatus as Status));
@@ -27,40 +25,33 @@ export const App = () => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
     const fetchTodos = async () => {
       try {
         const data = await getTodos();
 
-        setTodos(data);
+        dispatch(setTodos(data));
       } catch (err: unknown) {
-        setError(err);
         // eslint-disable-next-line no-console
-        console.warn(error);
-      } finally {
-        setIsLoading(false);
+        console.warn('Ошибка загрузки TODO:', err);
       }
     };
 
     fetchTodos();
-  }, [status, query, error]);
+  }, [dispatch]);
 
-  let filteredTodos = todos?.filter(todo =>
-    todo.title.toLowerCase().includes(query.toLowerCase()),
-  );
+  const filteredTodos = todos
+    .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()))
+    .filter(todo => {
+      if (status === 'completed') {
+        return todo.completed;
+      }
 
-  switch (status) {
-    case 'completed':
-      filteredTodos = filteredTodos?.filter(todo => todo.completed);
-      break;
+      if (status === 'active') {
+        return !todo.completed;
+      }
 
-    case 'active':
-      filteredTodos = filteredTodos?.filter(todo => !todo.completed);
-      break;
-
-    default:
-      break;
-  }
+      return true;
+    });
 
   return (
     <>
@@ -71,16 +62,17 @@ export const App = () => {
 
             <div className="block">
               <TodoFilter
-                status={status} // Используй status из Redux
-                setStatus={handleStatusChange} // Изменяем статус через Redux
-                query={query} // Используй query из Redux
-                setQuery={handleQueryChange} // Изменяем query через Redux
+                status={status}
+                setStatus={handleStatusChange}
+                query={query}
+                setQuery={handleQueryChange}
               />
             </div>
 
             <div className="block">
-              {isLoading && <Loader />}
-              {todos && (
+              {todos.length === 0 ? (
+                <Loader />
+              ) : (
                 <TodoList
                   todos={filteredTodos}
                   currentTodo={currentTodo}
