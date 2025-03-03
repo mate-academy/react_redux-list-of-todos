@@ -17,7 +17,7 @@ const TODO_FILTERS = {
 
 const getTodoFilter = (status: Status) => TODO_FILTERS[status];
 
-const getFiltredTodos = (todos: Todo[], status: Status) => {
+const getFilteredTodos = (todos: Todo[], status: Status) => {
   if (!status) {
     return todos;
   }
@@ -28,4 +28,4 @@ const getFiltredTodos = (todos: Todo[], status: Status) => {
   return filterTodo;
 };
 
-export default getFiltredTodos;
+export default getFilteredTodos;

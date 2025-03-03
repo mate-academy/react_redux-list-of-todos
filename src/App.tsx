@@ -5,43 +5,43 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { getTodos } from './api';
 import { setTodos } from './features/todos';
-import getFiltredTodos from './utils/getFilteredTodos';
+import getFilteredTodos from './utils/getFilteredTodos';
 import { setCurrentTodo } from './features/currentTodo';
 import { Todo } from './types/Todo';
 import useFetch from './utils/hooks/useFetch';
-import { normilizedCase } from './utils/normilizedCase';
+import { normalizedCase } from './utils/normalizedCase';
 
 export const App = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
 
-  const disptach = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const { data, isLoading } = useFetch<Todo[]>(() => getTodos());
 
   useEffect(() => {
     if (data) {
-      disptach(setTodos({ todos: data }));
+      dispatch(setTodos({ todos: data }));
     }
-  }, [data, disptach]);
+  }, [data, dispatch]);
 
   const filteredTodos = useMemo(() => {
     if (status) {
-      const filterTodo = getFiltredTodos(todos, status);
+      const filterTodo = getFilteredTodos(todos, status);
 
-      if (normilizedCase(query)) {
+      if (normalizedCase(query)) {
         return filterTodo.filter(todo =>
-          normilizedCase(todo.title).includes(normilizedCase(query)),
+          normalizedCase(todo.title).includes(normalizedCase(query)),
         );
       }
 
       return filterTodo;
     }
 
-    if (normilizedCase(query)) {
+    if (normalizedCase(query)) {
       return todos.filter(todo =>
-        normilizedCase(todo.title).includes(normilizedCase(query)),
+        normalizedCase(todo.title).includes(normalizedCase(query)),
       );
     }
 
@@ -50,14 +50,14 @@ export const App = () => {
 
   const handleChangeCurrentTodo = useCallback(
     (todo: Todo) => {
-      disptach(setCurrentTodo(todo));
+      dispatch(setCurrentTodo(todo));
     },
-    [disptach],
+    [dispatch],
   );
 
   const handleResetCurrentTodo = useCallback(() => {
-    disptach(setCurrentTodo(null));
-  }, [disptach]);
+    dispatch(setCurrentTodo(null));
+  }, [dispatch]);
 
   const isModalOpen = !!currentTodo;
 
