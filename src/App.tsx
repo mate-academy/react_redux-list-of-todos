@@ -16,7 +16,7 @@ export const App = () => {
     getTodos()
       .then(response => dispatch(todosActions.setTodos(response)))
       .catch(() => {
-        throw new Error();
+        throw new Error('Please check your internet connection');
       });
   }, []);
 
@@ -32,7 +32,7 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {todos.length === 0 ? <Loader /> : <TodoList />}
+              {todos.length === 0 ? <Loader /> : <TodoList todos={todos} />}
             </div>
           </div>
         </div>

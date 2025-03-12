@@ -19,7 +19,7 @@ export const TodoModal: React.FC = () => {
     getUser(userId)
       .then(response => setUser(response))
       .catch(() => {
-        throw new Error();
+        throw new Error('Please check your internet connection');
       })
       .finally(() => setIsLoading(false));
   }, []);

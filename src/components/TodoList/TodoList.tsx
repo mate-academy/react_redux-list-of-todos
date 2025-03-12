@@ -4,9 +4,11 @@ import { Thead } from './components/Thead';
 import { TodoItem } from './components/TodoItem';
 import { useAppSelector } from '../../hooks';
 import { Notification } from './components/Notification';
+import { Todo } from '../../types/Todo';
 
-export const TodoList: React.FC = () => {
-  const todos = useAppSelector(state => state.todos);
+type Props = { todos: Todo[] }
+
+export const TodoList: React.FC<Props> = React.memo(({ todos }) => {
   const filter = useAppSelector(state => state.filter);
   const { status, query } = filter;
 
@@ -14,7 +16,7 @@ export const TodoList: React.FC = () => {
     const filteredByStatus = todos.filter(todo => {
       switch (status) {
         case 'all':
-          return todo;
+          return true;
         case 'active':
           return !todo.completed;
         case 'completed':
@@ -28,10 +30,10 @@ export const TodoList: React.FC = () => {
       const lcQuery = query.toLowerCase();
 
       if (lcTitle.includes(lcQuery)) {
-        return todo;
+        return true;
       }
 
-      return;
+      return false;
     });
 
     return query.length > 0 ? filteredByQuery : filteredByStatus;
@@ -50,4 +52,6 @@ export const TodoList: React.FC = () => {
       )}
     </>
   );
-};
+});
+
+TodoList.displayName = 'TodoList';
