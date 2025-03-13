@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { getTodos } from './api';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { actions as todosActions } from './features/todos';
 
 export const App = () => {
@@ -12,12 +12,15 @@ export const App = () => {
   const todos = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     getTodos()
       .then(response => dispatch(todosActions.setTodos(response)))
       .catch(() => {
         throw new Error('Please check your internet connection');
-      });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   return (
@@ -32,7 +35,7 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {todos.length === 0 ? <Loader /> : <TodoList todos={todos} />}
+              {isLoading ? <Loader /> : <TodoList todos={todos} />}
             </div>
           </div>
         </div>

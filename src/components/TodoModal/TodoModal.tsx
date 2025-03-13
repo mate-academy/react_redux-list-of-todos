@@ -17,7 +17,7 @@ export const TodoModal: React.FC = () => {
 
   useEffect(() => {
     getUser(userId)
-      .then(response => setUser(response))
+      .then(setUser)
       .catch(() => {
         throw new Error('Please check your internet connection');
       })
