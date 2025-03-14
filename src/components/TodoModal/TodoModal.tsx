@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppDispatch, RootState, setTodo } from '../../app/store';
+import { AppDispatch, RootState } from '../../app/store';
+import { setTodo } from '../../features/currentTodo';
 import { User } from '../../types/User';
 import { Todo } from '../../types/Todo';
 

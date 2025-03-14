@@ -8,15 +8,15 @@ export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleStatusSelect = (selectedStatus: string) => {
-    dispatch(setFilter({ status: selectedStatus }));
+    dispatch(setFilter({ query: null, status: selectedStatus }));
   };
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setFilter({ query: event.target.value }));
+    dispatch(setFilter({ query: event.target.value, status: null }));
   };
 
   const handleSearchClear = () => {
-    dispatch(setFilter({ query: '' }));
+    dispatch(setFilter({ query: '', status: null }));
   };
 
   return (

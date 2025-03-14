@@ -2,7 +2,8 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { getTodos } from './api';
-import { RootState, setTodos } from './app/store';
+import { setTodos } from './features/todos';
+import { RootState } from './app/store';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from './app/store';
@@ -41,7 +42,7 @@ export const App = () => {
         </div>
       </div>
 
-      {currentTodo.id > 0 && <TodoModal />}
+      {currentTodo.id !== undefined && <TodoModal />}
     </>
   );
 };
