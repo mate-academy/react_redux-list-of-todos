@@ -1,6 +1,16 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../types/hooks';
+import { setQuery, setStatus } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
+
+  const capitalizeFirstLetter = (text: string) => {
+    return text.charAt(0).toUpperCase() + text.slice(1);
+  };
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +18,20 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={e => dispatch(setStatus(e.target.value as Status))}
+          >
+            <option value={Status.All}>
+              {capitalizeFirstLetter(Status.All)}
+            </option>
+            <option value={Status.Active}>
+              {capitalizeFirstLetter(Status.Active)}
+            </option>
+            <option value={Status.Completed}>
+              {capitalizeFirstLetter(Status.Completed)}
+            </option>
           </select>
         </span>
       </p>
@@ -21,20 +41,25 @@ export const TodoFilter: React.FC = () => {
           data-cy="searchInput"
           type="text"
           className="input"
+          value={query}
+          onChange={e => dispatch(setQuery(e.target.value))}
           placeholder="Search..."
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(setQuery(''))}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
