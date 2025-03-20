@@ -1,5 +1,7 @@
 # React + Redux list of TODOs
 
+> Here is [DEMO LINK](https://OleksiiKislukhin.github.io/react_redux-list-of-todos/)
+
 > ❗ Read the lesson theory before solving this task
 
 You are given an `app` folder with already implemented `store` and `hooks`.
