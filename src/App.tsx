@@ -1,26 +1,20 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { Todos } from './components/Todos/Todos';
+import { TodoModal } from './components';
+import { useAppSelector } from './hooks/useAppSelector';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
-          <div className="block">
-            <TodoFilter />
-          </div>
-
-          <div className="block">
-            <Loader />
-            <TodoList />
-          </div>
-        </div>
+  return (
+    <>
+      <div className="section">
+        <div className="container"></div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      <Todos />
+      {currentTodo && <TodoModal todo={currentTodo} />}
+    </>
+  );
+};
