@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -8,5 +9,15 @@ const initialState = {
 export const filterSlice = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    queryFilter: (state, action) => {
+      state.query = action.payload;
+    },
+    statusFilter: (state, action) => {
+      state.status = action.payload;
+    },
+  },
 });
+
+export const { queryFilter, statusFilter } = filterSlice.actions;
+export default filterSlice.reducer;
