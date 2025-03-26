@@ -1,224 +1,129 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../app/store';
+import { fetchTodosFailure, fetchTodosStart, fetchTodosSuccess } from '../../features/todos';
+import { getTodos, getUser } from '../../api';
+import { Loader } from '../Loader';
+import { TodoModal } from '../TodoModal';
+import { Todo } from '../../types/Todo';
+import { fetchCurrentStart,
+         fetchCurrentSuccess,
+         fetchCurrentFailure,
+         } from '../../features/currentTodo';
+import classNames from 'classnames';
 
 export const TodoList: React.FC = () => {
-  return (
-    <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+  const dispatch = useDispatch<AppDispatch>();
+  const { todos, loading, error } = useSelector((state: RootState) => state.todos)
+  const { query, status } = useSelector((state: RootState) => state.filter);
+  const { currentTodo } = useSelector((state: RootState) => state.currentTodo)
+  const [openModal, setOpenModal] = useState(false)
 
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch(fetchTodosStart());
+      try {
+        const todos = await getTodos();
+
+        dispatch(fetchTodosSuccess(todos));
+      } catch (error) {
+        dispatch(fetchTodosFailure('Failed to fetch todos'))
+      }
+    }
+
+    fetchData();
+  }, [dispatch])
+
+  if (loading) {
+    return <Loader />
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>
+  }
+
+  const filteredTodos = todos.filter(todo => {
+    const matchesQuery = todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase())
+
+    const matchesStatus =  status === 'all'
+    || (status === 'active' && !todo.completed)
+    || (status === 'completed' && todo.completed);
+
+    return matchesQuery && matchesStatus;
+  })
+
+  const openCurrentTodo = async (todo: Todo) => {
+    setOpenModal(true)
+    dispatch(fetchCurrentStart());
+    try {
+      const user = await getUser(todo.userId);
+      dispatch(fetchCurrentSuccess({ todo, user }));
+    } catch (error) {
+      dispatch(fetchCurrentFailure());
+      console.error('Failed to fetch user', error);
+    }
+  };
+
+  const closeModal = () => {
+    setOpenModal(false)
+  }
+
+  return (
+    <div>
       <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
             <th>#</th>
-
             <th>
               <span className="icon">
                 <i className="fas fa-check" />
               </span>
             </th>
-
             <th>Title</th>
             <th> </th>
           </tr>
         </thead>
-
         <tbody>
-          <tr data-cy="todo">
-            <td className="is-vcentered">1</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">delectus aut autem</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">2</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">
-                quis ut nam facilis et officia qui
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo" className="has-background-info-light">
-            <td className="is-vcentered">3</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">fugiat veniam minus</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye-slash" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">4</td>
-            <td className="is-vcentered">
-              <span className="icon" data-cy="iconCompleted">
-                <i className="fas fa-check" />
-              </span>
-            </td>
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-success">et porro tempora</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">5</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">
-                laboriosam mollitia et enim quasi adipisci quia provident illum
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">6</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">
-                qui ullam ratione quibusdam voluptatem quia omnis
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">7</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">
-                illo expedita consequatur quia in
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">8</td>
-
-            <td className="is-vcentered">
-              <span className="icon" data-cy="iconCompleted">
-                <i className="fas fa-check" />
-              </span>
-            </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-success">quo adipisci enim quam ut ab</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">9</td>
-            <td className="is-vcentered"> </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">molestiae perspiciatis ipsa</p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
-
-          <tr data-cy="todo">
-            <td className="is-vcentered">10</td>
-
-            <td className="is-vcentered">
-              <span className="icon" data-cy="iconCompleted">
-                <i className="fas fa-check" />
-              </span>
-            </td>
-
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-success">
-                illo est ratione doloremque quia maiores aut
-              </p>
-            </td>
-
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
+          {filteredTodos.map(todo => (
+            <tr key={todo.id} data-cy="todo">
+              <td className="is-vcentered">{todo.id}</td>
+              <td className="is-vcentered">
+                {todo.completed && (
+                  <span className="icon" data-cy="iconCompleted">
+                    <i className="fas fa-check" />
+                  </span>
+                )}
+              </td>
+              <td className="is-vcentered is-expanded">
+                <p className={todo.completed ? 'has-text-success' : 'has-text-danger'}>
+                  {todo.title}
+                </p>
+              </td>
+              <td className="has-text-right is-vcentered">
+                <button
+                  data-cy="selectButton"
+                  className="button"
+                  type="button"
+                  onClick={() => openCurrentTodo(todo)}
+                >
+                  <span className="icon">
+                  <i className={classNames('far', {
+                    'fa-eye': !(currentTodo === todo),
+                    'fa-eye-slash': currentTodo === todo,
+                  })} />
+                  </span>
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
-    </>
+
+      {openModal && (
+        <TodoModal onClose ={closeModal} />
+      )}
+
+    </div>
   );
 };
