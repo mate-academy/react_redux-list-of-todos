@@ -116,7 +116,7 @@ describe('Page', () => {
       page.mockUser1();
       cy.clock();
       page.selectTodo(1);
-  
+
       page.modal().byDataCy('loader').should('exist');
     });
 
@@ -126,48 +126,48 @@ describe('Page', () => {
 
       cy.wait('@user1');
       cy.wait(10);
-  
+
       page.modal().byDataCy('loader').should('not.exist');
     });
 
     it('should show correct data for a not completed todo', () => {
       page.mockUser1();
       page.selectTodo(0);
-  
+
       cy.byDataCy('modal-header')
         .should('have.text', 'Todo #1');
-  
+
       cy.byDataCy('modal-title')
         .should('have.text', 'Delectus aut autem');
-  
+
       cy.byDataCy('modal-user')
         .should('have.text', 'Planned by Leanne Graham');
     });
-  
+
     it('should show correct data for a completed todo', () => {
       page.mockUser2();
       page.selectTodo(4);
-  
+
       cy.byDataCy('modal-header')
         .should('have.text', 'Todo #22');
-  
+
       cy.byDataCy('modal-title')
         .should('have.text', 'Distinctio vitae autem nihil ut molestias quo');
-  
+
       cy.byDataCy('modal-user')
         .should('have.text', 'Done by Ervin Howell');
     });
-  
+
     it('should closes with close button', () => {
       page.mockUser2();
       page.selectTodo(4);
-  
+
       cy.byDataCy('modal-close')
         .click();
-  
+
       page.modal()
         .should('not.exist');
-  
+
       cy.get('.fa-eye-slash')
         .should('have.length', 0);
     });
@@ -254,23 +254,23 @@ describe('Page', () => {
     });
 
     it('should have status "all" selected by default', () => {
-      page.statusSelect().should('have.value', 'all')
+      page.statusSelect().should('have.value', 'All')
     });
 
     it('should allow to select "active" status', () => {
       page.statusSelect()
-        .select('active')
-        .should('have.value', 'active');
+        .select('Active')
+        .should('have.value', 'Active');
     });
 
     it('should allow to select "completed" status', () => {
       page.statusSelect()
-        .select('completed')
-        .should('have.value', 'completed');
+        .select('Completed')
+        .should('have.value', 'Completed');
     });
 
     it('should show only active todos when "active" status is selected', () => {
-      page.statusSelect().select('active');
+      page.statusSelect().select('Active');
 
       page.todos().should('have.length', 3);
       page.todos().eq(0).should('contain.text', 'Delectus aut autem');
@@ -279,7 +279,7 @@ describe('Page', () => {
     });
 
     it('should show only completed todos when "completed" status is selected', () => {
-      page.statusSelect().select('completed');
+      page.statusSelect().select('Completed');
 
       page.todos().should('have.length', 2);
       page.todos().eq(0).should('contain.text', 'Et porro tempora');
@@ -288,15 +288,15 @@ describe('Page', () => {
 
     it('should allow to reset the status', () => {
       page.statusSelect()
-        .select('completed')
-        .select('all')
-        .should('have.value', 'all');
+        .select('Completed')
+        .select('All')
+        .should('have.value', 'All');
 
       page.todos().should('have.length', 5);
     });
 
     it('should allow to filter active todos', () => {
-      page.statusSelect().select('active');
+      page.statusSelect().select('Active');
       page.searchInput().type('ut')
 
       page.todos().should('have.length', 2);
@@ -305,7 +305,7 @@ describe('Page', () => {
     });
 
     it('should allow to filter completed todos', () => {
-      page.statusSelect().select('completed');
+      page.statusSelect().select('Completed');
       page.searchInput().type('Distinctio');
 
       page.todos().should('have.length', 1);
