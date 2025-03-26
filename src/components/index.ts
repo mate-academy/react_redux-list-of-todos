@@ -1,4 +1,4 @@
-export * from './Loader';
-export * from './TodoList';
-export * from './TodoFilter';
-export * from './TodoModal';
+export { Loader } from './Loader';
+export { TodoList } from './TodoList';
+export { TodoFilter } from './TodoFilter';
+export { TodoModal } from './TodoModal';
