@@ -1,6 +1,11 @@
 import React from 'react';
+import { FilterTypes, actions as filterActions } from '../../features/filter';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 export const TodoFilter: React.FC = () => {
+  const filter = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
+
   return (
     <form
       className="field has-addons"
@@ -8,10 +13,18 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            value={filter.status}
+            onChange={event => {
+              const value = event.target.value as FilterTypes;
+
+              dispatch(filterActions.setFilter(value));
+            }}
+            data-cy="statusSelect"
+          >
+            <option value={FilterTypes.All}>All</option>
+            <option value={FilterTypes.Active}>Active</option>
+            <option value={FilterTypes.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -20,6 +33,10 @@ export const TodoFilter: React.FC = () => {
         <input
           data-cy="searchInput"
           type="text"
+          value={filter.query}
+          onChange={event => {
+            dispatch(filterActions.setQuery(event.target.value));
+          }}
           className="input"
           placeholder="Search..."
         />
@@ -29,11 +46,14 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {filter.query.trim() && (
+            <button
+              onClick={() => dispatch(filterActions.setQuery(''))}
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+            />
+          )}
         </span>
       </p>
     </form>
