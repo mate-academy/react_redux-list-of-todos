@@ -1,10 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
-const initialState = null as Todo | null;
+const initialState = {
+  currentTodo: null as Todo | null,
+};
 
 export const currentTodoSlice = createSlice({
   name: 'currentTodo',
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentTodo: (state, action: PayloadAction<Todo | null>) => {
+      // eslint-disable-next-line no-param-reassign
+      state.currentTodo = action.payload;
+    },
+  },
 });
+
+export const { setCurrentTodo } = currentTodoSlice.actions;
+
+export default currentTodoSlice.reducer;
