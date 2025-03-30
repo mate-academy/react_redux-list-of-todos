@@ -5,8 +5,12 @@ const initialState = {
   status: 'all',
 };
 
-export const filterSlice = createSlice({
+export const { reducer, actions } = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    changeStatus: (s, { payload }) => ({ ...s, status: payload }),
+    changeQuery: (s, { payload }) => ({ ...s, query: payload }),
+    clearQuery: s => ({ ...s, query: '' }),
+  },
 });
