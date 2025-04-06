@@ -1,6 +1,10 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
 
-const rootReducer = combineSlices();
+import filterSlice from '../features/filter';
+import currentTodoSlice from '../features/currentTodo';
+import todosSlice from '../features/todos';
+
+const rootReducer = combineSlices(filterSlice, currentTodoSlice, todosSlice);
 
 export const store = configureStore({
   reducer: rootReducer,
