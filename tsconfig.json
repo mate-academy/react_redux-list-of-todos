@@ -1,5 +1,6 @@
 {
   "extends": "@mate-academy/students-ts-config",
+  "jsx": "react-jsx",
   "include": [
     "src"
   ],
@@ -7,4 +8,5 @@
     "sourceMap": false,
     "types": ["node", "cypress"]
   }
+
 }
