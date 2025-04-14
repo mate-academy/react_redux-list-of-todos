@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   query: '',
@@ -8,5 +8,15 @@ const initialState = {
 export const filterSlice = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    setStatusFilter: (
+      _filter,
+      action: PayloadAction<{ query: string; status: string }>,
+    ) => {
+      return {
+        query: action.payload.query,
+        status: action.payload.status,
+      };
+    },
+  },
 });
