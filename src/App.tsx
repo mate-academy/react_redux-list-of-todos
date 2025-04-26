@@ -1,26 +1,23 @@
+/* eslint-disable max-len */
+import React from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+import { TodoList } from './components/TodoList';
 
-          <div className="block">
-            <TodoFilter />
-          </div>
-
-          <div className="block">
-            <Loader />
-            <TodoList />
+export const App: React.FC = () => {
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+            <div className="block">
+              <TodoList />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <TodoModal />
-  </>
-);
+    </>
+  );
+};
