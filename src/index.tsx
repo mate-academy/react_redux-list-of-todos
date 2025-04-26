@@ -4,6 +4,7 @@ import { HashRouter as Router } from 'react-router-dom';
 
 import { store } from './app/store';
 import { App } from './App';
+import React from 'react';
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <Provider store={store}>
