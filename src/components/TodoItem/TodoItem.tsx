@@ -9,9 +9,9 @@ type TodoItemProps = {
 };
 
 export const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
-  const { id, title, completed, userId } = todo;
+  const { id, title, completed } = todo;
   const selectedTodo = useAppSelector(state => state.currentTodo);
-  const openedTodo = selectedTodo?.userId === userId;
+  const openedTodo = selectedTodo?.id === id;
   const dispatch = useAppDispatch();
 
   return (
