@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Status } from '../types/Status';
 
-interface FilterState {
+export interface FilterState {
   query: string;
   status: Status;
 }
