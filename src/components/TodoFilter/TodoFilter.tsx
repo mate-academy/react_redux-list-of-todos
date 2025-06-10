@@ -1,14 +1,23 @@
-import React from 'react';
+import { useState } from 'react';
 
-export const TodoFilter: React.FC = () => {
+type StatusType = 'all' | 'active' | 'completed';
+
+type Props = {
+  doSearch: (query: string) => void;
+  doSearchSelect: (value: StatusType) => void;
+};
+
+export const TodoFilter: React.FC<Props> = ({ doSearch, doSearchSelect }) => {
+  const [valueInput, setValueInput] = useState('');
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons" onSubmit={e => e.preventDefault()}>
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            onChange={e => doSearchSelect(e.target.value as StatusType)}
+            data-cy="statusSelect"
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -21,20 +30,30 @@ export const TodoFilter: React.FC = () => {
           data-cy="searchInput"
           type="text"
           className="input"
+          value={valueInput}
           placeholder="Search..."
+          onChange={e => {
+            setValueInput(e.target.value);
+            doSearch(e.target.value);
+          }}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {valueInput && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              onClick={() => {
+                doSearch('');
+                setValueInput('');
+              }}
+              className="delete"
+            />
+          </span>
+        )}
       </p>
     </form>
   );
