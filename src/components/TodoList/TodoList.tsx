@@ -1,8 +1,7 @@
 /* eslint-disable */
 import React, { useEffect } from 'react';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getTodos } from '../../api';
-import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { setTodos } from '../../features/todos';
 import { setCurrentTodo } from '../../features/currentTodo';
@@ -12,7 +11,7 @@ import { Loader } from '../Loader';
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const addCurrentTodo = (todo: Todo) => dispatch(setCurrentTodo(todo));
   const { status, query } = useAppSelector(state => state.filter);
 
@@ -27,7 +26,7 @@ export const TodoList: React.FC = () => {
       .filter(todo => {
         if (status === 'active') return todo.completed === false;
         if (status === 'completed') return todo.completed === true;
-        return todo;
+        return true;
       })
       .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
   };
