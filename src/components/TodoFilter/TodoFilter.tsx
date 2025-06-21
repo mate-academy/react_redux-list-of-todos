@@ -1,6 +1,12 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setQuery, setStatus } from '../../features/filter';
+import { RootState } from '../../app/store';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useDispatch();
+  const searchQuery = useSelector((state: RootState) => state.filter.query);
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +14,10 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            onChange={e => dispatch(setStatus(e.target.value))}
+            data-cy="statusSelect"
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -18,8 +27,10 @@ export const TodoFilter: React.FC = () => {
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
+          onChange={e => dispatch(setQuery(e.target.value))}
           data-cy="searchInput"
           type="text"
+          value={searchQuery}
           className="input"
           placeholder="Search..."
         />
@@ -28,12 +39,16 @@ export const TodoFilter: React.FC = () => {
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {searchQuery !== '' && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => {
+                dispatch(setQuery(''));
+              }}
+            />
+          )}
         </span>
       </p>
     </form>

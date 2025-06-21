@@ -1,12 +1,31 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
-  query: '',
+// 🔹 Оголошення типу явно
+export interface FilterState {
+  status: string;
+  query: string;
+}
+
+// 🔹 Типізоване initialState
+const initialState: FilterState = {
   status: 'all',
+  query: '',
 };
 
-export const filterSlice = createSlice({
+const filterSlice = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    setStatus: (state, action: PayloadAction<string>) => {
+      // eslint-disable-next-line no-param-reassign
+      state.status = action.payload;
+    },
+    setQuery: (state, action: PayloadAction<string>) => {
+      // eslint-disable-next-line no-param-reassign
+      state.query = action.payload;
+    },
+  },
 });
+
+export const { setStatus, setQuery } = filterSlice.actions;
+export default filterSlice.reducer;
