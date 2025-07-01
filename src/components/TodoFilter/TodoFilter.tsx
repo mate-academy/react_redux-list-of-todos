@@ -1,17 +1,23 @@
-import React from 'react';
+import { SelectStatusTodos } from '../../types/SelectStatusTodos';
+import { clearQuery, setQuery, setStatus } from '../../features/filter';
+import { useTodoFilter } from '../../hooks/useTodoFilter';
 
-export const TodoFilter: React.FC = () => {
+export const TodoFilter = () => {
+  const { dispatch, query } = useTodoFilter();
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
+          <select
+            data-cy="statusSelect"
+            onChange={event =>
+              dispatch(setStatus(event.target.value as SelectStatusTodos))
+            }
+          >
+            <option value={SelectStatusTodos.All}>All</option>
+            <option value={SelectStatusTodos.Active}>Active</option>
+            <option value={SelectStatusTodos.Completed}>Completed</option>
           </select>
         </span>
       </p>
@@ -22,6 +28,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={event => dispatch(setQuery(event.target.value.trimStart()))}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -29,11 +37,14 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {query && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(clearQuery())}
+            />
+          )}
         </span>
       </p>
     </form>
