@@ -1,26 +1,46 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { useEffect } from 'react';
+import { getTodos } from './api';
+import * as todosActions from './features/todos';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const dispatch = useAppDispatch();
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  useEffect(() => {
+    dispatch(todosActions.setLoading(true));
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+    getTodos()
+      .then(data => {
+        dispatch(todosActions.setTodos(data));
+      })
+      .finally(() => {
+        dispatch(todosActions.setLoading(false));
+      });
+  }, [dispatch]);
+
+  const { isLoading } = useAppSelector(state => state.todos);
+  const { currentTodo } = useAppSelector(state => state.currentTodo);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {currentTodo && <TodoModal />}
+    </>
+  );
+};
