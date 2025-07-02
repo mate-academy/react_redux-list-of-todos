@@ -25,7 +25,6 @@ export const TodoModal: React.FC = () => {
       setIsLoading(false);
     } catch {
       setUser(null);
-      throw new Error();
     }
   }
 

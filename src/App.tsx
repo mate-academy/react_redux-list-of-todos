@@ -48,7 +48,7 @@ export const App = () => {
             <div className="block">
               {isLoading && <Loader />}
 
-              {isTableVisible && <TodoList isError={isError} />}
+              {isTableVisible && <TodoList />}
             </div>
           </div>
         </div>
