@@ -1,3 +1,6 @@
+import 'bulma/css/bulma.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { HashRouter as Router } from 'react-router-dom';
