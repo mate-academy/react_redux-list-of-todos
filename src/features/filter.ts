@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { createSelector } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
+
 const initialState = {
   query: '',
-  status: 'all',
+  status: 'all' as 'all' | 'active' | 'completed',
 };
 
 export const filterSlice = createSlice({
@@ -11,15 +11,18 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     setQuery: (state, action: PayloadAction<string>) => {
+      // eslint-disable-next-line no-param-reassign
       state.query = action.payload;
     },
     setStatusFilter: (
       state,
       action: PayloadAction<'all' | 'active' | 'completed'>,
     ) => {
+      // eslint-disable-next-line no-param-reassign
       state.status = action.payload;
     },
     clearQuery: state => {
+      // eslint-disable-next-line no-param-reassign
       state.query = '';
     },
   },
@@ -27,22 +30,22 @@ export const filterSlice = createSlice({
 
 export const { setQuery, setStatusFilter, clearQuery } = filterSlice.actions;
 
+export const selectFilter = (state: RootState) => state.filter;
+
 export const selectFilteredTodos = createSelector(
-  [
-    (state: RootState) => state.todos,
-    (state: RootState) => state.filter.query,
-    (state: RootState) => state.filter.status,
-  ],
-  (todos, query, status) => {
+  [(state: RootState) => state.todos, selectFilter],
+  (todos, filter) => {
+    const normalizedQuery = filter.query.toLowerCase().trim();
+
     return todos.filter(todo => {
-      const matchesStatus =
-        status === 'all' ||
-        (status === 'completed' ? todo.completed : !todo.completed);
+      const statusMatch =
+        filter.status === 'all' ||
+        (filter.status === 'completed' ? todo.completed : !todo.completed);
 
-      const matchesQuery =
-        !query || todo.title.toLowerCase().includes(query.toLowerCase());
+      const queryMatch =
+        !normalizedQuery || todo.title.toLowerCase().includes(normalizedQuery);
 
-      return matchesStatus && matchesQuery;
+      return statusMatch && queryMatch;
     });
   },
 );

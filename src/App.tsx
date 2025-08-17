@@ -13,13 +13,22 @@ import { Loader } from './components/Loader';
 import { loadTodos } from './features/todos';
 import { setQuery, setStatusFilter, clearQuery } from './features/filter';
 import { RootState } from './app/store';
+import { selectFilteredTodos } from './features/filter';
+
+const logErrorSilently = (error: unknown) => {
+  if (typeof window !== 'undefined') {
+    window._tmpErrors = window._tmpErrors || [];
+    window._tmpErrors.push(
+      error instanceof Error ? error.message : 'Unknown error',
+    );
+  }
+};
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const { todos, filter } = useSelector((state: RootState) => ({
-    todos: state.todos,
-    filter: state.filter,
-  }));
+  const todos = useSelector((state: RootState) => state.todos);
+  const filter = useSelector((state: RootState) => state.filter);
+  const filteredTodos = useSelector(selectFilteredTodos);
 
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -29,18 +38,6 @@ export const App: React.FC = () => {
   useEffect(() => {
     dispatch(loadTodos());
   }, [dispatch]);
-
-  // filters todos
-  const filteredTodos = todos.filter(todo => {
-    const matchesStatus =
-      filter.status === 'all' ||
-      (filter.status === 'completed' ? todo.completed : !todo.completed);
-    const matchesQuery =
-      !filter.query ||
-      todo.title.toLowerCase().includes(filter.query.toLowerCase());
-
-    return matchesStatus && matchesQuery;
-  });
 
   const handleShowTodo = async (todo: Todo) => {
     setSelectedTodoId(todo.id);
@@ -52,7 +49,7 @@ export const App: React.FC = () => {
 
       setSelectedUser(user);
     } catch (error) {
-      console.error('Failed to load user:', error);
+      logErrorSilently(error);
     } finally {
       setIsModalLoading(false);
     }
