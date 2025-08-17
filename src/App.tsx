@@ -1,26 +1,109 @@
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { Todo } from './types/Todo';
+import { User } from './types/User';
+import { getUser } from './api';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+import { Loader } from './components/Loader';
+import { loadTodos } from './features/todos';
+import { setQuery, setStatusFilter, clearQuery } from './features/filter';
+import { RootState } from './app/store';
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+export const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const { todos, filter } = useSelector((state: RootState) => ({
+    todos: state.todos,
+    filter: state.filter,
+  }));
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isModalLoading, setIsModalLoading] = useState(false);
+  const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
+
+  useEffect(() => {
+    dispatch(loadTodos());
+  }, [dispatch]);
+
+  // filters todos
+  const filteredTodos = todos.filter(todo => {
+    const matchesStatus =
+      filter.status === 'all' ||
+      (filter.status === 'completed' ? todo.completed : !todo.completed);
+    const matchesQuery =
+      !filter.query ||
+      todo.title.toLowerCase().includes(filter.query.toLowerCase());
+
+    return matchesStatus && matchesQuery;
+  });
+
+  const handleShowTodo = async (todo: Todo) => {
+    setSelectedTodoId(todo.id);
+    setSelectedTodo(todo);
+    setIsModalLoading(true);
+
+    try {
+      const user = await getUser(todo.userId);
+
+      setSelectedUser(user);
+    } catch (error) {
+      console.error('Failed to load user:', error);
+    } finally {
+      setIsModalLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedTodoId(null);
+    setSelectedTodo(null);
+    setSelectedUser(null);
+  };
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter
+                statusFilter={filter.status}
+                onStatusFilter={status => dispatch(setStatusFilter(status))}
+                query={filter.query}
+                onQueryChange={query => dispatch(setQuery(query))}
+                onClearQuery={() => dispatch(clearQuery())}
+              />
+            </div>
+
+            <div className="block">
+              {todos.length === 0 ? (
+                <Loader />
+              ) : (
+                <TodoList
+                  todos={filteredTodos}
+                  onShowTodo={handleShowTodo}
+                  selectedTodoId={selectedTodoId}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {selectedTodo && (
+        <TodoModal
+          todo={selectedTodo}
+          user={selectedUser}
+          isLoading={isModalLoading}
+          onClose={handleCloseModal}
+        />
+      )}
+    </>
+  );
+};
