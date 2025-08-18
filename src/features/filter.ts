@@ -1,9 +1,15 @@
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
-import { RootState } from '../app/store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+type FilterStatus = 'all' | 'completed' | 'active';
+
+interface FilterState {
+  query: string;
+  status: FilterStatus;
+}
+
+const initialState: FilterState = {
   query: '',
-  status: 'all' as 'all' | 'active' | 'completed',
+  status: 'all',
 };
 
 export const filterSlice = createSlice({
@@ -14,10 +20,7 @@ export const filterSlice = createSlice({
       // eslint-disable-next-line no-param-reassign
       state.query = action.payload;
     },
-    setStatusFilter: (
-      state,
-      action: PayloadAction<'all' | 'active' | 'completed'>,
-    ) => {
+    setStatusFilter: (state, action: PayloadAction<FilterStatus>) => {
       // eslint-disable-next-line no-param-reassign
       state.status = action.payload;
     },
@@ -29,25 +32,4 @@ export const filterSlice = createSlice({
 });
 
 export const { setQuery, setStatusFilter, clearQuery } = filterSlice.actions;
-
-export const selectFilter = (state: RootState) => state.filter;
-
-export const selectFilteredTodos = createSelector(
-  [(state: RootState) => state.todos, selectFilter],
-  (todos, filter) => {
-    const normalizedQuery = filter.query.toLowerCase().trim();
-
-    return todos.filter(todo => {
-      const statusMatch =
-        filter.status === 'all' ||
-        (filter.status === 'completed' ? todo.completed : !todo.completed);
-
-      const queryMatch =
-        !normalizedQuery || todo.title.toLowerCase().includes(normalizedQuery);
-
-      return statusMatch && queryMatch;
-    });
-  },
-);
-
 export default filterSlice.reducer;

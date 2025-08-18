@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Todo } from './types/Todo';
 import { User } from './types/User';
-import { getUser } from './api';
+import { getTodos, getUser } from './api';
 
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { loadTodos } from './features/todos';
+import { setTodos } from './features/todos';
 import { setQuery, setStatusFilter, clearQuery } from './features/filter';
-import { RootState } from './app/store';
-import { selectFilteredTodos } from './features/filter';
 
 const logErrorSilently = (error: unknown) => {
   if (typeof window !== 'undefined') {
@@ -25,19 +23,44 @@ const logErrorSilently = (error: unknown) => {
 };
 
 export const App: React.FC = () => {
-  const dispatch = useDispatch();
-  const todos = useSelector((state: RootState) => state.todos);
-  const filter = useSelector((state: RootState) => state.filter);
-  const filteredTodos = useSelector(selectFilteredTodos);
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos);
+  const filter = useAppSelector(state => state.filter);
 
   const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalLoading, setIsModalLoading] = useState(false);
   const [selectedTodoId, setSelectedTodoId] = useState<number | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    dispatch(loadTodos());
+    const loadTodosData = async () => {
+      setIsLoading(true);
+      try {
+        const todosData = await getTodos();
+
+        dispatch(setTodos(todosData));
+      } catch (error) {
+        logErrorSilently(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadTodosData();
   }, [dispatch]);
+
+  const filteredTodos = todos.filter(todo => {
+    const matchesStatus =
+      filter.status === 'all' ||
+      (filter.status === 'completed' ? todo.completed : !todo.completed);
+
+    const matchesQuery =
+      !filter.query ||
+      todo.title.toLowerCase().includes(filter.query.toLowerCase());
+
+    return matchesStatus && matchesQuery;
+  });
 
   const handleShowTodo = async (todo: Todo) => {
     setSelectedTodoId(todo.id);
@@ -79,7 +102,7 @@ export const App: React.FC = () => {
             </div>
 
             <div className="block">
-              {todos.length === 0 ? (
+              {isLoading ? (
                 <Loader />
               ) : (
                 <TodoList
