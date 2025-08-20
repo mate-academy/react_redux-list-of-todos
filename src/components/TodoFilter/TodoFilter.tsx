@@ -1,6 +1,12 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hook';
+import { filterTodos } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const filterValues = useAppSelector(state => state.filter);
+
   return (
     <form
       className="field has-addons"
@@ -8,7 +14,17 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            onChange={event =>
+              dispatch(
+                filterTodos({
+                  status: event.currentTarget.value as Status,
+                  query: filterValues.query,
+                }),
+              )
+            }
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -18,6 +34,15 @@ export const TodoFilter: React.FC = () => {
 
       <p className="control is-expanded has-icons-left has-icons-right">
         <input
+          value={filterValues.query}
+          onChange={event =>
+            dispatch(
+              filterTodos({
+                status: filterValues.status as Status,
+                query: event.currentTarget.value,
+              }),
+            )
+          }
           data-cy="searchInput"
           type="text"
           className="input"
@@ -29,11 +54,22 @@ export const TodoFilter: React.FC = () => {
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+
+          {filterValues.query.length > 0 && (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() =>
+                dispatch(
+                  filterTodos({
+                    status: filterValues.status as Status,
+                    query: '',
+                  }),
+                )
+              }
+            />
+          )}
         </span>
       </p>
     </form>
