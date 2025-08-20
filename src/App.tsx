@@ -10,13 +10,17 @@ export const App = () => {
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
   const userCurrent = useAppSelector(state => state.currentTodo);
+  const [userInfo, setUserInfo] = useState(false);
 
   useEffect(() => {
     getTodos()
       .then(todos => {
         dispatch(setTodos(todos));
       })
-      .then(() => {
+      .catch(() => {
+        setUserInfo(true);
+      })
+      .finally(() => {
         setTimeout(() => {
           setLoading(false);
         }, 800);
@@ -33,6 +37,8 @@ export const App = () => {
             <div className="block">
               <TodoFilter />
             </div>
+
+            {userInfo && <p>Sorry, there are no todos</p>}
 
             <div className="block">{loading ? <Loader /> : <TodoList />}</div>
           </div>

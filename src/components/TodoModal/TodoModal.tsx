@@ -9,18 +9,20 @@ export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
   const todo = useAppSelector(state => state.currentTodo) || undefined;
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(false);
 
   useEffect(() => {
     getUser(todo?.userId || 0)
       .then(user => {
         dispatch(setUser(user));
       })
-      .then(() => {
+      .catch(() => {
+        setUserInfo(true);
+      })
+      .finally(() => {
         setTimeout(() => {
           setLoading(false);
         }, 1000);
-
-        setLoading(false);
       });
   }, [dispatch, todo?.userId]);
 
@@ -30,10 +32,10 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
+      {userInfo && <p>Sorry, there is no user</p>}
+
       {loading ? (
-        <div data-cy="todo">
-          <Loader />
-        </div>
+        <Loader />
       ) : (
         <div className="modal-card">
           <header className="modal-card-head">
@@ -49,7 +51,10 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(setTodo(null))}
+              onClick={() => {
+                dispatch(setTodo(null));
+                dispatch(setUser(null));
+              }}
             />
           </header>
 

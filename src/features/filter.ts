@@ -23,4 +23,3 @@ export const filterSlice = createSlice({
 });
 
 export const { filterTodos } = filterSlice.actions;
-export const { actions } = filterSlice;

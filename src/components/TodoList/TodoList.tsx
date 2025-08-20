@@ -1,32 +1,34 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hook';
 import cn from 'classnames';
 import { setTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
-  const choosenTodo = useAppSelector(state => state.currentTodo);
   const { query, status } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const todos = useAppSelector(state => state.todos);
 
-  const filteredTodos = todos.filter(todo => {
-    if (status === 'active') {
-      return !todo.completed === true;
-    } else if (status === 'completed') {
-      return todo.completed;
-    } else {
-      return true;
-    }
-  });
+  const filteredTodos = useMemo(() => {
+    return todos.filter(todo => {
+      if (status === 'active') {
+        return !todo.completed === true;
+      } else if (status === 'completed') {
+        return todo.completed;
+      } else {
+        return true;
+      }
+    });
+  }, [status, todos]);
 
-  const filteredQueryTodos = filteredTodos.filter(todo =>
-    todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
-  );
+  const filteredQueryTodos = useMemo(() => {
+    return filteredTodos.filter(todo =>
+      todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+    );
+  }, [filteredTodos, query]);
 
   console.log(filteredQueryTodos);
-  console.log(choosenTodo);
 
   if (filteredQueryTodos.length === 0) {
     return (
@@ -62,7 +64,7 @@ export const TodoList: React.FC = () => {
               <>
                 <tr
                   data-cy="todo"
-                  key={todo.userId}
+                  key={todo.id}
                   className={cn(currentTodo?.id === todo.id, {
                     ['has-background-info-light']: currentTodo?.id === todo.id,
                   })}
