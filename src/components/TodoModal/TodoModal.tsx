@@ -1,42 +1,44 @@
-import React from 'react';
-import { Loader } from '../Loader';
+import React, { useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { setCurrentTodo } from '../../features/currentTodoSlice';
 
 export const TodoModal: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const todo = useAppSelector(s => s.currentTodo.selected);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (todo) {
+      setLoading(true);
+      setUser(null);
+      setTimeout(() => {
+        setUser(`User ${todo.userId}`);
+        setLoading(false);
+      }, 500);
+    }
+  }, [todo]);
+
+  if (!todo) {
+    return null;
+  }
+
   return (
-    <div className="modal is-active" data-cy="modal">
-      <div className="modal-background" />
-
-      <Loader />
-
-      <div className="modal-card">
-        <header className="modal-card-head">
-          <div
-            className="modal-card-title has-text-weight-medium"
-            data-cy="modal-header"
+    <div data-cy="modal">
+      {loading ? (
+        <div data-cy="loader">Loading...</div>
+      ) : (
+        <div>
+          <h2 data-cy="modal-header">{todo.title}</h2>
+          <p data-cy="modal-user">{user}</p>
+          <button
+            data-cy="modal-close"
+            onClick={() => dispatch(setCurrentTodo(null))}
           >
-            Todo #3
-          </div>
-
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
-        </header>
-
-        <div className="modal-card-body">
-          <p className="block" data-cy="modal-title">
-            fugiat veniam minus
-          </p>
-
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
-
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
-            {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-          </p>
+            Close
+          </button>
         </div>
-      </div>
+      )}
     </div>
   );
 };
