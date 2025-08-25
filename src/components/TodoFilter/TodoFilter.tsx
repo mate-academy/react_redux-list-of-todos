@@ -1,12 +1,11 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
 import { setQuery, setStatus, clearQuery } from '../../features/filter';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
-  const dispatch = useDispatch();
-  const status = useSelector((state: RootState) => state.filter.status);
-  const query = useSelector((state: RootState) => state.filter.query);
+  const dispatch = useAppDispatch();
+  const status = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
 
   const handleChangeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setStatus(event.target.value as 'all' | 'active' | 'completed'));

@@ -6,13 +6,12 @@ import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect } from 'react';
 import { getTodos } from './api';
 import { setLoading, setTodos } from './features/todos';
-import { useDispatch, useSelector } from 'react-redux';
 import { Todo } from './types/Todo';
-import { RootState } from './app/store';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App = () => {
-  const dispatch = useDispatch();
-  const loading = useSelector((state: RootState) => state.todos.loading);
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(state => state.todos.loading);
 
   useEffect(() => {
     const fetchTodos = async () => {

@@ -1,15 +1,14 @@
 /* eslint-disable */
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
 import { Todo } from '../../types/Todo';
 import { setCurrentTodo } from '../../features/currentTodo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoList: React.FC = () => {
-  const dispatch = useDispatch();
-  const todos = useSelector((state: RootState) => state.todos.items);
-  const { status, query } = useSelector((state: RootState) => state.filter);
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos.items);
+  const { status, query } = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const handleSelect = (todo: Todo) => {
     dispatch(setCurrentTodo(todo));
@@ -84,7 +83,9 @@ export const TodoList: React.FC = () => {
                   >
                     <span className="icon">
                       <i
-                        className={`far fa${currentTodo?.id !== todo.id ? '-eye' : '-eye-slash'} `}
+                        className={`far fa${
+                          currentTodo?.id !== todo.id ? '-eye' : '-eye-slash'
+                        } `}
                       />
                     </span>
                   </button>
