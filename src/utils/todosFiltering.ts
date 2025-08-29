@@ -1,16 +1,5 @@
 import { Todo } from '../types/Todo';
 
-export const todosFiltering = (
-  todos: Todo[],
-  filter: { status: string; query: string },
-) => {
-  return todos.filter(
-    (todo) =>
-      filteredByStatus(todo, filter.status) &&
-      filteredByQuery(todo, filter.query),
-  );
-};
-
 export const filteredByStatus = (todo: Todo, status: string) => {
   if (status === 'all') {
     return true;
@@ -33,4 +22,15 @@ export const filteredByQuery = (todo: Todo, query: string) => {
   }
 
   return todo.title.toLowerCase().includes(query.toLowerCase());
+};
+
+export const todosFiltering = (
+  todos: Todo[],
+  filter: { status: string; query: string },
+) => {
+  return todos.filter(
+    todo =>
+      filteredByStatus(todo, filter.status) &&
+      filteredByQuery(todo, filter.query),
+  );
 };

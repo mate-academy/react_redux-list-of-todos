@@ -5,7 +5,7 @@ import { RootState } from '../../app/store';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const filter = useSelector((state: RootState) => state.filter);
+  const filterTodo = useSelector((state: RootState) => state.filter);
 
   const setSelectedFilter = (filter: string) => {
     dispatch(setStatus(filter));
@@ -42,21 +42,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={filter.query}
-          onChange={(e) => setSelectedQuery(e.target.value)}
+          value={filterTodo.query}
+          onChange={e => setSelectedQuery(e.target.value)}
         />
+
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-            onClick={() => setSelectedQuery('')}
-          />
-        </span>
+        {filterTodo.query !== '' ? (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => setSelectedQuery('')}
+            />
+          </span>
+        ) : null}
       </p>
     </form>
   );

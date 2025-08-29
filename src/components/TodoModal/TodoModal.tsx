@@ -24,9 +24,10 @@ export const TodoModal: React.FC<Props> = ({ setOpenTodoId }) => {
     if (!currentTodo) {
       return;
     }
+
     setLoading(true);
     getUser(currentTodo.userId)
-      .then((user) => {
+      .then(user => {
         setSelectedUser(user);
       })
       .finally(() => {

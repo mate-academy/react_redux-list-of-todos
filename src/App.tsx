@@ -14,9 +14,9 @@ export const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setLoading(true);
     getTodos()
-      .then((todos) => {
-        setLoading(true);
+      .then(todos => {
         dispatch(setTodos(todos));
       })
       .finally(() => {

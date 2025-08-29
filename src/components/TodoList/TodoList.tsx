@@ -45,7 +45,7 @@ export const TodoList: React.FC<Props> = ({ openTodoId, setOpenTodoId }) => {
           </thead>
 
           <tbody>
-            {filteredTodos.map((todo) => (
+            {filteredTodos.map(todo => (
               <tr
                 data-cy="todo"
                 className={
