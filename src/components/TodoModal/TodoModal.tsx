@@ -5,14 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { setCurrentTodo } from '../../features/currentTodo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 type Props = {
   setOpenTodoId: (id: number | null) => void;
 };
 
 export const TodoModal: React.FC<Props> = ({ setOpenTodoId }) => {
-  const dispatch = useDispatch();
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector((state: RootState) => state.currentTodo);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 

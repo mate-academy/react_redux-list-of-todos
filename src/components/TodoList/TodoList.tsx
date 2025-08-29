@@ -1,9 +1,9 @@
 import React from 'react';
 import { RootState } from '../../app/store';
-import { useDispatch, useSelector } from 'react-redux';
 import { Todo } from '../../types/Todo';
 import { setCurrentTodo } from '../../features/currentTodo';
 import { todosFiltering } from '../../utils/todosFiltering';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 type Props = {
   openTodoId: number | null;
@@ -11,9 +11,9 @@ type Props = {
 };
 
 export const TodoList: React.FC<Props> = ({ openTodoId, setOpenTodoId }) => {
-  const dispatch = useDispatch();
-  const todos = useSelector((state: RootState) => state.todos);
-  const filter = useSelector((state: RootState) => state.filter);
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector((state: RootState) => state.todos);
+  const filter = useAppSelector((state: RootState) => state.filter);
 
   const filteredTodos = todosFiltering(todos, filter);
 
