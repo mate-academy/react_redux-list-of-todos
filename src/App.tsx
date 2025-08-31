@@ -1,26 +1,61 @@
+/* eslint-disable max-len */
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+import { Loader } from './components/Loader';
+import { getTodos } from './api';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { setTodos } from './features/todos';
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+export enum Select {
+  ALL = 'all',
+  ACTIVE = 'active',
+  COMPLETED = 'completed',
+}
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+export const App: React.FC = () => {
+  const [isLoader, setIsLoader] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const singleTodo = useAppSelector(state => state.currentTodo);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    setIsLoader(true);
+    setError(null);
+    getTodos()
+      .then(data => {
+        dispatch(setTodos(data));
+      })
+      // eslint-disable-next-line no-console
+      .catch(() => setError('Something went wrong. Please try again later.'))
+      .finally(() => setIsLoader(false));
+  }, [dispatch]);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {isLoader && <Loader />}
+              {!isLoader && error && <p className="has-text-danger">{error}</p>}
+              {!isLoader && !error && <TodoList />}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <TodoModal />
-  </>
-);
+      {singleTodo && <TodoModal error={error} setError={setError} />}
+    </>
+  );
+};
