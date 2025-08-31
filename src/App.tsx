@@ -19,25 +19,22 @@ export enum Select {
 
 export const App: React.FC = () => {
   const [isLoader, setIsLoader] = useState<boolean>(false);
-
-  const { status: selectedValue, query: searchQueryTitle } = useAppSelector(
-    state => state.filter,
-  );
-
+  const [error, setError] = useState<string | null>(null);
   const singleTodo = useAppSelector(state => state.currentTodo);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoader(true);
+    setError(null);
     getTodos()
       .then(data => {
         dispatch(setTodos(data));
       })
       // eslint-disable-next-line no-console
-      .catch(error => console.error(`Something went wrong: ${error}`))
+      .catch(() => setError('Something went wrong. Please try again later.'))
       .finally(() => setIsLoader(false));
-  }, [searchQueryTitle, selectedValue, dispatch]);
+  }, [dispatch]);
 
   return (
     <>
@@ -52,12 +49,13 @@ export const App: React.FC = () => {
 
             <div className="block">
               {isLoader && <Loader />}
-              <TodoList />
+              {!isLoader && error && <p className="has-text-danger">{error}</p>}
+              {!isLoader && !error && <TodoList />}
             </div>
           </div>
         </div>
       </div>
-      {singleTodo && <TodoModal />}
+      {singleTodo && <TodoModal error={error} setError={setError} />}
     </>
   );
 };

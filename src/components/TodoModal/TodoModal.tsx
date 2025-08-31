@@ -6,7 +6,12 @@ import { useAppSelector } from '../../app/hooks';
 import { setSingleTodo } from '../../features/currentTodo';
 import { useDispatch } from 'react-redux';
 
-export const TodoModal = () => {
+type Props = {
+  error: string | null;
+  setError: (error: string | null) => void;
+};
+
+export const TodoModal: React.FC<Props> = ({ error, setError }) => {
   const [userData, setUserData] = useState<User | null>(null);
   const [isLoaded, setIsLoaded] = useState<boolean>(true);
 
@@ -15,14 +20,15 @@ export const TodoModal = () => {
 
   useEffect(() => {
     setIsLoaded(true);
+    setError(null);
     if (singleTodo?.userId !== undefined) {
       getUser(singleTodo?.userId)
         .then(data => setUserData(data))
         // eslint-disable-next-line no-console
-        .catch(error => console.error(`Something went wrong: ${error}`))
+        .catch(() => setError('Something went wrong. Please try again later.'))
         .finally(() => setIsLoaded(false));
     }
-  }, [singleTodo]);
+  }, [singleTodo, setError]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -50,21 +56,30 @@ export const TodoModal = () => {
           </header>
 
           <div className="modal-card-body">
-            <p className="block" data-cy="modal-title">
-              {singleTodo?.title}
-            </p>
+            {error && (
+              <div className="notification is-danger" data-cy="modal-error">
+                {error}
+              </div>
+            )}
+            {!error && (
+              <>
+                <p className="block" data-cy="modal-title">
+                  {singleTodo?.title}
+                </p>
 
-            <p className="block" data-cy="modal-user">
-              {singleTodo?.completed ? (
-                <strong className="has-text-success">Done</strong>
-              ) : (
-                <strong className="has-text-danger">Planned</strong>
-              )}
+                <p className="block" data-cy="modal-user">
+                  {singleTodo?.completed ? (
+                    <strong className="has-text-success">Done</strong>
+                  ) : (
+                    <strong className="has-text-danger">Planned</strong>
+                  )}
 
-              {' by '}
+                  {' by '}
 
-              <a href={`mailto:${userData?.email}`}>{userData?.name}</a>
-            </p>
+                  <a href={`mailto:${userData?.email}`}>{userData?.name}</a>
+                </p>
+              </>
+            )}
           </div>
         </div>
       )}
