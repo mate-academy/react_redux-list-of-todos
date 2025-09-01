@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+export type FilterStatus = 'all' | 'active' | 'completed';
+
+interface FilterState {
+  query: string;
+  status: FilterStatus;
+}
+
+const initialState: FilterState = {
   query: '',
   status: 'all',
 };
@@ -8,5 +15,19 @@ const initialState = {
 export const filterSlice = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    setFilterStatus: (state, action) => {
+      return { ...state, ...action.payload };
+    },
+    setFilterQuery: (state, action) => {
+      return { ...state, ...action.payload };
+    },
+    clearFilterQuery: state => {
+      return { ...state, query: '' };
+    },
+  },
 });
+
+export const { setFilterStatus, setFilterQuery, clearFilterQuery } =
+  filterSlice.actions;
+export default filterSlice.reducer;
