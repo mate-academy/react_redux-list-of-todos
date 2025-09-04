@@ -1,10 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
-const initialState = null as Todo | null;
+export interface SelectedTodoState {
+  selectedTodo: Todo | null;
+}
 
-export const currentTodoSlice = createSlice({
+const initialState: SelectedTodoState = {
+  selectedTodo: null,
+};
+
+export const { reducer, actions } = createSlice({
   name: 'currentTodo',
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedTodo: (state, action) => {
+      state.selectedTodo = action.payload;
+    },
+    clearSelectedTodo: state => {
+      state.selectedTodo = null;
+    },
+  },
 });
+
+export const { setSelectedTodo, clearSelectedTodo } = actions;
+export default reducer;
