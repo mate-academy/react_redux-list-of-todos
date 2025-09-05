@@ -1,6 +1,18 @@
-import React from 'react';
+type Props = {
+  searchValue: string;
+  onSearchChange: (value: string) => void;
+  onClear: () => void;
+  status: 'all' | 'active' | 'completed';
+  onStatusChange: (value: 'all' | 'active' | 'completed') => void;
+};
 
-export const TodoFilter: React.FC = () => {
+export const TodoFilter = ({
+  searchValue,
+  onSearchChange,
+  onClear,
+  status,
+  onStatusChange,
+}: Props) => {
   return (
     <form
       className="field has-addons"
@@ -8,7 +20,13 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={e =>
+              onStatusChange(e.target.value as 'all' | 'active' | 'completed')
+            }
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,19 +40,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={searchValue}
+          onChange={e => onSearchChange(e.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {searchValue.length > 0 && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={onClear}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
