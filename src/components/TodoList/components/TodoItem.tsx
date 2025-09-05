@@ -1,7 +1,7 @@
 import React from 'react';
 import { Todo } from '../../../types/Todo';
-import { useDispatch } from 'react-redux';
 import { setTodo } from '../../../features/currentTodo';
+import { useAppDispatch } from '../../../app/hooks';
 
 type Props = {
   todo: Todo;
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const TodoItem: React.FC<Props> = ({ todo, setIsActive }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <tr data-cy="todo">
