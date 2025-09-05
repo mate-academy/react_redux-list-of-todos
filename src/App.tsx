@@ -39,7 +39,7 @@ export const App = () => {
       .finally(() => {
         dispatch(todosActions.setIsTodosLoading(false));
       });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (currentTodo?.userId) {
@@ -55,7 +55,7 @@ export const App = () => {
     } else {
       dispatch(currentTodoActions.setAssignedUser(null));
     }
-  }, [currentTodo]);
+  }, [currentTodo, dispatch]);
 
   const filteredTodos = todos?.filter(todo => {
     const matchesSearch = todo.title

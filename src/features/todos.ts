@@ -11,10 +11,10 @@ export const todosSlice = createSlice({
   initialState,
   reducers: {
     setTodos: (state, action: PayloadAction<Todo[]>) => {
-      return {...state, todos: action.payload}
+      return { ...state, todos: action.payload };
     },
     setIsTodosLoading: (state, action: PayloadAction<boolean>) => {
-      return { ...state, isTodosLoading: action.payload}
+      return { ...state, isTodosLoading: action.payload };
     },
   },
 });
