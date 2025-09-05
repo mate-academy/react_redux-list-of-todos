@@ -6,5 +6,9 @@ const initialState = null as Todo | null;
 export const currentTodoSlice = createSlice({
   name: 'currentTodo',
   initialState,
-  reducers: {},
+  reducers: {
+    setTodo: (state, action) => action.payload,
+  },
 });
+
+export const { setTodo } = currentTodoSlice.actions;
