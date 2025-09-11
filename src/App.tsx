@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { getTodos } from './api';
 import { setTodos } from './features/todos';
 import { useAppDispatch, useAppSelector } from './app/hooks';
+import { ERROR_MESSAGE } from './types/Error';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +20,7 @@ export const App = () => {
         const data = await getTodos();
         dispatch(setTodos(data));
       } catch (error) {
-        setErrorMessage('Failed to fetch');
+        setErrorMessage(ERROR_MESSAGE);
       } finally {
         setIsLoading(false);
       }

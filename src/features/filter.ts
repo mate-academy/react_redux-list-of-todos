@@ -19,8 +19,6 @@ export const filterSlice = createSlice({
       if (state.status !== payload) {
         state.status = payload;
       }
-
-      return state;
     },
     setQuery: (state, { payload }: PayloadAction<string>) => {
       state.query = payload;

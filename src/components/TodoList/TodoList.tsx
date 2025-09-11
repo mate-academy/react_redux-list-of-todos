@@ -12,7 +12,7 @@ export const TodoList: React.FC = () => {
   const selectedTodo = useAppSelector(state => state.currentTodo);
   const todos = useMemo(() => {
     return prepareTodos(data, status as Status, query);
-  }, [status, query]);
+  }, [data, status, query]);
   const dispatch = useAppDispatch();
   return (
     <>
@@ -72,7 +72,7 @@ export const TodoList: React.FC = () => {
                       <i
                         className={classNames('far', {
                           'fa-eye': todo.id !== selectedTodo?.id,
-                          'fa-eye-slash': todo.id == selectedTodo?.id,
+                          'fa-eye-slash': todo.id === selectedTodo?.id,
                         })}
                       />
                     </span>
