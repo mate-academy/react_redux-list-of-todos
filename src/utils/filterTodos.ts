@@ -1,10 +1,10 @@
 import { Status } from '../types/Status';
 import { Todo } from '../types/Todo';
 
-export function prepareTodos(data: Todo[], filter: Status, text: string) {
+export function prepareTodos(data: Todo[], status: Status, text: string) {
   const preparedQuery = text.trim().toLowerCase();
 
-  switch (filter) {
+  switch (status) {
     case 'active': {
       return data.filter(
         todo =>
