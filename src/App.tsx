@@ -2,7 +2,7 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getTodos, getUser } from './api';
 import { User } from './types/User';
 import { todosSlice } from './features/todos';
@@ -17,17 +17,21 @@ export const App = () => {
   const [user, setUser] = useState<User | null>(null);
   const [userLoading, setUserLoading] = useState(false);
 
-  const filteredTodos = todos.filter(todo => {
-    if (filter.status === 'active') {
-      return !todo.completed;
-    }
+  const filteredTodos = useMemo(
+    () =>
+      todos.filter(todo => {
+        if (filter.status === 'active') {
+          return !todo.completed;
+        }
 
-    if (filter.status === 'completed') {
-      return todo.completed;
-    }
+        if (filter.status === 'completed') {
+          return todo.completed;
+        }
 
-    return true;
-  });
+        return true;
+      }),
+    [filter.status, todos],
+  );
 
   const searchedTodos = filteredTodos.filter(todo =>
     todo.title.toLowerCase().includes(filter.query.toLowerCase()),
@@ -38,7 +42,7 @@ export const App = () => {
 
     getTodos()
       .then(data => {
-        dispatch(todosSlice.actions.set(data));
+        dispatch(todosSlice.actions.setTodos(data));
       })
       .finally(() => setTodosLoading(false));
   }, [dispatch]);

@@ -1,8 +1,7 @@
 import React from 'react';
 import { Loader } from '../Loader';
 import { User } from '../../types/User';
-import { useAppSelector } from '../../app/hooks';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { currentTodoSlice } from '../../features/currentTodo';
 
 interface Props {
@@ -12,14 +11,14 @@ interface Props {
 
 export const TodoModal: React.FC<Props> = ({ user, isLoading }) => {
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const closeWindow = () => {
     dispatch(currentTodoSlice.actions.remove());
   };
 
   if (!currentTodo) {
-    return;
+    return null;
   }
 
   return (
@@ -53,11 +52,10 @@ export const TodoModal: React.FC<Props> = ({ user, isLoading }) => {
             </p>
 
             <p className="block" data-cy="modal-user">
-              {/* For not completed */}
               {currentTodo?.completed ? (
-                <strong className="has-text-danger">Planned</strong>
-              ) : (
                 <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
               <a href={`mailto:${user?.email}`}>{user?.name}</a>
