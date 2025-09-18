@@ -4,12 +4,12 @@ import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
 import { setTodos } from './features/todos';
 import { getTodos } from './api';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from './app/hooks';
 
 export const App = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoading(true);

@@ -1,22 +1,51 @@
 /* eslint-disable */
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../app/hooks';
 import { setCurrentTodo } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const dispatch = useDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
 
   const handleSelectTodo = (todo: Todo) => {
     dispatch(setCurrentTodo(todo));
   };
 
+  const getFilteredTodos = (
+    todos: Todo[],
+    { query, status }: { query: string; status: string },
+  ) => {
+    const normalizedQuery = query.toLowerCase();
+
+    return todos.filter(todo => {
+      const normalizedTitle = todo.title.toLowerCase();
+
+      const matchesQuery = normalizedTitle.includes(normalizedQuery);
+
+      if (status === 'all') {
+        return matchesQuery;
+      }
+
+      if (status === 'active') {
+        return matchesQuery && !todo.completed;
+      }
+
+      if (status === 'completed') {
+        return matchesQuery && todo.completed;
+      }
+      return false;
+    });
+  };
+
+  const filteredTodos = getFilteredTodos(todos, { query, status });
+
   return (
     <>
-      {todos.length > 0 ? (
+      {filteredTodos.length > 0 ? (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -34,7 +63,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {todos.map(todo => (
+            {filteredTodos.map(todo => (
               <tr data-cy="todo" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
