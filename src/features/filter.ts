@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Status } from '../types/Status';
 
 const initialState = {
   query: '',
@@ -13,7 +14,7 @@ export const filterSlice = createSlice({
       // eslint-disable-next-line no-param-reassign
       state.query = action.payload;
     },
-    setStatus: (state, action: PayloadAction<string>) => {
+    setStatus: (state, action: PayloadAction<Status>) => {
       // eslint-disable-next-line no-param-reassign
       state.status = action.payload;
     },
