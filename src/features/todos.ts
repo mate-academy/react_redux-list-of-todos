@@ -6,12 +6,6 @@ export const todosSlice = createSlice({
   initialState: [] as Todo[],
   reducers: {
     setTodos: (_state, action: PayloadAction<Todo[]>) => action.payload,
-    addTodo: (state, action: PayloadAction<Todo>) => {
-      state.push(action.payload);
-    },
-    removeTodo: (state, action: PayloadAction<string>) => {
-      return state.filter(todo => todo.id !== +action.payload);
-    },
     toggleTodo: (state, action: PayloadAction<string>) => {
       const todo = state.find(t => t.id === +action.payload);
 
