@@ -10,11 +10,16 @@ type Props = {
 
 export const TodoList: React.FC<Props> = ({ todos, onSelectTodo }) => {
   const currentTodo = useAppSelector(state => state.currentTodo);
-  return (
-    <>
+
+    if (todos.length === 0) {
+    return (
       <p className="notification is-warning">
         There are no todos matching current filter criteria
       </p>
+    );
+  }
+  return (
+    <>
 
       <table className="table is-narrow is-fullwidth">
         <thead>
