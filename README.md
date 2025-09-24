@@ -12,7 +12,7 @@ using the Redux. It should look and work identically, so use the same markup.
 - implement `features/filter` storing `query` and `status`;
 - implement `features/todos` storing an array of todos;
 - load the todos in the `App` on page load (don't use Redux Thunk for now);
-- `useAppSelector` already aware of `RootState` so you can write selectors in your
+- `useAppSelector` already aware of `RootState` so you can write selectors in yourhttps://github.com/Y-Kotvitskiy/react_redux-list-of-todos.git
 components (no need to write them in the store file)
 
 ## Instructions
