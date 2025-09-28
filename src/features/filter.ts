@@ -1,12 +1,2 @@
-import { createSlice } from '@reduxjs/toolkit';
-
-const initialState = {
-  query: '',
-  status: 'all',
-};
-
-export const filterSlice = createSlice({
-  name: 'filter',
-  initialState,
-  reducers: {},
-});
+export { default } from './filter/filterSlice';
+export * from './filter/filterSlice';

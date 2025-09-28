@@ -1,4 +1,5 @@
 export * from './Loader';
-export * from './TodoList';
 export * from './TodoFilter';
+export * from './TodoList';
 export * from './TodoModal';
+export * from './TodoApp';

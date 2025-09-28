@@ -1,41 +1,69 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setQuery, setStatus, clearQuery } from '../../features/filter';
+
+type FilterStatus = 'all' | 'active' | 'completed';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
+
+  const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setQuery(event.target.value));
+  };
+
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setStatus(event.target.value as FilterStatus));
+  };
+
+  const handleClearQuery = () => {
+    dispatch(clearQuery());
+  };
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
-      <p className="control">
-        <span className="select">
-          <select data-cy="statusSelect">
+    <div className="field is-grouped mb-4">
+      <div className="control has-icons-right">
+        <input
+          data-cy="searchInput"
+          className="input"
+          type="text"
+          placeholder="Search todos."
+          value={query}
+          onChange={handleQueryChange}
+        />
+        {query && (
+          <button
+            data-cy="clearSearchButton"
+            className="button is-small is-right"
+            onClick={handleClearQuery}
+            style={{
+              position: 'absolute',
+              right: '8px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 4,
+            }}
+          >
+            <span className="icon is-small">
+              <i className="fas fa-times"></i>
+            </span>
+          </button>
+        )}
+      </div>
+
+      <div className="control">
+        <div className="select">
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleStatusChange}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
           </select>
-        </span>
-      </p>
-
-      <p className="control is-expanded has-icons-left has-icons-right">
-        <input
-          data-cy="searchInput"
-          type="text"
-          className="input"
-          placeholder="Search..."
-        />
-        <span className="icon is-left">
-          <i className="fas fa-magnifying-glass" />
-        </span>
-
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
-      </p>
-    </form>
+        </div>
+      </div>
+    </div>
   );
 };

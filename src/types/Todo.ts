@@ -1,6 +1,15 @@
 export interface Todo {
   id: number;
+  userId: number;
   title: string;
   completed: boolean;
-  userId: number;
 }
+
+// src/types/User.ts
+export interface User {
+  id: number;
+  name: string;
+}
+
+// src/types/FilterStatus.ts
+export type FilterStatus = 'all' | 'active' | 'completed';
