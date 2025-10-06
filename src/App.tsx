@@ -23,7 +23,7 @@ export const App = () => {
     getTodos()
       .then(data => dispatch(setTodos(data)))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [dispatch]);
 
   const closeModal = (todo?: Todo) => {
     setModal(prev => !prev);

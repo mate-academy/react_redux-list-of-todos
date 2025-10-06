@@ -14,13 +14,30 @@ export const TodoModal: React.FC<Props> = ({ selectedTodo, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    let isCancelled = false;
+
     if (selectedTodo) {
       setIsLoading(true);
+      setUser(null);
 
       getUser(selectedTodo.userId)
-        .then(userFormServer => setUser(userFormServer))
-        .finally(() => setIsLoading(false));
+        .then(userFromServer => {
+          if (!isCancelled) {
+            setUser(userFromServer);
+          }
+        })
+        .finally(() => {
+          if (!isCancelled) {
+            setIsLoading(false);
+          }
+        });
+    } else {
+      setUser(null);
     }
+
+    return () => {
+      isCancelled = true;
+    };
   }, [selectedTodo]);
 
   const handleClose = () => {

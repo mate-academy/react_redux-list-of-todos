@@ -1,10 +1,11 @@
 import React from 'react';
+import { Status } from '../../types/Status';
 
 type Props = {
   query: string;
   setQuery: (value: string) => void;
-  option: string;
-  setOption: (value: string) => void;
+  option: Status;
+  setOption: (value: Status) => void;
 };
 
 export const TodoFilter: React.FC<Props> = ({
@@ -18,7 +19,7 @@ export const TodoFilter: React.FC<Props> = ({
   };
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setOption(event.target.value);
+    setOption(event.target.value as Status);
   };
 
   return (
@@ -52,10 +53,7 @@ export const TodoFilter: React.FC<Props> = ({
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
-
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-
           {query.length !== 0 && (
             <button
               data-cy="clearSearchButton"
