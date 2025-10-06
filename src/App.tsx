@@ -18,19 +18,33 @@ export const App = () => {
   const { query, status } = useAppSelector(state => state.filter);
 
   useEffect(() => {
+    let isCancelled = false;
+
     setIsLoading(true);
 
     getTodos()
-      .then(data => dispatch(setTodos(data)))
-      .finally(() => setIsLoading(false));
+      .then(data => {
+        if (!isCancelled) {
+          dispatch(setTodos(data));
+        }
+      })
+      .finally(() => {
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isCancelled = true;
+    };
   }, [dispatch]);
 
   const closeModal = (todo?: Todo) => {
-    setModal(prev => !prev);
-
     if (todo) {
+      setModal(true);
       dispatch(setCurrentTodo(todo));
     } else {
+      setModal(false);
       dispatch(clearCurrentTodo());
     }
   };
