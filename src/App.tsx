@@ -1,23 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-
 import { getTodos } from './api';
-
 import { Todo } from './types/Todo';
-
 import { setQuery, setStatus } from './features/filter';
 import { useAppDispatch, useAppSelector } from './hooks/hooks';
 import { setTodos } from './features/todos';
 import { clearCurrentTodo, setCurrentTodo } from './features/currentTodo';
-
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 export const App = () => {
-  const [modal, setModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const { query, status } = useAppSelector(state => state.filter);
+
   const todos = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
 
@@ -54,15 +50,13 @@ export const App = () => {
 
   function handleCloseModal(todoItem?: Todo) {
     if (todoItem) {
-      setModal(true);
       dispatch(setCurrentTodo(todoItem));
     } else {
-      setModal(false);
       dispatch(clearCurrentTodo());
     }
   }
 
-  const todosArray = Array.isArray(todos) ? todos : [];
+  const todosArray: Todo[] = Array.isArray(todos) ? todos : [];
 
   const filteredTodos = todosArray.filter((todo: Todo) => {
     const queryFilter = todo.title.toLowerCase().includes(query.toLowerCase());
@@ -91,9 +85,9 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {isLoading && <Loader />}
-
-              {!isLoading && todosArray.length > 0 && (
+              {isLoading ? (
+                <Loader />
+              ) : (
                 <TodoList
                   isLoading={isLoading}
                   selectedId={currentTodo?.id}
@@ -106,7 +100,7 @@ export const App = () => {
         </div>
       </div>
 
-      {modal && (
+      {currentTodo && (
         <TodoModal onClose={handleCloseModal} selectedTodo={currentTodo} />
       )}
     </>

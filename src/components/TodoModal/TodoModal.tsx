@@ -6,7 +6,7 @@ import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
 
 type TodoModalProps = {
-  selectedTodo: Todo | null;
+  selectedTodo?: Todo | null;
   onClose: () => void;
 };
 
