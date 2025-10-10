@@ -9,8 +9,8 @@
 
   // Formatting with Prettier
   "editor.codeActionsOnSave": {
-    "source.fixAll": "always",
-    "source.fixAll.eslint": "always"
+    "source.fixAll": true,
+    "source.fixAll.eslint": true
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnType": true,

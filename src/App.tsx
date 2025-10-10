@@ -36,6 +36,8 @@ export const App = () => {
           dispatch(setTodos(todoData));
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error((error as Error).message);
       } finally {
         if (!isCancelled) {
           setIsLoading(false);
@@ -60,7 +62,9 @@ export const App = () => {
     }
   }
 
-  const filteredTodos = todos.filter((todo: Todo) => {
+  const todosArray = Array.isArray(todos) ? todos : [];
+
+  const filteredTodos = todosArray.filter((todo: Todo) => {
     const queryFilter = todo.title.toLowerCase().includes(query.toLowerCase());
     const optionFilter =
       status === 'all' ||
@@ -89,7 +93,7 @@ export const App = () => {
             <div className="block">
               {isLoading && <Loader />}
 
-              {!isLoading && todos.length && (
+              {!isLoading && todosArray.length > 0 && (
                 <TodoList
                   isLoading={isLoading}
                   selectedId={currentTodo?.id}

@@ -27,7 +27,7 @@ export const TodoFilter: React.FC<TodoFilterProps> = ({
     setOption(event.target.value as Status);
   }
 
-  function handleQueryRefresh(event: React.onClick<HTMLButtonElement>) {
+  function handleQueryRefresh(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     setQuery('');
   }
@@ -64,7 +64,7 @@ export const TodoFilter: React.FC<TodoFilterProps> = ({
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {query.length && (
+          {query.length > 0 && (
             <button
               data-cy="clearSearchButton"
               type="button"
