@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
 import { setCurrentTodo } from '../../features/currentTodo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoModal: React.FC = () => {
-  const dispatch = useDispatch();
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +22,7 @@ export const TodoModal: React.FC = () => {
   }, [currentTodo]);
 
   if (!currentTodo) {
-    return;
+    return null;
   }
 
   return (
@@ -63,7 +62,7 @@ export const TodoModal: React.FC = () => {
                 <strong className="has-text-danger">Planned</strong>
               )}
               {' by '}
-              <a href="mailto:Sincere@april.biz">{user.name}</a>
+              <a href={`mailto:${user.email}`}>{user.name}</a>
             </p>
           </div>
         </div>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { setQuery, setStatus } from '../../features/filter';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const dispath = useAppDispatch();
+  const dispatch = useAppDispatch();
   const query = useAppSelector(state => state.filter.query);
   const status = useAppSelector(state => state.filter.status);
 
@@ -17,7 +18,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={status}
-            onChange={e => dispath(setStatus(e.target.value))}
+            onChange={e => dispatch(setStatus(e.target.value as Status))}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -33,7 +34,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={e => dispath(setQuery(e.target.value))}
+          onChange={e => dispatch(setQuery(e.target.value))}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -46,7 +47,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispath(setQuery(''))}
+              onClick={() => dispatch(setQuery(''))}
             />
           </span>
         )}
