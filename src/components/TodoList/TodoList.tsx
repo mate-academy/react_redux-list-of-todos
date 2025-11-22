@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../app/store';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { FilterState } from '../../types/FilterState';
 import { setFilterNotif } from '../../features/filter';
 import { UseAppSelector } from '../../hooks';
@@ -18,11 +18,6 @@ export const TodoList: React.FC = () => {
     (state: RootState) => state.currentTodo,
   );
   const dispatch = useDispatch<AppDispatch>();
-
-  const openTodo = async (todoId: number) => {
-    const todo = [...todos].find(todo => todo.id === todoId);
-    dispatch(setCurrentTodo(todo));
-  };
 
   const getFilteredTodos = useCallback(
     (filter: FilterState) => {
@@ -42,20 +37,27 @@ export const TodoList: React.FC = () => {
           break;
       }
 
-      if (filter.query.length < 0) {
-        dispatch(setFilterNotif(noMatchingTodoNotif));
-      } else {
-        filteredList = filteredList.filter(todo =>
-          todo.title.toLowerCase().includes(filter.query.toLowerCase()),
-        );
-      }
+      filteredList = filteredList.filter(todo =>
+        todo.title.toLowerCase().includes(filter.query.toLowerCase()),
+      );
 
       return filteredList;
     },
-    [filter],
+    [filter, todos],
   );
 
   const filteredTodos: Todo[] = getFilteredTodos(filter);
+
+  useEffect(() => {
+    const newNotif =
+      filteredTodos.length === 0 && filter.query.length > 0
+        ? noMatchingTodoNotif
+        : '';
+
+    if (filter.notif !== newNotif) {
+      dispatch(setFilterNotif(newNotif));
+    }
+  }, [filteredTodos, filter.query, filter.notif]);
 
   return (
     <>
@@ -117,7 +119,11 @@ export const TodoList: React.FC = () => {
                       data-cy="selectButton"
                       className="button"
                       type="button"
-                      onClick={() => openTodo(todo.id)}
+                      onClick={() =>
+                        dispatch(
+                          setCurrentTodo(todos.find(t => t.id === todo.id)),
+                        )
+                      }
                     >
                       <span className="icon">
                         <i

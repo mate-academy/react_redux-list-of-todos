@@ -30,7 +30,7 @@ export const TodoModal: React.FC = () => {
       .finally(() => {
         dispatch(setLoading(false));
       });
-  }, [currentTodo, currentTodo.userId, dispatch]);
+  }, [currentTodo, dispatch]);
 
   const closeModal = () => {
     dispatch(setCurrentTodo(null));

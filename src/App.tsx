@@ -27,10 +27,10 @@ export const App = () => {
         dispatch(setTodos(result));
       })
       .catch(() => {
-        dispatch(setNotif('Something went wroung'));
+        dispatch(setNotif('Something went wrong'));
       })
       .finally(() => dispatch(setLoading(false)));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
