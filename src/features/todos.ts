@@ -4,5 +4,10 @@ import { Todo } from '../types/Todo';
 export const todosSlice = createSlice({
   name: 'todos',
   initialState: [] as Todo[],
-  reducers: {},
+  reducers: {
+    setTodos: (_state, action) => action.payload,
+    clearTodos: () => [],
+  },
 });
+
+export const { setTodos, clearTodos } = todosSlice.actions;
