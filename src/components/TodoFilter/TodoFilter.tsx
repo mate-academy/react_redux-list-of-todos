@@ -28,7 +28,11 @@ export const TodoFilter: React.FC = () => {
     <form className="field has-addons" onSubmit={onSubmit}>
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect" onChange={handleStatusChange}>
+          <select
+            value={filterTodo.status}
+            data-cy="statusSelect"
+            onChange={handleStatusChange}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>

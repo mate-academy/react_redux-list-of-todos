@@ -1,9 +1,8 @@
 import '@fortawesome/fontawesome-free/css/all.css';
 import 'bulma/css/bulma.css';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { getTodos } from './api';
-import { useAppSelector } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { RootState } from './app/store';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { setTodos } from './features/todos';
@@ -12,7 +11,7 @@ export const App = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [openTodoId, setOpenTodoId] = useState<number | null>(null);
   const currentTodo = useAppSelector((state: RootState) => state.currentTodo);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setLoading(true);

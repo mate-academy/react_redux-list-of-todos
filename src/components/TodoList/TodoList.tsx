@@ -74,8 +74,13 @@ export const TodoList: React.FC<Props> = ({ openTodoId, setOpenTodoId }) => {
                     className="button"
                     type="button"
                     onClick={() => {
-                      setSelectedTodo(todo);
-                      setOpenTodoId(todo.id);
+                      if (openTodoId === todo.id) {
+                        setSelectedTodo(null);
+                        setOpenTodoId(null);
+                      } else {
+                        setSelectedTodo(todo);
+                        setOpenTodoId(todo.id);
+                      }
                     }}
                   >
                     <span className="icon">
