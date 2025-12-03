@@ -11,6 +11,7 @@ export const TodoModal: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const [user, setUser] = useState<User | null>(null);
+  const [, setIsError] = useState<boolean>(false);
   const [loadingUser, setLoadingUser] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
@@ -24,6 +25,7 @@ export const TodoModal: React.FC = () => {
     }
 
     setLoadingUser(true);
+    setIsError(false);
 
     const isData = async () => {
       try {
@@ -32,6 +34,8 @@ export const TodoModal: React.FC = () => {
         if (result) {
           setUser(result);
         }
+      } catch {
+        setIsError(true);
       } finally {
         setLoadingUser(false);
       }

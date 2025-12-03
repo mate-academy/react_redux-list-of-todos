@@ -39,8 +39,6 @@ export const App = () => {
         if (result) {
           addTodos(result);
         }
-
-        return [];
       } catch {
         setError('Request failed');
       } finally {

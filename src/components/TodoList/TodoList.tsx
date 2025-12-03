@@ -14,6 +14,8 @@ export const TodoList: React.FC = () => {
   const selectedTodo = (value: Todo) => {
     if (value.id === currentTodo?.id) {
       dispatch(currentTodoSlice.actions.deleteTodo(null));
+
+      return;
     }
 
     dispatch(currentTodoSlice.actions.currentTodo(value));
@@ -77,7 +79,6 @@ export const TodoList: React.FC = () => {
                       </span>
                     )}
                   </td>
-                  <td className="is-vcentered" />
                   <td className="is-vcentered is-expanded">
                     <p
                       className={cn(
