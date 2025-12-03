@@ -32,8 +32,6 @@ export const TodoModal: React.FC = () => {
         if (result) {
           setUser(result);
         }
-      } catch (e) {
-        throw e;
       } finally {
         setLoadingUser(false);
       }

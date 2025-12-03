@@ -12,6 +12,10 @@ export const TodoList: React.FC = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
 
   const selectedTodo = (value: Todo) => {
+    if (value.id === currentTodo?.id) {
+      dispatch(currentTodoSlice.actions.deleteTodo(null));
+    }
+
     dispatch(currentTodoSlice.actions.currentTodo(value));
   };
 
@@ -66,7 +70,6 @@ export const TodoList: React.FC = () => {
                   )}
                 >
                   <td className="is-vcentered">{todo.id}</td>
-
                   <td className="is-vcentered">
                     {todo.completed && (
                       <span className="icon" data-cy="iconCompleted">
@@ -74,7 +77,6 @@ export const TodoList: React.FC = () => {
                       </span>
                     )}
                   </td>
-
                   <td className="is-vcentered" />
                   <td className="is-vcentered is-expanded">
                     <p

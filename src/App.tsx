@@ -8,7 +8,6 @@ import { todosSlice } from './features/todos';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App = () => {
-  const [, setIsTodos] = useState<Todo[]>([]);
   const [loadingTodos, setLoadingTodos] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [updateAt, setUpdateAt] = useState<Date>(new Date());
@@ -38,15 +37,12 @@ export const App = () => {
         const result = await getTodos();
 
         if (result) {
-          setIsTodos(result);
           addTodos(result);
         }
 
         return [];
-      } catch (e) {
+      } catch {
         setError('Request failed');
-
-        throw e;
       } finally {
         setLoadingTodos(false);
       }
@@ -69,7 +65,7 @@ export const App = () => {
             <div className="block">
               {!loadingTodos && todos.length > 0 && <TodoList />}
               {!loadingTodos && !error && todos.length === 0 && (
-                <p className="title is-5">There are no users</p>
+                <p className="title is-5">There are no todos</p>
               )}
               {error && (
                 <p className="notification is-danger">
