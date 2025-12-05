@@ -3,7 +3,7 @@ import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
   return (
-    <div className="modal is-active" data-cy="modal">
+    <div className="modal" data-cy="modal">
       <div className="modal-background" />
 
       <Loader />
