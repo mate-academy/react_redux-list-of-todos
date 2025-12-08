@@ -19,6 +19,10 @@ export const TodoModal: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
+    if (!todo) {
+      return;
+    }
+
     setUser(null);
     setErrorMessage('');
     setIsLoading(true);
@@ -29,6 +33,10 @@ export const TodoModal: React.FC = () => {
       .catch(() => setErrorMessage('Failed to fetch User'))
       .finally(() => setIsLoading(false));
   }, [todo]);
+
+  if (!todo) {
+    return null;
+  }
 
   return (
     <div className="modal is-active" data-cy="modal">

@@ -41,7 +41,7 @@ export const App = () => {
             <div className="block">
               <div data-cy="error">{errorMessage}</div>
               {isLoading && <Loader />}
-              {!errorMessage && !isLoading && todos.length && <TodoList />}
+              {!errorMessage && !isLoading && todos.length > 0 && <TodoList />}
             </div>
           </div>
         </div>
