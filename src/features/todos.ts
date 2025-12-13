@@ -28,6 +28,7 @@ export const todosSlice = createSlice({
     },
     setError: (state, action: PayloadAction<boolean>) => {
       state.hasError = action.payload;
+      state.loaded = true;
     },
   },
 });
