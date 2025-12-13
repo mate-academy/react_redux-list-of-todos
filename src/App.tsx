@@ -3,7 +3,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './app/hooks';
-import { setTodos } from './features/todos';
+import { setError, setTodos } from './features/todos';
 
 export const App = () => {
   const dispatch = useAppDispatch();
@@ -16,7 +16,8 @@ export const App = () => {
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/todos')
       .then(res => res.json())
-      .then(data => dispatch(setTodos(data)));
+      .then(data => dispatch(setTodos(data)))
+      .catch(() => dispatch(setError(true)));
   }, [dispatch]);
 
   return (
