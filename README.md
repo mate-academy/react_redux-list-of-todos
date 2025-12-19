@@ -1,21 +1,33 @@
 # React + Redux list of TODOs
 
-> ❗ Read the lesson theory before solving this task
+A dynamic TODO list implemented with **React + Redux Toolkit**.
+The app loads todos from API, supports filtering by status and searching by title,
+and shows a modal with todo details and user info.
 
-You are given an `app` folder with already implemented `store` and `hooks`.
-Use them to implement [Dynamic list of TODOs](https://github.com/mate-academy/react_dynamic-list-of-todos#react-dynamic-list-of-todos)
-using the Redux. It should look and work identically, so use the same markup.
+## Demo
+- Demo link: https://Nazarii84.github.io/react_redux-list-of-todos/
+## Technologies
+- React
+- TypeScript
+- Redux Toolkit
+- React Redux
+- Bulma / FontAwesome (UI)
+- Vite
 
-> Here is [the working version](https://mate-academy.github.io/react_redux-list-of-todos/)
+## Features
+- Load todos on page load
+- Filter todos by status: All / Active / Completed
+- Search todos by title
+- Select todo to open modal
+- Close modal by:
+  - close button
+  - click on backdrop
+  - Esc key
+- Loading and error states for API requests
 
-- `features/currentTodo` contains a sample of all the required types;
-- implement `features/filter` storing `query` and `status`;
-- implement `features/todos` storing an array of todos;
-- load the todos in the `App` on page load (don't use Redux Thunk for now);
-- `useAppSelector` already aware of `RootState` so you can write selectors in your
-components (no need to write them in the store file)
+## How to run locally
+1. `npm install`
+2. `npm start` (or `npm run dev`)
+3. Open `http://localhost:5173/`
 
-## Instructions
-- Install Prettier Extention and use this [VSCode settings](https://mate-academy.github.io/fe-program/tools/vscode/settings.json) to enable format on save.
-- Replace `<your_account>` with your Github username in the [DEMO LINK](https://<your_account>.github.io/react_redux-list-of-todos/)
-- Follow the [React task guideline](https://github.com/mate-academy/react_task-guideline#react-tasks-guideline)
+
