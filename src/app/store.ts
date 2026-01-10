@@ -1,5 +1,4 @@
 import { combineSlices, configureStore } from '@reduxjs/toolkit';
-import '../features/todos';
 import { todosSlice } from '../features/todos';
 import { filterSlice } from '../features/filter';
 

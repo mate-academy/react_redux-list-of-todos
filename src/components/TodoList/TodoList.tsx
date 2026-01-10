@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { Todo } from '../../types/Todo';
 import classNames from 'classnames';
@@ -20,6 +19,7 @@ export const TodoList: React.FC<Props> = ({ todos }) => {
       </p>
     );
   }
+
   return (
     <>
       <table className="table is-narrow is-fullwidth">
