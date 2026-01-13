@@ -1,4 +1,4 @@
-import { Todo } from './types/Todo';
+import { TodoType } from './types/Todo';
 import { User } from './types/User';
 
 // eslint-disable-next-line operator-linebreak
@@ -11,7 +11,7 @@ function wait(delay: number): Promise<void> {
   });
 }
 
-function get<T>(url: string): Promise<T> {
+async function get<T>(url: string): Promise<T> {
   // eslint-disable-next-line prefer-template
   const fullURL = BASE_URL + url + '.json';
 
@@ -20,6 +20,6 @@ function get<T>(url: string): Promise<T> {
     .then(res => res.json());
 }
 
-export const getTodos = () => get<Todo[]>('/todos');
+export const getTodos = () => get<TodoType[]>('/todos');
 
 export const getUser = (userId: number) => get<User>(`/users/${userId}`);
