@@ -18,18 +18,22 @@ export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    async function fetchUser() {
+    async function loadUser() {
       dispatch(startFetch());
       if (!currentTodo) {
         return;
       }
 
-      getUser(currentTodo?.userId)
-        .then(userArg => dispatch(fetchUserSuccesfull(userArg)))
-        .catch(err => dispatch(fetchUserFailed(err)));
+      try {
+        const data = await getUser(currentTodo.userId);
+
+        dispatch(fetchUserSuccesfull(data));
+      } catch (err) {
+        dispatch(fetchUserFailed(err));
+      }
     }
 
-    fetchUser();
+    loadUser();
   }, [currentTodo, dispatch]);
 
   return (
@@ -70,7 +74,7 @@ export const TodoModal: React.FC = () => {
               )}
 
               {' by '}
-              <a href={`mailto:P${user?.email}`}>{user?.name}</a>
+              <a href={`mailto:${user?.email}`}>{user?.name}</a>
             </p>
           </div>
         </div>

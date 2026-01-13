@@ -13,9 +13,17 @@ export const App = () => {
   useEffect(() => {
     dispatch(fetchStarted());
 
-    getTodos()
-      .then(data => dispatch(fetchSucces(data)))
-      .catch(errorArg => dispatch(fetchFailed(errorArg)));
+    async function loadTodos() {
+      try {
+        const data = await getTodos();
+
+        dispatch(fetchSucces(data));
+      } catch (err) {
+        dispatch(fetchFailed(String()));
+      }
+    }
+
+    loadTodos();
   }, [dispatch]);
 
   const { currentTodo } = useAppSelector(state => state.currentTodo);

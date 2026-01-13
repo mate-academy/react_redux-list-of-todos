@@ -59,7 +59,7 @@ export const TodoList: React.FC = () => {
         </table>
       )}
 
-      {!todos?.length && !error && !loading && (
+      {!visibleTodos?.length && !error && !loading && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>

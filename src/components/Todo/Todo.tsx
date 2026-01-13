@@ -41,7 +41,7 @@ export const Todo = ({ todo }: TodoProps) => {
         >
           <span className="icon">
             <i
-              className={`far fa-eye, ${currentTodo?.id === todo.id ? 'fa-eye-slash' : 'fa-eye'}`}
+              className={`far fa-eye ${currentTodo?.id === todo.id ? 'fa-eye-slash' : 'fa-eye'}`}
             />
           </span>
         </button>
