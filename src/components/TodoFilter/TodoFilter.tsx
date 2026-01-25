@@ -1,6 +1,19 @@
 import React from 'react';
+import { Status } from '../../types/Status';
 
-export const TodoFilter: React.FC = () => {
+type Props = {
+  query: string;
+  status: Status;
+  onQueryChange: (value: string) => void;
+  onStatusChange: (value: Status) => void;
+};
+
+export const TodoFilter: React.FC<Props> = ({
+  query,
+  status,
+  onQueryChange,
+  onStatusChange,
+}) => {
   return (
     <form
       className="field has-addons"
@@ -8,7 +21,11 @@ export const TodoFilter: React.FC = () => {
     >
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={e => onStatusChange(e.target.value as Status)}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,19 +39,23 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={e => onQueryChange(e.target.value)}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
-
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => onQueryChange('')}
+            />
+          </span>
+        )}
       </p>
     </form>
   );
