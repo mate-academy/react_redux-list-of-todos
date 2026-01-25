@@ -1,33 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { User } from '../../types/User';
-import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setCurrentTodo } from '../../features/currentTodo';
 
-type Props = {
-  todo: Todo;
-  onClose: () => void;
-};
+export const TodoModal: React.FC = () => {
+  const todo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
 
-export const TodoModal: React.FC<Props> = ({ todo, onClose }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
 
   useEffect(() => {
+    if (!todo) {
+      return;
+    }
+
     setLoadingUser(true);
 
     getUser(todo.userId)
       .then(setUser)
       .finally(() => setLoadingUser(false));
-  }, [todo.userId]);
+  }, [todo]);
 
-  if (!todo || !onClose) {
+  if (!todo) {
     return null;
   }
 
   return (
     <div className="modal is-active" data-cy="modal">
-      <div className="modal-background" onClick={onClose} />
+      <div
+        className="modal-background"
+        onClick={() => dispatch(setCurrentTodo(null))}
+      />
       <div className="modal-card">
         {loadingUser && <Loader />}
 
@@ -45,7 +51,7 @@ export const TodoModal: React.FC<Props> = ({ todo, onClose }) => {
                 type="button"
                 className="delete"
                 data-cy="modal-close"
-                onClick={onClose}
+                onClick={() => dispatch(setCurrentTodo(null))}
               />
             </header>
 

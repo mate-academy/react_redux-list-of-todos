@@ -1,36 +1,24 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useEffect, useState } from 'react';
-import { Todo } from './types/Todo';
+import { useEffect } from 'react';
 import { getTodos } from './api';
-import { Status } from './types/Status';
+import { fetchTodosStart, fetchTodosSuccess } from './features/todos';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 export const App: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [query, setQuery] = useState('');
-  const [status, setStatus] = useState<Status>('all');
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
+  const dispatch = useAppDispatch();
+
+  const isLoading = useAppSelector(state => state.todos.loading);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
-    getTodos()
-      .then(setTodos)
-      .finally(() => setIsLoading(false));
-  }, []);
+    dispatch(fetchTodosStart());
 
-  const visibleTodos = todos.filter(todo => {
-    const matchesQuery = todo.title.toLowerCase().includes(query.toLowerCase());
-
-    const matchesStatus =
-      status === 'all'
-        ? true
-        : status === 'active'
-          ? !todo.completed
-          : todo.completed;
-
-    return matchesQuery && matchesStatus;
-  });
+    getTodos().then(todos => {
+      dispatch(fetchTodosSuccess(todos));
+    });
+  }, [dispatch]);
 
   return (
     <>
@@ -40,31 +28,18 @@ export const App: React.FC = () => {
             <h1 className="title">Todos:</h1>
 
             <div className="block">
-              <TodoFilter
-                query={query}
-                status={status}
-                onQueryChange={setQuery}
-                onStatusChange={setStatus}
-              />
+              <TodoFilter />
             </div>
 
             <div className="block">
               {isLoading && <Loader />}
-              {!isLoading && (
-                <TodoList
-                  todos={visibleTodos}
-                  selectTodoId={selectedTodo?.id ?? null}
-                  onSelectedTodo={setSelectedTodo}
-                />
-              )}
+              {!isLoading && <TodoList />}
             </div>
           </div>
         </div>
       </div>
 
-      {selectedTodo && (
-        <TodoModal todo={selectedTodo} onClose={() => setSelectedTodo(null)} />
-      )}
+      {currentTodo && <TodoModal />}
     </>
   );
 };

@@ -1,19 +1,13 @@
 import React from 'react';
 import { Status } from '../../types/Status';
+import { setQuery, setStatus } from '../../features/filter';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
-type Props = {
-  query: string;
-  status: Status;
-  onQueryChange: (value: string) => void;
-  onStatusChange: (value: Status) => void;
-};
+export const TodoFilter: React.FC = () => {
+  const query = useAppSelector(state => state.filter.query);
+  const status = useAppSelector(state => state.filter.status);
+  const dispatch = useAppDispatch();
 
-export const TodoFilter: React.FC<Props> = ({
-  query,
-  status,
-  onQueryChange,
-  onStatusChange,
-}) => {
   return (
     <form
       className="field has-addons"
@@ -24,7 +18,7 @@ export const TodoFilter: React.FC<Props> = ({
           <select
             data-cy="statusSelect"
             value={status}
-            onChange={e => onStatusChange(e.target.value as Status)}
+            onChange={e => dispatch(setStatus(e.target.value as Status))}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -40,7 +34,7 @@ export const TodoFilter: React.FC<Props> = ({
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={e => onQueryChange(e.target.value)}
+          onChange={e => dispatch(setQuery(e.target.value))}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
@@ -52,7 +46,7 @@ export const TodoFilter: React.FC<Props> = ({
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => onQueryChange('')}
+              onClick={() => dispatch(setQuery(''))}
             />
           </span>
         )}

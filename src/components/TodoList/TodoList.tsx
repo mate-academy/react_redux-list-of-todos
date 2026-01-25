@@ -1,18 +1,27 @@
 import React from 'react';
-import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setCurrentTodo } from '../../features/currentTodo';
 
-type Props = {
-  todos: Todo[];
-  selectTodoId: number | null;
-  onSelectedTodo: (todo: Todo | null) => void;
-};
+export const TodoList: React.FC = () => {
+  const todos = useAppSelector(state => state.todos.items);
+  const selectedTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
 
-export const TodoList: React.FC<Props> = ({
-  todos,
-  selectTodoId,
-  onSelectedTodo,
-}) => {
-  if (todos.length === 0) {
+  const visibleTodos = todos.filter(todo => {
+    const matchesQuery = todo.title.toLowerCase().includes(query.toLowerCase());
+
+    const matchesStatus =
+      status === 'all'
+        ? true
+        : status === 'active'
+          ? !todo.completed
+          : todo.completed;
+
+    return matchesQuery && matchesStatus;
+  });
+
+  if (visibleTodos.length === 0) {
     return (
       <p className="notification is-warning">
         There are no todos matching current filter criteria
@@ -36,8 +45,8 @@ export const TodoList: React.FC<Props> = ({
       </thead>
 
       <tbody>
-        {todos.map(todo => {
-          const isSelected = todo.id === selectTodoId;
+        {visibleTodos.map(todo => {
+          const isSelected = selectedTodo?.id === todo.id;
 
           return (
             <tr
@@ -70,11 +79,15 @@ export const TodoList: React.FC<Props> = ({
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => onSelectedTodo(isSelected ? null : todo)}
+                  onClick={() =>
+                    dispatch(setCurrentTodo(isSelected ? null : todo))
+                  }
                 >
                   <span className="icon">
                     <i
-                      className={`far ${isSelected ? 'fa-eye-slash' : 'fa-eye'}`}
+                      className={`far ${
+                        isSelected ? 'fa-eye-slash' : 'fa-eye'
+                      }`}
                     />
                   </span>
                 </button>
