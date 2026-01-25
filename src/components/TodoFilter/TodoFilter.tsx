@@ -44,6 +44,7 @@ export const TodoFilter: React.FC = () => {
             {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
             <button
               data-cy="clearSearchButton"
+              aria-label="Clear search"
               type="button"
               className="delete"
               onClick={() => dispatch(setQuery(''))}

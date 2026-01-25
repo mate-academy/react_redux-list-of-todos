@@ -1,5 +1,6 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import React from 'react';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect } from 'react';
 import { getTodos } from './api';
