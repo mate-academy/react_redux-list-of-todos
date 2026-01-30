@@ -10,23 +10,10 @@ type Props = {
 
 export const TodoModal: React.FC<Props> = ({ isLoading }) => {
   const currentTodo = useSelector((state: RootState) => state.currentTodo);
-  const todos = useSelector((state: RootState) => state.todos);
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const query = useSelector((state: RootState) => state.filter.query);
-  const status = useSelector((state: RootState) => state.filter.status);
 
-  const filteredTodos = todos
-    .filter(
-      todo =>
-        status === 'all' ||
-        (status === 'active' ? !todo.completed : todo.completed),
-    )
-    .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
-
-  const todoNumber: number | null = currentTodo
-    ? filteredTodos.indexOf(currentTodo) + 1
-    : null;
+  const todoNumber: number | undefined = currentTodo?.id;
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -64,7 +51,7 @@ export const TodoModal: React.FC<Props> = ({ isLoading }) => {
               ) : (
                 <strong className="has-text-danger">Planned</strong>
               )}
-
+              {' by '}
               <a href={`mailto:${user.email}`}>{user.name}</a>
             </p>
           </div>

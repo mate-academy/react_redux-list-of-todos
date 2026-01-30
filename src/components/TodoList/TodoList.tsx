@@ -3,12 +3,13 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import classNames from 'classnames';
-import { setCurrentTodo } from '../../features/currentTodo';
+import { clearCurrentTodo, setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const todos = useSelector((state: RootState) => state.todos);
   const query = useSelector((state: RootState) => state.filter.query);
   const status = useSelector((state: RootState) => state.filter.status);
+  const currentTodo = useSelector((state: RootState) => state.currentTodo);
   const dispatch = useDispatch();
 
   const filteredTodos = todos
@@ -74,10 +75,16 @@ export const TodoList: React.FC = () => {
                   data-cy="selectButton"
                   className="button"
                   type="button"
-                  onClick={() => dispatch(setCurrentTodo(todo))}
+                  onClick={() =>
+                    currentTodo?.id === todo.id
+                      ? dispatch(clearCurrentTodo())
+                      : dispatch(setCurrentTodo(todo))
+                  }
                 >
                   <span className="icon">
-                    <i className="far fa-eye" />
+                    <i
+                      className={`far ${currentTodo?.id === todo.id ? 'fa-eye-slash' : 'fa-eye'}`}
+                    />
                   </span>
                 </button>
               </td>
