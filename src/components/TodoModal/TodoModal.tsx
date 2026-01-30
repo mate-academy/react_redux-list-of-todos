@@ -13,9 +13,19 @@ export const TodoModal: React.FC<Props> = ({ isLoading }) => {
   const todos = useSelector((state: RootState) => state.todos);
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
+  const query = useSelector((state: RootState) => state.filter.query);
+  const status = useSelector((state: RootState) => state.filter.status);
+
+  const filteredTodos = todos
+    .filter(
+      todo =>
+        status === 'all' ||
+        (status === 'active' ? !todo.completed : todo.completed),
+    )
+    .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
 
   const todoNumber: number | null = currentTodo
-    ? todos.indexOf(currentTodo) + 1
+    ? filteredTodos.indexOf(currentTodo) + 1
     : null;
 
   return (
@@ -50,9 +60,9 @@ export const TodoModal: React.FC<Props> = ({ isLoading }) => {
 
             <p className="block" data-cy="modal-user">
               {currentTodo.completed ? (
-                <strong className="has-text-danger">Planned</strong>
-              ) : (
                 <strong className="has-text-success">Done</strong>
+              ) : (
+                <strong className="has-text-danger">Planned</strong>
               )}
 
               <a href={`mailto:${user.email}`}>{user.name}</a>

@@ -44,9 +44,9 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {filteredTodos.map(todo => (
+          {filteredTodos.map((todo, index) => (
             <tr data-cy="todo">
-              <td className="is-vcentered">{todos.indexOf(todo) + 1}</td>
+              <td className="is-vcentered">{index + 1}</td>
               <td className="is-vcentered">
                 {todo.completed ? (
                   <span className="icon" data-cy="iconCompleted">
@@ -60,7 +60,9 @@ export const TodoList: React.FC = () => {
               <td className="is-vcentered is-expanded">
                 <p
                   className={classNames(
-                    todo.completed ? 'has-text-success' : 'has-text-danger',
+                    todo.completed
+                      ? 'has-text-grey-light has-text-line-through'
+                      : 'has-text-danger',
                   )}
                 >
                   {todo.title}
