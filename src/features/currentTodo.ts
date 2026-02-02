@@ -1,10 +1,45 @@
-import { createSlice } from '@reduxjs/toolkit';
+/* eslint-disable no-param-reassign */
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
+import { User } from '../types/User';
 
-const initialState = null as Todo | null;
+type CurrentTodoState = {
+  todo: Todo | null;
+  user: User | null;
+  isOpen: boolean;
+  isLoading: boolean;
+};
+
+const initialState: CurrentTodoState = {
+  todo: null,
+  user: null,
+  isOpen: false,
+  isLoading: false,
+};
 
 export const currentTodoSlice = createSlice({
   name: 'currentTodo',
   initialState,
-  reducers: {},
+  reducers: {
+    setOpen: (state, action: PayloadAction<Todo>) => {
+      state.todo = action.payload;
+      state.user = null;
+      state.isOpen = true;
+    },
+    setClose: state => {
+      state.todo = null;
+      state.user = null;
+      state.isOpen = false;
+      state.isLoading = false;
+    },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setUser: (state, action: PayloadAction<User | null>) => {
+      state.user = action.payload;
+    },
+  },
 });
+
+export const { setOpen, setClose, setUser, setLoading } =
+  currentTodoSlice.actions;
