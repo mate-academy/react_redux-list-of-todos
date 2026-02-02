@@ -5,7 +5,7 @@ import { setCurrentTodo } from '../../features/currentTodo';
 interface Props {
   isLoading: boolean;
 }
-export const TodoList: React.FC<Props> = isLoading => {
+export const TodoList: React.FC<Props> = ({ isLoading }) => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
