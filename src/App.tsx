@@ -32,7 +32,7 @@ export const App = () => {
             <div className="block">
               {isLoading && <Loader />}
               {/* <Loader /> */}
-              <TodoList />
+              <TodoList isLoading={isLoading} />
             </div>
           </div>
         </div>
