@@ -35,10 +35,7 @@ export const App = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">
-              {loading ? <Loader /> : null}
-              <TodoList />
-            </div>
+            <div className="block">{loading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
