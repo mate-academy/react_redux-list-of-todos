@@ -1,14 +1,31 @@
 import React from 'react';
 
-export const TodoFilter: React.FC = () => {
+import { Status } from '../../types/Status';
+import { useDispatch } from 'react-redux';
+import { resetQuery, setQuery, setStatus } from '../../features/filter';
+import { useAppSelector } from '../../app/hooks';
+
+export const TodoFilter = () => {
+  const dispatch = useDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
+
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setQuery(e.target.value));
+  };
+
+  const handleNewStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setStatus(e.target.value as Status));
+  };
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
+    <form className="field has-addons">
       <p className="control">
         <span className="select">
-          <select data-cy="statusSelect">
+          <select
+            data-cy="statusSelect"
+            value={status}
+            onChange={handleNewStatus}
+          >
             <option value="all">All</option>
             <option value="active">Active</option>
             <option value="completed">Completed</option>
@@ -22,18 +39,24 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          value={query}
+          onChange={handleQueryChange}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
         <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
-          />
+          {query ? (
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={() => dispatch(resetQuery())}
+            />
+          ) : (
+            ''
+          )}
         </span>
       </p>
     </form>
