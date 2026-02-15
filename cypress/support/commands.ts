@@ -47,13 +47,13 @@ declare global {
   }
 }
 
-Cypress.Commands.add('getByDataCy', selector => {
+Cypress.Commands.add("getByDataCy", (selector) => {
   cy.get(`[data-cy="${selector}"]`);
 });
 
 Cypress.Commands.add(
-  'byDataCy',
-  { prevSubject: 'optional' },
+  "byDataCy",
+  { prevSubject: "optional" },
 
   (subject, name) => {
     const selector = `[data-cy="${name}"]`;

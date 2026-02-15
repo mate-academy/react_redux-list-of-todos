@@ -1,12 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-  query: '',
-  status: 'all',
+interface FilterState {
+  query: string;
+  status: string;
+}
+
+const initialState: FilterState = {
+  query: "",
+  status: "all",
 };
 
 export const filterSlice = createSlice({
-  name: 'filter',
+  name: "filter",
   initialState,
-  reducers: {},
+  reducers: {
+    changeFilterStatus(state, { payload }: PayloadAction<string>) {
+      // eslint-disable-next-line no-param-reassign
+      state.status = payload;
+    },
+    changeFilterQuery(state, { payload }: PayloadAction<string>) {
+      // eslint-disable-next-line no-param-reassign
+      state.query = payload;
+    },
+  },
 });
