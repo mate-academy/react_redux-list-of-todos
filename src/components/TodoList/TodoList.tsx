@@ -40,8 +40,8 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {visibleTodos.map((todo, i) => (
-              <tr data-cy="todo" key={`${i}-${todo.title}`}>
+            {visibleTodos.map(todo => (
+              <tr data-cy="todo" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {todo.completed && (
@@ -53,9 +53,10 @@ export const TodoList: React.FC = () => {
 
                 <td className="is-vcentered is-expanded">
                   <p
-                    className={
-                      todo.completed ? 'has-text-success' : 'has-text-danger'
-                    }
+                    className={cn({
+                      'has-text-success': todo.completed,
+                      'has-text-danger': !todo.completed,
+                    })}
                   >
                     {todo.title}
                   </p>

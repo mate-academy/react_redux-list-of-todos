@@ -8,8 +8,14 @@ import { useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
-  const query = useAppSelector(state => state.filter.query);
+  const { status, query } = useAppSelector(state => state.filter);
   const { changeStatus, changeQuery } = filterSlice.actions;
+
+  const onStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newStatus = e.target.value as Status;
+
+    dispatch(changeStatus(newStatus));
+  };
 
   return (
     <form
@@ -20,11 +26,8 @@ export const TodoFilter: React.FC = () => {
         <span className="select">
           <select
             data-cy="statusSelect"
-            onChange={e => {
-              const newStatus = e.target.value as Status;
-
-              dispatch(changeStatus(newStatus));
-            }}
+            value={status}
+            onChange={onStatusChange}
           >
             <option value="all">All</option>
             <option value="active">Active</option>

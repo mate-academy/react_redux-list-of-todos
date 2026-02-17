@@ -6,6 +6,7 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { currentTodoSlice } from '../../features/currentTodo';
 import { useDispatch } from 'react-redux';
+import cn from 'classnames';
 //#endregion
 
 type Props = {
@@ -23,6 +24,9 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
 
     getUser(todo.userId)
       .then(setUser)
+      .catch(() => {
+        setUser(null);
+      })
       .finally(() => {
         setIsLoading(false);
       });
@@ -62,15 +66,21 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
 
             <p className="block" data-cy="modal-user">
               <strong
-                className={
-                  todo.completed ? 'has-text-success' : 'has-text-danger'
-                }
+                className={cn({
+                  'has-text-success': todo.completed,
+                  'has-text-danger': !todo.completed,
+                })}
               >
                 {todo.completed ? 'Done' : 'Planned'}
               </strong>
 
               {' by '}
-              <a href={`mailto:${user?.email}`}>{user?.name}</a>
+
+              {user ? (
+                <a href={`mailto:${user?.email}`}>{user?.name}</a>
+              ) : (
+                'Unknown user'
+              )}
             </p>
           </div>
         </div>

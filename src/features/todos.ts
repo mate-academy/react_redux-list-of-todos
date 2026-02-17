@@ -18,7 +18,7 @@ export const todosSlice = createSlice({
   initialState: initialState,
   reducers: {
     setTodos: (state, action: PayloadAction<Todo[]>) => {
-      state.todos.push(...action.payload);
+      state.todos = [...action.payload];
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
