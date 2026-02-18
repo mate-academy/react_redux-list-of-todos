@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const todos = useAppSelector(state => state.todos.items);
+  const todos = useAppSelector(state => state.todos);
   const filter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
