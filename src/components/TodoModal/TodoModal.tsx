@@ -1,12 +1,12 @@
 //#region imports
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { Todo } from '../../types/Todo';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
 import { currentTodoSlice } from '../../features/currentTodo';
 import { useDispatch } from 'react-redux';
 import cn from 'classnames';
+import { Todo } from '../../types/Todo';
 //#endregion
 
 type Props = {
@@ -14,18 +14,21 @@ type Props = {
 };
 
 export const TodoModal: React.FC<Props> = ({ todo }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     setIsLoading(true);
+    setUser(null);
+    setIsError(false);
 
     getUser(todo.userId)
       .then(setUser)
       .catch(() => {
-        setUser(null);
+        setIsError(true);
       })
       .finally(() => {
         setIsLoading(false);
@@ -38,7 +41,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
 
       {isLoading && <Loader />}
 
-      {!isLoading && (
+      {!isLoading && (user || isError) && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div
