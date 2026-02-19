@@ -18,10 +18,8 @@ export const App = () => {
         dispatch(todosSlice.actions.setTodos(data));
         setIsLoaded(true);
       })
-      .catch(() => {
-        throw new Error('unable to load todos');
-      });
-  });
+      .catch(() => {});
+  }, []);
 
   return (
     <>

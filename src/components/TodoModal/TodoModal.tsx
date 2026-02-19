@@ -13,16 +13,17 @@ export const TodoModal: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    setUser(null);
-
     if (currentTodo !== null) {
+      setLoading(true);
+      setUser(null);
+
       getUser(currentTodo.userId)
         .then(d => setUser(d))
-        .catch(() => {
-          throw new Error('no user found');
-        })
+        .catch(() => setUser(null))
         .finally(() => setLoading(false));
+    } else {
+      setUser(null);
+      setLoading(false);
     }
   }, [currentTodo]);
 

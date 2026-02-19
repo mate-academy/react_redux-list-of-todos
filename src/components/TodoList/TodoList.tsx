@@ -21,7 +21,7 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {visibleTodos.length < 0 && (
+      {visibleTodos.length === 0 && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -46,7 +46,7 @@ export const TodoList: React.FC = () => {
         <tbody>
           {visibleTodos.length > 0 &&
             visibleTodos.map(todo => (
-              <tr data-cy="todo">
+              <tr data-cy="todo" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {' '}
