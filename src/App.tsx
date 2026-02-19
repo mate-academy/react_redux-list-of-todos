@@ -4,21 +4,21 @@ import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
 import { getTodos } from './api';
 import { useDispatch } from 'react-redux';
-// import { useAppSelector } from './app/hooks';
 import { todosSlice } from './features/todos';
 
 export const App = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const dispatch = useDispatch();
-  // const todos = useAppSelector(state => state.todos);
 
   useEffect(() => {
     getTodos()
       .then(data => {
         dispatch(todosSlice.actions.setTodos(data));
-        setIsLoaded(true);
       })
-      .catch(() => {});
+      .catch(() => {
+        new Error('unable to fetch todos');
+      })
+      .finally(() => setIsLoaded(true));
   }, []);
 
   return (
