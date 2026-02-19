@@ -1,12 +1,31 @@
 /* eslint-disable */
 import React from 'react';
+import { useAppSelector } from '../../app/hooks';
+import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
+import { currentTodoSlice } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
+  const dispatch = useDispatch();
+  const todos = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const { status, query } = useAppSelector(state => state.filter);
+
+  const visibleTodos = todos
+    .filter(todo => {
+      if (status === 'active') return !todo.completed;
+      if (status === 'completed') return todo.completed;
+      return true;
+    })
+    .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
+
   return (
     <>
-      <p className="notification is-warning">
-        There are no todos matching current filter criteria
-      </p>
+      {visibleTodos.length === 0 && (
+        <p className="notification is-warning">
+          There are no todos matching current filter criteria
+        </p>
+      )}
 
       <table className="table is-narrow is-fullwidth">
         <thead>
@@ -25,24 +44,53 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          <tr data-cy="todo">
-            <td className="is-vcentered">1</td>
-            <td className="is-vcentered"> </td>
+          {visibleTodos.length > 0 &&
+            visibleTodos.map(todo => (
+              <tr data-cy="todo" key={todo.id}>
+                <td className="is-vcentered">{todo.id}</td>
+                <td className="is-vcentered">
+                  {' '}
+                  {todo.completed && (
+                    <span className="icon" data-cy="iconCompleted">
+                      <i className="fas fa-check" />
+                    </span>
+                  )}{' '}
+                </td>
 
-            <td className="is-vcentered is-expanded">
-              <p className="has-text-danger">delectus aut autem</p>
-            </td>
+                <td className="is-vcentered is-expanded">
+                  <p
+                    className={classNames(
+                      todo.completed ? 'has-text-success' : 'has-text-danger',
+                    )}
+                  >
+                    {todo.title}
+                  </p>
+                </td>
 
-            <td className="has-text-right is-vcentered">
-              <button data-cy="selectButton" className="button" type="button">
-                <span className="icon">
-                  <i className="far fa-eye" />
-                </span>
-              </button>
-            </td>
-          </tr>
+                <td className="has-text-right is-vcentered">
+                  <button
+                    data-cy="selectButton"
+                    className="button"
+                    type="button"
+                    onClick={() => {
+                      dispatch(currentTodoSlice.actions.setTodo(todo))
+                    }}
+                  >
+                    <span className="icon">
+                      <i
+                        className={classNames(
+                          currentTodo !== null && currentTodo.id === todo.id
+                            ? 'far fa-eye-slash'
+                            : 'far fa-eye',
+                        )}
+                      />
+                    </span>
+                  </button>
+                </td>
+              </tr>
+            ))}
 
-          <tr data-cy="todo">
+          {/* <tr data-cy="todo">
             <td className="is-vcentered">2</td>
             <td className="is-vcentered"> </td>
 
@@ -216,7 +264,7 @@ export const TodoList: React.FC = () => {
                 </span>
               </button>
             </td>
-          </tr>
+          </tr> */}
         </tbody>
       </table>
     </>
