@@ -92,11 +92,7 @@ export const App: React.FC = () => {
               {loading ? (
                 <Loader />
               ) : (
-                <TodoList
-                  todos={visibleTodos}
-                  onShow={openModal}
-                  modalOpen={modalOpen}
-                />
+                <TodoList todos={visibleTodos} onShow={openModal} />
               )}
             </div>
           </div>

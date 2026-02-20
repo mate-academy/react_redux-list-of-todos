@@ -4,9 +4,8 @@ import { Todo } from '../../types/Todo';
 interface Props {
   todo: Todo;
   onShow: (t: Todo) => void;
-  modalOpen: boolean;
 }
-export const TodoInfo: React.FC<Props> = ({ todo, onShow, modalOpen }) => (
+export const TodoInfo: React.FC<Props> = ({ todo, onShow }) => (
   <tr
     data-cy="todo"
     className={classNames({ 'has-background-info-light': todo.completed })}
@@ -33,12 +32,7 @@ export const TodoInfo: React.FC<Props> = ({ todo, onShow, modalOpen }) => (
         onClick={() => onShow(todo)}
       >
         <span className="icon">
-          <i
-            className={classNames({
-              'far fa-eye': !modalOpen,
-              'far fa-eye-slash': modalOpen,
-            })}
-          />
+          <i className="far fa-eye" />
         </span>
       </button>
     </td>

@@ -5,10 +5,9 @@ import { TodoInfo } from '../ToDoInfo/TodoInfo';
 interface Props {
   todos: Todo[];
   onShow: (t: Todo) => void;
-  modalOpen: boolean;
 }
 
-export const TodoList: React.FC<Props> = ({ todos, onShow, modalOpen }) => (
+export const TodoList: React.FC<Props> = ({ todos, onShow }) => (
   <table className="table is-narrow is-fullwidth">
     <thead>
       <tr>
@@ -25,12 +24,7 @@ export const TodoList: React.FC<Props> = ({ todos, onShow, modalOpen }) => (
 
     <tbody>
       {todos.map(todo => (
-        <TodoInfo
-          todo={todo}
-          key={todo.id}
-          onShow={onShow}
-          modalOpen={modalOpen}
-        />
+        <TodoInfo todo={todo} key={todo.id} onShow={onShow} />
       ))}
     </tbody>
   </table>
