@@ -1,41 +1,69 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setQuery, setStatus } from '../../features/filter';
+import type { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
+
   return (
-    <form
-      className="field has-addons"
-      onSubmit={event => event.preventDefault()}
-    >
-      <p className="control">
-        <span className="select">
-          <select data-cy="statusSelect">
-            <option value="all">All</option>
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
-          </select>
-        </span>
-      </p>
-
-      <p className="control is-expanded has-icons-left has-icons-right">
-        <input
-          data-cy="searchInput"
-          type="text"
-          className="input"
-          placeholder="Search..."
-        />
-        <span className="icon is-left">
-          <i className="fas fa-magnifying-glass" />
-        </span>
-
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button
-            data-cy="clearSearchButton"
-            type="button"
-            className="delete"
+    <form className="box mb-5" onSubmit={e => e.preventDefault()}>
+      <div className="field">
+        <p className="control has-icons-left">
+          <input
+            className="input"
+            type="text"
+            placeholder="Search..."
+            value={query}
+            onChange={e => dispatch(setQuery(e.target.value))}
           />
-        </span>
-      </p>
+
+          <span className="icon is-left">
+            <i className="fas fa-search" aria-hidden="true" />
+          </span>
+        </p>
+      </div>
+
+      <div className="tabs is-toggle is-fullwidth">
+        <ul>
+          <li className={status === 'all' ? 'is-active' : ''}>
+            <a
+              href="#/"
+              onClick={e => {
+                e.preventDefault();
+                dispatch(setStatus('all'));
+              }}
+            >
+              All
+            </a>
+          </li>
+
+          <li className={status === 'active' ? 'is-active' : ''}>
+            <a
+              href="#/"
+              onClick={e => {
+                e.preventDefault();
+                dispatch(setStatus('active'));
+              }}
+            >
+              Active
+            </a>
+          </li>
+
+          <li className={status === 'completed' ? 'is-active' : ''}>
+            <a
+              href="#/"
+              onClick={e => {
+                e.preventDefault();
+                dispatch(setStatus('completed'));
+              }}
+            >
+              Completed
+            </a>
+          </li>
+        </ul>
+      </div>
     </form>
   );
 };
