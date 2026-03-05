@@ -28,8 +28,7 @@ export const App = () => {
             </div>
 
             <div className="block">
-              {!todos.length && <Loader />}
-              <TodoList />
+              {todos.length ? <TodoList /> : <Loader />}
             </div>
           </div>
         </div>
