@@ -9,6 +9,7 @@ import { getUser } from '../../api';
 export const TodoModal: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const currentTodo = useSelector((state: RootState) => state.currentTodo);
@@ -17,12 +18,14 @@ export const TodoModal: React.FC = () => {
     if (currentTodo) {
       setUser(null);
       setIsLoading(true);
+      setIsError(false);
 
       getUser(currentTodo.userId)
         .then(fetchedUser => setUser(fetchedUser))
         .catch(error => {
           // eslint-disable-next-line no-console
           console.error(error);
+          setIsError(true);
         })
         .finally(() => setIsLoading(false));
     }
@@ -41,7 +44,23 @@ export const TodoModal: React.FC = () => {
 
       {isLoading && <Loader />}
 
-      {!isLoading && user && (
+      {!isLoading && isError && (
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <div className="modal-card-title has-text-weight-medium">Error</div>
+            <button
+              type="button"
+              className="delete"
+              onClick={() => dispatch(clearCurrentTodo())}
+            />
+          </header>
+          <div className="modal-card-body">
+            <p className="notification is-danger">Failed to load user data</p>
+          </div>
+        </div>
+      )}
+
+      {!isLoading && !isError && user && (
         <div className="modal-card">
           <header className="modal-card-head">
             <div

@@ -10,16 +10,12 @@ export const filterSlice = createSlice({
   initialState,
   reducers: {
     setQuery: (state, action) => {
-      return {
-        ...state,
-        query: action.payload,
-      };
+      // eslint-disable-next-line no-param-reassign
+      state.query = action.payload;
     },
     setStatus: (state, action) => {
-      return {
-        ...state,
-        status: action.payload,
-      };
+      // eslint-disable-next-line no-param-reassign
+      state.status = action.payload;
     },
   },
 });

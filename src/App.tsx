@@ -42,6 +42,9 @@ export const App = () => {
 
             <div className="block">
               {isLoading && <Loader />}
+              {isError && (
+                <p className="notification is-danger">Failed to load todos</p>
+              )}
               {!isLoading && !isError && <TodoList />}
             </div>
           </div>

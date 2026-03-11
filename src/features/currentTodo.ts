@@ -7,12 +7,7 @@ export const currentTodoSlice = createSlice({
   name: 'currentTodo',
   initialState,
   reducers: {
-    setCurrentTodo: (state, action) => {
-      return {
-        ...state,
-        ...action.payload,
-      };
-    },
+    setCurrentTodo: (_, action) => action.payload,
     clearCurrentTodo: () => {
       return null;
     },
