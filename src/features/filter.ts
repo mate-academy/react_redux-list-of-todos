@@ -1,12 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Statuses } from '../types/Statuses';
 
-const initialState = {
+interface State {
+  query: string;
+  status: `${Statuses}`;
+}
+
+const initialState: State = {
   query: '',
-  status: 'all',
+  status: Statuses.ALL,
 };
 
-export const filterSlice = createSlice({
+export const { reducer, actions } = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    setQuery: (state, action) => ({ ...state, query: action.payload }),
+    setStatus: (state, action) => ({ ...state, status: action.payload }),
+    clearQuery: state => ({ ...state, query: '' }),
+  },
 });
