@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useMemo } from 'react';
 import { Todo as TodoType } from '../../types/Todo';
 import { Todo } from '../Todo';
@@ -21,24 +20,22 @@ export const TodoList: React.FC<Props> = ({
     status: state.filter.status,
   }));
 
-  const statusFilters: Record<Statuses, (todo: TodoType) => boolean> = {
-    [Statuses.COMPLETED]: todo => todo.completed,
-    [Statuses.ACTIVE]: todo => !todo.completed,
-    [Statuses.ALL]: todo => !!todo,
-  };
+  const filteredTodos = useMemo(() => {
+    const statusFilters: Record<Statuses, (todo: TodoType) => boolean> = {
+      [Statuses.COMPLETED]: todo => todo.completed,
+      [Statuses.ACTIVE]: todo => !todo.completed,
+      [Statuses.ALL]: todo => !!todo,
+    };
 
-  const filteredTodos = useMemo(
-    () =>
-      todos.filter(todo => {
-        const matchesStatus = statusFilters[status](todo);
-        const matchesQuery = todo.title
-          .toLowerCase()
-          .includes(query.toLowerCase());
+    return todos.filter(todo => {
+      const matchesStatus = statusFilters[status](todo);
+      const matchesQuery = todo.title
+        .toLowerCase()
+        .includes(query.toLowerCase());
 
-        return matchesStatus && matchesQuery;
-      }),
-    [todos, query, status],
-  );
+      return matchesStatus && matchesQuery;
+    });
+  }, [todos, status, query]);
 
   return (
     <>
