@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useMemo } from 'react';
-import { TodoType } from '../../types/TodoType';
+import { Todo as TodoType } from '../../types/Todo';
 import { Todo } from '../Todo';
 import { Statuses } from '../../types/Statuses';
 import { useAppSelector } from '../../hooks';

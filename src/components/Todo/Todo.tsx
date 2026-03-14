@@ -1,5 +1,5 @@
 import React from 'react';
-import { TodoType } from '../../types/TodoType';
+import { Todo as TodoType } from '../../types/Todo';
 import classNames from 'classnames';
 
 interface Props {

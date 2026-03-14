@@ -6,7 +6,7 @@ import { getTodos, getUser } from './api';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { actions as currentTodoAction } from './features/currentTodo';
 import { actions as todosAction } from './features/todos';
-import { TodoType } from './types/TodoType';
+import { Todo } from './types/Todo';
 import { User } from './types/User';
 
 export const App = () => {
@@ -16,7 +16,7 @@ export const App = () => {
   const currentTodo = useAppSelector(state => state.currentTodo);
   const [user, setUser] = useState<User | null>(null);
 
-  const handleTodo = (todo: TodoType) => {
+  const handleTodo = (todo: Todo) => {
     setUser(null);
     dispatch(currentTodoAction.getCurrentTodo(todo));
     getUser(todo.userId).then(setUser);
