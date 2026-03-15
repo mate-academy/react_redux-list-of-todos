@@ -5,17 +5,17 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Todo } from '../../types/Todo';
 import { setTodo } from '../../features/currentTodo';
 import { filterTodos } from '../../features/filteringTodos';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const filters = useAppSelector(state => state.filter);
-  console.log(filters.status);
 
   const currentTodo = useAppSelector(state => state.currentTodo);
-  const isError = todos.length === 0;
+  const filteredTodos = filterTodos(todos, filters.status as Status, filters.query);
+  const isError = filteredTodos.length === 0;
 
-  const filteredTodos = filterTodos(todos, filters.status, filters.query);
 
   function handleSetTodo(todo: Todo) {
     dispatch(setTodo(todo));
@@ -23,10 +23,9 @@ export const TodoList: React.FC = () => {
 
   return (
     <>
-      {isError && (<p className="notification is-warning">
+      {isError ? (<p className="notification is-warning">
         There are no todos matching current filter criteria
-      </p>)}
-
+      </p>) : (
       <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
@@ -75,6 +74,8 @@ export const TodoList: React.FC = () => {
           ))}
         </tbody>
       </table>
+      )}
+
     </>
   );
 };
