@@ -1,12 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { getUser } from '../../api';
+import { setCurrentTodo } from '../../features/currentTodo';
+import { User } from '../../types/User';
 import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const dispatch = useAppDispatch();
+
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!currentTodo) {
+      setUser(null);
+
+      return;
+    }
+
+    setIsLoading(true);
+
+    getUser(currentTodo.userId)
+      .then(setUser)
+      .finally(() => setIsLoading(false));
+  }, [currentTodo]);
+
+  if (!currentTodo) {
+    return null;
+  }
+
+  const { id, title, completed } = currentTodo;
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      <Loader />
+      {isLoading && <Loader />}
 
       <div className="modal-card">
         <header className="modal-card-head">
@@ -14,27 +44,34 @@ export const TodoModal: React.FC = () => {
             className="modal-card-title has-text-weight-medium"
             data-cy="modal-header"
           >
-            Todo #3
+            Todo #{id}
           </div>
 
           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
+          <button
+            type="button"
+            className="delete"
+            data-cy="modal-close"
+            onClick={() => dispatch(setCurrentTodo(null))}
+          />
         </header>
 
         <div className="modal-card-body">
           <p className="block" data-cy="modal-title">
-            fugiat veniam minus
+            {title}
           </p>
 
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
-
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
-            {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-          </p>
+          {user && (
+            <p className="block" data-cy="modal-user">
+              <strong
+                className={completed ? 'has-text-success' : 'has-text-danger'}
+              >
+                {completed ? 'Done' : 'Planned'}
+              </strong>
+              {' by '}
+              <a href={`mailto:${user.email}`}>{user.name}</a>
+            </p>
+          )}
         </div>
       </div>
     </div>
