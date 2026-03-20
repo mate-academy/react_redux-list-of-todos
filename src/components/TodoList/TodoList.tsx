@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
@@ -14,6 +13,7 @@ export const TodoList: React.FC = () => {
       status === 'all' ||
       (status === 'completed' && todo.completed) ||
       (status === 'active' && !todo.completed);
+
     return (
       matchesStatus &&
       todo.title
