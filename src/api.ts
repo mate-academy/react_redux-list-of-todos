@@ -1,5 +1,4 @@
-import { Todo } from './types/Todo';
-import { User } from './types/User';
+import { Todo, User } from './types/all_Types';
 
 // eslint-disable-next-line operator-linebreak
 const BASE_URL =
