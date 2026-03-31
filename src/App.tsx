@@ -1,26 +1,54 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { setCurrentTodo } from './features/currentTodo';
+import { setCurrentUser } from './features/currentUser';
+import { useEffect } from 'react';
+import { getTodos } from './api';
+import { setTodos, setTodosLoading } from './features/todos';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const dispatch = useAppDispatch();
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  const currentUser = useAppSelector(state => state.currentUser);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const { isLoading } = useAppSelector(state => state.todos);
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+  useEffect(() => {
+    dispatch(setTodosLoading(true));
+    getTodos().then(todosFromServer => {
+      dispatch(setTodos(todosFromServer));
+    });
+  }, [dispatch]);
+  const handleCloseModal = () => {
+    dispatch(setCurrentTodo(null));
+    dispatch(setCurrentUser(null));
+  };
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {currentTodo && (
+        <TodoModal
+          todo={currentTodo}
+          user={currentUser}
+          onClose={handleCloseModal}
+        />
+      )}
+    </>
+  );
+};
