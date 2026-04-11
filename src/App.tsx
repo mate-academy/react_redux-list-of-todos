@@ -1,12 +1,24 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useAppSelector } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { RootState } from './app/store';
+import { useEffect } from 'react';
+import { setLoading, setTodos } from './features/todos';
+import { getTodos } from './api';
 
 export const App = () => {
+  const dispatch = useAppDispatch();
   const todo = useAppSelector((state: RootState) => state.currentTodo);
   const loading = useAppSelector((state: RootState) => state.todos.loading);
+
+  useEffect(() => {
+    dispatch(setLoading(true));
+    getTodos()
+      .then(data => dispatch(setTodos(data)))
+      // eslint-disable-next-line no-console
+      .catch(error => console.error(error));
+  }, []);
 
   return (
     <>

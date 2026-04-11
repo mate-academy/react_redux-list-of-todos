@@ -1,11 +1,9 @@
-import React, { useEffect, useMemo } from 'react';
-import { getTodos } from '../../api';
+import React, { useMemo } from 'react';
 import { Todo } from '../../types/Todo';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { setCurrentTodo } from '../../features/currentTodo';
-import { setLoading, setTodos } from '../../features/todos';
 
 export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -33,14 +31,6 @@ export const TodoList: React.FC = () => {
       return t.completed === false;
     });
   }, [query, status, todos]);
-
-  useEffect(() => {
-    dispatch(setLoading(true));
-    getTodos()
-      .then(data => dispatch(setTodos(data)))
-      // eslint-disable-next-line no-console
-      .catch(error => console.error(error));
-  }, []);
 
   return (
     <>

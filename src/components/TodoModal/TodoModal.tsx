@@ -13,11 +13,13 @@ export const TodoModal: React.FC = () => {
   const [user, setUser] = React.useState<User | null>(null);
 
   useEffect(() => {
-    getUser(todo?.userId || 0)
-      .then(data => setUser(data))
-      // eslint-disable-next-line no-console
-      .catch(error => console.error(error));
-  }, []);
+    if (todo?.userId) {
+      getUser(todo?.userId)
+        .then(data => setUser(data))
+        // eslint-disable-next-line no-console
+        .catch(error => console.error(error));
+    }
+  }, [todo?.userId]);
 
   if (!todo) {
     return null;
