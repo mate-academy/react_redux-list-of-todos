@@ -3,10 +3,7 @@ import filterReducer from '../features/filter';
 import todosReducer from '../features/todos';
 import currentTodoReducer from '../features/currentTodo';
 
-// const rootReducer = combineSlices();
-
 export const store = configureStore({
-  // rootReducer,
   reducer: {
     filter: filterReducer,
     todos: todosReducer,

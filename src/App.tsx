@@ -16,8 +16,12 @@ export const App = () => {
     dispatch(setLoading(true));
     getTodos()
       .then(data => dispatch(setTodos(data)))
-      // eslint-disable-next-line no-console
-      .catch(error => console.error(error));
+      .catch(error => {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        throw new Error(error);
+      })
+      .finally(() => dispatch(setLoading(false)));
   }, []);
 
   return (
