@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { RootState } from '../../app/store';
 import classNames from 'classnames';
 import { User } from '../../types/User';
 import { getUser } from '../../api';
@@ -9,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
-  const currentTodo = useAppSelector((state: RootState) => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [user, setUser] = useState<User | null>(null);

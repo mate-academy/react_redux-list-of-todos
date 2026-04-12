@@ -1,11 +1,12 @@
+import React from 'react';
 import { setQuery, setStatus } from '../../features/filter';
-import { RootState } from '../../app/store';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
-  const filter = useAppSelector((state: RootState) => state.filter.status);
-  const query = useAppSelector((state: RootState) => state.filter.query);
+  const filter = useAppSelector(state => state.filter.status);
+  const query = useAppSelector(state => state.filter.query);
 
   return (
     <form
@@ -18,7 +19,7 @@ export const TodoFilter: React.FC = () => {
             data-cy="statusSelect"
             value={filter}
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              dispatch(setStatus(e.target.value))
+              dispatch(setStatus(e.target.value as Status))
             }
           >
             <option value="all">All</option>

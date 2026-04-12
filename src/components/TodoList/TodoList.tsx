@@ -1,15 +1,31 @@
 /* eslint-disable */
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { setCurrentTodo } from '../../features/currentTodo';
-import { todosSelector } from '../../features/todosSelector';
-import { RootState } from '../../app/store';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { Todo } from '../../types/Todo';
 
 export const TodoList: React.FC = () => {
-  const todos = useAppSelector(todosSelector);
   const dispatch = useAppDispatch();
-  const currentTodo = useAppSelector((state: RootState) => state.currentTodo);
+
+  const todos = useAppSelector(state => {
+    const { todos, filter } = state;
+
+    return todos
+      .filter((todo: Todo) => {
+        const statusMatch =
+          filter.status === 'all' ||
+          (filter.status === 'active' && !todo.completed) ||
+          (filter.status === 'completed' && todo.completed);
+
+        return statusMatch;
+      })
+      .filter((todo: Todo) =>
+        todo.title.toLowerCase().includes(filter.query.toLowerCase()),
+      );
+  });
+
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   return (
     <>
@@ -22,13 +38,11 @@ export const TodoList: React.FC = () => {
           <thead>
             <tr>
               <th>#</th>
-
               <th>
                 <span className="icon">
                   <i className="fas fa-check" />
                 </span>
               </th>
-
               <th>Title</th>
               <th> </th>
             </tr>
@@ -38,6 +52,7 @@ export const TodoList: React.FC = () => {
             {todos.map(todo => (
               <tr key={todo.id} data-cy="todo">
                 <td className="is-vcentered">{todo.id}</td>
+
                 <td>
                   {todo.completed && (
                     <span className="icon" data-cy="iconCompleted">
@@ -45,7 +60,6 @@ export const TodoList: React.FC = () => {
                     </span>
                   )}
                 </td>
-                <td className="is-vcentered"> </td>
 
                 <td className="is-vcentered is-expanded">
                   <p
