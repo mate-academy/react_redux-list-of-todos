@@ -1,15 +1,15 @@
 /* eslint-disable */
 import classNames from 'classnames';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentTodo } from '../../features/currentTodo';
 import { todosSelector } from '../../features/todosSelector';
-import { AppDispatch, RootState } from '../../app/store';
+import { RootState } from '../../app/store';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 export const TodoList: React.FC = () => {
-  const todos = useSelector(todosSelector);
-  const dispatch = useDispatch<AppDispatch>();
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
+  const todos = useAppSelector(todosSelector);
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector((state: RootState) => state.currentTodo);
 
   return (
     <>
