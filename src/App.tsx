@@ -12,27 +12,25 @@ export const App = () => {
   const dispatch = useAppDispatch();
 
   const todos = useAppSelector(state => state.todos);
-  const { todo } = useAppSelector(state => state.currentTodo);
-
-  const { query, status } = useAppSelector(state => state.filter);
+  const filter = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo.todo);
+  const loading = useAppSelector(state => state.currentTodo.loading);
 
   useEffect(() => {
-    getTodos().then(todos => {
-      dispatch(setTodos(todos));
+    getTodos().then(todosFromServer => {
+      dispatch(setTodos(todosFromServer));
     });
   }, [dispatch]);
 
-  const filteredTodos = todos.filter(todoItem => {
-    const matchesQuery = todoItem.title
+  const filteredTodos = todos.filter(todo => {
+    const matchesQuery = todo.title
       .toLowerCase()
-      .includes(query.toLowerCase());
+      .includes(filter.query.toLowerCase());
 
     const matchesStatus =
-      status === 'all'
-        ? true
-        : status === 'active'
-        ? !todoItem.completed
-        : todoItem.completed;
+      filter.status === 'all'
+      || (filter.status === 'active' && !todo.completed)
+      || (filter.status === 'completed' && todo.completed);
 
     return matchesQuery && matchesStatus;
   });
@@ -50,11 +48,10 @@ export const App = () => {
 
             <div className="block">
               <Loader />
-
               <TodoList
                 todos={filteredTodos}
-                selectedTodoId={todo?.id ?? null}
-                onSelect={(todoItem) => dispatch(setCurrentTodo(todoItem))}
+                selectedTodoId={currentTodo?.id ?? null}
+                onSelect={todo => dispatch(setCurrentTodo(todo))}
               />
             </div>
           </div>
@@ -62,7 +59,8 @@ export const App = () => {
       </div>
 
       <TodoModal
-        todo={todo}
+        todo={currentTodo}
+        loading={loading}
         onClose={() => dispatch(clearCurrentTodo())}
       />
     </>

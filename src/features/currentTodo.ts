@@ -6,8 +6,7 @@ import { getUser } from '../api';
 export const loadUser = createAsyncThunk(
   'currentTodo/loadUser',
   async (userId: number) => {
-    const user = await getUser(userId);
-    return user;
+    return getUser(userId);
   }
 );
 
@@ -32,12 +31,14 @@ export const currentTodoSlice = createSlice({
       state.user = null;
       state.loading = true;
     },
+
     clearCurrentTodo: state => {
       state.todo = null;
       state.user = null;
       state.loading = false;
     },
   },
+
   extraReducers: builder => {
     builder.addCase(loadUser.fulfilled, (state, action) => {
       state.user = action.payload;
