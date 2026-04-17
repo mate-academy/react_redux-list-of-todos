@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Status } from '../types/Todo';
+import { Status } from '../types/Status';
 
 const initialState = {
   query: '',

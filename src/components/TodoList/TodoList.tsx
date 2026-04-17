@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { Todo } from '../types/Todo';
+import { Todo } from '../../types/Todo';
 
 type Props = {
   todos: Todo[];

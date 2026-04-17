@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
-import { Todo } from '../types/Todo';
-import { User } from '../types/User';
+import { Todo } from './types/Todo';
+import { User } from './types/User';
 
 const BASE_URL =
   'https://mate-academy.github.io/react_dynamic-list-of-todos/api';
