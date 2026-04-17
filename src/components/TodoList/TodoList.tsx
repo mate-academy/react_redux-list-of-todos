@@ -58,10 +58,7 @@ export const TodoList: React.FC<Props> = ({
                 )}
 
                 {isSelected && (
-                  <button
-                    data-cy="selectedButton"
-                    className="button is-link"
-                  >
+                  <button data-cy="selectedButton" className="button is-link">
                     <span className="icon">
                       <i className="fas fa-eye-slash" />
                     </span>

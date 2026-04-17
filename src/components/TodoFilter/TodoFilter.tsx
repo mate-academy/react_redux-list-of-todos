@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setQuery, setStatus } from '../../features/filter';

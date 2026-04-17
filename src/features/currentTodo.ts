@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 import { User } from '../types/User';
@@ -7,7 +8,7 @@ export const loadUser = createAsyncThunk(
   'currentTodo/loadUser',
   async (userId: number) => {
     return getUser(userId);
-  }
+  },
 );
 
 type CurrentTodoState = {
@@ -40,14 +41,22 @@ export const currentTodoSlice = createSlice({
   },
 
   extraReducers: builder => {
+    builder.addCase(loadUser.pending, state => {
+      state.loading = true;
+      state.user = null;
+    });
+
     builder.addCase(loadUser.fulfilled, (state, action) => {
       state.user = action.payload;
+      state.loading = false;
+    });
+
+    builder.addCase(loadUser.rejected, state => {
       state.loading = false;
     });
   },
 });
 
-export const { setCurrentTodo, clearCurrentTodo } =
-  currentTodoSlice.actions;
+export const { setCurrentTodo, clearCurrentTodo } = currentTodoSlice.actions;
 
 export default currentTodoSlice.reducer;

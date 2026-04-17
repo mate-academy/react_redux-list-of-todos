@@ -1,20 +1,23 @@
-import { Todo } from '../types/Todo';
-import { User } from '../types/User';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { loadUser, clearCurrentTodo } from '../../features/currentTodo';
 
-type Props = {
-  todo: Todo | null;
-  user: User | null;
-  loading: boolean;
-  onClose: () => void;
-};
+export const TodoModal = () => {
+  const dispatch = useAppDispatch();
 
-export const TodoModal: React.FC<Props> = ({
-  todo,
-  user,
-  loading,
-  onClose,
-}) => {
-  if (!todo) return null;
+  const { todo, user, loading } = useAppSelector(state => state.currentTodo);
+
+  useEffect(() => {
+    if (!todo?.userId) {
+      return;
+    }
+
+    dispatch(loadUser(todo.userId));
+  }, [todo?.userId, dispatch]);
+
+  if (!todo) {
+    return null;
+  }
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -29,16 +32,14 @@ export const TodoModal: React.FC<Props> = ({
           <button
             className="delete"
             data-cy="modal-close"
-            onClick={onClose}
+            onClick={() => dispatch(clearCurrentTodo())}
           />
         </header>
 
         <section className="modal-card-body">
           <p data-cy="modal-title">{todo.title}</p>
 
-          {loading && (
-            <div data-cy="loader">Loading user...</div>
-          )}
+          {loading && <div data-cy="loader">Loading user...</div>}
 
           {!loading && user && (
             <div data-cy="modal-user">

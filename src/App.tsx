@@ -1,25 +1,34 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { getTodos } from './api';
 import { setTodos } from './features/todos';
-import { setCurrentTodo, clearCurrentTodo } from './features/currentTodo';
+import { setCurrentTodo } from './features/currentTodo';
 
 export const App = () => {
   const dispatch = useAppDispatch();
 
+  const [loadingTodos, setLoadingTodos] = useState(true);
+
   const todos = useAppSelector(state => state.todos);
   const filter = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo.todo);
-  const loading = useAppSelector(state => state.currentTodo.loading);
 
   useEffect(() => {
-    getTodos().then(todosFromServer => {
+    const load = async () => {
+      setLoadingTodos(true);
+
+      const todosFromServer = await getTodos();
+
       dispatch(setTodos(todosFromServer));
-    });
+
+      setLoadingTodos(false);
+    };
+
+    load();
   }, [dispatch]);
 
   const filteredTodos = todos.filter(todo => {
@@ -28,9 +37,9 @@ export const App = () => {
       .includes(filter.query.toLowerCase());
 
     const matchesStatus =
-      filter.status === 'all'
-      || (filter.status === 'active' && !todo.completed)
-      || (filter.status === 'completed' && todo.completed);
+      filter.status === 'all' ||
+      (filter.status === 'active' && !todo.completed) ||
+      (filter.status === 'completed' && todo.completed);
 
     return matchesQuery && matchesStatus;
   });
@@ -47,22 +56,21 @@ export const App = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList
-                todos={filteredTodos}
-                selectedTodoId={currentTodo?.id ?? null}
-                onSelect={todo => dispatch(setCurrentTodo(todo))}
-              />
+              {loadingTodos && <Loader />}
+
+              {!loadingTodos && (
+                <TodoList
+                  todos={filteredTodos}
+                  selectedTodoId={currentTodo?.id ?? null}
+                  onSelect={todo => dispatch(setCurrentTodo(todo))}
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      <TodoModal
-        todo={currentTodo}
-        loading={loading}
-        onClose={() => dispatch(clearCurrentTodo())}
-      />
+      <TodoModal />
     </>
   );
 };

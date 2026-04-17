@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { Todo } from '../types/Todo';
 import { User } from '../types/User';
 
