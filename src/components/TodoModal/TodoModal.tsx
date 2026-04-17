@@ -1,42 +1,63 @@
-import React from 'react';
-import { Loader } from '../Loader';
+import { useEffect, useState } from 'react';
+import { getUser } from '../../api';
+import { User } from '../types/User';
+import { Todo } from '../types/Todo';
 
-export const TodoModal: React.FC = () => {
+type Props = {
+  todo: Todo | null;
+  onClose: () => void;
+};
+
+export const TodoModal: React.FC<Props> = ({ todo, onClose }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!todo) return;
+
+    setLoading(true);
+    setUser(null);
+
+    getUser(todo.userId)
+      .then(setUser)
+      .finally(() => setLoading(false));
+  }, [todo]);
+
+  if (!todo) return null;
+
   return (
-    <div className="modal is-active" data-cy="modal">
-      <div className="modal-background" />
+    <>
+      <div
+        className="modal is-active"
+        data-cy="modal"
+      >
+        <div className="modal-background" />
 
-      <Loader />
+        <div className="modal-card">
+          <header className="modal-card-head">
+            <p className="modal-card-title" data-cy="modal-title">
+              {todo.title}
+            </p>
 
-      <div className="modal-card">
-        <header className="modal-card-head">
-          <div
-            className="modal-card-title has-text-weight-medium"
-            data-cy="modal-header"
-          >
-            Todo #3
-          </div>
+            <button
+              className="delete"
+              data-cy="modal-close"
+              onClick={onClose}
+            />
+          </header>
 
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
-        </header>
+          <section className="modal-card-body">
+            {loading && <div data-cy="modal-loader">Loading user...</div>}
 
-        <div className="modal-card-body">
-          <p className="block" data-cy="modal-title">
-            fugiat veniam minus
-          </p>
-
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
-
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
-            {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-          </p>
+            {!loading && user && (
+              <div data-cy="modal-user">
+                <p data-cy="modal-user-name">{user.name}</p>
+                <p data-cy="modal-user-email">{user.email}</p>
+              </div>
+            )}
+          </section>
         </div>
       </div>
-    </div>
+    </>
   );
 };
