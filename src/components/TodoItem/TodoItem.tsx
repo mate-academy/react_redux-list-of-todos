@@ -1,9 +1,8 @@
 import React from 'react';
 import { Todo } from '../../types/Todo';
 import { useAppDispatch } from '../../app/hooks/useAppDispatch';
-import { setCurrentTodo } from '../../features/currentTodo';
+import { clearCurrentTodo, setCurrentTodo } from '../../features/currentTodo';
 import { useAppSelector } from '../../app/hooks/useAppSelector';
-import { clearCurrentTodo } from '../../features/todos';
 
 type Props = {
   todo: Todo;

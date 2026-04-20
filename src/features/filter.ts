@@ -34,3 +34,4 @@ export const filterSlice = createSlice({
 });
 
 export const { setQuery, deleteQuery, setStatus } = filterSlice.actions;
+export default filterSlice.reducer;

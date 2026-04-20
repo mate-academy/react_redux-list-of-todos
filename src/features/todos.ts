@@ -3,12 +3,10 @@ import { Todo } from '../types/Todo';
 
 type TodosState = {
   items: Todo[];
-  currentTodo: Todo | null;
 };
 
 const initialState: TodosState = {
   items: [],
-  currentTodo: null,
 };
 
 export const todosSlice = createSlice({
@@ -19,17 +17,8 @@ export const todosSlice = createSlice({
       ...state,
       items: action.payload,
     }),
-    setCurrentTodo: (state, action: PayloadAction<Todo>) => ({
-      ...state,
-      currentTodo: action.payload,
-    }),
-
-    clearCurrentTodo: state => ({
-      ...state,
-      currentTodo: null,
-    }),
   },
 });
 
-export const { setTodos, setCurrentTodo, clearCurrentTodo } =
-  todosSlice.actions;
+export const { setTodos } = todosSlice.actions;
+export default todosSlice.reducer;
