@@ -8,13 +8,14 @@ interface Props {
   todo: Todo;
 }
 
-export const TodoItem: FC<Props> = ({
-  todo: { id, title, completed, userId },
-}) => {
-  const todo = useAppSelector(state => state.currentTodo);
+export const TodoItem: FC<Props> = ({ todo }) => {
+  const { id, title, completed } = todo;
+
+  const selectedTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
+
   const openTodo = () => {
-    dispatch(setCurrentTodo({ id, title, completed, userId }));
+    dispatch(setCurrentTodo(todo));
   };
 
   return (
@@ -29,11 +30,9 @@ export const TodoItem: FC<Props> = ({
       </td>
 
       <td className="is-vcentered is-expanded">
-        {completed ? (
-          <p className="has-text-success">{title}</p>
-        ) : (
-          <p className="has-text-danger">{title}</p>
-        )}
+        <p className={completed ? 'has-text-success' : 'has-text-danger'}>
+          {title}
+        </p>
       </td>
 
       <td className="has-text-right is-vcentered">
@@ -45,7 +44,7 @@ export const TodoItem: FC<Props> = ({
         >
           <span className="icon">
             <i
-              className={`far ${todo?.id === id ? 'fa-eye-slash' : 'fa-eye'}`}
+              className={`far ${selectedTodo?.id === id ? 'fa-eye-slash' : 'fa-eye'}`}
             />
           </span>
         </button>
