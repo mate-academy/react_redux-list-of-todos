@@ -85,16 +85,28 @@ export const TodoList = () => {
                   </p>
                 </td>
                 <td className="has-text-right is-vcentered">
-                  <button
-                    data-cy="selectButton"
-                    className="button"
-                    type="button"
-                    onClick={() => openTodo(todo)}
-                  >
-                    <span className="icon">
-                      <i className={`far fa-eye${selectedTodo?.id === todo.id ? '-slash' : ''}`} />
-                    </span>
-                  </button>
+                  {selectedTodo?.id === todo.id
+                    ? <button
+                      data-cy="selectButton"
+                      className="button"
+                      type="button"
+                      onClick={() => dispatch(setCurrentTodo(null))}
+                    >
+                      <span className="icon">
+                        <i className="far fa-eye-slash" />
+                      </span>
+                    </button>
+                    : <button
+                      data-cy="selectButton"
+                      className="button"
+                      type="button"
+                      onClick={() => openTodo(todo)}
+                    >
+                      <span className="icon">
+                        <i className="far fa-eye" />
+                      </span>
+                    </button>
+                  }
                 </td>
               </tr>
             );
