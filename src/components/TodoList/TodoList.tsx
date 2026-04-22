@@ -1,5 +1,4 @@
 /* eslint-disable */
-import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
@@ -7,13 +6,15 @@ import { Todo } from '../../types/Todo';
 import { setCurrentTodo } from '../../features/currentTodo';
 import { setUser } from '../../features/user';
 import { getUser } from '../../api';
+import { useMemo } from 'react';
 
 export const TodoList = () => {
   const dispatch = useDispatch()
   const todos = useAppSelector(state => state.todos)
   const filters = useAppSelector(state => state.filter)
+  const selectedTodo = useAppSelector(state => state.currentTodo)
 
-  const filteredTodos = () => {
+  const filteredTodos = useMemo(() => {
     let copyTodos = [...todos];
 
     switch (filters.status) {
@@ -27,10 +28,10 @@ export const TodoList = () => {
         break;
     }
 
-    copyTodos = copyTodos.filter(item => item.title.toLowerCase().includes(filters.query));
-
-    return copyTodos;
-  };
+    return copyTodos.filter(item =>
+      item.title.toLowerCase().includes(filters.query)
+    );
+  }, [todos, filters.status, filters.query]);
 
   const openTodo = async (selectedTodo: Todo) => {
     try {
@@ -42,7 +43,7 @@ export const TodoList = () => {
 
   return (
     <>
-      {filteredTodos().length === 0
+      {filteredTodos.length === 0
         ? <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
@@ -61,7 +62,7 @@ export const TodoList = () => {
               <th> </th>
             </tr>
           </thead>
-          {filteredTodos().map(todo => {
+          {filteredTodos.map(todo => {
             return (
               <tr data-cy="todo" className="" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
@@ -91,7 +92,7 @@ export const TodoList = () => {
                     onClick={() => openTodo(todo)}
                   >
                     <span className="icon">
-                      <i className="far fa-eye" />
+                      <i className={`far fa-eye${selectedTodo?.id === todo.id ? '-slash' : ''}`} />
                     </span>
                   </button>
                 </td>

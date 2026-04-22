@@ -9,7 +9,7 @@ export const TodoModal = () => {
   const todo = useAppSelector(state => state.currentTodo);
   const user = useAppSelector(state => state.user);
 
-  if (!todo && !user) {
+  if (!todo) {
     return null;
   }
 
