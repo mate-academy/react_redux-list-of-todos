@@ -6,6 +6,7 @@ import { currentTodoSlice } from '../../features/currentTodo';
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
   const { setTodo } = currentTodoSlice.actions;
 
@@ -80,7 +81,12 @@ export const TodoList: React.FC = () => {
                     onClick={() => dispatch(setTodo(todo))}
                   >
                     <span className="icon">
-                      <i className="far fa-eye" />
+                      <i
+                        className={classNames('far', {
+                          'fa-eye': !currentTodo,
+                          'fa-eye-slash': currentTodo,
+                        })}
+                      />
                     </span>
                   </button>
                 </td>
