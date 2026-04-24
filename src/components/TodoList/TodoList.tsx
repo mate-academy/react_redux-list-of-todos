@@ -1,10 +1,13 @@
 import React from 'react';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import classNames from 'classnames';
+import { currentTodoSlice } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const { query, status } = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
+  const { setTodo } = currentTodoSlice.actions;
 
   const visibleTodos = todos
     .filter(todo => {
@@ -74,6 +77,7 @@ export const TodoList: React.FC = () => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
+                    onClick={() => dispatch(setTodo(todo))}
                   >
                     <span className="icon">
                       <i className="far fa-eye" />
