@@ -1,20 +1,35 @@
-/* eslint-disable */
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
 import classNames from 'classnames';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
+  const { query, status } = useAppSelector(state => state.filter);
+
+  const visibleTodos = todos
+    .filter(todo => {
+      switch (status) {
+        case 'active':
+          return !todo.completed;
+
+        case 'completed':
+          return todo.completed;
+
+        default:
+          return true;
+      }
+    })
+    .filter(todo => todo.title.toLowerCase().includes(query.toLowerCase()));
 
   return (
     <>
-      {todos.length === 0 && (
+      {visibleTodos.length === 0 && (
         <p className="notification is-warning">
           There are no todos matching current filter criteria
         </p>
       )}
 
-      {todos.length > 0 && (
+      {visibleTodos.length > 0 && (
         <table className="table is-narrow is-fullwidth">
           <thead>
             <tr>
@@ -32,7 +47,7 @@ export const TodoList: React.FC = () => {
           </thead>
 
           <tbody>
-            {todos.map(todo => (
+            {visibleTodos.map(todo => (
               <tr data-cy="todo" key={todo.id}>
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
