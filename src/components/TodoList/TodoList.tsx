@@ -1,12 +1,10 @@
-/* eslint-disable */
-import React, { useEffect, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { SetCurrentTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
-  const {query, status} = useAppSelector(state => state.filter);
+  const { query, status } = useAppSelector(state => state.filter);
   const currentTodo = useAppSelector(state => state.currentTodo);
   const dispatch = useAppDispatch();
 
@@ -14,17 +12,17 @@ export const TodoList: React.FC = () => {
     return todos.filter(todo => {
       switch (status) {
         case 'active':
-        return todo.completed === false;
+          return todo.completed === false;
         case 'completed':
           return todo.completed === true;
         default:
-        return todo;
+          return todo;
       }
     });
   }, [todos, status]);
 
   const visibleTodos = filterByStatus.filter(todo =>
-    todo.title.toLowerCase().includes(query.toLowerCase())
+    todo.title.toLowerCase().includes(query.toLowerCase()),
   );
 
   return (
@@ -63,17 +61,29 @@ export const TodoList: React.FC = () => {
                 )}
               </td>
               <td className="is-vcentered is-expanded">
-                <p className={todo.completed ? "has-text-success" : "has-text-danger"}>
+                <p
+                  className={
+                    todo.completed ? 'has-text-success' : 'has-text-danger'
+                  }
+                >
                   {todo.title}
                 </p>
               </td>
               <td className="has-text-right is-vcentered">
-                <button data-cy="selectButton" className="button" type="button">
-                  <span
-                    className="icon"
-                    onClick={() => dispatch(SetCurrentTodo(todo))}
-                  >
-                    <i className={currentTodo?.id === todo.id ? "far fa-eye-slash" : "far fa-eye"} />
+                <button
+                  data-cy="selectButton"
+                  className="button"
+                  type="button"
+                  onClick={() => dispatch(SetCurrentTodo(todo))}
+                >
+                  <span className="icon">
+                    <i
+                      className={
+                        currentTodo?.id === todo.id
+                          ? 'far fa-eye-slash'
+                          : 'far fa-eye'
+                      }
+                    />
                   </span>
                 </button>
               </td>
