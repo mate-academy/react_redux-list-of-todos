@@ -13,19 +13,26 @@ export const TodoModal: React.FC = () => {
 
   useEffect(() => {
     const loadUser = async () => {
-      setIsLoading(true);
+      if (!currentTodo?.userId) {
+        setUser(null);
 
+        return;
+      }
+
+      setIsLoading(true);
       try {
-        const loadedUser = await getUser(currentTodo?.userId || 0);
+        const loadedUser = await getUser(currentTodo.userId);
 
         setUser(loadedUser);
+      } catch (error) {
+        setUser(null);
       } finally {
         setIsLoading(false);
       }
     };
 
     loadUser();
-  }, []);
+  }, [currentTodo?.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">

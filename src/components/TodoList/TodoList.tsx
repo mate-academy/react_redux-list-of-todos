@@ -19,7 +19,7 @@ export const TodoList: React.FC = () => {
           return todo;
       }
     });
-  }, [todos, status]);
+  }, [todos, status, currentTodo?.userId]);
 
   const visibleTodos = filterByStatus.filter(todo =>
     todo.title.toLowerCase().includes(query.toLowerCase()),
