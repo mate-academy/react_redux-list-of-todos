@@ -50,7 +50,7 @@ export const App = () => {
         dispatch(todosSlice.actions.addTodos(response));
       })
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
