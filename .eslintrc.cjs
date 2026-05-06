@@ -46,13 +46,17 @@ module.exports = {
       ignoreTemplateLiterals: true,
       ignoreComments: true,
     }],
+    "no-param-reassign": ["error", {
+      "props": true,
+      "ignorePropertyModificationsFor": ["state"]
+    }],
     'no-redeclare': [2, { builtinGlobals: true }],
     'no-console': 2,
     'operator-linebreak': 0,
     'brace-style': [2, '1tbs'],
     'arrow-body-style': 0,
     'arrow-parens': 0,
-    'no-param-reassign': [2, { props: true }],
+    // 'no-param-reassign': [2, { props: true }],
     'padding-line-between-statements': [
       2,
       { blankLine: 'always', prev: '*', next: 'return' },
