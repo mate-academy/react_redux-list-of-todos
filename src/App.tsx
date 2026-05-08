@@ -45,11 +45,6 @@ function getPreparedTodos(todos: Todo[], { status, query }: Filters): Todo[] {
 
 export const App: React.FC = () => {
   const [loader, setLoader] = useState(true);
-  // const [todos, setTodos] = useState<Todo[]>([]);
-  // const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
-  // const [status, setStatus] = useState<Status>('all');
-  // const [query, setQuery] = useState('');
-
   const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
   const selectedTodo = useAppSelector(state => state.currentTodo);
