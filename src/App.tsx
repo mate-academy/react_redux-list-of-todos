@@ -1,26 +1,46 @@
-import 'bulma/css/bulma.css';
-import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { useEffect } from 'react';
+import './App.scss';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { setTodos } from './features/todos';
+import { setLoading } from './features/loading';
+import { getTodos } from './api';
+import { Loader } from './components/Loader/Loader';
+import { TodoList } from './components/TodoList/TodoList';
+import { TodoFilter } from './components/TodoFilter/TodoFilter';
+import { TodoModal } from './components/TodoModal/TodoModal';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const dispatch = useAppDispatch();
+  const loading = useAppSelector(state => state.loading);
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  useEffect(() => {
+    const fetchTodos = async () => {
+      dispatch(setLoading(true));
+      try {
+        const todosFromApi = await getTodos();
 
-          <div className="block">
-            <Loader />
-            <TodoList />
-          </div>
-        </div>
-      </div>
+        dispatch(setTodos(todosFromApi));
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+
+    fetchTodos();
+  }, [dispatch]);
+
+  return (
+    <div className="App">
+      <h1>Todo List</h1>
+
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <TodoFilter />
+          <TodoList />
+          <TodoModal />
+        </>
+      )}
     </div>
-
-    <TodoModal />
-  </>
-);
+  );
+};
