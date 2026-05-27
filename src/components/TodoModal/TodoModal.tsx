@@ -1,41 +1,54 @@
-import React from 'react';
-import { Loader } from '../Loader';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { loadUser, clearCurrentTodo } from '../../features/currentTodo';
 
-export const TodoModal: React.FC = () => {
+export const TodoModal = () => {
+  const dispatch = useAppDispatch();
+
+  const { todo, user, loading } = useAppSelector(state => state.currentTodo);
+
+  useEffect(() => {
+    if (!todo?.userId) {
+      return;
+    }
+
+    dispatch(loadUser(todo.userId));
+  }, [todo?.userId, dispatch]);
+
+  if (!todo) {
+    return null;
+  }
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      <Loader />
-
       <div className="modal-card">
         <header className="modal-card-head">
-          <div
-            className="modal-card-title has-text-weight-medium"
-            data-cy="modal-header"
-          >
-            Todo #3
-          </div>
+          <p className="modal-card-title" data-cy="modal-header">
+            Todo #{todo.id}
+          </p>
 
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
+          <button
+            className="delete"
+            data-cy="modal-close"
+            onClick={() => dispatch(clearCurrentTodo())}
+          />
         </header>
 
-        <div className="modal-card-body">
-          <p className="block" data-cy="modal-title">
-            fugiat veniam minus
-          </p>
+        <section className="modal-card-body">
+          <p data-cy="modal-title">{todo.title}</p>
 
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
+          {loading && <div data-cy="loader">Loading user...</div>}
 
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
-            {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-          </p>
-        </div>
+          {!loading && user && (
+            <div data-cy="modal-user">
+              {todo.completed
+                ? `Done by ${user.name}`
+                : `Planned by ${user.name}`}
+            </div>
+          )}
+        </section>
       </div>
     </div>
   );
