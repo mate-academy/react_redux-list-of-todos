@@ -1,18 +1,19 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setStatus, setQuery } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { query, status } = useAppSelector((state) => state.filter);
+  const { query, status } = useAppSelector(state => state.filter);
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setQuery(event.target.value));
   };
 
-  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setStatus(event.target.value));
+const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setStatus(event.target.value as Status));
   };
 
   const handleClearQuery = () => {
@@ -44,7 +45,7 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
-          value={query} 
+          value={query}
           onChange={handleQueryChange}
         />
         <span className="icon is-left">

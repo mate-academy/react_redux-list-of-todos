@@ -27,20 +27,28 @@ export const App = () => {
 
   return (
     <>
-      <div className="section">
-        <div className="container">
-          <div className="box">
-            <h1 className="title">Todos:</h1>
+      {loadingError ? (
+        <p>{loadingError}</p>
+      ) : (
+        <>
+          <div className="section">
+            <div className="container">
+              <div className="box">
+                <h1 className="title">Todos:</h1>
 
-            <div className="block">
-              <TodoFilter />
+                <div className="block">
+                  <TodoFilter />
+                </div>
+
+                <div className="block">
+                  {isLoading ? <Loader /> : <TodoList />}
+                </div>
+              </div>
             </div>
-
-            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
           </div>
-        </div>
-      </div>
-      {selectedModal !== null ? <TodoModal /> : ''}
+          {selectedModal !== null ? <TodoModal /> : ''}
+        </>
+      )}
     </>
   );
 };

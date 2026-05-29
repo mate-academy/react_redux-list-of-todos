@@ -73,15 +73,13 @@ export const TodoModal: React.FC = () => {
             {' by '}
 
             <span data-cy="modal-author">
-  {isLoading && <Loader />}
+              {isLoading && <Loader />}
 
-  {userError && <span className="has-text-danger">{userError}</span>}
-  {user && (
-    <a href={`mailto:${user.email}`}>
-      {user.name}
-    </a>
-  )}
-</span>
+              {userError && (
+                <span className="has-text-danger">{userError}</span>
+              )}
+              {user && <a href={`mailto:${user.email}`}>{user.name}</a>}
+            </span>
           </p>
         </div>
       </div>
