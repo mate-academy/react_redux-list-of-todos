@@ -57,11 +57,7 @@ export const App = () => {
 
             <div className="block">
               <Loader isLoaded={isTodosLoaded} />
-              <TodoList
-                setIsTodosLoaded={setIsTodosLoaded}
-                isTodosLoaded={isTodosLoaded}
-                todos={visibleTodos}
-              />
+              <TodoList isTodosLoaded={isTodosLoaded} todos={visibleTodos} />
             </div>
           </div>
         </div>
