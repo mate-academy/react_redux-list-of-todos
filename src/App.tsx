@@ -22,7 +22,6 @@ export const App = () => {
       .then(todosFromServer => {
         dispatch(todosSlice.actions.setTodos(todosFromServer));
       })
-      .catch(() => {})
       .finally(() => setIsTodosLoaded(false));
   }, []);
 
