@@ -23,7 +23,7 @@ export const App = () => {
         dispatch(todosSlice.actions.setTodos(todosFromServer));
       })
       .finally(() => setIsTodosLoaded(false));
-  }, []);
+  }, [dispatch]);
 
   const visibleTodos = todos.filter(todo => {
     if (status === 'completed') {
