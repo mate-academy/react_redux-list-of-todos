@@ -26,11 +26,12 @@ export const TodoModal = () => {
       .finally(() => setLoading(false));
   }, [currentTodo]);
 
+  if (!currentTodo) {
+    return null;
+  }
+
   return (
-    <div
-      className={classNames('modal', { 'is-active': !!currentTodo })}
-      data-cy="modal"
-    >
+    <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
       {loading ? (
         <Loader />
