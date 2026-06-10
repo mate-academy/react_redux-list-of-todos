@@ -1,13 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { filterSlice } from '../../features/filter';
-import { RootState } from '../../app/store';
+import { useAppDispatch, useAppSelector } from '../../features/hooks';
 
 type Status = 'all' | 'active' | 'completed';
 
 export const TodoFilter: React.FC = () => {
-  const dispatch = useDispatch();
-  const { query } = useSelector((state: RootState) => state.filter);
+  const dispatch = useAppDispatch();
+  const { query, status } = useAppSelector(state => state.filter);
 
   function handleSelect(value: Status) {
     dispatch(filterSlice.actions.setStatus(value));
@@ -31,6 +30,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             onChange={event => handleSelect(event.target.value as Status)}
+            value={status}
           >
             <option value="all">All</option>
             <option value="active">Active</option>

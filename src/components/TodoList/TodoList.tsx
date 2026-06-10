@@ -1,10 +1,9 @@
 /* eslint-disable */
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
 import classNames from 'classnames';
 import { currentTodoSlice } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../features/hooks';
 
 type Props = {
   isTodosLoaded: boolean;
@@ -12,7 +11,9 @@ type Props = {
 };
 
 export const TodoList: React.FC<Props> = ({ isTodosLoaded, todos }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   function handleSelect(todoId: number) {
     const todo = todos.find(t => t.id === todoId);
@@ -23,8 +24,6 @@ export const TodoList: React.FC<Props> = ({ isTodosLoaded, todos }) => {
       dispatch(currentTodoSlice.actions.clearCurrentTodo());
     }
   }
-
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
 
   return (
     !isTodosLoaded && (

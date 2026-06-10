@@ -3,15 +3,15 @@ import { Loader } from '../Loader';
 import { Todo } from '../../types/Todo';
 import { getUser } from '../../api';
 import { User } from '../../types/User';
-import { useDispatch } from 'react-redux';
 import { currentTodoSlice } from '../../features/currentTodo';
+import { useAppDispatch } from '../../features/hooks';
 
 type Props = {
   todo: Todo;
 };
 
 export const TodoModal: React.FC<Props> = ({ todo }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [user, setUser] = useState<User | null>(null);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
 
@@ -20,7 +20,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
     getUser(todo.userId)
       .then(userFromServer => setUser(userFromServer))
       .finally(() => setIsUserLoaded(false));
-  }, []);
+  }, [todo.userId]);
 
   function handleClear() {
     dispatch(currentTodoSlice.actions.clearCurrentTodo());

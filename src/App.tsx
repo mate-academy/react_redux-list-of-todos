@@ -2,18 +2,17 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from './app/store';
 import { getTodos } from './api';
 import { todosSlice } from './features/todos';
+import { useAppDispatch, useAppSelector } from './features/hooks';
 
 export const App = () => {
   const [isTodosLoaded, setIsTodosLoaded] = useState(false);
 
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
-  const todos = useSelector((state: RootState) => state.todos);
-  const { query, status } = useSelector((state: RootState) => state.filter);
-  const dispatch = useDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const todos = useAppSelector(state => state.todos);
+  const { query, status } = useAppSelector(state => state.filter);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsTodosLoaded(true);
