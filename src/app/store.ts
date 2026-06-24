@@ -1,10 +1,18 @@
-import { combineSlices, configureStore } from '@reduxjs/toolkit';
+import { combineReducers, createStore } from 'redux';
 
-const rootReducer = combineSlices();
+//reducers
+import todos from '../features/todos';
+import filter from '../features/filter';
+import currentTodo from '../features/currentTodo';
 
-export const store = configureStore({
-  reducer: rootReducer,
+const reducer = combineReducers({
+  todos,
+  filter,
+  currentTodo,
 });
 
-export type RootState = ReturnType<typeof rootReducer>;
-export type AppDispatch = typeof store.dispatch;
+const store = createStore(reducer);
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export default store;
