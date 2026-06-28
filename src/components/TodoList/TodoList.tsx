@@ -15,7 +15,7 @@ export const TodoList: React.FC = () => {
         todo.completed === (state.filter.status === 'completed'),
     )
     .filter(
-      todo => !state.filter.query || todo.title.includes(state.filter.query),
+      todo => !state.filter.query || todo.title.toLowerCase().includes(state.filter.query.toLowerCase()),
     );
 
   const currentTodo = useAppSelector(state => state.currentTodo);
