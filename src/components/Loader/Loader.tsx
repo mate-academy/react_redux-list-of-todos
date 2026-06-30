@@ -1,8 +1,15 @@
-import React from 'react';
+import classNames from 'classnames';
 import './Loader.scss';
 
-export const Loader: React.FC = () => (
-  <div className="Loader" data-cy="loader">
+type Props = {
+  loading: boolean;
+};
+
+export const Loader = ({ loading }: Props) => (
+  <div
+    className={classNames('Loader', { 'is-hidden': !loading })}
+    data-cy="loader"
+  >
     <div className="Loader__content" />
   </div>
 );
