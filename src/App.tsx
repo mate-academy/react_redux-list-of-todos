@@ -31,11 +31,7 @@ export const App: React.FC = () => {
       })
       .catch(() => setErrorMessage('Failed to load todo list'))
       .finally(() => setLoading(false));
-  }, []);
-
-  if (errorMessage) {
-    return <div style={{ color: 'red' }}>{errorMessage}</div>;
-  }
+  }, [dispatch]);
 
   return (
     <>
@@ -43,6 +39,17 @@ export const App: React.FC = () => {
         <div className="container">
           <div className="box">
             <h1 className="title">Todos:</h1>
+
+            {errorMessage && (
+              <div className="notification is-danger">
+                <button
+                  className="delete"
+                  onClick={() => setErrorMessage(null)}
+                  aria-label="close"
+                />
+                {errorMessage}
+              </div>
+            )}
 
             <div className="block">
               <TodoFilter />
