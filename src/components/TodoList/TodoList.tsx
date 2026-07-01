@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { currentTodoSlice } from '../../features/currentTodo';
@@ -52,7 +51,7 @@ export const TodoList: React.FC = () => {
         {filteredTodos.map(todo => (
           <tr
             data-cy="todo"
-            key="todo"
+            key={todo.id}
             className={
               currentTodo?.id === todo.id ? 'has-background-info-light' : ''
             }
