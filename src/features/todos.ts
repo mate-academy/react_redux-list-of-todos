@@ -2,13 +2,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Todo } from '../types/Todo';
 
 type TodoStatus = {
-  item: Todo[];
+  todos: Todo[];
+  loading: boolean;
+  error: boolean;
 };
 
 const initialState: TodoStatus = {
-  item: [],
-  // loading: false,
-  // error: null,
+  todos: [],
+  loading: false,
+  error: true,
 };
 
 export const todosSlice = createSlice({
@@ -16,10 +18,18 @@ export const todosSlice = createSlice({
   initialState,
   reducers: {
     setTodos: (state, action: PayloadAction<Todo[]>) => {
-      state.item = action.payload;
+      return { ...state, todos: action.payload };
+    },
+
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      return { ...state, loading: action.payload };
+    },
+
+    setIsError: (state, action: PayloadAction<boolean>) => {
+      return { ...state, error: action.payload };
     },
   },
 });
 
-export const { setTodos } = todosSlice.actions;
+export const { setTodos, setIsLoading, setIsError } = todosSlice.actions;
 export default todosSlice.reducer;
