@@ -7,7 +7,7 @@ const rootReducer = combineSlices({
   filter: filterReducer,
   todos: todosrReducer,
   currentTodo: currentTodoReducer,
-});
+  });
 
 export const store = configureStore({
   reducer: rootReducer,

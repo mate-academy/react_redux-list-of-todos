@@ -1,17 +1,16 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { getTodos, getUser } from './api';
+import { getTodos } from './api';
 import { useEffect } from 'react';
 // import { useDispatch } from 'react-redux';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 
-import { setIsLoading, setTodos, setIsError } from './features/todos';
+import { setIsLoading, setTodos } from './features/todos';
 
 export const App = () => {
   const dispatch = useAppDispatch();
-  const todos = useAppSelector(state => state.todos);
-  console.log(todos);
+  const loading = useAppSelector(state => state.todos.loading);
 
   useEffect(() => {
     dispatch(setIsLoading(true));
@@ -19,7 +18,6 @@ export const App = () => {
       .then(todosFromServer => {
         dispatch(setTodos(todosFromServer));
       })
-      // .catch(() => dispatch(setIsError('error')))
       .finally(() => dispatch(setIsLoading(false)));
   }, [dispatch]);
 
@@ -34,10 +32,7 @@ export const App = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">
-              <Loader />
-              <TodoList />
-            </div>
+            <div className="block">{loading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
