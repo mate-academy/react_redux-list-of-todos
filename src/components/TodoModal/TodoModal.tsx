@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const TodoModal: React.FC<Props> = ({ todo }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
   const dispatch = useAppDispatch();
@@ -28,7 +28,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [dispatch]);
+  }, [dispatch, todo.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">

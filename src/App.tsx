@@ -23,7 +23,7 @@ export const App = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [dispatch]);
+  }, [dispatch, actions]);
 
   return (
     <>
