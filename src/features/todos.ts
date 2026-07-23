@@ -3,12 +3,12 @@ import { Todo } from '../types/Todo';
 
 type TodoStatus = {
   todos: Todo[];
-  loading: boolean;
+  isLoading: boolean;
 };
 
 const initialState: TodoStatus = {
   todos: [],
-  loading: false,
+  isLoading: true,
 };
 
 export const todosSlice = createSlice({
@@ -20,7 +20,7 @@ export const todosSlice = createSlice({
     },
 
     setIsLoading: (state, action: PayloadAction<boolean>) => {
-      return { ...state, loading: action.payload };
+      return { ...state, isLoading: action.payload };
     },
   },
 });

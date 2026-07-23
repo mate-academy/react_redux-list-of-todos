@@ -1,19 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Loader } from '../Loader';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setCurrentTodo } from '../../features/currentTodo';
 
 import classNames from 'classnames';
+import { getUser } from '../../api';
+import { setUser } from '../../features/user';
+import { setIsLoading } from '../../features/todos';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(state => state.todos.loading);
-
+  const isLoading = useAppSelector(state => state.todos.isLoading);
+  const user = useAppSelector(state => state.user.user);
   const todo = useAppSelector(state => state.currentTodo);
 
   const isOpen = !!todo;
-  const onClose = () => dispatch(setCurrentTodo(null));
-  const user = { name: 'User', email: 'user@example.com' };
+  const onClose = () => {
+    dispatch(setCurrentTodo(null));
+    dispatch(setUser(null));
+  };
+
+  useEffect(() => {
+    if (todo?.userId) {
+      dispatch(setIsLoading(true));
+      getUser(todo.userId)
+        .then(userFromServer => {
+          dispatch(setUser(userFromServer));
+        })
+        .finally(() => dispatch(setIsLoading(false)));
+    }
+  }, [todo?.userId, dispatch]);
 
   return (
     <div
@@ -22,7 +38,7 @@ export const TodoModal: React.FC = () => {
     >
       <div className="modal-background" onClick={onClose} />
       <div className="modal-card">
-        {loading ? (
+        {isLoading ? (
           <Loader />
         ) : (
           <>

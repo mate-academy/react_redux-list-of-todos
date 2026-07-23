@@ -3,14 +3,14 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { getTodos } from './api';
 import { useEffect } from 'react';
-// import { useDispatch } from 'react-redux';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 
 import { setIsLoading, setTodos } from './features/todos';
 
 export const App = () => {
   const dispatch = useAppDispatch();
-  const loading = useAppSelector(state => state.todos.loading);
+  const isLoading = useAppSelector(state => state.todos.isLoading);
+  const todo = useAppSelector(state => state.currentTodo);
 
   useEffect(() => {
     dispatch(setIsLoading(true));
@@ -32,12 +32,11 @@ export const App = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">{loading ? <Loader /> : <TodoList />}</div>
+            <div className="block">{isLoading ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
-
-      <TodoModal />
+      {todo && <TodoModal />}
     </>
   );
 };
