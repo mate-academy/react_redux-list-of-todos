@@ -1,6 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState = {
+type StatusFilter = 'all' | 'active' | 'completed';
+
+type StateFilter = {
+  query: string;
+  status: StatusFilter;
+};
+
+const initialState: StateFilter = {
   query: '',
   status: 'all',
 };
@@ -8,5 +15,17 @@ const initialState = {
 export const filterSlice = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    setQuery: (state, action: PayloadAction<string>) => {
+      state.query = action.payload;
+    },
+
+    setStatus: (state, action) => {
+      state.status = action.payload;
+    },
+
+    clear: () => initialState,
+  },
 });
+
+export const { actions } = filterSlice;
