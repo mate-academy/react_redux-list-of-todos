@@ -1,23 +1,22 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
-import { useAppDispatch } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import { useEffect, useState } from 'react';
 import { getTodos } from './api';
 import { setTodos } from './features/todos';
-import { Simulate } from 'react-dom/test-utils';
-import load = Simulate.load;
 
 export const App = () => {
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(false);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
     getTodos()
       .then(todos => dispatch(setTodos(todos)))
       .finally(() => setLoading(false));
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -38,7 +37,7 @@ export const App = () => {
         </div>
       </div>
 
-      {false && <TodoModal />}
+      {currentTodo && <TodoModal />}
     </>
   );
 };
