@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { setCurrentTodo } from '../../features/currentTodo';
+import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const { query, status } = useAppSelector(state => state.filter);
@@ -17,11 +18,11 @@ export const TodoList: React.FC = () => {
         const matchToQuery = todo.title.toLowerCase().includes(query);
 
         switch (status) {
-          case 'active':
+          case Status.Active:
             return !todo.completed && matchToQuery;
-          case 'completed':
+          case Status.Completed:
             return todo.completed && matchToQuery;
-          case 'all':
+          case Status.All:
           default:
             return matchToQuery;
         }

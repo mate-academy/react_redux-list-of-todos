@@ -3,7 +3,7 @@ import { Status } from '../types/Status';
 
 const initialState = {
   query: '',
-  status: 'all' as Status,
+  status: Status.All,
 };
 
 export const filterSlice = createSlice({
