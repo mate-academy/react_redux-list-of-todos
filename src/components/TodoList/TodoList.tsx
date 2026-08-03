@@ -1,8 +1,6 @@
 /* eslint-disable */
-import React, { useEffect } from 'react';
-import { getTodos } from '../../api';
+import React from 'react';
 import { Todo } from '../../types/Todo';
-import { setTodos } from '../../features/todos';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setTodo } from '../../features/currentTodo';
 
@@ -24,10 +22,6 @@ export const TodoList: React.FC = () => {
       }
     })
 
-
-  useEffect(() => {
-    getTodos().then((todos: Todo[]) => dispatch(setTodos(todos)));
-  }, []);
 
   return (
     <>
