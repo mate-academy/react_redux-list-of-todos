@@ -4,10 +4,11 @@ import { User } from './types/User';
 // eslint-disable-next-line operator-linebreak
 const BASE_URL =
   'https://mate-academy.github.io/react_dynamic-list-of-todos/api';
+const schedule = window.setTimeout.bind(window);
 
 function wait(delay: number): Promise<void> {
   return new Promise(resolve => {
-    setTimeout(resolve, delay);
+    schedule(resolve, delay);
   });
 }
 
