@@ -7,11 +7,10 @@ import { RootState } from '../../app/store';
 import classNames from 'classnames';
 import { setCurrentTodo } from '../../features/currentTodo';
 import { Loader } from '../Loader';
-import { Status } from '../../types/Status';
 
 export const TodoList: React.FC = () => {
   const [loader, setLoader] = useState(false);
-  const sortValue: Status = useSelector(
+  const sortValue = useSelector(
     (value: RootState) => value.filter.status,
   );
   const querryValue = useSelector((value: RootState) => value.filter.query);
