@@ -17,7 +17,7 @@ export const App = () => {
         dispatch(setTodos(todosFromServer));
       })
       .catch(() => {
-        setLoader(true);
+        setLoader(false);
       })
       .finally(() => {
         setLoader(false);

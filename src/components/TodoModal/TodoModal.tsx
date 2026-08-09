@@ -20,7 +20,7 @@ export const TodoModal: React.FC = () => {
         setUser(usersFromApi);
       })
       .catch(() => {
-        setLoader(true);
+        setLoader(false);
       })
       .finally(() => setLoader(false));
   }, [currentTodo]);
