@@ -22,7 +22,7 @@ export const App = () => {
       .finally(() => {
         setLoader(false);
       });
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
