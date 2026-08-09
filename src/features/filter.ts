@@ -8,5 +8,17 @@ const initialState = {
 export const filterSlice = createSlice({
   name: 'filter',
   initialState,
-  reducers: {},
+  reducers: {
+    setFilterStatus(state, action) {
+      // eslint-disable-next-line no-param-reassign
+      state.status = action.payload;
+    },
+
+    setQuerryStatus(state, action) {
+      // eslint-disable-next-line no-param-reassign
+      state.query = action.payload;
+    },
+  },
 });
+
+export const { setFilterStatus, setQuerryStatus } = filterSlice.actions;
