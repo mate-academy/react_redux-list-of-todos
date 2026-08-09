@@ -42,7 +42,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={value => querrySubmit(value)}
+          onChange={querrySubmit}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

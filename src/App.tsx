@@ -1,8 +1,29 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { TodoFilter, TodoList, TodoModal } from './components';
+import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getTodos } from './api';
+import { setTodos } from './features/todos';
 
 export const App = () => {
+  const [loader, setLoader] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setLoader(true);
+    getTodos()
+      .then(todosFromServer => {
+        dispatch(setTodos(todosFromServer));
+      })
+      .catch(() => {
+        setLoader(true);
+      })
+      .finally(() => {
+        setLoader(false);
+      });
+  }, []);
+
   return (
     <>
       <div className="section">
@@ -14,9 +35,7 @@ export const App = () => {
               <TodoFilter />
             </div>
 
-            <div className="block">
-              <TodoList />
-            </div>
+            <div className="block">{loader ? <Loader /> : <TodoList />}</div>
           </div>
         </div>
       </div>
