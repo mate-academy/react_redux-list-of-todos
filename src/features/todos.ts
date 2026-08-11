@@ -11,5 +11,4 @@ export const todosSlice = createSlice({
   },
 });
 
-
 export const { setTodos } = todosSlice.actions;
