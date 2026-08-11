@@ -7,7 +7,7 @@ import { Loader } from '../Loader';
 
 export const TodoModal: React.FC = () => {
   const dispatch = useAppDispatch();
-  const todo = useAppSelector(state => state.currentTodo.todo); // ✅ доступ к todo через .todo
+  const todo = useAppSelector(state => state.currentTodo.todo);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
