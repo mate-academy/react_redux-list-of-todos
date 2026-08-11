@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -8,7 +7,7 @@ import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 
 import { getTodos, getUser } from './api';
 
-import type { RootState, AppDispatch } from './app/store';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
 import { setTodos } from './features/todos';
 import { setCurrentTodo } from './features/currentTodo';
@@ -17,13 +16,13 @@ import { Todo } from './types/Todo';
 import { User } from './types/User';
 
 export const App = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const todos = useSelector((state: RootState) => state.todos);
+  const todos = useAppSelector(state => state.todos);
 
-  const { query, status } = useSelector((state: RootState) => state.filter);
+  const { query, status } = useAppSelector(state => state.filter);
 
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo);
 
   const [isLoadingTodos, setIsLoadingTodos] = useState(false);
 
