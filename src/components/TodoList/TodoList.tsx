@@ -1,13 +1,12 @@
 /* eslint-disable */
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const todos = useAppSelector(state => state.todos);
-  const currentTodo = useAppSelector(state => state.currentTodo);
+  const currentTodo = useAppSelector(state => state.currentTodo.todo); // ← вот тут было неправильно
   const { status, query } = useAppSelector(state => state.filter);
 
   const visibleTodos = todos.filter(todo => {
@@ -33,6 +32,16 @@ export const TodoList: React.FC = () => {
 
       <table className="table is-narrow is-fullwidth">
         <thead>
+          <tr>
+            <th>#</th>
+            <th>
+              <span className="icon">
+                <i className="fas fa-check" />
+              </span>
+            </th>
+            <th>Title</th>
+            <th> </th>
+          </tr>
         </thead>
 
         <tbody>
@@ -40,7 +49,11 @@ export const TodoList: React.FC = () => {
             const isSelected = currentTodo?.id === todo.id;
 
             return (
-              <tr data-cy="todo">
+              <tr
+                data-cy="todo"
+                key={todo.id}
+                className={isSelected ? 'has-background-info-light' : undefined}
+              >
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {todo.completed && (
@@ -66,8 +79,11 @@ export const TodoList: React.FC = () => {
                     className="button"
                     type="button"
                     onClick={() => {
-                      if (isSelected) return;
-                      dispatch(setCurrentTodo(todo));
+                      if (isSelected) {
+                        dispatch(setCurrentTodo(null));
+                      } else {
+                        dispatch(setCurrentTodo(todo));
+                      }
                     }}
                   >
                     <span className="icon">
