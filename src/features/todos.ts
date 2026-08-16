@@ -5,7 +5,7 @@ export const todosSlice = createSlice({
   name: 'todos',
   initialState: [] as Todo[],
   reducers: {
-    setListOfTodos(state, action) {
+    setListOfTodos(_state, action) {
       return action.payload;
     },
   },
