@@ -1,5 +1,4 @@
 // filter.ts;
-// filter.ts;
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { Status } from '../types/Status';
 
@@ -43,6 +42,5 @@ export const filterSlice = createSlice({
   },
 });
 
-// Не забудь додати setSelectedTodoId в експорти екшенів!
 export const { setQuery, setStatus, setSelectedTodoId } = filterSlice.actions;
 export default filterSlice.reducer;

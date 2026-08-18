@@ -1,5 +1,4 @@
 // todos.ts;
-// todos.ts;
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { Todo } from '../types/Todo';
 import { getTodos } from '../api';
