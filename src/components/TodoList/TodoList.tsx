@@ -1,18 +1,17 @@
 import React from 'react';
 import { Todo } from '../../types/Todo';
 import { Todofile } from '../Todofile/Todofile';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setSelectedTodo } from '../../features/todos';
 
 interface Props {
   array: Todo[];
-  selectedTodo: Todo | null;
-  onselect: (todo: Todo) => void;
 }
 
-export const TodoList: React.FC<Props> = ({
-  array = [],
-  selectedTodo,
-  onselect,
-}) => {
+export const TodoList: React.FC<Props> = ({ array = [] }) => {
+  const dispatch = useAppDispatch();
+  const selectedTodo = useAppSelector(state => state.todos.selectedTodo);
+
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -33,7 +32,7 @@ export const TodoList: React.FC<Props> = ({
           <Todofile
             key={todo.id}
             todo={todo}
-            onSelect={onselect}
+            onSelect={t => dispatch(setSelectedTodo(t))}
             isSelected={selectedTodo?.id === todo.id}
           />
         ))}

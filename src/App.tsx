@@ -1,55 +1,44 @@
-/* eslint-disable max-len */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { TodoList } from './components/TodoList';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
-import { Todo } from './types/Todo';
 import { getTodos } from './api';
-import { todoStore } from '../src/components/Redux/Redux';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { setTodos, setLoading, setSelectedTodo } from './features/todos';
 
 export const App: React.FC = () => {
-  const [array, setArray] = useState<Todo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [matching, setMatching] = useState('all');
-  const [titling, setTitling] = useState('');
-  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(
-    todoStore.getState(),
-  );
+  const dispatch = useAppDispatch();
+
+  const { items, selectedTodo, loading } = useAppSelector(state => state.todos);
+
+  const { status, query } = useAppSelector(state => state.filter);
 
   useEffect(() => {
-    const unsubscribe = todoStore.subscribe(() => {
-      setSelectedTodo(todoStore.getState());
-    });
+    dispatch(setLoading(true));
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
     getTodos()
       .then(fetchedTodos => {
-        setArray(fetchedTodos);
+        dispatch(setTodos(fetchedTodos));
       })
       .finally(() => {
-        setLoading(false);
+        dispatch(setLoading(false));
       });
-  }, []);
+  }, [dispatch]);
 
-  const PreparedArray = array.filter(obj => {
-    const fExam =
-      matching === 'all' ||
-      (matching === 'active' && !obj.completed) ||
-      (matching === 'completed' && obj.completed);
+  const preparedTodos = items.filter(todo => {
+    const matchesStatus =
+      status === 'all' ||
+      (status === 'active' && !todo.completed) ||
+      (status === 'completed' && todo.completed);
 
-    const sExam = obj.title
+    const matchesQuery = todo.title
       .toLowerCase()
-      .includes(titling.toLowerCase().trim());
+      .includes(query.toLowerCase().trim());
 
-    return fExam && sExam;
+    return matchesStatus && matchesQuery;
   });
 
   return (
@@ -59,24 +48,11 @@ export const App: React.FC = () => {
           <h1 className="title">Todos:</h1>
 
           <div className="block">
-            <TodoFilter
-              setMatching={setMatching}
-              matching={matching}
-              titling={titling}
-              setTitling={setTitling}
-            />
+            <TodoFilter />
           </div>
 
           <div className="block">
-            {loading ? (
-              <Loader />
-            ) : (
-              <TodoList
-                array={PreparedArray}
-                onselect={todoStore.setSelectedTodo}
-                selectedTodo={selectedTodo}
-              />
-            )}
+            {loading ? <Loader /> : <TodoList array={preparedTodos} />}
           </div>
         </div>
       </div>
@@ -84,7 +60,7 @@ export const App: React.FC = () => {
       {selectedTodo && (
         <TodoModal
           selectedobj={selectedTodo}
-          onClose={() => todoStore.setSelectedTodo(null)}
+          onClose={() => dispatch(setSelectedTodo(null))}
         />
       )}
     </div>

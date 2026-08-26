@@ -1,26 +1,20 @@
 import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setStatus, setQuery } from '../../features/filter';
+import { Status } from '../../types/Status';
 
-type Props = {
-  setMatching: (matching: string) => void;
-  matching: string;
-  titling: string;
-  setTitling: (titling: string) => void;
-};
+export const TodoFilter: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { status, query } = useAppSelector(state => state.filter);
 
-export const TodoFilter: React.FC<Props> = ({
-  setMatching,
-  matching,
-  titling,
-  setTitling,
-}) => {
   return (
     <form className="field has-addons" onSubmit={e => e.preventDefault()}>
       <p className="control">
         <span className="select">
           <select
             data-cy="statusSelect"
-            value={matching}
-            onChange={e => setMatching(e.target.value)}
+            value={status}
+            onChange={e => dispatch(setStatus(e.target.value as Status))}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -35,20 +29,20 @@ export const TodoFilter: React.FC<Props> = ({
           type="text"
           className="input"
           placeholder="Search..."
-          value={titling}
-          onChange={e => setTitling(e.target.value)}
+          value={query}
+          onChange={e => dispatch(setQuery(e.target.value))}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        {titling && (
+        {query && (
           <span className="icon is-right" style={{ pointerEvents: 'all' }}>
             <button
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => setTitling('')}
+              onClick={() => dispatch(setQuery(''))}
             />
           </span>
         )}
