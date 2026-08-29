@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
-import { actions as currentTodoAcrions } from '../../features/currentTodo';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
 import { User } from '../../types/User';
@@ -45,7 +45,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispatch(currentTodoAcrions.clear())}
+              onClick={() => dispatch(currentTodoActions.clear())}
             />
           </header>
 

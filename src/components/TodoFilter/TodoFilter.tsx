@@ -5,7 +5,7 @@ import { Status } from '../../types/Status';
 import { useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
-  const dispach = useDispatch();
+  const dispatch = useDispatch();
   const { query } = useAppSelector(state => state.filter);
 
   return (
@@ -18,7 +18,9 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             onChange={e => {
-              dispach(filterActions.setStatus(e.currentTarget.value as Status));
+              dispatch(
+                filterActions.setStatus(e.currentTarget.value as Status),
+              );
             }}
           >
             <option value="all">All</option>
@@ -36,7 +38,7 @@ export const TodoFilter: React.FC = () => {
           placeholder="Search..."
           value={query}
           onChange={e => {
-            dispach(filterActions.setQuerty(e.currentTarget.value));
+            dispatch(filterActions.setQuerty(e.currentTarget.value));
           }}
         />
         <span className="icon is-left">
@@ -50,7 +52,7 @@ export const TodoFilter: React.FC = () => {
               data-cy="clearSearchButton"
               type="button"
               className="delete"
-              onClick={() => dispach(filterActions.clearQuerty())}
+              onClick={() => dispatch(filterActions.clearQuerty())}
             />
           </span>
         )}

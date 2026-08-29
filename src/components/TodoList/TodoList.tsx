@@ -2,7 +2,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '../../app/hooks';
-import { actions as currentTodoAcrions } from '../../features/currentTodo';
+import { actions as currentTodoActions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -83,7 +83,7 @@ export const TodoList: React.FC = () => {
                   className="button"
                   type="button"
                   onClick={() => {
-                    dispatch(currentTodoAcrions.setCurrentTodos(todo));
+                    dispatch(currentTodoActions.setCurrentTodos(todo));
                   }}
                 >
                   <span className="icon">
