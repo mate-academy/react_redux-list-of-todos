@@ -10,14 +10,14 @@ export const { reducer, actions } = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setStatus: (state, { payload }: PayloadAction<Status>) => {
-      state.status = payload;
+    setStatus: (state, action: PayloadAction<Status>) => {
+      return { ...state, status: action.payload };
     },
-    setQuerty: (state, { payload }: PayloadAction<string>) => {
-      state.query = payload;
+    setQuerty: (state, action: PayloadAction<string>) => {
+      return { ...state, query: action.payload };
     },
     clearQuerty: state => {
-      state.query = '';
+      return { ...state, query: '' };
     },
   },
 });

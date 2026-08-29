@@ -10,17 +10,17 @@ import { useDispatch } from 'react-redux';
 export const App = () => {
   const currentTodos = useAppSelector(state => state.currentTodos);
   const [loading, setLoading] = useState(true);
-  const dispach = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setLoading(true);
 
     getTodos()
-      .then(todos => dispach(todosActions.setTodos(todos)))
+      .then(todos => dispatch(todosActions.setTodos(todos)))
       .finally(() => {
         setLoading(false);
       });
-  }, [dispach]);
+  }, []);
 
   return (
     <>

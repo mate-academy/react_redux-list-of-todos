@@ -7,7 +7,7 @@ import { User } from '../../types/User';
 import { getUser } from '../../api';
 
 export const TodoModal: React.FC = () => {
-  const dispach = useDispatch();
+  const dispatch = useDispatch();
   const currentTodo = useAppSelector(state => state.currentTodos);
   const [currentUser, setCurrentUser] = useState<User | null>();
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ export const TodoModal: React.FC = () => {
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => dispach(currentTodoAcrions.clear())}
+              onClick={() => dispatch(currentTodoAcrions.clear())}
             />
           </header>
 

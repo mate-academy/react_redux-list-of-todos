@@ -5,7 +5,7 @@ import { useAppSelector } from '../../app/hooks';
 import { actions as currentTodoAcrions } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const dispach = useDispatch();
+  const dispatch = useDispatch();
   const todos = useAppSelector(state => state.todos);
   const currentTodos = useAppSelector(state => state.currentTodos);
   const filter = useAppSelector(state => state.filter);
@@ -83,7 +83,7 @@ export const TodoList: React.FC = () => {
                   className="button"
                   type="button"
                   onClick={() => {
-                    dispach(currentTodoAcrions.setCurrentTodos(todo));
+                    dispatch(currentTodoAcrions.setCurrentTodos(todo));
                   }}
                 >
                   <span className="icon">
