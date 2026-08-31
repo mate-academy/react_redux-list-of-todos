@@ -10,9 +10,7 @@ export const TodoList: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const filteredTodo = todos.todos.filter(todo => {
-    const matchesQuery = todo.title
-      .toLowerCase()
-      .includes(query.toLowerCase());
+    const matchesQuery = todo.title.toLowerCase().includes(query.toLowerCase());
 
     const matchesStatus =
       status === 'all' ||
@@ -20,7 +18,7 @@ export const TodoList: React.FC = () => {
       (status === 'completed' && todo.completed);
 
     return matchesQuery && matchesStatus;
-  })
+  });
 
   const currentTodo = useAppSelector(state => state.currentTodo);
 

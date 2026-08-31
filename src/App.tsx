@@ -16,7 +16,11 @@ export const App = () => {
   useEffect(() => {
     dispatch(setLoadingTodo(true));
 
-    getTodos().then(todo => dispatch(setTodos(todo)));
+    getTodos()
+      .then(todo => dispatch(setTodos(todo)))
+      .catch(() => {
+        dispatch(setLoadingTodo(false));
+      });
   }, [dispatch]);
 
   return (
