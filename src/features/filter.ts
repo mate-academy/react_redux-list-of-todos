@@ -15,14 +15,14 @@ export const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    setQuery: (state, action: PayloadAction<string>) => {
-      // eslint-disable-next-line no-param-reassign
-      state.query = action.payload;
-    },
-    setStatus: (state, action: PayloadAction<Status>) => {
-      // eslint-disable-next-line no-param-reassign
-      state.status = action.payload;
-    },
+    setQuery: (state, action: PayloadAction<string>) => ({
+      ...state,
+      query: action.payload,
+    }),
+    setStatus: (state, action: PayloadAction<Status>) => ({
+      ...state,
+      status: action.payload,
+    }),
   },
 });
 
