@@ -5,14 +5,48 @@ import { Todo } from '../Todo/Todo';
 import { currentTodoActions } from '../../features/currentTodo';
 import { Todo as TodoType } from '../../types/Todo';
 import { useDispatch } from 'react-redux';
+import { Status } from '../../types/Status';
+
+interface FilterOptions {
+  status?: Status;
+}
+
+const getPreparedTodos = (
+  todos: TodoType[],
+  { status }: FilterOptions = {},
+) => {
+  let todosCopy = [...todos];
+
+  if (status) {
+    todosCopy = todosCopy.filter(todo => {
+      switch (status) {
+        case 'active':
+          return !todo.completed;
+
+        case 'completed':
+          return todo.completed;
+
+        default:
+          return todo;
+      }
+    });
+  }
+
+  return todosCopy;
+};
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
   const todosState = useAppSelector(state => state.todos);
   const currentTodo = useAppSelector(state => state.currentTodo);
+  const filterState = useAppSelector(state => state.filter);
 
   const handleTodoSelect = (todo: TodoType) =>
     dispatch(currentTodoActions.setCurrentTodo(todo));
+
+  const preparedTodos = getPreparedTodos(todosState.todos, {
+    status: filterState.status,
+  });
 
   return (
     <>
@@ -37,7 +71,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {todosState.todos.map(todo => (
+          {preparedTodos.map(todo => (
             <Todo
               key={todo.id}
               todo={todo}
