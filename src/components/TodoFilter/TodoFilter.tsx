@@ -12,6 +12,10 @@ export const TodoFilter: React.FC = () => {
     dispatch(filterActions.setStatus(event.target.value as Status));
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(filterActions.setQuery(event.target.value));
+  };
+
   return (
     <form
       className="field has-addons"
@@ -37,6 +41,8 @@ export const TodoFilter: React.FC = () => {
           type="text"
           className="input"
           placeholder="Search..."
+          onChange={handleSearchChange}
+          value={filterState.query}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

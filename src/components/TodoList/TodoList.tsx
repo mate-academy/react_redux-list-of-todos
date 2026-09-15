@@ -9,11 +9,12 @@ import { Status } from '../../types/Status';
 
 interface FilterOptions {
   status?: Status;
+  query?: string;
 }
 
 const getPreparedTodos = (
   todos: TodoType[],
-  { status }: FilterOptions = {},
+  { status, query }: FilterOptions = {},
 ) => {
   let todosCopy = [...todos];
 
@@ -32,6 +33,12 @@ const getPreparedTodos = (
     });
   }
 
+  if (query) {
+    todosCopy = todosCopy.filter(todo =>
+      todo.title.toLocaleLowerCase().includes(query.toLocaleLowerCase()),
+    );
+  }
+
   return todosCopy;
 };
 
@@ -46,14 +53,19 @@ export const TodoList: React.FC = () => {
 
   const preparedTodos = getPreparedTodos(todosState.todos, {
     status: filterState.status,
+    query: filterState.query,
   });
 
-  return (
-    <>
+  let content: React.ReactNode = null;
+
+  if (preparedTodos.length === 0) {
+    content = (
       <p className="notification is-warning">
         There are no todos matching current filter criteria
       </p>
-
+    );
+  } else {
+    content = (
       <table className="table is-narrow is-fullwidth">
         <thead>
           <tr>
@@ -81,6 +93,8 @@ export const TodoList: React.FC = () => {
           ))}
         </tbody>
       </table>
-    </>
-  );
+    );
+  }
+
+  return <>{content}</>;
 };
