@@ -5,12 +5,17 @@ import { useAppDispatch } from './app/hooks';
 import { useEffect } from 'react';
 import { getTodos } from './api';
 import { todosSlice } from './features/todos';
+import React from 'react';
 
 export const App = () => {
   const dispatch = useAppDispatch();
+  const [loader, setLoader] = React.useState(true);
 
   useEffect(() => {
-    getTodos().then(todos => dispatch(todosSlice.actions.setTodos(todos)));
+    getTodos().then(todos => {
+      dispatch(todosSlice.actions.setTodos(todos));
+      setLoader(false);
+    });
   }, [dispatch]);
 
   return (
@@ -25,8 +30,8 @@ export const App = () => {
             </div>
 
             <div className="block">
-              <Loader />
-              <TodoList />
+              {loader && <Loader />}
+              {!loader && <TodoList />}
             </div>
           </div>
         </div>
