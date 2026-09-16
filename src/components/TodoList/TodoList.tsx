@@ -5,6 +5,7 @@ import { currentTodoSlice } from '../../features/currentTodo';
 export const TodoList: React.FC = () => {
   const todos = useAppSelector(state => state.todos);
   const filter = useAppSelector(state => state.filter);
+  const currentTodo = useAppSelector(state => state.currentTodo);
   const query = filter.query.toLowerCase();
   const dispatch = useAppDispatch();
   const visibleTodos = todos.filter(todo => {
@@ -44,7 +45,13 @@ export const TodoList: React.FC = () => {
 
           <tbody>
             {visibleTodos.map(todo => (
-              <tr data-cy="todo" key={todo.id}>
+              <tr
+                data-cy="todo"
+                key={todo.id}
+                className={
+                  currentTodo?.id === todo.id ? 'has-background-info-light' : ''
+                }
+              >
                 <td className="is-vcentered">{todo.id}</td>
                 <td className="is-vcentered">
                   {todo.completed && (
@@ -73,7 +80,13 @@ export const TodoList: React.FC = () => {
                     }}
                   >
                     <span className="icon">
-                      <i className="far fa-eye" />
+                      <i
+                        className={
+                          currentTodo?.id === todo.id
+                            ? 'far fa-eye-slash'
+                            : 'far fa-eye'
+                        }
+                      />
                     </span>
                   </button>
                 </td>
