@@ -1,25 +1,33 @@
 import { Todo } from './types/Todo';
-import { User } from './types/User';
 
-// eslint-disable-next-line operator-linebreak
 const BASE_URL =
   'https://mate-academy.github.io/react_dynamic-list-of-todos/api';
 
-function wait(delay: number): Promise<void> {
-  return new Promise(resolve => {
+const wait = (delay: number) =>
+  new Promise(resolve => {
     setTimeout(resolve, delay);
   });
+
+export async function getTodos(): Promise<Todo[]> {
+  const response = await fetch(`${BASE_URL}/todos.json`);
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch todos');
+  }
+
+  await wait(500);
+
+  return response.json();
 }
 
-function get<T>(url: string): Promise<T> {
-  // eslint-disable-next-line prefer-template
-  const fullURL = BASE_URL + url + '.json';
+export async function getUser(userId: number): Promise<{ name: string }> {
+  const response = await fetch(`${BASE_URL}/users/${userId}.json`);
 
-  return wait(300)
-    .then(() => fetch(fullURL))
-    .then(res => res.json());
+  if (!response.ok) {
+    throw new Error('Failed to fetch user');
+  }
+
+  await wait(500);
+
+  return response.json();
 }
-
-export const getTodos = () => get<Todo[]>('/todos');
-
-export const getUser = (userId: number) => get<User>(`/users/${userId}`);

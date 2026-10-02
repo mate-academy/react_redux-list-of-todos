@@ -1,40 +1,76 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Todo } from '../../types/Todo';
+import { useAppDispatch } from '../../app/hooks';
+import { setCurrentTodo } from '../../features/currentTodo';
+import { getUser } from '../../api';
 import { Loader } from '../Loader';
 
-export const TodoModal: React.FC = () => {
+interface Props {
+  todo: Todo;
+}
+
+export const TodoModal: React.FC<Props> = ({ todo }) => {
+  const dispatch = useAppDispatch();
+  const [user, setUser] = useState<{ name: string } | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      setLoading(true);
+      try {
+        const userData = await getUser(todo.userId);
+
+        setUser(userData);
+      } catch {
+        // Handle error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUser();
+  }, [todo.userId]);
+
+  const handleClose = () => {
+    dispatch(setCurrentTodo(null));
+  };
+
   return (
-    <div className="modal is-active" data-cy="modal">
-      <div className="modal-background" />
-
-      <Loader />
-
+    <div
+      className="modal is-active"
+      data-cy="modal"
+      style={{ display: 'block' }}
+    >
+      <div className="modal-background" onClick={handleClose} />
       <div className="modal-card">
-        <header className="modal-card-head">
-          <div
-            className="modal-card-title has-text-weight-medium"
-            data-cy="modal-header"
-          >
-            Todo #3
-          </div>
-
-          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-          <button type="button" className="delete" data-cy="modal-close" />
+        {/* 👇 Header now only contains the ID */}
+        <header className="modal-card-head" data-cy="modal-header">
+          Todo #{todo.id}
+          <button
+            data-cy="modal-close"
+            className="delete"
+            type="button"
+            onClick={handleClose}
+          />
         </header>
 
         <div className="modal-card-body">
-          <p className="block" data-cy="modal-title">
-            fugiat veniam minus
+          {/* 👇 Title moved here */}
+          <p className="modal-card-title" data-cy="modal-title">
+            {todo.title}
           </p>
 
-          <p className="block" data-cy="modal-user">
-            {/* For not completed */}
-            <strong className="has-text-danger">Planned</strong>
+          <p>Status: {todo.completed ? 'Completed' : 'Not completed'}</p>
 
-            {/* For completed */}
-            <strong className="has-text-success">Done</strong>
-            {' by '}
-            <a href="mailto:Sincere@april.biz">Leanne Graham</a>
-          </p>
+          {loading ? (
+            <Loader />
+          ) : (
+            user && (
+              <p data-cy="modal-user">
+                {todo.completed ? 'Done by' : 'Planned by'} {user.name}
+              </p>
+            )
+          )}
         </div>
       </div>
     </div>
