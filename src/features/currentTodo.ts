@@ -1,10 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { Todo } from '../types/Todo';
+// import { createSlice } from "@reduxjs/toolkit";
+// import { Todo } from "../types/Todo";
 
-const initialState = null as Todo | null;
+// const initialState = {
 
-export const currentTodoSlice = createSlice({
-  name: 'currentTodo',
-  initialState,
-  reducers: {},
-});
+// }
