@@ -1,26 +1,57 @@
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { getTodos, getUser } from './api';
+import { todosSlice } from './features/todos';
+import { RootState } from './app/store';
+import { User } from './types/User';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const [user, setUser] = useState<User | undefined>();
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  useEffect(() => {
+    getTodos().then(data => {
+      dispatch(todosSlice.actions.setTodos(data));
+      setIsLoading(false);
+    });
+  }, [dispatch]);
+  const Todo = useSelector((state: RootState) => state.currentTodo);
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+  useEffect(() => {
+    if (!Todo) {
+      return;
+    }
+
+    setIsLoading(true);
+    getUser(Todo.userId)
+      .then(setUser)
+      .finally(() => setIsLoading(false));
+  }, [Todo]);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {isLoading && <Loader />}
+              <TodoList />
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {Todo && <TodoModal user={user} isLoading={isLoading} />}
+    </>
+  );
+};
