@@ -1,4 +1,3 @@
-import { Todo } from './types/Todo';
 import { User } from './types/User';
 
 // eslint-disable-next-line operator-linebreak
@@ -20,6 +19,8 @@ function get<T>(url: string): Promise<T> {
     .then(res => res.json());
 }
 
-export const getTodos = () => get<Todo[]>('/todos');
+export const getTodos = () => {
+  return fetch(`${BASE_URL}/todos.json`).then(res => res.json());
+};
 
 export const getUser = (userId: number) => get<User>(`/users/${userId}`);
