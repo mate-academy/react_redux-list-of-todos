@@ -1,26 +1,70 @@
+import { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
+import './App.scss';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
+import { getTodos } from './api';
+import { useAppDispatch, useAppSelector } from './app/hooks';
+import { setTodos } from './features/todos';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+export const App = () => {
+  const dispatch = useAppDispatch();
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+  useEffect(() => {
+    let isActive = true;
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+    getTodos()
+      .then(todos => {
+        if (isActive) {
+          dispatch(setTodos(todos));
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          setHasError(true);
+        }
+      })
+      .finally(() => {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [dispatch]);
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {isLoading && <Loader />}
+
+              {!isLoading && hasError && (
+                <p className="notification is-danger" role="alert">
+                  Unable to load todos
+                </p>
+              )}
+
+              {!isLoading && !hasError && <TodoList />}
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TodoModal />
-  </>
-);
+      {currentTodo && <TodoModal key={currentTodo.id} />}
+    </>
+  );
+};
