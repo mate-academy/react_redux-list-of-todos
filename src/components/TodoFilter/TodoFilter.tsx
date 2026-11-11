@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { setQuery, setStatus } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const filter = useAppSelector(state => state.filter);
@@ -16,7 +17,9 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={filter.status}
-            onChange={event => dispatch(setStatus(event.target.value))}
+            onChange={event =>
+              dispatch(setStatus(event.target.value as Status))
+            }
           >
             <option value="all">All</option>
             <option value="active">Active</option>
