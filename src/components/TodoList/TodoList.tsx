@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { clearTodo, setTodo } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
-import { useAppSelector } from '../../app/hoors';
+import { useAppSelector } from '../../app/hooks';
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ export const TodoList: React.FC = () => {
         </thead>
 
         <tbody>
-          {filteredTodos.map((todo) => {
+          {filteredTodos.map(todo => {
             const isSelected = selectedTodo?.id === todo.id;
 
             return (
@@ -74,7 +74,11 @@ export const TodoList: React.FC = () => {
                 </td>
 
                 <td className="is-vcentered is-expanded">
-                  <p className={todo.completed ? 'has-text-success' : 'has-text-danger'}>
+                  <p
+                    className={
+                      todo.completed ? 'has-text-success' : 'has-text-danger'
+                    }
+                  >
                     {todo.title}
                   </p>
                 </td>
@@ -87,7 +91,11 @@ export const TodoList: React.FC = () => {
                     onClick={() => handleToggleSelect(todo)}
                   >
                     <span className="icon">
-                      <i className={isSelected ? 'fas fa-eye-slash' : 'fas fa-eye'} />
+                      <i
+                        className={
+                          isSelected ? 'fas fa-eye-slash' : 'fas fa-eye'
+                        }
+                      />
                     </span>
                   </button>
                 </td>

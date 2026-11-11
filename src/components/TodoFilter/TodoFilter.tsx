@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setQuery, setStatus } from '../../features/filter';
-import { useAppSelector } from '../../app/hoors';
+import { useAppSelector } from '../../app/hooks';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useDispatch();
@@ -52,18 +52,16 @@ export const TodoFilter: React.FC = () => {
           <i className="fas fa-magnifying-glass" />
         </span>
 
-        <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-          {query && (
-            <span className="icon is-right" style={{ pointerEvents: 'all' }}>
-              <button
-                data-cy="clearSearchButton"
-                type="button"
-                className="delete"
-                onClick={handleClearQuery}
-              />
-            </span>
-          )}
-        </span>
+        {query && (
+          <span className="icon is-right" style={{ pointerEvents: 'all' }}>
+            <button
+              data-cy="clearSearchButton"
+              type="button"
+              className="delete"
+              onClick={handleClearQuery}
+            />
+          </span>
+        )}
       </p>
     </form>
   );

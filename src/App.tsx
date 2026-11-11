@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getTodos } from './api';
 import { setTodos } from './features/todos';
-import { useAppSelector } from './app/hoors';
-import { setLoading } from './features/currentTodo';
+import { useAppSelector } from './app/hooks';
+import { setLoading } from './features/todos';
 
 export const App = () => {
   const dispatch = useDispatch();

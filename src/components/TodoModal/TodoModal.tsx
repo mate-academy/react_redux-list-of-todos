@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../../app/hoors';
+import { useAppSelector } from '../../app/hooks';
 import { clearTodo, setLoading, setUser } from '../../features/currentTodo';
 import { Loader } from '../Loader';
 import { getUser } from '../../api';
