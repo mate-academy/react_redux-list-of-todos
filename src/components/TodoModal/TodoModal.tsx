@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../Loader';
 import { useAppSelector } from '../../hooks';
-import { getUser } from '../../api/api';
+import { getUser } from '../../api';
 import { useDispatch } from 'react-redux';
 import { User } from '../../types/User';
 import { setCurrentTodo } from '../../features/currentTodo';
@@ -40,12 +40,8 @@ export const TodoModal: React.FC = () => {
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
 
-      {hasError && (
-        <div className="modal-card">
-          <section className="modal-card-body">
-            <p className="has-text-danger">Oops, there is some error</p>
-          </section>
-        </div>
+      {hasError && !isLoading && (
+        <p className="has-text-danger">Oops, there is some error</p>
       )}
 
       {isLoading ? (

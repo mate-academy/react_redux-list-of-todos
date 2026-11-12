@@ -12,4 +12,4 @@ export const todosSlice = createSlice({
 });
 
 export const { setTodos } = todosSlice.actions;
-export const todosReduser = todosSlice.reducer;
+export const todosReducer = todosSlice.reducer;

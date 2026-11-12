@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { setTodos } from './features/todos';
 import { Todo } from './types/Todo';
 import { useAppSelector } from './hooks';
-import { getTodos } from './api/api';
+import { getTodos } from './api';
 
 export const App = () => {
   const dispatch = useDispatch();
