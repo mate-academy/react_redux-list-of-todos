@@ -1,13 +1,21 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../app/store';
 import { setQuery, setStatus } from '../../features/filter';
+import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
   const dispatch = useAppDispatch();
   const { query, status } = useAppSelector(state => state.filter);
 
+  const isStatus = (value: string): value is Status =>
+    value === 'all' || value === 'active' || value === 'completed';
+
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setStatus(event.target.value));
+    const { value } = event.target;
+
+    if (isStatus(value)) {
+      dispatch(setStatus(value));
+    }
   };
 
   const handleQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
