@@ -1,82 +1,82 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../../app/store';
-import { setCurrentTodo } from '../../features/currentTodo';
 import { Todo } from '../../types/Todo';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { setCurrentTodo } from '../../features/currentTodo';
 
 export const TodoList: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const todos = useSelector((state: RootState) => state.todos);
-  const { query, status } = useSelector((state: RootState) => state.filter);
-  const currentTodo = useSelector((state: RootState) => state.currentTodo);
+  const dispatch = useAppDispatch();
+  const todos = useAppSelector(state => state.todos);
+  const currentTodo = useAppSelector(state => state.currentTodo);
+  const { query, status } = useAppSelector(state => state.filter);
 
-  const visibleTodos = todos.filter(todo => {
-    const matchesQuery = todo.title
-      .toLowerCase()
-      .includes(query.toLowerCase().trim());
+  const normalizedQuery = query.trim().toLowerCase();
 
-    switch (status) {
-      case 'active':
-        return matchesQuery && !todo.completed;
-      case 'completed':
-        return matchesQuery && todo.completed;
-      default:
-        return matchesQuery;
+  const filteredTodos = todos.filter((todo: Todo) => {
+    const matchesQuery = todo.title.toLowerCase().includes(normalizedQuery);
+
+    if (status === 'active') {
+      return matchesQuery && !todo.completed;
     }
+
+    if (status === 'completed') {
+      return matchesQuery && todo.completed;
+    }
+
+    return matchesQuery;
   });
 
-  const handleSelectTodo = (todo: Todo) => {
-    if (currentTodo?.id === todo.id) {
-      dispatch(setCurrentTodo(null));
-    } else {
-      dispatch(setCurrentTodo(todo));
-    }
-  };
-
   return (
-    <table className="table is-narrow is-fullwidth" data-cy="todosTable">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>
-            <span className="icon">
-              <i className="fas fa-check" />
-            </span>
-          </th>
-          <th>Title</th>
-          <th> </th>
-        </tr>
-      </thead>
-
+    <table
+      className="table is-fullwidth is-striped is-hoverable"
+      data-cy="todoList"
+    >
       <tbody>
-        {visibleTodos.map(todo => {
+        {filteredTodos.map((todo: Todo) => {
           const isSelected = currentTodo?.id === todo.id;
 
           return (
-            <tr key={todo.id} data-cy="todo">
-              <td className="is-vcentered">{todo.id}</td>
+            <tr
+              key={todo.id}
+              data-cy="todo"
+              className={isSelected ? 'has-background-info-light' : ''}
+            >
+              <td>{todo.id}</td>
+
               <td className="is-vcentered">
-                {todo.completed && (
-                  <span className="icon" data-cy="iconCompleted">
+                {todo.completed ? (
+                  <span
+                    className="icon has-text-success"
+                    data-cy="iconCompleted"
+                  >
                     <i className="fas fa-check" />
                   </span>
+                ) : (
+                  <span className="icon" />
                 )}
               </td>
+
               <td className="is-vcentered is-expanded">
-                <p className={todo.completed ? 'has-text-success' : ''}>
+                <p
+                  className={
+                    todo.completed ? 'has-text-success' : 'has-text-danger'
+                  }
+                >
                   {todo.title}
                 </p>
               </td>
-              <td className="is-vcentered is-narrow">
+
+              <td className="has-text-right is-vcentered">
                 <button
                   type="button"
-                  className="button"
+                  className="button is-link"
                   data-cy="selectButton"
-                  onClick={() => handleSelectTodo(todo)}
+                  onClick={() =>
+                    dispatch(setCurrentTodo(isSelected ? null : todo))
+                  }
                 >
                   <span className="icon">
                     <i
-                      className={`far ${isSelected ? 'fa-eye-slash' : 'fa-eye'}`}
+                      className={`fas ${isSelected ? 'fa-eye-slash' : 'fa-eye'}`}
                     />
                   </span>
                 </button>
