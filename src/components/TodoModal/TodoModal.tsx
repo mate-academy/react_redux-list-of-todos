@@ -28,6 +28,10 @@ export const TodoModal: React.FC = () => {
       .finally(() => setIsLoading(false));
   }, [currentTodo]);
 
+  if (!currentTodo) {
+    return null;
+  }
+
   return (
     <div className="modal is-active" data-cy="modal">
       <div className="modal-background" />
