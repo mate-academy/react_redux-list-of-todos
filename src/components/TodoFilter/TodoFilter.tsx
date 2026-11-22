@@ -1,25 +1,12 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../app/store';
 import { setQuery, setStatus } from '../../features/filter';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Status } from '../../types/Status';
 
 export const TodoFilter: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
-  const { query, status } = useSelector((state: RootState) => state.filter);
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = event.target.value as Status;
-
-    if (
-      value === 'all' ||
-      value === 'active' ||
-      value === 'completed'
-    ) {
-      setStatus(value);
-    }
-  }
+  const { query, status } = useAppSelector((state) => state.filter);
 
   return (
     <form className="field has-addons">
@@ -28,7 +15,7 @@ export const TodoFilter: React.FC = () => {
           <select
             data-cy="statusSelect"
             value={status}
-            onChange={event => dispatch(setStatus(event.target.value))}
+            onChange={event => dispatch(setStatus(event.target.value as Status))}
           >
             <option value="all">All</option>
             <option value="active">Active</option>
@@ -44,7 +31,7 @@ export const TodoFilter: React.FC = () => {
           className="input"
           placeholder="Search..."
           value={query}
-          onChange={() => handleChange}
+          onChange={event => dispatch(setQuery(event.target.value))}
         />
         <span className="icon is-left">
           <i className="fas fa-magnifying-glass" />

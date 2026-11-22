@@ -1,8 +1,7 @@
 import React from 'react';
 import { Loader } from '../Loader';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
+import { useAppSelector } from '../../app/hooks';
 import { User } from '../../types/User';
 
 type Props = {
@@ -16,7 +15,7 @@ export const TodoModal: React.FC<Props> = ({
   isLoading,
   onClose,
 }) => {
-  const selectedTodo = useSelector((state: RootState) => state.currentTodo);
+  const selectedTodo = useAppSelector((state) => state.currentTodo);
 
   return (
     <div className="modal is-active" data-cy="modal">
