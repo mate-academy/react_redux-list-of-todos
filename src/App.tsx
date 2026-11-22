@@ -1,26 +1,97 @@
+/* eslint-disable max-len */
+import React, { useEffect, useState } from 'react';
 import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 
-export const App = () => (
-  <>
-    <div className="section">
-      <div className="container">
-        <div className="box">
-          <h1 className="title">Todos:</h1>
+import { TodoList } from './components/TodoList';
+import { TodoFilter } from './components/TodoFilter';
+import { TodoModal } from './components/TodoModal';
+import { Loader } from './components/Loader';
+import { User } from './types/User';
+import { getTodos, getUser } from './api';
+import { setCurrent } from './features/currentTodo';
+import { setTodos } from './features/todos';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 
-          <div className="block">
-            <TodoFilter />
-          </div>
+export const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
-          <div className="block">
-            <Loader />
-            <TodoList />
+  const dispatch = useAppDispatch();
+
+  const { query, status } = useAppSelector((state) => state.filter);
+
+  const selectedTodo = useAppSelector((state) => state.currentTodo);
+
+  const todos = useAppSelector((state) => state.todos);
+
+  useEffect(() => {
+    setIsLoading(true);
+    getTodos()
+      .then(loadedTodos => dispatch(setTodos(loadedTodos)))
+      .finally(() => setIsLoading(false));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!selectedTodo) {
+      return;
+    }
+
+    setIsUserLoading(true);
+    setSelectedUser(null);
+    getUser(selectedTodo.userId)
+      .then(setSelectedUser)
+      .finally(() => setIsUserLoading(false));
+  }, [selectedTodo]);
+
+  const handleClose = () => {
+    dispatch(setCurrent(null));
+    setSelectedUser(null);
+  };
+
+  const visibleTodos = todos.filter(todo => {
+    const matchesStatus =
+      status === 'all' ||
+      (status === 'completed' && todo.completed) ||
+      (status === 'active' && !todo.completed);
+    const matchesQuery = todo.title.toLowerCase().includes(query.toLowerCase());
+
+    return matchesStatus && matchesQuery;
+  });
+
+  return (
+    <>
+      <div className="section">
+        <div className="container">
+          <div className="box">
+            <h1 className="title">Todos:</h1>
+
+            <div className="block">
+              <TodoFilter />
+            </div>
+
+            <div className="block">
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <TodoList
+                  todos={visibleTodos}
+                  selectedTodo={selectedTodo}
+                  onSelect={todo => dispatch(setCurrent(todo))}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <TodoModal />
-  </>
-);
+      {selectedTodo && (
+        <TodoModal
+          selectedUser={selectedUser}
+          isLoading={isUserLoading}
+          onClose={handleClose}
+        />
+      )}
+    </>
+  );
+};
